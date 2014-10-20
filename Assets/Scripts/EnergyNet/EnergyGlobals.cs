@@ -43,5 +43,11 @@ namespace EnergyNet
             NetWorkObjects.Add(NewObject);
             CurrentNetworkObjects++;
         }
+
+        public static void RemoveObject(GameObject OldObject)
+        {
+            NetWorkObjects.Remove(OldObject);
+            CurrentNetworkObjects--;
+        }
     }
 }

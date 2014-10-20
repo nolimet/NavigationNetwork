@@ -5,16 +5,16 @@ namespace EnergyNet
 {
     public class EnergyNetWorkControler : MonoBehaviour
     {
-
-        public float CheckForChangesInterval = 1.5f;
         private float CallculedWaitTime = 1f;
-        [Range(1, 40)]
         public int TicksPerSecond = 4;
-        List<EnergyNode> nodes = new List<EnergyNode>();
-        List<EnergyGenator> generators = new List<EnergyGenator>();
-        float[] tpsar = new float[5];
+
         int tps = 0;
         float timer = 0f;
+
+        List<EnergyNode> nodes = new List<EnergyNode>();
+        List<EnergyGenator> generators = new List<EnergyGenator>();
+
+        float[] tpsar = new float[5];
 
         #region Start and Updates
         public void Start()
@@ -41,12 +41,12 @@ namespace EnergyNet
         public void Stop()
         {
             StopCoroutine("CheckForChanges");
+            StopCoroutine("RangeCheck");
         }
 
         void Update()
         {
             CallculedWaitTime = 1f / TicksPerSecond;
-            CheckForChangesInterval = CallculedWaitTime;
 
             timer += Time.deltaTime;
             if (timer >= 1f)

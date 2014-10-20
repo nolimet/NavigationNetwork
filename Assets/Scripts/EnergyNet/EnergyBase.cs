@@ -30,7 +30,7 @@ namespace EnergyNet
             }
 
             EnergyGlobals.AddnewObject(gameObject);
-            NodeColor = DebugGrid.randomColor();
+            NodeColor = Color.green;
             if (renderer != null)
             {
                 renderer.material.color = NodeColor;
@@ -74,6 +74,11 @@ namespace EnergyNet
        protected virtual void SetNameID()
        {
            ID = Mathf.FloorToInt(Random.Range(0, 10000000));
+       }
+
+       protected virtual void OnDestroy()
+       {
+           EnergyGlobals.RemoveObject(this.gameObject);
        }
     }
 }
