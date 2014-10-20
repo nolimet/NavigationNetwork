@@ -14,7 +14,7 @@ public class _2DCamMove : MonoBehaviour {
     {
         Vector3 output = new Vector3();
         output.x = Input.GetAxis("Horizontal") * speed;
-        output.y = Input.GetAxis("Vertical") * speed;
+        output.z = Input.GetAxis("Vertical") * speed;
 
         return output;
     }

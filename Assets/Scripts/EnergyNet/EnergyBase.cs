@@ -80,5 +80,10 @@ namespace EnergyNet
        {
            EnergyGlobals.RemoveObject(this.gameObject);
        }
+
+       public virtual List<EnergyNode> ReturnInRangeNodes()
+       {
+           return nodes;
+       }
     }
 }

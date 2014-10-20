@@ -121,6 +121,7 @@ namespace EnergyNet
                 #endregion
             }
         }
+
         public override void GetInRangeNodes(List<EnergyNode> _nodes)
         {
             base.GetInRangeNodes(_nodes);
@@ -160,5 +161,6 @@ namespace EnergyNet
             base.SetNameID();
             this.name = "Node " + ID;
         }
+
     }
 }

@@ -68,22 +68,31 @@ namespace EnergyNet
         {
             UpdateGride();
             Debug.Log(name + "Started Checker");
+            int ticksPast = 0;
             while (Application.isPlaying)
             {
                 if (EnergyGlobals.LastNetworkObjectCount != EnergyGlobals.CurrentNetworkObjects)
                     UpdateGride();
-                foreach (EnergyNode node in nodes)
-                {
-                    node.sendPower();
-                    node.GetPull();
-                }
+                
+                    foreach (EnergyNode node in nodes)
+                    {
+                        if (ticksPast >= 5)
+                            node.sendPower();
+                        node.GetPull();
+                        
+                    }
 
                 foreach (EnergyGenator gen in generators)
                 {
+                    if (ticksPast >= 5)
+                        gen.sendPower();
                     gen.Genarate();
-                    gen.sendPower();
                 }
+
+                if (ticksPast >= 5)
+                    ticksPast = 0;
                 tps++;
+                ticksPast++;
                 yield return new WaitForSeconds(CallculedWaitTime);
             }
         }
