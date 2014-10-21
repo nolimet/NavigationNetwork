@@ -18,7 +18,8 @@ namespace EnergyNet
         protected Color NodeColor;
         protected List<EnergyNode> nodes = new List<EnergyNode>();
         protected EnergyNetWorkControler controler;
-        public int connections;
+        [SerializeField]
+        protected int connections;
 
         protected virtual void Start()
         {

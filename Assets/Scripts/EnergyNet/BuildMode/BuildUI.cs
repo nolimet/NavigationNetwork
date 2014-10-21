@@ -7,13 +7,22 @@ namespace EnergyNet.Build
         #region DropDown vars
         public Rect dropDownRect = new Rect(125, 50, 125, 300);
         //public GUIStyle style;
-        public string[] list = { "64", "128", "256", "512", "1024", "2048" };
+        public string[] list = { "node","generator", "endPoint" };
         Vector2 scrollViewVector = Vector2.zero;
 
         int indexNumber;
         int UpdateSpeed;
         bool show;
         #endregion
+
+        [SerializeField]
+        Builder b;
+
+        void Start()
+        {
+            if(b==null)
+                b = GetComponent<Builder>();
+        }
 
         void OnGUI()
         {
@@ -63,7 +72,7 @@ namespace EnergyNet.Build
 
         void Build()
         {
-
+            b.create((Builder.Type)indexNumber);
         }
     }
 }

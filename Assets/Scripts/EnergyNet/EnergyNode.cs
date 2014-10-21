@@ -17,6 +17,10 @@ namespace EnergyNet
         {
             base.Start();
             SetNameID();
+            if (endPoint)
+            {
+                renderer.material.color = Color.blue;
+            }
         }
 
         public virtual void receive(float receiving, int senderID)
