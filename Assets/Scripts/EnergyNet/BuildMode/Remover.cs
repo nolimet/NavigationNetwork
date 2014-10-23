@@ -1,44 +1,53 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using EnergyNet;
 namespace EnergyNet.Build
 {
     public class Remover : MonoBehaviour
     {
         [SerializeField]
-        GameObject Target;
-
-        [SerializeField]
         Rect posButton;
         [SerializeField]
         ParticleSystem particle;
 
+        List<GameObject> targets = new List<GameObject>();
+
         void Start()
         {
-            posButton.xMin = Screen.width - posButton.xMax;
-            posButton.yMin = 40 + posButton.yMax;
+            posButton.x = Screen.width - posButton.width -60;
+            posButton.y = 40 + posButton.height;
         }
 
-        void OnTriggerEnter(Collider col)
+        void Update()
         {
-            string cTag = col.collider.gameObject.tag;
-            Debug.Log("TEST");
-            if (cTag == EnergyTags.EnergyGenartor || cTag == EnergyTags.EnergyNode)
+            targets = new List<GameObject>();
+            foreach (GameObject g in EnergyGlobals.NetWorkObjects)
             {
-                Target = col.collider.gameObject;
+                if (Vector3.Distance(transform.position, g.transform.position) < 2)
+                {
+                    targets.Add(g);
+                }
+            }
+        }
+
+        void RemoveObjects()
+        {
+            foreach (GameObject g in targets)
+            {
+                if (Vector3.Distance(transform.position, g.transform.position) < 2)
+                {
+                    Destroy(g);
+                }
             }
         }
 
         void OnGUI()
         {
-            if (Target != null)
+            if (GUI.Button(new Rect(posButton.x, posButton.y, 150, 20), "Remove items inRange"))
             {
-                if (GUI.Button(new Rect(posButton.x,posButton.y,150,20), "Destory " + Target.tag))
-                {
-                    Destroy(Target);
-                    Target = null;
-                    particle.Emit(500);
-                }
+                RemoveObjects();
+                particle.Emit(500);
             }
         }
     }
