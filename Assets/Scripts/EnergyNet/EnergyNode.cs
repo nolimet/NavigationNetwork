@@ -21,6 +21,8 @@ namespace EnergyNet
             {
                 renderer.material.color = Color.blue;
             }
+            if (StaticPull)
+                Pull = 100;
         }
 
         public virtual void receive(float receiving, int senderID)

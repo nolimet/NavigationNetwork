@@ -37,12 +37,12 @@ public class ItemSelector: MonoBehaviour {
     {
         if (currentItem != null)
         {
-            Selector.position = currentItem.position;
+            Selector.position = currentItem.position + new Vector3(0,-1,0);
             Selector.Rotate(0, 0, 1);
         }
         else if (lastItem != null)
         {
-            Selector.position = lastItem.position;
+            Selector.position = lastItem.position + new Vector3(0, -1, 0);
             Selector.Rotate(0, 0, 1);
         }
         else
@@ -152,11 +152,11 @@ public class ItemSelector: MonoBehaviour {
         #region LineSpider
         void CreatLines()
         {
-            if (currentItem.tag == EnergyNet.EnergyTags.EnergyNode)
+            if (currentItem.tag == EnergyNet.EnergyTags.EnergyNode || currentItem.tag == EnergyNet.EnergyTags.EnergyGenartor)
             {
-                EnergyNet.EnergyNode node = currentItem.gameObject.GetComponent<EnergyNet.EnergyNode>();
+                EnergyNet.EnergyBase node = currentItem.gameObject.GetComponent<EnergyNet.EnergyBase>();
 
-                foreach (EnergyNet.EnergyNode n in node.ReturnInRangeNodes())
+                foreach (EnergyNet.EnergyBase n in node.ReturnInRangeNodes())
                 {
                     if (n != null) 
                      lines.Add(CreateLine(node.transform.position, n.transform.position));
