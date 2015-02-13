@@ -36,6 +36,14 @@ namespace EnergyNet
             {
                 renderer.material.color = NodeColor;
             }
+
+            EnergyNetWorkControler.OnNetUpdate += GetInRangeNodes;
+        }
+
+        protected virtual void OnDestroy()
+        {
+            EnergyNetWorkControler.OnNetUpdate -= GetInRangeNodes;
+            EnergyGlobals.RemoveObject(this.gameObject);
         }
 
         public virtual void GetInRangeNodes(List<EnergyNode>_nodes)
@@ -75,11 +83,6 @@ namespace EnergyNet
        protected virtual void SetNameID()
        {
            ID = Mathf.FloorToInt(Random.Range(0, 10000000));
-       }
-
-       protected virtual void OnDestroy()
-       {
-           EnergyGlobals.RemoveObject(this.gameObject);
        }
 
        public virtual List<EnergyNode> ReturnInRangeNodes()

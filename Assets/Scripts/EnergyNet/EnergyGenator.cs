@@ -56,6 +56,28 @@ namespace EnergyNet
             }
         }
 
+        public void sendPowerV2()
+        {
+            waitedTicks++;
+            if (waitedTicks >= controlerTPS)
+            {
+                waitedTicks = 0;
+                if (useFuel && Storage > 0 && transferRate > 0 || !useFuel && activated && Storage > 0 && transferRate > 0)
+                {
+                    //check receiver's storage
+                    int l = nodes.Count;
+                    for (int i = 0; i < l; i++)
+                    {
+                        if (Storage >= transferRate)
+                        {
+                            EnergyGlobals.SendPackageV2(transform, nodes[i].transform, ID, nodes[i].ID, transferRate);
+                            Storage -= transferRate;
+                        }
+                    }
+                }
+            }
+        }
+
         public void sendPower()
         {
             waitedTicks++;

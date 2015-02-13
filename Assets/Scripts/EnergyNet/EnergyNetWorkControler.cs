@@ -14,6 +14,14 @@ namespace EnergyNet
         List<EnergyNode> nodes = new List<EnergyNode>();
         List<EnergyGenator> generators = new List<EnergyGenator>();
 
+        List<Vector3> CurrentnodesPos = new List<Vector3>();
+        List<Vector3> LastFrameNodePos = new List<Vector3>();
+
+        public delegate void NetUpdate(List<EnergyNode> node);
+        public static event NetUpdate OnNetUpdate;
+        public delegate void NetWorkRebuild();
+        public static event NetWorkRebuild OnRebuild;
+
         float[] tpsar = new float[5];
 
         #region Start and Updates
@@ -85,7 +93,7 @@ namespace EnergyNet
                 foreach (EnergyGenator gen in generators)
                 {
                     if (ticksPast >= 5)
-                        gen.sendPower();
+                        gen.sendPowerV2();
                     gen.Genarate();
                 }
 
@@ -102,17 +110,24 @@ namespace EnergyNet
             Debug.Log(name + "Started RangeCheck");
             while (Application.isPlaying)
             {
-                if (EnergyGlobals.LastNetworkObjectCount != EnergyGlobals.CurrentNetworkObjects)
-                    UpdateGride();
+                //if (EnergyGlobals.LastNetworkObjectCount != EnergyGlobals.CurrentNetworkObjects)
+                 //   UpdateGride();
+                LastFrameNodePos = CurrentnodesPos;
+                CurrentnodesPos = new List<Vector3>();
                 foreach (EnergyNode node in nodes)
                 {
-                    node.GetInRangeNodes(nodes);
+                    //node.GetInRangeNodes(nodes);
+                    CurrentnodesPos.Add(node.transform.position);
                 }
 
-                foreach (EnergyGenator gen in generators)
+                /*foreach (EnergyGenator gen in generators)
                 {
                     gen.GetInRangeNodes(nodes);
-                }
+                }*/
+                if(OnNetUpdate!=null)
+                    OnNetUpdate(nodes);
+                if (OnRebuild != null && !CheckNodepos())
+                    OnRebuild();
                 yield return new WaitForSeconds(CallculedWaitTime * 2f);
             }
         }
@@ -146,6 +161,19 @@ namespace EnergyNet
                 return output;
             }
         }
+
+        bool CheckNodepos()
+        {
+            if (CurrentnodesPos.Count != LastFrameNodePos.Count)
+                return false;
+            int l = CurrentnodesPos.Count;
+            for (int i = 0; i < l; i++)
+            {
+                if (CurrentnodesPos[i] != LastFrameNodePos[i])
+                    return false;
+            }
+            return true; 
+        }
         #endregion
 
         #region enum Functions
@@ -171,6 +199,7 @@ namespace EnergyNet
                 }
             }
             EnergyGlobals.LastNetworkObjectCount = EnergyGlobals.CurrentNetworkObjects;
+            
         }
         #endregion
     }

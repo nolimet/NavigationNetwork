@@ -38,6 +38,19 @@ namespace EnergyNet
             packetScript.SentTo(target, Energy, senderID, targetID);
         }
 
+        public static void SendPackageV2(Transform sender, Transform target, int senderID, int targetID, int Energy, float Speed = 0.4f, bool forceFancyParticle = false)
+        {
+            GameObject energyPacket;
+            energyPacket = Instantiate(Resources.Load("EnergyPacketV2"), sender.position, Quaternion.identity) as GameObject;
+
+            if (packageParent != null)
+                energyPacket.transform.parent = packageParent;
+
+            EnergyPacketV2 packetScript = energyPacket.GetComponent<EnergyPacketV2>();
+            packetScript.speed = Speed;
+            packetScript.SentTo(target, Energy, senderID, targetID);
+        }
+
         public static void AddnewObject(GameObject NewObject)
         {
             NetWorkObjects.Add(NewObject);

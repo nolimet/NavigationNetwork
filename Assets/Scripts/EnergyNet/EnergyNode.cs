@@ -9,7 +9,7 @@ namespace EnergyNet
         public bool endPoint;
         private int waitedTicks;
         private int controlerTPS = EnergyGlobals.MaxTPS;
-
+        public List<EnergyNode> SenderList = new List<EnergyNode>();
 
         private List<int> RevievedID = new List<int>();
 
@@ -23,6 +23,7 @@ namespace EnergyNet
             }
             if (StaticPull)
                 Pull = 100;
+
         }
 
         public virtual void receive(float receiving, int senderID)
@@ -63,14 +64,15 @@ namespace EnergyNet
                 List<EnergyNode> SendList = new List<EnergyNode>();
                 int HighestPull=-1;
                 waitedTicks = 0;
-                if (!endPoint && Storage > 0 && transferRate > 0)
-                {
+              //  if (!endPoint && Storage > 0 && transferRate > 0)
+                //{
+                if (!endPoint){
                     int l = nodes.Count;
                    // int k = RevievedID.Count;
                     for (int i = 0; i < l; i++)
                     {
                         int nodePull = nodes[i].Pull;
-                        if (!nodes[i].nonRecivend && Storage >= transferRate)
+                        if (!nodes[i].nonRecivend )//&& Storage >= transferRate)
                         {
                             if (nodePull > Pull)
                             {
@@ -85,7 +87,7 @@ namespace EnergyNet
                             }                           
                         }
                     }
-                        int recievers = SendList.Count;
+                       /* int recievers = SendList.Count;
                         for(int m = 0; m<recievers;m++)
                         {
                            // Debug.Log(m);
@@ -94,7 +96,8 @@ namespace EnergyNet
                         if (recievers > 0)
                         {
                             Storage -= transferRate;
-                        }
+                        }*/
+
                 }
                 #region oldSendCode
                 /* Debug.Log("sendpower : " + ID);
@@ -125,6 +128,8 @@ namespace EnergyNet
                     }
                 }*/
                 #endregion
+
+                SenderList = SendList;
             }
         }
 

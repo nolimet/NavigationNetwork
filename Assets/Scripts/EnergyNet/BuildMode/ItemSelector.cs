@@ -152,14 +152,17 @@ public class ItemSelector: MonoBehaviour {
         #region LineSpider
         void CreatLines()
         {
-            if (currentItem.tag == EnergyNet.EnergyTags.EnergyNode || currentItem.tag == EnergyNet.EnergyTags.EnergyGenartor)
+            if (currentItem)
             {
-                EnergyNet.EnergyBase node = currentItem.gameObject.GetComponent<EnergyNet.EnergyBase>();
-
-                foreach (EnergyNet.EnergyBase n in node.ReturnInRangeNodes())
+                if (currentItem.tag == EnergyNet.EnergyTags.EnergyNode || currentItem.tag == EnergyNet.EnergyTags.EnergyGenartor)
                 {
-                    if (n != null) 
-                     lines.Add(CreateLine(node.transform.position, n.transform.position));
+                    EnergyNet.EnergyBase node = currentItem.gameObject.GetComponent<EnergyNet.EnergyBase>();
+
+                    foreach (EnergyNet.EnergyBase n in node.ReturnInRangeNodes())
+                    {
+                        if (n != null)
+                            lines.Add(CreateLine(node.transform.position, n.transform.position));
+                    }
                 }
             }
         }
@@ -197,7 +200,7 @@ public class ItemSelector: MonoBehaviour {
             {
                 if (currentItem != null)
                 {
-                
+
                 }
             }
 
@@ -207,18 +210,16 @@ public class ItemSelector: MonoBehaviour {
                 CreatLines();
             }
 
-            if (Input.GetMouseButtonUp(1))
+            if (!Input.GetMouseButton(1) && currentItem != null && lines.Count > 0)
             {
-                if (currentItem != null)
+                RemoveLines();
+                if (ColourChanged)
                 {
-                    RemoveLines();
-                    if(ColourChanged){
-                        currentItem.gameObject.renderer.material.color -= Color.gray;
-                        ColourChanged = false;
-                    }
+                    currentItem.gameObject.renderer.material.color -= Color.gray;
+                    ColourChanged = false;
                     lastItem = currentItem;
                     currentItem = null;
-                
+
                 }
             }
         }
