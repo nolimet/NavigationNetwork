@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 namespace EnergyNet
 {
+    /// <summary>
+    ///  Globals for the energy system.
+    /// </summary>
     public class EnergyGlobals : MonoBehaviour
     {
         static public bool useLightParticles = true;
@@ -14,6 +17,9 @@ namespace EnergyNet
         static public Transform packageParent = null;
         static public bool createdPackageParent = false;
 
+        /// <summary>
+        ///  Legacy Package sende function. It sends a package to a node
+        /// </summary>
         public static void SendPackage(Transform sender, Transform target, int senderID, int targetID, int Energy, float Speed = 0.1f, bool forceFancyParticle = false)
         {
             GameObject energyPacket;
@@ -37,7 +43,9 @@ namespace EnergyNet
             packetScript.speed = Speed;
             packetScript.SentTo(target, Energy, senderID, targetID);
         }
-
+        /// <summary>
+        ///  Send a smart package to a endnode. It looks for the endnode and moves to that
+        /// </summary>
         public static void SendPackageV2(Transform sender, Transform target, int senderID, int targetID, int Energy, float Speed = 0.4f, bool forceFancyParticle = false)
         {
             GameObject energyPacket;
@@ -51,12 +59,17 @@ namespace EnergyNet
             packetScript.SentTo(target, Energy, senderID, targetID);
         }
 
+        /// <summary>
+        ///  Add a new object to the network objects
+        /// </summary>
         public static void AddnewObject(GameObject NewObject)
         {
             NetWorkObjects.Add(NewObject);
             CurrentNetworkObjects++;
         }
-
+        /// <summary>
+        ///  Remove a object from network objects
+        /// </summary>
         public static void RemoveObject(GameObject OldObject)
         {
             NetWorkObjects.Remove(OldObject);

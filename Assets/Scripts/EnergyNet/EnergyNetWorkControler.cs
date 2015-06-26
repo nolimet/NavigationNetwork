@@ -19,8 +19,10 @@ namespace EnergyNet
 
         public delegate void NetUpdate(List<EnergyNode> node);
         public static event NetUpdate OnNetUpdate;
-        public delegate void NetWorkRebuild();
-        public static event NetWorkRebuild OnRebuild;
+        public delegate void VoidDelegate();
+        public static event VoidDelegate OnRebuild;
+        public static event VoidDelegate OnPowerSend;
+        public static event VoidDelegate OnPullUpdate;
 
         float[] tpsar = new float[5];
 
@@ -68,6 +70,9 @@ namespace EnergyNet
                 timer = 0;
                 EnergyGlobals.RealTPS = (tpsar[4] + tpsar[3] + tpsar[2] + tpsar[1] + tpsar[0]) / 5f;
             }
+
+            if (OnPullUpdate != null)
+                OnPullUpdate();
         }
         #endregion
 
@@ -81,27 +86,31 @@ namespace EnergyNet
             {
                 if (EnergyGlobals.LastNetworkObjectCount != EnergyGlobals.CurrentNetworkObjects)
                     UpdateGride();
+
+                if (OnPowerSend != null && ticksPast >= 5)
+                    OnPowerSend();
+
                 
-                    foreach (EnergyNode node in nodes)
+                  /*  foreach (EnergyNode node in nodes)
                     {
                         if (ticksPast >= 5)
                             node.sendPower();
                         node.GetPull();
                         
-                    }
+                    }*/
 
-                foreach (EnergyGenator gen in generators)
+                /*foreach (EnergyGenator gen in generators)
                 {
                     if (ticksPast >= 5)
                         gen.sendPowerV2();
                     gen.Genarate();
                 }
-
+                */
                 if (ticksPast >= 5)
                     ticksPast = 0;
                 tps++;
                 ticksPast++;
-                yield return new WaitForSeconds(CallculedWaitTime);
+                yield return new WaitForSeconds(0.05f);
             }
         }
 
@@ -128,7 +137,7 @@ namespace EnergyNet
                     OnNetUpdate(nodes);
                 if (OnRebuild != null && !CheckNodepos())
                     OnRebuild();
-                yield return new WaitForSeconds(CallculedWaitTime * 2f);
+                yield return new WaitForSeconds(0.1f);
             }
         }
         #endregion

@@ -19,7 +19,7 @@ namespace EnergyNet._Editor
 
             node.StaticPull = EditorGUILayout.Toggle("Static",node.StaticPull);
             if (node.StaticPull)
-                node.Pull = EditorGUILayout.IntField("Pull",node.Pull);
+                node.Pull = EditorGUILayout.FloatField("Pull",node.Pull);
             else
                 EditorGUILayout.LabelField("Pull: " + node.Pull);
             EditorGUILayout.Space();

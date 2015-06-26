@@ -26,6 +26,15 @@ namespace EnergyNet
           //  MaxStorage = 200;
             name = "Energy Genarator: " + ID;
 
+            EnergyNetWorkControler.OnPowerSend += sendPower;
+            EnergyNetWorkControler.OnPowerSend += Genarate;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            EnergyNetWorkControler.OnPowerSend -= sendPower;
+            EnergyNetWorkControler.OnPowerSend -= Genarate;
         }
 
         public override void GetInRangeNodes(List<EnergyNode> _nodes)
@@ -56,7 +65,7 @@ namespace EnergyNet
             }
         }
 
-        public void sendPowerV2()
+        public void sendPower()
         {
             waitedTicks++;
             if (waitedTicks >= controlerTPS)
@@ -72,28 +81,6 @@ namespace EnergyNet
                         {
                             EnergyGlobals.SendPackageV2(transform, nodes[i].transform, ID, nodes[i].ID, transferRate);
                             Storage -= transferRate;
-                        }
-                    }
-                }
-            }
-        }
-
-        public void sendPower()
-        {
-            waitedTicks++;
-            if (waitedTicks >= controlerTPS)
-            {
-                waitedTicks = 0;
-                if (useFuel && Storage > 0 && transferRate > 0 || !useFuel && activated && Storage > 0 && transferRate > 0)
-                {
-                    //check receiver's storage
-                    int l = nodes.Count;
-                    for (int i = 0; i < l; i++)
-                    {
-                        if (Storage >= transferRate)
-                        {
-                            EnergyGlobals.SendPackage(transform, nodes[i].transform, ID, nodes[i].ID, transferRate);
-                                Storage -= transferRate;
                         }
                     }
                 }

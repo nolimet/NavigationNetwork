@@ -24,6 +24,15 @@ namespace EnergyNet
             if (StaticPull)
                 Pull = 100;
 
+            EnergyNetWorkControler.OnPowerSend += sendPower;
+            EnergyNetWorkControler.OnPullUpdate += GetPull;
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            EnergyNetWorkControler.OnPowerSend -= sendPower;
+            EnergyNetWorkControler.OnPullUpdate -= GetPull;
         }
 
         public virtual void receive(float receiving, int senderID)
@@ -62,7 +71,7 @@ namespace EnergyNet
             if (waitedTicks >= controlerTPS)
             {
                 List<EnergyNode> SendList = new List<EnergyNode>();
-                int HighestPull=-1;
+                float HighestPull=-1;
                 waitedTicks = 0;
               //  if (!endPoint && Storage > 0 && transferRate > 0)
                 //{
@@ -71,7 +80,7 @@ namespace EnergyNet
                    // int k = RevievedID.Count;
                     for (int i = 0; i < l; i++)
                     {
-                        int nodePull = nodes[i].Pull;
+                        float nodePull = nodes[i].Pull;
                         if (!nodes[i].nonRecivend )//&& Storage >= transferRate)
                         {
                             if (nodePull > Pull)
@@ -142,7 +151,7 @@ namespace EnergyNet
         {
             if (!nonRecivend && !StaticPull)
             {
-                int highestpull = 0;
+                float highestpull = 0;
                 Pull = 0;
                 foreach (EnergyNode n in nodes)
                 {

@@ -41,6 +41,10 @@ namespace EnergyNet
 
         void OnDestroy() { EnergyNetWorkControler.OnRebuild -= EnergyNetWorkControler_OnRebuild; }
 
+
+        /// <summary>
+        ///  made a list of nodes it will visted. It will only look over 120 nodes in total to avoid a infinite loop when it can't find an end node
+        /// </summary>
         public void GetSendList()
         {
             EnergyNode node = target.gameObject.GetComponent<EnergyNode>();
@@ -64,7 +68,9 @@ namespace EnergyNet
             }
             
         }
-
+        /// <summary>
+        ///  used to set the first target the packet wil move to
+        /// </summary>
         public void SentTo(Transform newNode, float _Energy, int currentNodeID,int _TargetID)
         {
             target = newNode;
@@ -78,6 +84,9 @@ namespace EnergyNet
             GetSendList();
         }
 
+        /// <summary>
+        ///  move to current Target
+        /// </summary>
         void Update()
         {
             if (target != null)

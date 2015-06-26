@@ -9,7 +9,7 @@ namespace EnergyNet
         public int MaxStorage = 10;
         public float Storage = 0;
         public int Range = 5;
-        public int Pull = 0;
+        public float Pull = 0;
         public int ID;
         public bool nonRecivend = false;
 
@@ -67,6 +67,11 @@ namespace EnergyNet
             }
         }
 
+        
+#if UNITY_EDITOR
+        /// <summary>
+        ///  draws connection lines in editor
+        /// </summary>
        protected virtual void Update()
         {
             if (!nonRecivend)
@@ -79,10 +84,13 @@ namespace EnergyNet
                 }
             }
         }
-
+#endif
+       /// <summary>
+       ///  setID
+       /// </summary>
        protected virtual void SetNameID()
        {
-           ID = Mathf.FloorToInt(Random.Range(0, 10000000));
+           ID = GetInstanceID();
        }
 
        public virtual List<EnergyNode> ReturnInRangeNodes()

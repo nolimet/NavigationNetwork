@@ -55,8 +55,8 @@ public class ItemSelector: MonoBehaviour {
         #region HitRays
         void RayUpdate()
         {
+            mouseRight();
             mouseLeft();
-           mouseRight();
         }
 
         void mouseLeft()
@@ -189,7 +189,7 @@ public class ItemSelector: MonoBehaviour {
             l.useWorldSpace = true;
             l.SetPosition(0, A);
             l.SetPosition(1, B);
-        
+            l.SetWidth(0.1f, 0.1f);
 
             return l;
         }
@@ -210,7 +210,7 @@ public class ItemSelector: MonoBehaviour {
                 CreatLines();
             }
 
-            if (!Input.GetMouseButton(1) && currentItem != null && lines.Count > 0)
+            if (Input.GetMouseButtonUp(1) && currentItem != null && lines.Count > 0)
             {
                 RemoveLines();
                 if (ColourChanged)
