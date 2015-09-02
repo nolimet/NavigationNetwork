@@ -12,6 +12,7 @@ namespace EnergyNet
         public float Pull = 0;
         public int ID;
         public bool nonRecivend = false;
+        public bool remove;
 
         [SerializeField]
         public bool StaticPull = false;
@@ -32,9 +33,9 @@ namespace EnergyNet
 
             EnergyGlobals.AddnewObject(gameObject);
             NodeColor = Color.green;
-            if (renderer != null)
+            if (GetComponent<Renderer>() != null)
             {
-                renderer.material.color = NodeColor;
+                GetComponent<Renderer>().material.color = NodeColor;
             }
 
             EnergyNetWorkControler.OnNetUpdate += GetInRangeNodes;
@@ -45,6 +46,8 @@ namespace EnergyNet
             EnergyNetWorkControler.OnNetUpdate -= GetInRangeNodes;
             EnergyGlobals.RemoveObject(this.gameObject);
         }
+
+        protected virtual void Update() { }
 
         public virtual void GetInRangeNodes(List<EnergyNode>_nodes)
         {

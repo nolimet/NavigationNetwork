@@ -82,7 +82,7 @@ public class ItemSelector: MonoBehaviour {
                 {
                     if (ColourChanged)
                     {
-                        currentItem.gameObject.renderer.material.color -= Color.gray;
+                        currentItem.gameObject.GetComponent<Renderer>().material.color -= Color.gray;
                         ColourChanged = false;
                     }
                     lastItem = currentItem;
@@ -111,12 +111,12 @@ public class ItemSelector: MonoBehaviour {
                         if (currentItem != null)
                             if (ColourChanged)
                             {
-                                currentItem.gameObject.renderer.material.color -= Color.gray;
+                                currentItem.gameObject.GetComponent<Renderer>().material.color -= Color.gray;
                                 ColourChanged = false;
                             }
                         if (!ColourChanged)
                         {
-                            hit.transform.gameObject.renderer.material.color += Color.gray;
+                            hit.transform.gameObject.GetComponent<Renderer>().material.color += Color.gray;
                             ColourChanged = true;
                         }
                         currentItem = hit.transform;
@@ -215,7 +215,7 @@ public class ItemSelector: MonoBehaviour {
                 RemoveLines();
                 if (ColourChanged)
                 {
-                    currentItem.gameObject.renderer.material.color -= Color.gray;
+                    currentItem.gameObject.GetComponent<Renderer>().material.color -= Color.gray;
                     ColourChanged = false;
                     lastItem = currentItem;
                     currentItem = null;

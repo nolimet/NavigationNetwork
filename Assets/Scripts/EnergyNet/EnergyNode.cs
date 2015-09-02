@@ -19,7 +19,7 @@ namespace EnergyNet
             SetNameID();
             if (endPoint)
             {
-                renderer.material.color = Color.blue;
+                GetComponent<Renderer>().material.color = Color.blue;
             }
             if (StaticPull)
                 Pull = 100;
@@ -55,7 +55,7 @@ namespace EnergyNet
             }
             if(Storage<0){
                 Debug.LogError("NEGATIVE POWER!! IN NODE " + ID + '\n' + "Received " + receiving );
-                renderer.material.color = Color.red;
+                GetComponent<Renderer>().material.color = Color.red;
                 nonRecivend = true;
 
             }

@@ -27,7 +27,7 @@ namespace util
             realSize = new Vector2(Screen.width * SizeX, Screen.height * SizeY);
             //Debug.Log(Screen.height);
             //Debug.Log(realSize +""+ realPos);
-            guiText.text = stringToEdit;
+            GetComponent<GUIText>().text = stringToEdit;
         }
 
         

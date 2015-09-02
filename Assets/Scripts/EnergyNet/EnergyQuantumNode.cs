@@ -26,7 +26,7 @@ namespace EnergyNet
                 endPoint = true;
                 nonRecivend = false;
                 TwinNode.MaxStorage = MaxStorage;
-                TwinNode.renderer.material.color = renderer.material.color;
+                TwinNode.GetComponent<Renderer>().material.color = GetComponent<Renderer>().material.color;
             }
             else
             {
@@ -59,7 +59,7 @@ namespace EnergyNet
                 maxLight = (8f / MaxStorage) * Storage;
                 if (maxLight == maxLightLast)
                 {
-                    lightStart = light.intensity;
+                    lightStart = GetComponent<Light>().intensity;
                     pointLight.intensity = Mathf.Lerp(lightStart, maxLight, Time.time / 5f);
                 }
                 particleRate = Storage * 0.8f;

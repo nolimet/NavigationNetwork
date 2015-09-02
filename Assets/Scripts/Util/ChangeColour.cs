@@ -17,7 +17,7 @@ public class ChangeColour : MonoBehaviour {
 		
 		float substract=1/duration;
 
-        Color textureColor = renderer.material.color;
+        Color textureColor = GetComponent<Renderer>().material.color;
 		
 		if(textureColor.a > maxAlpha && updown==false)
 		{
@@ -32,7 +32,7 @@ public class ChangeColour : MonoBehaviour {
 		{
 				updown=!updown;
 		}
-        renderer.material.color = textureColor;
+        GetComponent<Renderer>().material.color = textureColor;
 
     }
 	public void ChangeOpacity()
@@ -42,7 +42,7 @@ public class ChangeColour : MonoBehaviour {
 	
 	public void changeColour(int InRed, int InGreen, int InBlue, int InAlpha=255)
 	{
-	 Color textureColor = renderer.material.color;
+	 Color textureColor = GetComponent<Renderer>().material.color;
 		
 		Debug.Log (InRed);
 		Debug.Log (InGreen);
@@ -64,6 +64,6 @@ public class ChangeColour : MonoBehaviour {
 		textureColor.r = red;
 		textureColor.a = alpha;
 		
-        renderer.material.color = textureColor;
+        GetComponent<Renderer>().material.color = textureColor;
 	}
 }

@@ -14,12 +14,12 @@ public class _3DFly : MonoBehaviour
         float ver = Input.GetAxis("Vertical");
         if (hor != 0 || ver != 0)
         {
-            if (!NoRigiBody&& rigidbody != null)
+            if (!NoRigiBody&& GetComponent<Rigidbody>() != null)
             {
                 if (Input.GetAxis("Sprint")>0)
-                    rigidbody.AddRelativeForce((new Vector3(hor, 0, ver) * 120f) * Time.deltaTime);
+                    GetComponent<Rigidbody>().AddRelativeForce((new Vector3(hor, 0, ver) * 120f) * Time.deltaTime);
                 else
-                    rigidbody.AddRelativeForce((new Vector3(hor, 0, ver) * 60f) * Time.deltaTime);
+                    GetComponent<Rigidbody>().AddRelativeForce((new Vector3(hor, 0, ver) * 60f) * Time.deltaTime);
             }
             else
             {
@@ -32,8 +32,8 @@ public class _3DFly : MonoBehaviour
         }
         else
         {
-            if (!NoRigiBody && rigidbody != null)
-            rigidbody.velocity = Vector3.zero;
+            if (!NoRigiBody && GetComponent<Rigidbody>() != null)
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
     }
 }

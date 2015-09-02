@@ -30,7 +30,7 @@ public class _3DRayShooter : MonoBehaviour
         {
             if (currentItem != null)
             {
-                currentItem.gameObject.renderer.material.color = Color.white;
+                currentItem.gameObject.GetComponent<Renderer>().material.color = Color.white;
                 currentItem = null;
             }
         }
@@ -47,15 +47,15 @@ public class _3DRayShooter : MonoBehaviour
                 hit.transform.gameObject.SendMessage("3dHitray", SendMessageOptions.DontRequireReceiver);
                 if (currentItem == hit.transform && currentItem != null)
                 {
-                    currentItem.gameObject.renderer.material.color = Color.white;
+                    currentItem.gameObject.GetComponent<Renderer>().material.color = Color.white;
                     currentItem = null;
                 }
                 else
                 {
                     if (currentItem != null)
-                        currentItem.gameObject.renderer.material.color = Color.white;
+                        currentItem.gameObject.GetComponent<Renderer>().material.color = Color.white;
 
-                    hit.transform.gameObject.renderer.material.color = Color.gray;
+                    hit.transform.gameObject.GetComponent<Renderer>().material.color = Color.gray;
                     currentItem = hit.transform;
 
                     ClickOffSet = currentItem.position - hit.point;
