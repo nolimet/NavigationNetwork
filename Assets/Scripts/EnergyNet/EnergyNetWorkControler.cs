@@ -5,10 +5,32 @@ namespace EnergyNet
 {
     public class EnergyNetWorkControler : MonoBehaviour
     {
+        public static EnergyNetWorkControler instance
+        {
+            get
+            {
+                if (_instance)
+                    return _instance;
+
+                _instance = FindObjectOfType<EnergyNetWorkControler>();
+
+                if (_instance)
+                    return _instance;
+
+                GameObject controler = Instantiate(Resources.Load("EnergyNetControler"), Vector3.zero, Quaternion.identity) as GameObject;
+                _instance = controler.GetComponent<EnergyNetWorkControler>();
+                _instance.Start();
+                return _instance;
+            }
+        }
+
+        private static EnergyNetWorkControler _instance;
+
         private float CallculedWaitTime = 1f;
         public int TicksPerSecond = 4;
 
-        int tps = 0;
+        int _tps = 0;
+        public int tps { get { return _tps; } }
         float timer = 0f;
 
         List<EnergyNode> nodes = new List<EnergyNode>();
@@ -27,6 +49,11 @@ namespace EnergyNet
         float[] tpsar = new float[5];
 
         #region Start and Updates
+        void Awake()
+        {
+            _instance = this;
+        }
+
         public void Start()
         {
             if (!EnergyGlobals.createdPackageParent)
@@ -65,8 +92,8 @@ namespace EnergyNet
                 tpsar[3] = tpsar[2];
                 tpsar[2] = tpsar[1];
                 tpsar[1] = tpsar[0];
-                tpsar[0] = tps;
-                tps = 0;
+                tpsar[0] = _tps;
+                _tps = 0;
                 timer = 0;
                 EnergyGlobals.RealTPS = (tpsar[4] + tpsar[3] + tpsar[2] + tpsar[1] + tpsar[0]) / 5f;
             }
@@ -108,7 +135,7 @@ namespace EnergyNet
                 */
                 if (ticksPast >= 5)
                     ticksPast = 0;
-                tps++;
+                _tps++;
                 ticksPast++;
                 yield return new WaitForSeconds(0.05f);
             }
@@ -146,29 +173,6 @@ namespace EnergyNet
         void OnApplicationStop()
         {
             StopCoroutine("CheckForChanges");
-        }
-
-        static public EnergyNetWorkControler GetThis()
-        {
-            EnergyNetWorkControler output = null;
-            Object[] objects = FindObjectsOfType(typeof(GameObject));
-            foreach (GameObject go in objects)
-            {
-                if (go.name == "--NetworkControler")
-                {
-                    output = go.GetComponent<EnergyNetWorkControler>();
-                    return output;
-                }
-            }
-            if (output != null)
-                return output;
-            else
-            {
-                GameObject controler = Instantiate(Resources.Load("EnergyNetControler"), Vector3.zero, Quaternion.identity) as GameObject;
-                output = controler.GetComponent<EnergyNetWorkControler>();
-                output.Start();
-                return output;
-            }
         }
 
         bool CheckNodepos()

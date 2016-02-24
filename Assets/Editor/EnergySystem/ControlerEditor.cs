@@ -13,6 +13,7 @@ namespace EnergyNet._Editor
             EnergyNetWorkControler net = (EnergyNetWorkControler)target;
             net.TicksPerSecond = EditorGUILayout.IntSlider("TickPerSecond", net.TicksPerSecond, 1, 40);
             EditorGUILayout.LabelField("TimePerTick: " + 1000 / net.TicksPerSecond + "ms");
+            EditorGUILayout.LabelField("CurrenTPS " + net.tps);
 
             if (GUILayout.Button("Restart Controler"))
             {

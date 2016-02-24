@@ -18,18 +18,12 @@ namespace EnergyNet
         public bool StaticPull = false;
         protected Color NodeColor;
         protected List<EnergyNode> nodes = new List<EnergyNode>();
-        protected EnergyNetWorkControler controler;
         [SerializeField]
         protected int connections;
 
         protected virtual void Start()
         {
-            controler = EnergyNetWorkControler.GetThis();
-            transform.parent = controler.gameObject.transform;
-            if (controler = null)
-            {
-                Destroy(this);
-            }
+            transform.parent = EnergyNetWorkControler.instance.gameObject.transform;
 
             EnergyGlobals.AddnewObject(gameObject);
             NodeColor = Color.green;

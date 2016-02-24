@@ -152,8 +152,9 @@ public class ItemSelector: MonoBehaviour {
         #region LineSpider
         void CreatLines()
         {
-            if (currentItem)
-            {
+            if (currentItem == null)
+                return;
+
                 if (currentItem.tag == EnergyNet.EnergyTags.EnergyNode || currentItem.tag == EnergyNet.EnergyTags.EnergyGenartor)
                 {
                     EnergyNet.EnergyBase node = currentItem.gameObject.GetComponent<EnergyNet.EnergyBase>();
@@ -169,11 +170,12 @@ public class ItemSelector: MonoBehaviour {
 
         void RemoveLines()
         {
-            foreach (LineRenderer l in lines)
-            {
-                //lines.Remove(l);
-                Destroy(l.gameObject,0.1f);
-            }
+            if (lines != null)
+                foreach (LineRenderer l in lines)
+                {
+                    //lines.Remove(l);
+                    Destroy(l.gameObject, 0.1f);
+                }
 
             lines = new List<LineRenderer>();
         }
