@@ -47,8 +47,6 @@ namespace EnergyNet
             EnergyGlobals.RemoveObject(this.gameObject);
         }
 
-        protected virtual void Update() { }
-
         public virtual void GetInRangeNodes(List<EnergyNode>_nodes)
         {
             if (ID == 0)
@@ -75,7 +73,7 @@ namespace EnergyNet
         /// <summary>
         ///  draws connection lines in editor
         /// </summary>
-       protected virtual void Update()
+       private void Update()
         {
             if (!nonRecivend)
             {

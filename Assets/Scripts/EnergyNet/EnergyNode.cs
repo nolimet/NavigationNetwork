@@ -163,7 +163,7 @@ namespace EnergyNet
             }
         }
 
-        protected override void Update()
+        protected virtual void Update()
         {
             if (!nonRecivend)
             {
