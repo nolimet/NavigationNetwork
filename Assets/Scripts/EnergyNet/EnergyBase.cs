@@ -21,6 +21,18 @@ namespace EnergyNet
         [SerializeField]
         protected int connections;
 
+        Vector3 _position;
+        public Vector3 position { get { return _position; } }
+
+        void Awake()
+        {
+            ID = Mathf.FloorToInt(Random.Range(0, 10000000));
+
+            _position = transform.position;
+        }
+
+
+
         protected virtual void Start()
         {
             transform.parent = EnergyNetWorkControler.instance.gameObject.transform;
@@ -41,56 +53,40 @@ namespace EnergyNet
             EnergyGlobals.RemoveObject(this.gameObject);
         }
 
-        public virtual void GetInRangeNodes(List<EnergyNode>_nodes)
+        public virtual void GetInRangeNodes(List<EnergyNode> _nodes)
         {
-            if (ID == 0)
-            {
-                ID = Mathf.FloorToInt(Random.Range(0, 10000000));
-            }
+            
             nodes = new List<EnergyNode>();
             foreach (EnergyNode go in _nodes)
             {
-                if (go != null && go != this.gameObject)
+                if (go != null && go != this)
                 {
-                    float dist = Vector3.Distance(go.transform.position, transform.position);
+                    float dist = Vector3.Distance(go.position, position);
 
                     if (dist >= 0 && dist < Range)
                     {
-                        nodes.Add(go.gameObject.GetComponent<EnergyNode>());
+                        nodes.Add(go);
                     }
                 }
             }
         }
 
-        
-#if UNITY_EDITOR
-        /// <summary>
-        ///  draws connection lines in editor
-        /// </summary>
-       private void Update()
+        protected virtual void Update()
         {
-            if (!nonRecivend)
-            {
-                int l = nodes.Count;
-                for (int i = 0; i < l; i++)
-                {
-                    if (nodes[i]!=null&&!nodes[i].nonRecivend)
-                        Debug.DrawLine(transform.position, nodes[i].transform.position, Color.yellow);
-                }
-            }
+            _position = transform.position;
         }
-#endif
-       /// <summary>
-       ///  setID
-       /// </summary>
-       protected virtual void SetNameID()
-       {
-           ID = GetInstanceID();
-       }
 
-       public virtual List<EnergyNode> ReturnInRangeNodes()
-       {
-           return nodes;
-       }
+        /// <summary>
+        ///  setID
+        /// </summary>
+        protected virtual void SetNameID()
+        {
+            ID = GetInstanceID();
+        }
+
+        public virtual List<EnergyNode> ReturnInRangeNodes()
+        {
+            return nodes;
+        }
     }
 }

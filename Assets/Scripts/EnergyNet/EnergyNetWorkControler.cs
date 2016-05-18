@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System.Threading;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 namespace EnergyNet
@@ -48,6 +50,8 @@ namespace EnergyNet
 
         float[] tpsar = new float[5];
 
+        //Thread GridBuilder;
+
         #region Start and Updates
         void Awake()
         {
@@ -67,18 +71,15 @@ namespace EnergyNet
             name = "--NetworkControler";
             StartCoroutine("CheckForChanges");
             StartCoroutine("RangeCheck");
-
-            tpsar[4] = 20;
-            tpsar[3] = 20;
-            tpsar[2] = 20;
-            tpsar[1] = 20;
-            tpsar[0] = 20;
+            //GridBuilder = new Thread(RangeCheckThread);
+            //GridBuilder.Start();
         }
 
         public void Stop()
         {
             StopCoroutine("CheckForChanges");
             StopCoroutine("RangeCheck");
+            //GridBuilder.Abort();
         }
 
         void Update()
@@ -98,33 +99,32 @@ namespace EnergyNet
                 EnergyGlobals.RealTPS = (tpsar[4] + tpsar[3] + tpsar[2] + tpsar[1] + tpsar[0]) / 5f;
             }
 
-            if (OnPullUpdate != null)
-                OnPullUpdate();
+
         }
         #endregion
 
         #region IEnumerators
         IEnumerator CheckForChanges()
         {
-            UpdateGride();
+            GridListBuilder();
             Debug.Log(name + "Started Checker");
             int ticksPast = 0;
             while (Application.isPlaying)
             {
                 if (EnergyGlobals.LastNetworkObjectCount != EnergyGlobals.CurrentNetworkObjects)
-                    UpdateGride();
+                    GridListBuilder();
 
                 if (OnPowerSend != null && ticksPast >= 5)
                     OnPowerSend();
 
-                
-                  /*  foreach (EnergyNode node in nodes)
-                    {
-                        if (ticksPast >= 5)
-                            node.sendPower();
-                        node.GetPull();
-                        
-                    }*/
+
+                /*  foreach (EnergyNode node in nodes)
+                  {
+                      if (ticksPast >= 5)
+                          node.sendPower();
+                      node.GetPull();
+
+                  }*/
 
                 /*foreach (EnergyGenator gen in generators)
                 {
@@ -141,13 +141,58 @@ namespace EnergyNet
             }
         }
 
+        void RangeCheckThread()
+        {
+            List<EnergyNode> tmpNodeList;
+
+            while (true)
+            {
+                tmpNodeList = nodes.Select(x => x).ToList();
+                try
+                {
+                    Debug.Log("jobStart");
+                    //if (EnergyGlobals.LastNetworkObjectCount != EnergyGlobals.CurrentNetworkObjects)
+                    //   UpdateGride();
+                    LastFrameNodePos = CurrentnodesPos;
+                    CurrentnodesPos = new List<Vector3>();
+                    foreach (EnergyNode node in tmpNodeList)
+                    {
+                        //node.GetInRangeNodes(nodes);
+                        CurrentnodesPos.Add(node.position);
+                    }
+
+                    /*foreach (EnergyGenator gen in generators)
+                    {
+                        gen.GetInRangeNodes(nodes);
+                    }*/
+
+                    if (OnNetUpdate != null)
+                        OnNetUpdate(tmpNodeList);
+                    if (OnPullUpdate != null)
+                        OnPullUpdate();
+                    if (OnRebuild != null && !CheckNodepos())
+                        OnRebuild();
+
+                    Thread.Sleep(10);
+                    Debug.Log("jobDone");
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError("Error in GridBuilder " + e.Message);
+                    Debug.LogException(e);
+                    throw;
+                }
+
+            }
+        }
+
         IEnumerator RangeCheck()
         {
             Debug.Log(name + "Started RangeCheck");
             while (Application.isPlaying)
             {
                 //if (EnergyGlobals.LastNetworkObjectCount != EnergyGlobals.CurrentNetworkObjects)
-                 //   UpdateGride();
+                //   UpdateGride();
                 LastFrameNodePos = CurrentnodesPos;
                 CurrentnodesPos = new List<Vector3>();
                 foreach (EnergyNode node in nodes)
@@ -160,8 +205,10 @@ namespace EnergyNet
                 {
                     gen.GetInRangeNodes(nodes);
                 }*/
-                if(OnNetUpdate!=null)
-                    OnNetUpdate(nodes);
+                if (OnNetUpdate != null)
+                        OnNetUpdate(nodes);
+                if (OnPullUpdate != null)
+                    OnPullUpdate();
                 if (OnRebuild != null && !CheckNodepos())
                     OnRebuild();
                 yield return new WaitForSeconds(0.1f);
@@ -170,10 +217,11 @@ namespace EnergyNet
         #endregion
 
         #region misc functions
-        void OnApplicationStop()
-        {
-            StopCoroutine("CheckForChanges");
-        }
+        //public void OnApplicationQuit()
+        //{
+        //    GridBuilder.Abort();
+
+        //}
 
         bool CheckNodepos()
         {
@@ -185,12 +233,12 @@ namespace EnergyNet
                 if (CurrentnodesPos[i] != LastFrameNodePos[i])
                     return false;
             }
-            return true; 
+            return true;
         }
         #endregion
 
         #region enum Functions
-        public void UpdateGride()
+        public void GridListBuilder()
         {
             //Debug.Log(this.name + ": Updated Grid");
             nodes = new List<EnergyNode>();
@@ -212,7 +260,7 @@ namespace EnergyNet
                 }
             }
             EnergyGlobals.LastNetworkObjectCount = EnergyGlobals.CurrentNetworkObjects;
-            
+
         }
         #endregion
     }

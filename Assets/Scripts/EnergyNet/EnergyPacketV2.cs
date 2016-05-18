@@ -9,20 +9,24 @@ namespace EnergyNet
         private float Energy = 0;
         public int SenderID;
         public int TargetID;
-        public Transform target;
-        private Vector3 startPos;
+
+        public Transform targetTransform;
+        public EnergyNode currentTargetNode;
+        public EnergyNode finalTargetNode;
+
         private float journeyLength;
         private float startTime;
         public float speed = 0.1f;
 
+        [SerializeField]
         List<EnergyNode> TargetList = new List<EnergyNode>();
         int index = 0;
 
         void Start()
         {
             name = "EnergyPacket from " + SenderID + " To " + TargetID;
-			GetComponent<ParticleSystem>().emissionRate = Energy*5;
-            float temp = (speed / 2f)*Random.value;
+            GetComponent<ParticleSystem>().emissionRate = Energy * 5;
+            float temp = (speed / 2f) * Random.value;
             speed = (speed / 2f) + temp;
             if (Energy == 0)
             {
@@ -30,7 +34,7 @@ namespace EnergyNet
             }
 
             EnergyNetWorkControler.OnRebuild += EnergyNetWorkControler_OnRebuild;
-		}
+        }
 
         void EnergyNetWorkControler_OnRebuild()
         {
@@ -47,41 +51,49 @@ namespace EnergyNet
         /// </summary>
         public void GetSendList()
         {
-            EnergyNode node = target.gameObject.GetComponent<EnergyNode>();
             bool point = false;
-            int maxHoops = 120;
-            while(!point)
+            int maxHoops = 240;
+            while (!point)
             {
-                if (node.SenderList.Count == 0)
+                if (currentTargetNode.SenderList.Count == 0)
                     return;
 
-                if (node.SenderList.Count > 0)
-                    node = node.SenderList[Mathf.FloorToInt(Random.Range(0, node.SenderList.Count))];
+                if (currentTargetNode.SenderList.Count > 0)
+                    currentTargetNode = currentTargetNode.SenderList[Mathf.FloorToInt(new System.Random().Next(currentTargetNode.SenderList.Count - 1))];
                 else
-                    node = node.SenderList[0];
+                    currentTargetNode = currentTargetNode.SenderList[0];
 
-                TargetList.Add(node);
+                TargetList.Add(currentTargetNode);
 
-                if (node.endPoint || maxHoops <= 0)
+                if (currentTargetNode.endPoint || maxHoops <= 0)
+                {
+                    finalTargetNode = currentTargetNode;
                     point = true;
+                }
                 maxHoops--;
             }
-            
+
+            currentTargetNode = TargetList[0];
+            targetTransform = currentTargetNode.transform;
         }
         /// <summary>
         ///  used to set the first target the packet wil move to
         /// </summary>
-        public void SentTo(Transform newNode, float _Energy, int currentNodeID,int _TargetID)
+        public void SentTo(Transform newNode, float _Energy, int currentNodeID, int _TargetID)
         {
-            target = newNode;
+            targetTransform = newNode;
+            currentTargetNode = newNode.gameObject.GetComponent<EnergyNode>();
             SenderID = currentNodeID;
-            startPos = transform.position;
             Energy = _Energy;
-            GetComponent<ParticleSystem>().emissionRate = Energy*5;
+            GetComponent<ParticleSystem>().emissionRate = Energy * 5;
             TargetID = _TargetID;
-            journeyLength = Vector3.Distance(startPos, target.position);
+
+            journeyLength = Vector3.Distance(transform.position, targetTransform.position);
             startTime = Time.time;
             GetSendList();
+
+            currentTargetNode = null;
+            targetTransform = newNode;
         }
 
         /// <summary>
@@ -89,43 +101,51 @@ namespace EnergyNet
         /// </summary>
         void Update()
         {
-            if (target != null)
+            if (targetTransform != null)
             {
                 float distCovered = (Time.time - startTime) * speed;
                 float fracJourney = distCovered / journeyLength;
-                transform.position=Vector3.Lerp(transform.position, target.position, fracJourney);
+                transform.position = Vector3.Lerp(transform.position, targetTransform.position, fracJourney);
+
+                if (Vector3.Distance(transform.position, targetTransform.position) < 0.1f)
+                {
+
+                    if (TargetList.Count > 0)
+                    {
+                        if (TargetList.Contains(currentTargetNode))
+                        {
+                            TargetList.Remove(currentTargetNode);
+                        }
+
+                        currentTargetNode = TargetList[0];
+                        targetTransform = currentTargetNode.transform;
+                        startTime = Time.time;
+
+                        journeyLength = Vector3.Distance(transform.position, targetTransform.position);
+                    }
+                }
             }
+
+
         }
 
         void OnCollisionEnter(Collision col)
         {
-           // Debug.Log("test");
+            // Debug.Log("test");
             if (col.collider.tag == EnergyTags.EnergyNode)
             {
                 EnergyNode node = col.gameObject.GetComponent<EnergyNode>();
-                //Debug.Log("HitID: " + node.ID + " LookingFor: " + TargetID);
-                if (node.ID == TargetID)
+                //Debug.Log("HitID: " + targetNode.ID + " LookingFor: " + TargetID);
+                if (node == finalTargetNode)
                 {
-                    if (index < TargetList.Count)
-                    {
-                        target = TargetList[index].transform;
-                        TargetID = TargetList[index].ID;
-                        index++;
-
-                        startTime = Time.time;
-                        journeyLength = Vector3.Distance(startPos, target.position);
-                    }
-                    else
-                    {
-                        node.receive(Energy, SenderID);
-                        Destroy(gameObject, 3f);
-                        Destroy(this);
-                        Destroy(GetComponent<Rigidbody>());
-                        Destroy(GetComponent<Collider>());
-                        GetComponent<ParticleSystem>().emissionRate = 0;
-                        name = "EnergyPacket Empty";
-                        Energy = 0;
-                    }
+                    currentTargetNode.receive(Energy, SenderID);
+                    Destroy(gameObject, 3f);
+                    Destroy(this);
+                    Destroy(GetComponent<Rigidbody>());
+                    Destroy(GetComponent<Collider>());
+                    GetComponent<ParticleSystem>().emissionRate = 0;
+                    name = "EnergyPacket Empty";
+                    Energy = 0;
                 }
             }
         }

@@ -163,17 +163,28 @@ namespace EnergyNet
             }
         }
 
-        protected virtual void Update()
+        protected override void Update()
         {
+            base.Update();
+#if UNITY_EDITOR
             if (!nonRecivend)
             {
-                int l = nodes.Count;
-                for (int i = 0; i < l; i++)
+                try
                 {
-                    if (nodes[i] != null && !nodes[i].nonRecivend && !RevievedID.Contains(nodes[i].ID))
-                        Debug.DrawLine(transform.position, nodes[i].transform.position, Color.yellow);
+                    for (int i = 0; i < nodes.Count; i++)
+                    {
+                        if (nodes[i] != null && !nodes[i].nonRecivend && !RevievedID.Contains(nodes[i].ID))
+                            Debug.DrawLine(position, nodes[i].position, Color.yellow);
+                    }
                 }
+                catch (System.Exception)
+                {
+
+                    throw;
+                }
+
             }
+            #endif
         }
 
         protected override void SetNameID()

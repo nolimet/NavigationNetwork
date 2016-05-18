@@ -166,7 +166,7 @@ public class ItemSelector: MonoBehaviour {
                     }
                 }
             }
-        }
+        
 
         void RemoveLines()
         {
