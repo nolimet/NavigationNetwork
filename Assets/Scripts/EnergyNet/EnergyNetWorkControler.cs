@@ -206,7 +206,7 @@ namespace EnergyNet
                     gen.GetInRangeNodes(nodes);
                 }*/
                 if (OnNetUpdate != null)
-                        OnNetUpdate(nodes);
+                    OnNetUpdate(nodes);
                 if (OnPullUpdate != null)
                     OnPullUpdate();
                 if (OnRebuild != null && !CheckNodepos())

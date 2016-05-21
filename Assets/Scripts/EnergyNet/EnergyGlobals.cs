@@ -46,7 +46,7 @@ namespace EnergyNet
         /// <summary>
         ///  Send a smart package to a endnode. It looks for the endnode and moves to that
         /// </summary>
-        public static void SendPackageV2(Transform sender, Transform target, int senderID, int targetID, int Energy, float Speed = 0.4f, bool forceFancyParticle = false)
+        public static bool SendPackageV2(Transform sender, Transform target, int senderID, int targetID, int Energy, float Speed = 0.4f, bool forceFancyParticle = false)
         {
             GameObject energyPacket;
             energyPacket = Instantiate(Resources.Load("EnergyPacketV2"), sender.position, Quaternion.identity) as GameObject;
@@ -56,7 +56,12 @@ namespace EnergyNet
 
             EnergyPacketV2 packetScript = energyPacket.GetComponent<EnergyPacketV2>();
             packetScript.speed = Speed;
-            packetScript.SentTo(target, Energy, senderID, targetID);
+            bool gotFinalNode = packetScript.SentTo(target, Energy, senderID, targetID);
+            if (!gotFinalNode)
+            {
+                Destroy(packetScript.gameObject);
+            }
+            return gotFinalNode;
         }
 
         /// <summary>

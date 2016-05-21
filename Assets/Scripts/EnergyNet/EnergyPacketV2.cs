@@ -79,7 +79,7 @@ namespace EnergyNet
         /// <summary>
         ///  used to set the first target the packet wil move to
         /// </summary>
-        public void SentTo(Transform newNode, float _Energy, int currentNodeID, int _TargetID)
+        public bool SentTo(Transform newNode, float _Energy, int currentNodeID, int _TargetID)
         {
             targetTransform = newNode;
             currentTargetNode = newNode.gameObject.GetComponent<EnergyNode>();
@@ -92,8 +92,13 @@ namespace EnergyNet
             startTime = Time.time;
             GetSendList();
 
+            if (finalTargetNode == null)
+                return false;
+
             currentTargetNode = null;
             targetTransform = newNode;
+
+            return true;
         }
 
         /// <summary>
@@ -112,7 +117,7 @@ namespace EnergyNet
 
                     if (TargetList.Count > 0)
                     {
-                        if (TargetList.Contains(currentTargetNode))
+                        if (currentTargetNode && TargetList.Contains(currentTargetNode))
                         {
                             TargetList.Remove(currentTargetNode);
                         }

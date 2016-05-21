@@ -77,9 +77,9 @@ namespace EnergyNet
                     int l = nodes.Count;
                     for (int i = 0; i < l; i++)
                     {
-                        if (Storage >= transferRate)
+                        if (Storage >= transferRate && EnergyGlobals.SendPackageV2(transform, nodes[i].transform, ID, nodes[i].ID, transferRate))
                         {
-                            EnergyGlobals.SendPackageV2(transform, nodes[i].transform, ID, nodes[i].ID, transferRate);
+
                             Storage -= transferRate;
                         }
                     }
