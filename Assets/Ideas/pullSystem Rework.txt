@@ -1,7 +1,9 @@
-each node has a dictonary that uses a int wich is the endpoints id and a float wich is the distance to that node from the current node. 
+each node has a dictonary that uses a int wich is the endpoints id and a float wich is the distance to that node from the current node. --Changed to a struct instead of only the distance and done
 
-to build the network each node needs to find all the node it has in range. Grab there distances. It then compairs all nodes until it finds the one with the smallest distance then do then repeat this for each end node that it could find. 
+to build the network each node needs to find all the node it has in range. Grab there distances. It then compairs all nodes until it
+ finds the one with the smallest distance then do then repeat this for each end node that it could find. --Done
 
-So the build order would be build all the node connections up, then find all the endpoints and lets all the nodes in that system know about them. Then start doing a distance check on all the nodes until the network is build up then.
+So the build order would be build all the node connections up, then find all the endpoints and lets all the nodes in that system 
+know about them. Then start doing a distance check on all the nodes until the network is build up then. --Done
 
 Not sure how well this will work as it requires the network to be build up over time.
