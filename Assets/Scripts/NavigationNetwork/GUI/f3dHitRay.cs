@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-namespace EnergyNet
+namespace NavigationNetwork
 {
     public class f3dHitRay : MonoBehaviour
     {
@@ -8,7 +8,7 @@ namespace EnergyNet
         private string printName = "[3DHitRay] ";
 
         private GameObject currentSelected;
-        private EnergyBase currentScript;
+        private NavigationBase currentScript;
 
         [SerializeField]
         private GameObject InGameUI;
@@ -24,13 +24,13 @@ namespace EnergyNet
                 //Debug.DrawRay(ray.origin, ray.direction * 10, Color.yellow,20f);
 
                 RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 100) && hit.collider.tag == EnergyTags.EnergyNode)
+                if (Physics.Raycast(ray, out hit, 100) && hit.collider.tag == NavTags.EnergyNode)
                 {
                     Debug.DrawLine(ray.origin, hit.point, Color.red, 1f);
                   //  print(printName);
                    // print(printName+hit.point+'\n'+printName+hit.collider.name);
                     InGameUI.transform.position = hit.point + new Vector3(0, 0.5f, 0);
-                    EnergyNode node = hit.collider.gameObject.GetComponent<EnergyNode>();
+                    NavigationNode node = hit.collider.gameObject.GetComponent<NavigationNode>();
                     currentScript = node;
                     currentSelected = hit.collider.gameObject;
                 }
@@ -38,7 +38,7 @@ namespace EnergyNet
 
             if (currentScript != null && currentSelected != null)
             {
-                IGUITM.text = "StorageMax: " + currentScript.MaxStorage.ToString() + '\n' + "Storage: " + currentScript.Storage.ToString() + '\n' + "Pull: " + currentScript.Pull.ToString() + '\n' + currentScript.ToString();
+                IGUITM.text ="Pull: " + currentScript.Pull.ToString() + '\n' + currentScript.ToString();
             }
         }
 

@@ -3,30 +3,30 @@ using System.Threading;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-namespace EnergyNet
+namespace NavigationNetwork
 {
-    public class EnergyNetWorkControler : MonoBehaviour
+    public class NavigationNetworkControler : MonoBehaviour
     {
-        public static EnergyNetWorkControler instance
+        public static NavigationNetworkControler instance
         {
             get
             {
                 if (_instance)
                     return _instance;
 
-                _instance = FindObjectOfType<EnergyNetWorkControler>();
+                _instance = FindObjectOfType<NavigationNetworkControler>();
 
                 if (_instance)
                     return _instance;
 
                 GameObject controler = Instantiate(Resources.Load("EnergyNetControler"), Vector3.zero, Quaternion.identity) as GameObject;
-                _instance = controler.GetComponent<EnergyNetWorkControler>();
+                _instance = controler.GetComponent<NavigationNetworkControler>();
                 _instance.Start();
                 return _instance;
             }
         }
 
-        private static EnergyNetWorkControler _instance;
+        private static NavigationNetworkControler _instance;
 
         private float CallculedWaitTime = 1f;
         public int TicksPerSecond = 4;
@@ -35,13 +35,13 @@ namespace EnergyNet
         public int tps { get { return _tps; } }
         float timer = 0f;
 
-        List<EnergyNode> nodes = new List<EnergyNode>();
-        List<EnergyGenator> generators = new List<EnergyGenator>();
+        List<NavigationNode> nodes = new List<NavigationNode>();
+        List<NavigatorSpawnPoint> generators = new List<NavigatorSpawnPoint>();
 
         List<Vector3> CurrentnodesPos = new List<Vector3>();
         List<Vector3> LastFrameNodePos = new List<Vector3>();
 
-        public delegate void NetUpdate(List<EnergyNode> node);
+        public delegate void NetUpdate(List<NavigationNode> node);
         public static event NetUpdate OnNetUpdate;
         public delegate void VoidDelegate();
         public static event VoidDelegate OnRebuild;
@@ -60,12 +60,12 @@ namespace EnergyNet
 
         public void Start()
         {
-            if (!EnergyGlobals.createdPackageParent)
+            if (!NavUtil.createdPackageParent)
             {
-                EnergyGlobals.createdPackageParent = true;
+                NavUtil.createdPackageParent = true;
                 GameObject ep = new GameObject();
                 ep.name = "--EnergyPackages";
-                EnergyGlobals.packageParent = ep.transform;
+                NavUtil.packageParent = ep.transform;
             }
 
             name = "--NetworkControler";
@@ -96,7 +96,7 @@ namespace EnergyNet
                 tpsar[0] = _tps;
                 _tps = 0;
                 timer = 0;
-                EnergyGlobals.RealTPS = (tpsar[4] + tpsar[3] + tpsar[2] + tpsar[1] + tpsar[0]) / 5f;
+                NavUtil.RealTPS = (tpsar[4] + tpsar[3] + tpsar[2] + tpsar[1] + tpsar[0]) / 5f;
             }
 
 
@@ -111,7 +111,7 @@ namespace EnergyNet
             int ticksPast = 0;
             while (Application.isPlaying)
             {
-                if (EnergyGlobals.LastNetworkObjectCount != EnergyGlobals.CurrentNetworkObjects)
+                if (NavUtil.LastNetworkObjectCount != NavUtil.CurrentNetworkObjects)
                     GridListBuilder();
 
                 if (OnPowerSend != null && ticksPast >= 5)
@@ -143,7 +143,7 @@ namespace EnergyNet
 
         void RangeCheckThread()
         {
-            List<EnergyNode> tmpNodeList;
+            List<NavigationNode> tmpNodeList;
 
             while (true)
             {
@@ -155,7 +155,7 @@ namespace EnergyNet
                     //   UpdateGride();
                     LastFrameNodePos = CurrentnodesPos;
                     CurrentnodesPos = new List<Vector3>();
-                    foreach (EnergyNode node in tmpNodeList)
+                    foreach (NavigationNode node in tmpNodeList)
                     {
                         //node.GetInRangeNodes(nodes);
                         CurrentnodesPos.Add(node.position);
@@ -195,7 +195,7 @@ namespace EnergyNet
                 //   UpdateGride();
                 LastFrameNodePos = CurrentnodesPos;
                 CurrentnodesPos = new List<Vector3>();
-                foreach (EnergyNode node in nodes)
+                foreach (NavigationNode node in nodes)
                 {
                     //node.GetInRangeNodes(nodes);
                     CurrentnodesPos.Add(node.transform.position);
@@ -241,25 +241,25 @@ namespace EnergyNet
         public void GridListBuilder()
         {
             //Debug.Log(this.name + ": Updated Grid");
-            nodes = new List<EnergyNode>();
-            generators = new List<EnergyGenator>();
-            foreach (GameObject go in EnergyGlobals.NetWorkObjects)
+            nodes = new List<NavigationNode>();
+            generators = new List<NavigatorSpawnPoint>();
+            foreach (GameObject go in NavUtil.NetWorkObjects)
             {
                 if (go != null)
                 {
-                    if (go.tag == EnergyTags.EnergyNode)
+                    if (go.tag == NavTags.EnergyNode)
                     {
-                        EnergyNode tmp = go.GetComponent<EnergyNode>();
+                        NavigationNode tmp = go.GetComponent<NavigationNode>();
                         nodes.Add(tmp);
                     }
-                    else if (go.tag == EnergyTags.EnergyGenartor)
+                    else if (go.tag == NavTags.EnergyGenartor)
                     {
-                        EnergyGenator tmp = go.GetComponent<EnergyGenator>();
+                        NavigatorSpawnPoint tmp = go.GetComponent<NavigatorSpawnPoint>();
                         generators.Add(tmp);
                     }
                 }
             }
-            EnergyGlobals.LastNetworkObjectCount = EnergyGlobals.CurrentNetworkObjects;
+            NavUtil.LastNetworkObjectCount = NavUtil.CurrentNetworkObjects;
 
         }
         #endregion

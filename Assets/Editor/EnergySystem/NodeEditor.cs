@@ -1,34 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
-using EnergyNet;
-namespace EnergyNet._Editor
+using NavigationNetwork;
+namespace NavigationNetwork._Editor
 {
-    [CustomEditor(typeof(EnergyNet.EnergyNode))]
+    [CustomEditor(typeof(NavigationNetwork.NavigationNode))]
     public class NodeEditor : Editor
     {
         public override void OnInspectorGUI()
         {
-            EnergyNode node = (EnergyNode)target;
+            NavigationNode node = (NavigationNode)target;
             EditorGUILayout.LabelField("ID: " + node.ID.ToString());
-            EditorGUILayout.LabelField("MaxStorage: " + node.MaxStorage.ToString());
-            ProgressBar(node.Storage / node.MaxStorage, "Storage: " + node.Storage.ToString());
-            EditorGUILayout.LabelField("Transfer Rate: " + node.transferRate.ToString());
             node.Range = EditorGUILayout.IntField("Range", node.Range);
-            EditorGUILayout.Space();
+            node.nonRecivend = EditorGUILayout.Toggle("Not Reciving", node.nonRecivend);
+            node.endNode = EditorGUILayout.Toggle("IsEndNode",node.endNode);
 
-            node.StaticPull = EditorGUILayout.Toggle("Static",node.StaticPull);
-            if (node.StaticPull)
-                node.Pull = EditorGUILayout.FloatField("Pull",node.Pull);
+            EditorGUILayout.Space();
+            if (node.Pull != null)
+            {
+                EditorGUILayout.LabelField("NumberOfNodes" + node.Pull.Count);
+                if (node.Pull.Count > 0)
+                {
+                    foreach (KeyValuePair<int, structs.NavPullObject> keypair in node.Pull)
+                    {
+                        EditorGUILayout.LabelField("EndPoint ID: " + keypair.Key.ToString());
+                        EditorGUILayout.LabelField("- Distance " + keypair.Value.Distance.ToString());
+                        EditorGUILayout.LabelField("- Connecting Node ID " + keypair.Value.ClosestNode.ID.ToString());
+
+                    }
+                }
+            }
             else
-                EditorGUILayout.LabelField("Pull: " + node.Pull);
-            EditorGUILayout.Space();
-
-            node.nonRecivend = EditorGUILayout.Toggle("Not Reciving" ,node.nonRecivend);
-            node.endPoint = EditorGUILayout.Toggle("End point",node.endPoint);
-            if (node.endPoint)
-                node.MaxStorage = 1000000;
-               
+            {
+                EditorGUILayout.LabelField("No End Points found...");
+            }    
         }
 
 

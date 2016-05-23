@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using EnergyNet;
-namespace EnergyNet.Build
+using NavigationNetwork;
+namespace NavigationNetwork.Build
 {
     public class Remover : MonoBehaviour
     {
@@ -22,7 +22,7 @@ namespace EnergyNet.Build
         void Update()
         {
             targets = new List<GameObject>();
-            foreach (GameObject g in EnergyGlobals.NetWorkObjects)
+            foreach (GameObject g in NavUtil.NetWorkObjects)
             {
                 if (Vector3.Distance(transform.position, g.transform.position) < 2)
                 {

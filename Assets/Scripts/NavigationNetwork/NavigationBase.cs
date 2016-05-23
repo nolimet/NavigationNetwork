@@ -1,23 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-namespace EnergyNet
+namespace NavigationNetwork
 {
-    public class EnergyBase : MonoBehaviour
+    /// <summary>
+    /// Base class for nodes and spawners
+    /// </summary>
+    public class NavigationBase : MonoBehaviour
     {
-
-        public int MaxStorage = 10;
-        public float Storage = 0;
         public int Range = 5;
-        public float Pull = 0;
+        /// <summary>
+        /// int : endpointID
+        /// float : distance to that endpoint
+        /// </summary>
+        public Dictionary<int, structs.NavPullObject> Pull;
         public int ID;
         public bool nonRecivend = false;
         public bool remove;
+        public bool endNode;
 
-        [SerializeField]
-        public bool StaticPull = false;
         protected Color NodeColor;
-        protected List<EnergyNode> nodes = new List<EnergyNode>();
+        protected List<NavigationNode> nodes = new List<NavigationNode>();
         [SerializeField]
         protected int connections;
 
@@ -26,38 +29,40 @@ namespace EnergyNet
 
         void Awake()
         {
-            ID = Mathf.FloorToInt(Random.Range(0, 10000000));
+            SetNameID();
 
             _position = transform.position;
+
+            Pull = new Dictionary<int, structs.NavPullObject>();
         }
 
 
 
         protected virtual void Start()
         {
-            transform.parent = EnergyNetWorkControler.instance.gameObject.transform;
+            transform.parent = NavigationNetworkControler.instance.gameObject.transform;
 
-            EnergyGlobals.AddnewObject(gameObject);
+            NavUtil.AddnewObject(gameObject);
             NodeColor = Color.green;
             if (GetComponent<Renderer>() != null)
             {
                 GetComponent<Renderer>().material.color = NodeColor;
             }
 
-            EnergyNetWorkControler.OnNetUpdate += GetInRangeNodes;
+            NavigationNetworkControler.OnNetUpdate += GetInRangeNodes;
         }
 
         protected virtual void OnDestroy()
         {
-            EnergyNetWorkControler.OnNetUpdate -= GetInRangeNodes;
-            EnergyGlobals.RemoveObject(this.gameObject);
+            NavigationNetworkControler.OnNetUpdate -= GetInRangeNodes;
+            NavUtil.RemoveObject(this.gameObject);
         }
 
-        public virtual void GetInRangeNodes(List<EnergyNode> _nodes)
+        public virtual void GetInRangeNodes(List<NavigationNode> _nodes)
         {
             
-            nodes = new List<EnergyNode>();
-            foreach (EnergyNode go in _nodes)
+            nodes = new List<NavigationNode>();
+            foreach (NavigationNode go in _nodes)
             {
                 if (go != null && go != this)
                 {
@@ -84,7 +89,7 @@ namespace EnergyNet
             ID = GetInstanceID();
         }
 
-        public virtual List<EnergyNode> ReturnInRangeNodes()
+        public virtual List<NavigationNode> ReturnInRangeNodes()
         {
             return nodes;
         }

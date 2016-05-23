@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-namespace EnergyNet
+namespace NavigationNetwork
 {
     /// <summary>
     ///  Globals for the energy system.
     /// </summary>
-    public class EnergyGlobals : MonoBehaviour
+    public class NavUtil : MonoBehaviour
     {
         static public bool useLightParticles = true;
         static public float RealTPS = 0;
@@ -39,29 +39,36 @@ namespace EnergyNet
             if (packageParent != null)
                 energyPacket.transform.parent = packageParent;
 
-            EnergyPacket packetScript = energyPacket.GetComponent<EnergyPacket>();
+            NavigatorV1 packetScript = energyPacket.GetComponent<NavigatorV1>();
             packetScript.speed = Speed;
             packetScript.SentTo(target, Energy, senderID, targetID);
         }
-        /// <summary>
-        ///  Send a smart package to a endnode. It looks for the endnode and moves to that
-        /// </summary>
-        public static bool SendPackageV2(Transform sender, Transform target, int senderID, int targetID, int Energy, float Speed = 0.4f, bool forceFancyParticle = false)
+
+       /// <summary>
+       /// Create a naviator that will navigate it's way throug the network
+       /// </summary>
+       /// <param name="Sender">The Object that send this obj</param>
+       /// <param name="Target">The target it move towards</param>
+       /// <param name="Speed">The speed it will move at</param>
+       /// <returns>Was it succesfull in finding a route</returns>
+        public static bool SendNavigatorV2(NavigationBase Sender, NavigationBase Target, float Speed = 0.4f)
         {
             GameObject energyPacket;
-            energyPacket = Instantiate(Resources.Load("EnergyPacketV2"), sender.position, Quaternion.identity) as GameObject;
+            energyPacket = Instantiate(Resources.Load("EnergyPacketV2"), Sender.transform.position, Quaternion.identity) as GameObject;
 
             if (packageParent != null)
                 energyPacket.transform.parent = packageParent;
 
-            EnergyPacketV2 packetScript = energyPacket.GetComponent<EnergyPacketV2>();
+            NavigatorV2 packetScript = energyPacket.GetComponent<NavigatorV2>();
             packetScript.speed = Speed;
-            bool gotFinalNode = packetScript.SentTo(target, Energy, senderID, targetID);
-            if (!gotFinalNode)
+
+            //Create route and destory self id unable to find route
+            if (!packetScript.SentTo(Sender, Target.ID))
             {
                 Destroy(packetScript.gameObject);
+                return false;
             }
-            return gotFinalNode;
+            return true;
         }
 
         /// <summary>
@@ -72,6 +79,7 @@ namespace EnergyNet
             NetWorkObjects.Add(NewObject);
             CurrentNetworkObjects++;
         }
+
         /// <summary>
         ///  Remove a object from network objects
         /// </summary>

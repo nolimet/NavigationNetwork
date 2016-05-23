@@ -1,49 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-namespace EnergyNet
+namespace NavigationNetwork
 {
-    public class EnergyPacketV2 : MonoBehaviour
+    public class NavigatorV2 : MonoBehaviour
     {
-
-        private float Energy = 0;
         public int SenderID;
         public int TargetID;
 
         public Transform targetTransform;
-        public EnergyNode currentTargetNode;
-        public EnergyNode finalTargetNode;
+        public NavigationNode currentTargetNode;
+        public NavigationNode finalTargetNode;
 
         private float journeyLength;
         private float startTime;
         public float speed = 0.1f;
 
         [SerializeField]
-        List<EnergyNode> TargetList = new List<EnergyNode>();
+        List<NavigationNode> TargetList = new List<NavigationNode>();
         int index = 0;
 
         void Start()
         {
             name = "EnergyPacket from " + SenderID + " To " + TargetID;
-            GetComponent<ParticleSystem>().emissionRate = Energy * 5;
             float temp = (speed / 2f) * Random.value;
             speed = (speed / 2f) + temp;
-            if (Energy == 0)
-            {
-                Destroy(this.gameObject);
-            }
 
-            EnergyNetWorkControler.OnRebuild += EnergyNetWorkControler_OnRebuild;
+            NavigationNetworkControler.OnRebuild += EnergyNetWorkControler_OnRebuild;
         }
 
         void EnergyNetWorkControler_OnRebuild()
         {
-            TargetList = new List<EnergyNode>();
+            TargetList = new List<NavigationNode>();
             GetSendList();
             index = 0;
         }
 
-        void OnDestroy() { EnergyNetWorkControler.OnRebuild -= EnergyNetWorkControler_OnRebuild; }
+        void OnDestroy() { NavigationNetworkControler.OnRebuild -= EnergyNetWorkControler_OnRebuild; }
 
 
         /// <summary>
@@ -55,17 +48,22 @@ namespace EnergyNet
             int maxHoops = 240;
             while (!point)
             {
+                //check if the current node has any connections
                 if (currentTargetNode.SenderList.Count == 0)
                     return;
 
+                ///check again just to be sure and pick a random node to move to
                 if (currentTargetNode.SenderList.Count > 0)
                     currentTargetNode = currentTargetNode.SenderList[Mathf.FloorToInt(new System.Random().Next(currentTargetNode.SenderList.Count - 1))];
+                //else get the first node it can send to
                 else
                     currentTargetNode = currentTargetNode.SenderList[0];
 
+                //add node to nodes to moveto
                 TargetList.Add(currentTargetNode);
 
-                if (currentTargetNode.endPoint || maxHoops <= 0)
+                //if the currentnode is a end node then stop the movement or if it went through it's maxium number of search nodes
+                if (currentTargetNode.endNode || maxHoops <= 0)
                 {
                     finalTargetNode = currentTargetNode;
                     point = true;
@@ -73,19 +71,20 @@ namespace EnergyNet
                 maxHoops--;
             }
 
+            //set currentarget to the first one it found
             currentTargetNode = TargetList[0];
             targetTransform = currentTargetNode.transform;
         }
+
         /// <summary>
         ///  used to set the first target the packet wil move to
         /// </summary>
-        public bool SentTo(Transform newNode, float _Energy, int currentNodeID, int _TargetID)
+        public bool SentTo(NavigationBase startNode, int _TargetID)
         {
-            targetTransform = newNode;
-            currentTargetNode = newNode.gameObject.GetComponent<EnergyNode>();
-            SenderID = currentNodeID;
-            Energy = _Energy;
-            GetComponent<ParticleSystem>().emissionRate = Energy * 5;
+            targetTransform = startNode.transform;
+            currentTargetNode = startNode.gameObject.GetComponent<NavigationNode>();
+            SenderID = startNode.ID;
+            GetComponent<ParticleSystem>().emissionRate = 10;
             TargetID = _TargetID;
 
             journeyLength = Vector3.Distance(transform.position, targetTransform.position);
@@ -96,8 +95,6 @@ namespace EnergyNet
                 return false;
 
             currentTargetNode = null;
-            targetTransform = newNode;
-
             return true;
         }
 
@@ -137,20 +134,18 @@ namespace EnergyNet
         void OnCollisionEnter(Collision col)
         {
             // Debug.Log("test");
-            if (col.collider.tag == EnergyTags.EnergyNode)
+            if (col.collider.tag == NavTags.EnergyNode)
             {
-                EnergyNode node = col.gameObject.GetComponent<EnergyNode>();
+                NavigationNode node = col.gameObject.GetComponent<NavigationNode>();
                 //Debug.Log("HitID: " + targetNode.ID + " LookingFor: " + TargetID);
                 if (node == finalTargetNode)
                 {
-                    currentTargetNode.receive(Energy, SenderID);
                     Destroy(gameObject, 3f);
                     Destroy(this);
                     Destroy(GetComponent<Rigidbody>());
                     Destroy(GetComponent<Collider>());
                     GetComponent<ParticleSystem>().emissionRate = 0;
                     name = "EnergyPacket Empty";
-                    Energy = 0;
                 }
             }
         }

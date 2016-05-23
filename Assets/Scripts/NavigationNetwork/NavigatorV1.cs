@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-namespace EnergyNet
+namespace NavigationNetwork
 {
-    public class EnergyPacket : MonoBehaviour
+    public class NavigatorV1 : MonoBehaviour
     {
 
         private float Energy = 0;
@@ -53,13 +53,13 @@ namespace EnergyNet
         void OnCollisionEnter(Collision col)
         {
            // Debug.Log("test");
-            if (col.collider.tag == EnergyTags.EnergyNode)
+            if (col.collider.tag == NavTags.EnergyNode)
             {
-                EnergyNode node = col.gameObject.GetComponent<EnergyNode>();
+                NavigationNode node = col.gameObject.GetComponent<NavigationNode>();
                 //Debug.Log("HitID: " + node.ID + " LookingFor: " + TargetID);
                 if (node.ID == TargetID)
                 {
-                    node.receive(Energy, SenderID);
+                    //node.receive(Energy, SenderID);
                     Destroy(gameObject,3f);
                     Destroy(this);
                     Destroy(GetComponent<Rigidbody>());

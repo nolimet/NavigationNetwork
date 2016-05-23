@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-namespace EnergyNet.Build
+namespace NavigationNetwork.Build
 {
     public class BuildUI : MonoBehaviour
     {

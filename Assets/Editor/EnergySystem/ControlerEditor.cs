@@ -1,16 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEditor;
-using EnergyNet;
-namespace EnergyNet._Editor
+using NavigationNetwork;
+namespace NavigationNetwork._Editor
 {
-    [CustomEditor(typeof(EnergyNetWorkControler))]
+    [CustomEditor(typeof(NavigationNetworkControler))]
     public class ControlerEditor : Editor
     {
 
         public override void OnInspectorGUI()
         {
-            EnergyNetWorkControler net = (EnergyNetWorkControler)target;
+            NavigationNetworkControler net = (NavigationNetworkControler)target;
             net.TicksPerSecond = EditorGUILayout.IntSlider("TickPerSecond", net.TicksPerSecond, 1, 40);
             EditorGUILayout.LabelField("TimePerTick: " + 1000 / net.TicksPerSecond + "ms");
             EditorGUILayout.LabelField("CurrenTPS " + net.tps);

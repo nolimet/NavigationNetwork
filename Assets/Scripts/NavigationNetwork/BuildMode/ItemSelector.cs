@@ -155,11 +155,11 @@ public class ItemSelector: MonoBehaviour {
             if (currentItem == null)
                 return;
 
-                if (currentItem.tag == EnergyNet.EnergyTags.EnergyNode || currentItem.tag == EnergyNet.EnergyTags.EnergyGenartor)
+                if (currentItem.tag == NavigationNetwork.NavTags.EnergyNode || currentItem.tag == NavigationNetwork.NavTags.EnergyGenartor)
                 {
-                    EnergyNet.EnergyBase node = currentItem.gameObject.GetComponent<EnergyNet.EnergyBase>();
+                    NavigationNetwork.NavigationBase node = currentItem.gameObject.GetComponent<NavigationNetwork.NavigationBase>();
 
-                    foreach (EnergyNet.EnergyBase n in node.ReturnInRangeNodes())
+                    foreach (NavigationNetwork.NavigationBase n in node.ReturnInRangeNodes())
                     {
                         if (n != null)
                             lines.Add(CreateLine(node.transform.position, n.transform.position));

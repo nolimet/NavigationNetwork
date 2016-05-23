@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-namespace EnergyNet.Build
+namespace NavigationNetwork.Build
 {
     public class Builder : MonoBehaviour
     {
@@ -13,7 +13,7 @@ namespace EnergyNet.Build
             endPoint
         }
 
-        public void create(Type T, int pull = 0)
+        public void create(Type T)
         {
             switch (T)
             {
@@ -27,8 +27,7 @@ namespace EnergyNet.Build
 
                 case Type.endPoint:
                      GameObject g = (GameObject)Instantiate(Resources.Load("BuildObjects/EndPoint"), transform.position, Quaternion.identity);
-                     EnergyNet.EnergyNode n = g.GetComponent<EnergyNet.EnergyNode>();
-                     n.Pull = pull;
+                     NavigationNetwork.NavigationNode n = g.GetComponent<NavigationNetwork.NavigationNode>();
                     break;
             }
 

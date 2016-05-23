@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace EnergyNet
+namespace NavigationNetwork
 {
-    public class EnergyTags
+    public class NavTags
     {
         public static string EnergyNode = "EnergyNode";
         public static string EnergyStorage = "EnergyStorage";
