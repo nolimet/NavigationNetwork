@@ -14,12 +14,12 @@ namespace NavigationNetwork._Editor
             EditorGUILayout.LabelField("ID: " + node.ID.ToString());
             node.Range = EditorGUILayout.IntField("Range", node.Range);
             node.nonRecivend = EditorGUILayout.Toggle("Not Reciving", node.nonRecivend);
-            node.endNode = EditorGUILayout.Toggle("IsEndNode",node.endNode);
+            node.isEndNode = EditorGUILayout.Toggle("IsEndNode",node.isEndNode);
 
             EditorGUILayout.Space();
             if (node.Pull != null)
             {
-                EditorGUILayout.LabelField("NumberOfNodes" + node.Pull.Count);
+                EditorGUILayout.LabelField("Number of Nodes : " + node.Pull.Count);
                 if (node.Pull.Count > 0)
                 {
                     foreach (KeyValuePair<int, structs.NavPullObject> keypair in node.Pull)

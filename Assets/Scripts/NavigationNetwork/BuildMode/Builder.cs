@@ -28,6 +28,7 @@ namespace NavigationNetwork.Build
                 case Type.endPoint:
                      GameObject g = (GameObject)Instantiate(Resources.Load("BuildObjects/EndPoint"), transform.position, Quaternion.identity);
                      NavigationNetwork.NavigationNode n = g.GetComponent<NavigationNetwork.NavigationNode>();
+                    n.isEndNode = true;
                     break;
             }
 

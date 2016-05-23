@@ -16,12 +16,10 @@ namespace NavigationNetwork
         {
             base.Start();
             SetNameID();
-            if (endNode)
+            if (isEndNode)
             {
                 GetComponent<Renderer>().material.color = Color.blue;
             }
-
-            
 
            // EnergyNetWorkControler.OnPowerSend += sendPower;
             NavigationNetworkControler.OnPullUpdate += getPull;
@@ -42,43 +40,70 @@ namespace NavigationNetwork
 
         public virtual void getPull()
         {
-            if (endNode && !nonRecivend) 
+            if (isEndNode || nonRecivend)
             {
-                structs.NavPullObject pullObj;
-                //TODO rework pull getting method to make it more efficient.
+                return;
+            }
+            //TODO rework pull getting method to make it more efficient.
 
-                if(Pull == null)
-                {
-                    Pull = new Dictionary<int, structs.NavPullObject>();
-                }
+            Debug.Log("called");
 
-                foreach (NavigationNode n in nodes)
+            structs.NavPullObject orignalValue;
+            float Distance;
+
+            // if (Pull == null)
+            // {
+            Pull = new Dictionary<int, structs.NavPullObject>();
+            //}
+
+            foreach (NavigationNode n in nodes)
+            {
+                if (!n.isEndNode && n.Pull != null && n.Pull.Count > 0) 
                 {
-                    if (n.Pull != null)
+                    foreach (KeyValuePair<int, structs.NavPullObject> keypair in n.Pull)
                     {
-                        foreach (KeyValuePair<int, structs.NavPullObject> keypair in n.Pull)
+                        Distance = Vector3.Distance(position, n.position);
+
+                        if (!Pull.ContainsKey(keypair.Key))
                         {
-                            if (!Pull.ContainsKey(keypair.Key))
-                            {
-                                Pull.Add(keypair.Key, new structs.NavPullObject());
-                            }
+                            Pull.Add(keypair.Key, new structs.NavPullObject());
+                            Pull[keypair.Key] = new structs.NavPullObject(n, keypair.Value.Distance + Distance);
+                        }
 
-                            pullObj = Pull[keypair.Key];
-
-                            if (!pullObj.ClosestNode)
-                            {
-
-                            }
+                        if (keypair.Value.Distance < Pull[keypair.Key].Distance - Distance && keypair.Value.ClosestNode != n)
+                        {
+                            Pull[keypair.Key] = new structs.NavPullObject(n, Distance + keypair.Value.Distance);
                         }
                     }
                 }
+                else if(n.isEndNode)
+                {
+                    if (!Pull.ContainsKey(n.ID))
+                    {
+                        Pull.Add(n.ID, new structs.NavPullObject(n, Vector3.Distance(position, n.position)));
+                    }
+                    else
+                    {
+                        Pull[n.ID] = new structs.NavPullObject(n, Vector3.Distance(position, n.position));
+                    }
+                }
             }
+
+            //Dictionary<int, structs.NavPullObject> temp = new Dictionary<int, structs.NavPullObject>(Pull);
+
+            //foreach(KeyValuePair<int, structs.NavPullObject> keypair in temp)
+            //{
+            //    Pull[keypair.Key] = new structs.NavPullObject(keypair.Value.ClosestNode, Vector3.Distance(position, keypair.Value.ClosestNode.position) + keypair.Value.Distance);
+            //}
+
         }
 
+#if UNITY_EDITOR
+        //Debug Viewer for connections
         protected override void Update()
         {
             base.Update();
-#if UNITY_EDITOR
+
             if (!nonRecivend)
             {
                 try
@@ -94,15 +119,20 @@ namespace NavigationNetwork
 
                     throw;
                 }
-
             }
-            #endif
         }
-
+#endif
         protected override void SetNameID()
         {
             base.SetNameID();
-            this.name = "Node " + ID;
+            if (!isEndNode)
+            {
+                name = "Node " + ID;
+            }
+            else
+            {
+                name = "EndNode " + ID;
+            }
         }
 
     }

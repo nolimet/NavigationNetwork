@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace NavigationNetwork
 {
     public class NavigatorV2 : MonoBehaviour
@@ -9,15 +11,15 @@ namespace NavigationNetwork
         public int TargetID;
 
         public Transform targetTransform;
-        public NavigationNode currentTargetNode;
-        public NavigationNode finalTargetNode;
+        public NavigationBase currentTargetNode;
+        public NavigationBase finalTargetNode;
 
         private float journeyLength;
         private float startTime;
         public float speed = 0.1f;
 
         [SerializeField]
-        List<NavigationNode> TargetList = new List<NavigationNode>();
+        List<NavigationBase> TargetList = new List<NavigationBase>();
         int index = 0;
 
         void Start()
@@ -31,7 +33,7 @@ namespace NavigationNetwork
 
         void EnergyNetWorkControler_OnRebuild()
         {
-            TargetList = new List<NavigationNode>();
+            TargetList = new List<NavigationBase>();
             GetSendList();
             index = 0;
         }
@@ -44,26 +46,26 @@ namespace NavigationNetwork
         /// </summary>
         public void GetSendList()
         {
+
+            if (!currentTargetNode || currentTargetNode.Pull == null || currentTargetNode.Pull.Count == 0) 
+                return;
+
             bool point = false;
             int maxHoops = 240;
+
+            TargetID = currentTargetNode.Pull.ElementAt(new System.Random().Next(currentTargetNode.Pull.Count)).Key;
+            TargetList.Add(currentTargetNode);
             while (!point)
             {
-                //check if the current node has any connections
-                if (currentTargetNode.SenderList.Count == 0)
-                    return;
+                currentTargetNode = currentTargetNode.Pull[TargetID].ClosestNode;
 
-                ///check again just to be sure and pick a random node to move to
-                if (currentTargetNode.SenderList.Count > 0)
-                    currentTargetNode = currentTargetNode.SenderList[Mathf.FloorToInt(new System.Random().Next(currentTargetNode.SenderList.Count - 1))];
-                //else get the first node it can send to
-                else
-                    currentTargetNode = currentTargetNode.SenderList[0];
-
-                //add node to nodes to moveto
                 TargetList.Add(currentTargetNode);
 
+                //add node to nodes to moveto
+
+
                 //if the currentnode is a end node then stop the movement or if it went through it's maxium number of search nodes
-                if (currentTargetNode.endNode || maxHoops <= 0)
+                if (currentTargetNode.isEndNode || maxHoops <= 0)
                 {
                     finalTargetNode = currentTargetNode;
                     point = true;
@@ -79,13 +81,14 @@ namespace NavigationNetwork
         /// <summary>
         ///  used to set the first target the packet wil move to
         /// </summary>
-        public bool SentTo(NavigationBase startNode, int _TargetID)
+        public bool SentTo(NavigationBase startNode)
         {
             targetTransform = startNode.transform;
             currentTargetNode = startNode.gameObject.GetComponent<NavigationNode>();
             SenderID = startNode.ID;
+
             GetComponent<ParticleSystem>().emissionRate = 10;
-            TargetID = _TargetID;
+            
 
             journeyLength = Vector3.Distance(transform.position, targetTransform.position);
             startTime = Time.time;

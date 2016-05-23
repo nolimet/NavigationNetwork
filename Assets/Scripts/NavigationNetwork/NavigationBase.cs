@@ -17,7 +17,7 @@ namespace NavigationNetwork
         public int ID;
         public bool nonRecivend = false;
         public bool remove;
-        public bool endNode;
+        public bool isEndNode;
 
         protected Color NodeColor;
         protected List<NavigationNode> nodes = new List<NavigationNode>();

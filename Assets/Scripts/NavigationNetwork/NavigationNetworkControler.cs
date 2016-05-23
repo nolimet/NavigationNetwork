@@ -36,7 +36,7 @@ namespace NavigationNetwork
         float timer = 0f;
 
         List<NavigationNode> nodes = new List<NavigationNode>();
-        List<NavigatorSpawnPoint> generators = new List<NavigatorSpawnPoint>();
+        List<NavigatorSpawnPoint> Spawners = new List<NavigatorSpawnPoint>();
 
         List<Vector3> CurrentnodesPos = new List<Vector3>();
         List<Vector3> LastFrameNodePos = new List<Vector3>();
@@ -207,11 +207,13 @@ namespace NavigationNetwork
                 }*/
                 if (OnNetUpdate != null)
                     OnNetUpdate(nodes);
+
                 if (OnPullUpdate != null)
                     OnPullUpdate();
+
                 if (OnRebuild != null && !CheckNodepos())
                     OnRebuild();
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForEndOfFrame();
             }
         }
         #endregion
@@ -237,12 +239,14 @@ namespace NavigationNetwork
         }
         #endregion
 
-        #region enum Functions
+        /// <summary>
+        /// Sorts out all the objects that are registerd  by the networkControler
+        /// </summary>
         public void GridListBuilder()
         {
             //Debug.Log(this.name + ": Updated Grid");
             nodes = new List<NavigationNode>();
-            generators = new List<NavigatorSpawnPoint>();
+            Spawners = new List<NavigatorSpawnPoint>();
             foreach (GameObject go in NavUtil.NetWorkObjects)
             {
                 if (go != null)
@@ -255,13 +259,12 @@ namespace NavigationNetwork
                     else if (go.tag == NavTags.EnergyGenartor)
                     {
                         NavigatorSpawnPoint tmp = go.GetComponent<NavigatorSpawnPoint>();
-                        generators.Add(tmp);
+                        Spawners.Add(tmp);
                     }
                 }
             }
             NavUtil.LastNetworkObjectCount = NavUtil.CurrentNetworkObjects;
 
         }
-        #endregion
     }
 }

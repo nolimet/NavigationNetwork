@@ -48,10 +48,10 @@ namespace NavigationNetwork
        /// Create a naviator that will navigate it's way throug the network
        /// </summary>
        /// <param name="Sender">The Object that send this obj</param>
-       /// <param name="Target">The target it move towards</param>
+       /// <param name="FirstTarget">The target it move towards</param>
        /// <param name="Speed">The speed it will move at</param>
        /// <returns>Was it succesfull in finding a route</returns>
-        public static bool SendNavigatorV2(NavigationBase Sender, NavigationBase Target, float Speed = 0.4f)
+        public static bool SendNavigatorV2(NavigationBase Sender, NavigationBase FirstTarget, float Speed = 0.4f)
         {
             GameObject energyPacket;
             energyPacket = Instantiate(Resources.Load("EnergyPacketV2"), Sender.transform.position, Quaternion.identity) as GameObject;
@@ -61,9 +61,9 @@ namespace NavigationNetwork
 
             NavigatorV2 packetScript = energyPacket.GetComponent<NavigatorV2>();
             packetScript.speed = Speed;
-
+            packetScript.currentTargetNode = FirstTarget;
             //Create route and destory self id unable to find route
-            if (!packetScript.SentTo(Sender, Target.ID))
+            if (!packetScript.SentTo(FirstTarget))
             {
                 Destroy(packetScript.gameObject);
                 return false;
