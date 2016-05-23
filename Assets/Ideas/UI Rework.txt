@@ -1,0 +1,9 @@
+﻿The new UI should be able to display what the currently connect node contains in data like
+It's Pull Conections each connection is create from a template. 
+
+There should also be a better menu to select a item to build with. Maybe do that in a adative scene so it is alway setup correctly and perhaps it could use 3d moddels like 
+clasic sims ish style build screen or soemthing... not sure what do to but it will be some sort of drop down or a selection bar on wich the player can select a new object.
+
+The indicator might need a rework too to make it look better. 
+
+background rework needed too change it from a plane with a texture to line renders so it can look better.
