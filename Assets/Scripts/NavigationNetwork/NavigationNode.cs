@@ -45,10 +45,6 @@ namespace NavigationNetwork
                 return;
             }
             //TODO rework pull getting method to make it more efficient.
-
-            Debug.Log("called");
-
-            structs.NavPullObject orignalValue;
             float Distance;
 
             // if (Pull == null)

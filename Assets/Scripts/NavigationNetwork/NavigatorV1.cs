@@ -18,7 +18,6 @@ namespace NavigationNetwork
         void Start()
         {
             name = "EnergyPacket from " + SenderID + " To " + TargetID;
-			GetComponent<ParticleSystem>().emissionRate = Energy*5;
             float temp = (speed / 2f)*Random.value;
             speed = (speed / 2f) + temp;
             if (Energy == 0)
@@ -33,7 +32,6 @@ namespace NavigationNetwork
             SenderID = currentNodeID;
             startPos = transform.position;
             Energy = _Energy;
-            GetComponent<ParticleSystem>().emissionRate = Energy*5;
             TargetID = _TargetID;
             journeyLength = Vector3.Distance(startPos, target.position);
             startTime = Time.time;
@@ -59,12 +57,10 @@ namespace NavigationNetwork
                 //Debug.Log("HitID: " + node.ID + " LookingFor: " + TargetID);
                 if (node.ID == TargetID)
                 {
-                    //node.receive(Energy, SenderID);
                     Destroy(gameObject,3f);
                     Destroy(this);
                     Destroy(GetComponent<Rigidbody>());
                     Destroy(GetComponent<Collider>());
-                    GetComponent<ParticleSystem>().emissionRate = 0;
                     name = "EnergyPacket Empty";
                     Energy = 0;
                 }

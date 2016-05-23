@@ -85,10 +85,7 @@ namespace NavigationNetwork
         {
             targetTransform = startNode.transform;
             currentTargetNode = startNode.gameObject.GetComponent<NavigationNode>();
-            SenderID = startNode.ID;
-
-            GetComponent<ParticleSystem>().emissionRate = 10;
-            
+            SenderID = startNode.ID;       
 
             journeyLength = Vector3.Distance(transform.position, targetTransform.position);
             startTime = Time.time;
@@ -136,18 +133,15 @@ namespace NavigationNetwork
 
         void OnCollisionEnter(Collision col)
         {
-            // Debug.Log("test");
             if (col.collider.tag == NavTags.EnergyNode)
             {
                 NavigationNode node = col.gameObject.GetComponent<NavigationNode>();
-                //Debug.Log("HitID: " + targetNode.ID + " LookingFor: " + TargetID);
                 if (node == finalTargetNode)
                 {
                     Destroy(gameObject, 3f);
                     Destroy(this);
                     Destroy(GetComponent<Rigidbody>());
                     Destroy(GetComponent<Collider>());
-                    GetComponent<ParticleSystem>().emissionRate = 0;
                     name = "EnergyPacket Empty";
                 }
             }
