@@ -6,10 +6,6 @@ namespace NavigationNetwork
 {
     public class NavigationNode : NavigationBase
     {
-        private int waitedTicks;
-        private int controlerTPS = NavUtil.MaxTPS;
-        public List<NavigationNode> SenderList = new List<NavigationNode>();
-
         private List<int> RevievedID = new List<int>();
 
         protected override void Start()
@@ -21,14 +17,12 @@ namespace NavigationNetwork
                 GetComponent<Renderer>().material.color = Color.blue;
             }
 
-           // EnergyNetWorkControler.OnPowerSend += sendPower;
             NavigationNetworkControler.OnPullUpdate += getPull;
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-           // EnergyNetWorkControler.OnPowerSend -= sendPower;
             NavigationNetworkControler.OnPullUpdate -= getPull;
         }
 
@@ -36,7 +30,6 @@ namespace NavigationNetwork
         {
             base.GetInRangeNodes(_nodes);
         }
-
 
         public virtual void getPull()
         {
@@ -106,7 +99,7 @@ namespace NavigationNetwork
                 {
                     for (int i = 0; i < nodes.Count; i++)
                     {
-                        if (nodes[i] != null && !nodes[i].nonRecivend && !RevievedID.Contains(nodes[i].ID))
+                        if (nodes.Count > i && nodes[i] != null && !nodes[i].nonRecivend && !RevievedID.Contains(nodes[i].ID)) 
                             Debug.DrawLine(position, nodes[i].position, Color.yellow);
                     }
                 }

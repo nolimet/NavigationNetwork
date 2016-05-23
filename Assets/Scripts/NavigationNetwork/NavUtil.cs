@@ -19,8 +19,10 @@ namespace NavigationNetwork
 
         /// <summary>
         ///  Legacy Package sende function. It sends a package to a node
+        /// 
+        /// Here for refrence and show of changes made
         /// </summary>
-        public static void SendPackage(Transform sender, Transform target, int senderID, int targetID, int Energy, float Speed = 0.1f, bool forceFancyParticle = false)
+        public static void SendPackageLegacy(Transform sender, Transform target, int senderID, int targetID, int Energy, float Speed = 0.1f, bool forceFancyParticle = false)
         {
             GameObject energyPacket;
             if (forceFancyParticle)
@@ -51,21 +53,22 @@ namespace NavigationNetwork
        /// <param name="FirstTarget">The target it move towards</param>
        /// <param name="Speed">The speed it will move at</param>
        /// <returns>Was it succesfull in finding a route</returns>
-        public static bool SendNavigatorV2(NavigationBase Sender, NavigationBase FirstTarget, float Speed = 0.4f)
+        public static bool SendNavigator(NavigationBase Sender, NavigationBase FirstTarget, float Speed = 0.4f)
         {
-            GameObject energyPacket;
-            energyPacket = Instantiate(Resources.Load("EnergyPacketV2"), Sender.transform.position, Quaternion.identity) as GameObject;
+            GameObject Navigator;
+            Navigator = Instantiate(Resources.Load("EnergyPacketV2"), Sender.transform.position, Quaternion.identity) as GameObject;
 
             if (packageParent != null)
-                energyPacket.transform.parent = packageParent;
+                Navigator.transform.SetParent(packageParent);
 
-            NavigatorV2 packetScript = energyPacket.GetComponent<NavigatorV2>();
-            packetScript.speed = Speed;
-            packetScript.currentTargetNode = FirstTarget;
+            //create navigator
+            NavigatorV2 navigatorScript = Navigator.GetComponent<NavigatorV2>();
+            navigatorScript.speed = Speed;
+
             //Create route and destory self id unable to find route
-            if (!packetScript.SentTo(FirstTarget))
+            if (!navigatorScript.SentTo(FirstTarget))
             {
-                Destroy(packetScript.gameObject);
+                Destroy(navigatorScript.gameObject);
                 return false;
             }
             return true;

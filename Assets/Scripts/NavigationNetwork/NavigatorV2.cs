@@ -10,7 +10,6 @@ namespace NavigationNetwork
         public int SenderID;
         public int TargetID;
 
-        public Transform targetTransform;
         public NavigationBase currentTargetNode;
         public NavigationBase finalTargetNode;
 
@@ -20,7 +19,6 @@ namespace NavigationNetwork
 
         [SerializeField]
         List<NavigationBase> TargetList = new List<NavigationBase>();
-        int index = 0;
 
         void Start()
         {
@@ -35,18 +33,15 @@ namespace NavigationNetwork
         {
             TargetList = new List<NavigationBase>();
             GetSendList();
-            index = 0;
         }
 
         void OnDestroy() { NavigationNetworkControler.OnRebuild -= EnergyNetWorkControler_OnRebuild; }
-
 
         /// <summary>
         ///  made a list of nodes it will visted. It will only look over 120 nodes in total to avoid a infinite loop when it can't find an end node
         /// </summary>
         public void GetSendList()
         {
-
             if (!currentTargetNode || currentTargetNode.Pull == null || currentTargetNode.Pull.Count == 0) 
                 return;
 
@@ -75,7 +70,6 @@ namespace NavigationNetwork
 
             //set currentarget to the first one it found
             currentTargetNode = TargetList[0];
-            targetTransform = currentTargetNode.transform;
         }
 
         /// <summary>
@@ -83,18 +77,16 @@ namespace NavigationNetwork
         /// </summary>
         public bool SentTo(NavigationBase startNode)
         {
-            targetTransform = startNode.transform;
             currentTargetNode = startNode.gameObject.GetComponent<NavigationNode>();
             SenderID = startNode.ID;       
 
-            journeyLength = Vector3.Distance(transform.position, targetTransform.position);
+            journeyLength = Vector3.Distance(transform.position, startNode.position);
             startTime = Time.time;
             GetSendList();
 
             if (finalTargetNode == null)
                 return false;
 
-            currentTargetNode = null;
             return true;
         }
 
@@ -103,13 +95,13 @@ namespace NavigationNetwork
         /// </summary>
         void Update()
         {
-            if (targetTransform != null)
+            if (currentTargetNode != null)
             {
                 float distCovered = (Time.time - startTime) * speed;
                 float fracJourney = distCovered / journeyLength;
-                transform.position = Vector3.Lerp(transform.position, targetTransform.position, fracJourney);
+                transform.position = Vector3.Lerp(transform.position, currentTargetNode.position, fracJourney);
 
-                if (Vector3.Distance(transform.position, targetTransform.position) < 0.1f)
+                if (Vector3.Distance(transform.position, currentTargetNode.position) < 0.1f)
                 {
 
                     if (TargetList.Count > 0)
@@ -120,15 +112,12 @@ namespace NavigationNetwork
                         }
 
                         currentTargetNode = TargetList[0];
-                        targetTransform = currentTargetNode.transform;
                         startTime = Time.time;
 
-                        journeyLength = Vector3.Distance(transform.position, targetTransform.position);
+                        journeyLength = Vector3.Distance(transform.position, currentTargetNode.position);
                     }
                 }
             }
-
-
         }
 
         void OnCollisionEnter(Collision col)
@@ -138,7 +127,7 @@ namespace NavigationNetwork
                 NavigationNode node = col.gameObject.GetComponent<NavigationNode>();
                 if (node == finalTargetNode)
                 {
-                    Destroy(gameObject, 3f);
+                    Destroy(gameObject);
                     Destroy(this);
                     Destroy(GetComponent<Rigidbody>());
                     Destroy(GetComponent<Collider>());

@@ -50,7 +50,7 @@ namespace NavigationNetwork
 
         float[] tpsar = new float[5];
 
-        //Thread GridBuilder;
+        Thread GridBuilder;
 
         #region Start and Updates
         void Awake()
@@ -70,16 +70,16 @@ namespace NavigationNetwork
 
             name = "--NetworkControler";
             StartCoroutine("CheckForChanges");
-            StartCoroutine("RangeCheck");
-            //GridBuilder = new Thread(RangeCheckThread);
-            //GridBuilder.Start();
+            //StartCoroutine("RangeCheck");
+            GridBuilder = new Thread(RangeCheckThread);
+            GridBuilder.Start();
         }
 
         public void Stop()
         {
             StopCoroutine("CheckForChanges");
-            StopCoroutine("RangeCheck");
-            //GridBuilder.Abort();
+            //StopCoroutine("RangeCheck");
+            GridBuilder.Abort();
         }
 
         void Update()
@@ -104,6 +104,9 @@ namespace NavigationNetwork
         #endregion
 
         #region IEnumerators
+
+        //checks if grid changed and rebuilds if needed;
+        //Basicly everything that could not be off loaded to a other thread
         IEnumerator CheckForChanges()
         {
             GridListBuilder();
@@ -117,22 +120,6 @@ namespace NavigationNetwork
                 if (OnPowerSend != null && ticksPast >= 5)
                     OnPowerSend();
 
-
-                /*  foreach (EnergyNode node in nodes)
-                  {
-                      if (ticksPast >= 5)
-                          node.sendPower();
-                      node.GetPull();
-
-                  }*/
-
-                /*foreach (EnergyGenator gen in generators)
-                {
-                    if (ticksPast >= 5)
-                        gen.sendPowerV2();
-                    gen.Genarate();
-                }
-                */
                 if (ticksPast >= 5)
                     ticksPast = 0;
                 _tps++;
@@ -141,16 +128,19 @@ namespace NavigationNetwork
             }
         }
 
+        /// <summary>
+        /// MultiThreading function handels all Multi Threading functions
+        /// </summary>
         void RangeCheckThread()
         {
             List<NavigationNode> tmpNodeList;
-
+            Debug.Log("Range Check Thread Started");
             while (true)
             {
                 tmpNodeList = nodes.Select(x => x).ToList();
                 try
                 {
-                    Debug.Log("jobStart");
+
                     //if (EnergyGlobals.LastNetworkObjectCount != EnergyGlobals.CurrentNetworkObjects)
                     //   UpdateGride();
                     LastFrameNodePos = CurrentnodesPos;
@@ -161,11 +151,6 @@ namespace NavigationNetwork
                         CurrentnodesPos.Add(node.position);
                     }
 
-                    /*foreach (EnergyGenator gen in generators)
-                    {
-                        gen.GetInRangeNodes(nodes);
-                    }*/
-
                     if (OnNetUpdate != null)
                         OnNetUpdate(tmpNodeList);
                     if (OnPullUpdate != null)
@@ -174,7 +159,6 @@ namespace NavigationNetwork
                         OnRebuild();
 
                     Thread.Sleep(10);
-                    Debug.Log("jobDone");
                 }
                 catch (System.Exception e)
                 {
@@ -186,6 +170,9 @@ namespace NavigationNetwork
             }
         }
 
+        /// <summary>
+        /// Alternative to multithreading if platfrom does not support it
+        /// </summary>
         IEnumerator RangeCheck()
         {
             Debug.Log(name + "Started RangeCheck");

@@ -40,7 +40,7 @@ namespace NavigationNetwork
                 int l = nodes.Count;
                 for (int i = 0; i < l; i++)
                 {
-                    NavUtil.SendNavigatorV2(this, nodes[i]);
+                    NavUtil.SendNavigator(this, nodes[i]);
                 }
             }
         }
