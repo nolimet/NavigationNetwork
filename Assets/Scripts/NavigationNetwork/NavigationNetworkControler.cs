@@ -125,15 +125,20 @@ namespace NavigationNetwork
         //Basicly everything that could not be off loaded to a other thread
         IEnumerator CheckForChanges()
         {
-            System.DateTime startTime;
+            System.DateTime startTime = System.DateTime.Now; ;
             GridListBuilder();
+            GridBuildTime = (float)(System.DateTime.Now - startTime).TotalMilliseconds;
             Debug.Log(name + "Started Checker");
             int ticksPast = 0;
             while (Application.isPlaying)
             {
-                startTime = System.DateTime.Now;
+               
                 if (NavUtil.LastNetworkObjectCount != NavUtil.CurrentNetworkObjects)
+                {
+                     startTime = System.DateTime.Now;
                     GridListBuilder();
+                    GridBuildTime = (float)(System.DateTime.Now - startTime).TotalMilliseconds;
+                }
 
                 if (OnPowerSend != null && ticksPast >= 5)
                     OnPowerSend();
@@ -143,7 +148,7 @@ namespace NavigationNetwork
                 _tps++;
                 ticksPast++;
 
-                GridBuildTime = (float)(System.DateTime.Now - startTime).TotalMilliseconds;
+                
                 yield return new WaitForSeconds(0.05f);
             }
         }
@@ -154,12 +159,14 @@ namespace NavigationNetwork
         void RangeCheckThread()
         {
             List<NavigationNode> tmpNodeList;
+            float newUpdateTime;
             Debug.Log("Range Check Thread Started");
             System.DateTime startTime;
             while (true)
             {
                 startTime = System.DateTime.Now;
                 tmpNodeList = nodes.Select(x => x).ToList();
+                
                 try
                 {
 
@@ -180,7 +187,12 @@ namespace NavigationNetwork
                     if (OnRebuild != null && !CheckNodepos())
                         OnRebuild();
 
-                    GridUpdateTime = (float)(System.DateTime.Now - startTime).TotalMilliseconds;
+
+                    newUpdateTime = (float)(System.DateTime.Now - startTime).TotalMilliseconds;
+                    if(newUpdateTime != 0)
+                    {
+                        GridUpdateTime = newUpdateTime;
+                    }
                     Thread.Sleep(10);
                 }
                 catch (System.Exception e)
@@ -225,6 +237,8 @@ namespace NavigationNetwork
 
                 if (OnRebuild != null && !CheckNodepos())
                     OnRebuild();
+
+                
                 GridUpdateTime = (float)(System.DateTime.Now - startTime).TotalMilliseconds;
                 yield return new WaitForEndOfFrame();
             }

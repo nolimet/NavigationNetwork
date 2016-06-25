@@ -95,12 +95,23 @@ namespace NavigationNetwork
 
             if (!nonRecivend)
             {
+                int length = nodes.Count;
+                NavigationNode node;
+                
                 try
                 {
-                    for (int i = 0; i < nodes.Count; i++)
+                    for (int i = 0; i < length; i++)
                     {
-                        if (nodes.Count > i && nodes[i] != null && !nodes[i].nonRecivend && !RevievedID.Contains(nodes[i].ID)) 
-                            Debug.DrawLine(position, nodes[i].position, Color.yellow);
+                        if (length != nodes.Count)
+                        {
+                            return;
+                        }
+
+                        node = nodes[i];
+                        if (!node.nonRecivend && !RevievedID.Contains(node.ID))
+                        {
+                            Debug.DrawLine(position, node.position, Color.yellow);
+                        }
                     }
                 }
                 catch (System.Exception)
