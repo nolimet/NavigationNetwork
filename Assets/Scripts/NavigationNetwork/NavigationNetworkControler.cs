@@ -52,6 +52,9 @@ namespace NavigationNetwork
 
         Thread GridBuilder;
 
+        public float GridBuildTime { get; private set; }
+        public float GridUpdateTime { get; private set; }
+
         #region Start and Updates
         void Awake()
         {
@@ -70,16 +73,29 @@ namespace NavigationNetwork
 
             name = "--NetworkControler";
             StartCoroutine("CheckForChanges");
-            //StartCoroutine("RangeCheck");
-            GridBuilder = new Thread(RangeCheckThread);
-            GridBuilder.Start();
+            
+            if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+                GridBuilder = new Thread(RangeCheckThread);
+                GridBuilder.Start();
+            }
+            else
+            {
+                StartCoroutine("RangeCheck");
+            }
         }
 
         public void Stop()
         {
             StopCoroutine("CheckForChanges");
-            //StopCoroutine("RangeCheck");
-            GridBuilder.Abort();
+            if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+                GridBuilder.Abort();
+            }
+            else
+            {
+                StopCoroutine("RangeCheck");
+            }
         }
 
         void Update()
@@ -109,11 +125,13 @@ namespace NavigationNetwork
         //Basicly everything that could not be off loaded to a other thread
         IEnumerator CheckForChanges()
         {
+            System.DateTime startTime;
             GridListBuilder();
             Debug.Log(name + "Started Checker");
             int ticksPast = 0;
             while (Application.isPlaying)
             {
+                startTime = System.DateTime.Now;
                 if (NavUtil.LastNetworkObjectCount != NavUtil.CurrentNetworkObjects)
                     GridListBuilder();
 
@@ -124,6 +142,8 @@ namespace NavigationNetwork
                     ticksPast = 0;
                 _tps++;
                 ticksPast++;
+
+                GridBuildTime = (float)(System.DateTime.Now - startTime).TotalMilliseconds;
                 yield return new WaitForSeconds(0.05f);
             }
         }
@@ -135,8 +155,10 @@ namespace NavigationNetwork
         {
             List<NavigationNode> tmpNodeList;
             Debug.Log("Range Check Thread Started");
+            System.DateTime startTime;
             while (true)
             {
+                startTime = System.DateTime.Now;
                 tmpNodeList = nodes.Select(x => x).ToList();
                 try
                 {
@@ -158,6 +180,7 @@ namespace NavigationNetwork
                     if (OnRebuild != null && !CheckNodepos())
                         OnRebuild();
 
+                    GridUpdateTime = (float)(System.DateTime.Now - startTime).TotalMilliseconds;
                     Thread.Sleep(10);
                 }
                 catch (System.Exception e)
@@ -166,7 +189,7 @@ namespace NavigationNetwork
                     Debug.LogException(e);
                     throw;
                 }
-
+                
             }
         }
 
@@ -175,9 +198,11 @@ namespace NavigationNetwork
         /// </summary>
         IEnumerator RangeCheck()
         {
+            System.DateTime startTime;
             Debug.Log(name + "Started RangeCheck");
             while (Application.isPlaying)
             {
+                startTime = System.DateTime.Now;
                 //if (EnergyGlobals.LastNetworkObjectCount != EnergyGlobals.CurrentNetworkObjects)
                 //   UpdateGride();
                 LastFrameNodePos = CurrentnodesPos;
@@ -200,6 +225,7 @@ namespace NavigationNetwork
 
                 if (OnRebuild != null && !CheckNodepos())
                     OnRebuild();
+                GridUpdateTime = (float)(System.DateTime.Now - startTime).TotalMilliseconds;
                 yield return new WaitForEndOfFrame();
             }
         }
