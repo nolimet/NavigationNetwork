@@ -15,22 +15,34 @@ namespace TowerDefence
         protected int Damage;
         [SerializeField]
         protected float range;
+        [SerializeField]
+        protected float rotationOffset;
 
         public Target_Priority TargetMode = Target_Priority.Closest;
 
-        protected RaycastHit2D[] hits;
-        protected BaseEnemy[] Enemies;
+        protected List<BaseEnemy> Enemies;
 
         int length;
+        int mask;
 
         protected Transform Target;
 
+        protected virtual void Start()
+        {
+            mask = LayerMask.GetMask(new string[] { LayerTagManager.Enemy });
+            Enemies = new List<BaseEnemy>();
+
+            GetComponent<CircleCollider2D>().radius = range;
+            GetComponent<CircleCollider2D>().isTrigger = true;
+        }
+
         protected virtual void Update()
         {
-            length = Physics2D.CircleCastNonAlloc(transform.position, range, Vector2.zero, hits);
+            length = Enemies.Count;
+
             if (length > 0)
             {
-                FillTargetsList();
+                CheckTargets();
                 switch (TargetMode)
                 {
                     case Target_Priority.Closest:
@@ -50,7 +62,7 @@ namespace TowerDefence
 
                     case Target_Priority.Weakest:
                         FindWeakest();
-                        break;                       
+                        break;
                 }
 
                 RotateToTarget();
@@ -58,28 +70,48 @@ namespace TowerDefence
             }
         }
 
-        #region targeting
-        protected virtual void FillTargetsList()
+        public void OnTriggerEnter2D(Collider2D collision)
         {
-            if (TargetMode == Target_Priority.Strongest || TargetMode == Target_Priority.Weakest)
+            if (collision.tag == TagManager.Enemy)
             {
-                Enemies = new BaseEnemy[length];
-                for (int i = 0; i < length; i++)
+                if (!Enemies.Contains(collision.GetComponent<BaseEnemy>()))
                 {
-                    if (hits[i].transform.tag == TagManager.Enemy)
-                    {
-                        Enemies[i] = hits[i].transform.gameObject.GetComponent<BaseEnemy>();
-                    }
+                    Enemies.Add(collision.GetComponent<BaseEnemy>());
                 }
             }
         }
 
+        public void OnTriggerExit2D(Collider2D collision)
+        {
+            if (collision.tag == TagManager.Enemy)
+            {
+                if (Enemies.Contains(collision.GetComponent<BaseEnemy>()))
+                {
+                    Enemies.Remove(collision.GetComponent<BaseEnemy>());
+                }
+            }
+        }
+
+        #region targeting
+        protected virtual void CheckTargets()
+        {
+            for (int i = length - 1; i >= 0; i--)
+            {
+                if (!Enemies[i] || Enemies[i] == null)
+                {
+                    Enemies.RemoveAt(i);
+                }
+            }
+            Debug.Log(Enemies.Count);
+        }
+
         protected virtual void FindClosestTarget()
         {
-            RaycastHit2D closest = hits[0];
-            foreach(RaycastHit2D hit in hits)
+            BaseEnemy closest = Enemies[0];
+            float dist = Vector2.Distance(transform.position, closest.transform.position);
+            foreach (BaseEnemy hit in Enemies)
             {
-                if(hit.distance<closest.distance)
+                if (dist > Vector2.Distance(transform.position, hit.transform.position))
                 {
                     closest = hit;
                 }
@@ -108,6 +140,25 @@ namespace TowerDefence
         }
         #endregion
 
+        #region TowerUpgrades
+
+        public virtual void UpgradeRange(float newRange)
+        {
+
+        }
+
+        public virtual void UpgradeDamage(float newDamage)
+        {
+
+        }
+
+        public virtual void UpgradeFireRate(float newFireRate)
+        {
+
+        }
+
+        #endregion
+
         protected virtual void FireWeapon()
         {
             //TODO write code for FireWeapon
@@ -115,7 +166,7 @@ namespace TowerDefence
 
         protected virtual void RotateToTarget()
         {
-            
+            transform.rotation = Quaternion.Euler(0, 0, Util.Common.VectorToAngle(transform.position - Target.position) + rotationOffset);
         }
     }
 }
