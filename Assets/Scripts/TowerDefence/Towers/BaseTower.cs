@@ -161,7 +161,7 @@ namespace TowerDefence
 
         protected virtual void FireWeapon()
         {
-            //TODO write code for FireWeapon
+            
         }
 
         protected virtual void RotateToTarget()
