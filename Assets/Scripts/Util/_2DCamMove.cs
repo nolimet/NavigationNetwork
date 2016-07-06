@@ -13,8 +13,8 @@ public class _2DCamMove : MonoBehaviour {
     Vector3 move()
     {
         Vector3 output = new Vector3();
-        output.x = Input.GetAxis("Horizontal") * speed;
-        output.z = Input.GetAxis("Vertical") * speed;
+        output.x = Input.GetAxis("Horizontal") * speed * Time.deltaTime;
+        output.y = Input.GetAxis("Vertical") * speed * Time.deltaTime;
 
         return output;
     }

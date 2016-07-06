@@ -54,6 +54,7 @@ namespace NavigationNetwork
 
         public float GridBuildTime { get; private set; }
         public float GridUpdateTime { get; private set; }
+        public bool ThreadActive { get { return GridBuilder.IsAlive; } }
 
         #region Start and Updates
         void Awake()
@@ -125,10 +126,13 @@ namespace NavigationNetwork
         //Basicly everything that could not be off loaded to a other thread
         IEnumerator CheckForChanges()
         {
+            Debug.Log(name + "Started Checker");
+
             System.DateTime startTime = System.DateTime.Now; ;
             GridListBuilder();
+
             GridBuildTime = (float)(System.DateTime.Now - startTime).TotalMilliseconds;
-            Debug.Log(name + "Started Checker");
+
             int ticksPast = 0;
             while (Application.isPlaying)
             {
@@ -137,6 +141,7 @@ namespace NavigationNetwork
                 {
                      startTime = System.DateTime.Now;
                     GridListBuilder();
+                    if ((System.DateTime.Now - startTime).TotalMilliseconds > 0) 
                     GridBuildTime = (float)(System.DateTime.Now - startTime).TotalMilliseconds;
                 }
 
@@ -159,8 +164,7 @@ namespace NavigationNetwork
         void RangeCheckThread()
         {
             List<NavigationNode> tmpNodeList;
-            float newUpdateTime;
-            Debug.Log("Range Check Thread Started");
+
             System.DateTime startTime;
             while (true)
             {
@@ -188,11 +192,7 @@ namespace NavigationNetwork
                         OnRebuild();
 
 
-                    newUpdateTime = (float)(System.DateTime.Now - startTime).TotalMilliseconds;
-                    if(newUpdateTime != 0)
-                    {
-                        GridUpdateTime = newUpdateTime;
-                    }
+                        GridUpdateTime = (float)(System.DateTime.Now - startTime).TotalMilliseconds; ;
                     Thread.Sleep(10);
                 }
                 catch (System.Exception e)
@@ -212,6 +212,7 @@ namespace NavigationNetwork
         {
             System.DateTime startTime;
             Debug.Log(name + "Started RangeCheck");
+
             while (Application.isPlaying)
             {
                 startTime = System.DateTime.Now;

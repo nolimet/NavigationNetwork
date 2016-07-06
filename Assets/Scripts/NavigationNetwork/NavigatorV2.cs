@@ -15,21 +15,19 @@ namespace NavigationNetwork
 
         private float journeyLength;
         private float startTime;
-        public float speed = 0.1f;
+        public float speed = 3f;
 
         [SerializeField]
         List<NavigationBase> TargetList = new List<NavigationBase>();
 
-        void Start()
+        protected virtual void Start()
         {
             name = "EnergyPacket from " + SenderID + " To " + TargetID;
-            float temp = (speed / 2f) * Random.value;
-            speed = (speed / 2f) + temp;
 
             NavigationNetworkControler.OnRebuild += EnergyNetWorkControler_OnRebuild;
         }
 
-        void EnergyNetWorkControler_OnRebuild()
+        protected virtual void EnergyNetWorkControler_OnRebuild()
         {
             TargetList = new List<NavigationBase>();
             GetSendList();
@@ -38,9 +36,9 @@ namespace NavigationNetwork
         void OnDestroy() { NavigationNetworkControler.OnRebuild -= EnergyNetWorkControler_OnRebuild; }
 
         /// <summary>
-        ///  made a list of nodes it will visted. It will only look over 120 nodes in total to avoid a infinite loop when it can't find an end node
+        ///  The max route will only be to what ever the maxHoops is set. This is to avoid a infite loop in the while loop. It only acts as an exit condition
         /// </summary>
-        public void GetSendList()
+        public virtual void GetSendList()
         {
             if (!currentTargetNode || currentTargetNode.Pull == null || currentTargetNode.Pull.Count == 0) 
                 return;
@@ -75,7 +73,7 @@ namespace NavigationNetwork
         /// <summary>
         ///  used to set the first target the packet wil move to
         /// </summary>
-        public bool SentTo(NavigationBase startNode)
+        public virtual bool SentTo(NavigationBase startNode)
         {
             currentTargetNode = startNode.gameObject.GetComponent<NavigationNode>();
             SenderID = startNode.ID;       
@@ -93,13 +91,15 @@ namespace NavigationNetwork
         /// <summary>
         ///  move to current Target
         /// </summary>
-        void Update()
+        protected virtual void Update()
         {
             if (currentTargetNode != null)
             {
-                float distCovered = (Time.time - startTime) * speed;
-                float fracJourney = distCovered / journeyLength;
-                transform.position = Vector3.Lerp(transform.position, currentTargetNode.position, fracJourney);
+                //float distCovered = (Time.time - startTime) * speed;
+                //float fracJourney = distCovered / journeyLength;
+                //transform.position = Vector3.Lerp(transform.position, currentTargetNode.position, fracJourney);
+
+                transform.Translate((currentTargetNode.position - transform.position).normalized * speed * Time.deltaTime);
 
                 if (Vector3.Distance(transform.position, currentTargetNode.position) < 0.1f)
                 {
@@ -120,7 +120,7 @@ namespace NavigationNetwork
             }
         }
 
-        void OnCollisionEnter(Collision col)
+       protected virtual void OnCollisionEnter(Collision col)
         {
             if (col.collider.tag == NavTags.EnergyNode)
             {

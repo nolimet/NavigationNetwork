@@ -53,7 +53,7 @@ namespace NavigationNetwork
        /// <param name="FirstTarget">The target it move towards</param>
        /// <param name="Speed">The speed it will move at</param>
        /// <returns>Was it succesfull in finding a route</returns>
-        public static bool SendNavigator(NavigationBase Sender, NavigationBase FirstTarget, float Speed = 0.4f)
+        public static bool SendNavigator(NavigationBase Sender, NavigationBase FirstTarget, float Speed = 0.0f)
         {
             GameObject Navigator;
             Navigator = Instantiate(Resources.Load("EnergyPacketV2"), Sender.transform.position, Quaternion.identity) as GameObject;
@@ -63,7 +63,11 @@ namespace NavigationNetwork
 
             //create navigator
             NavigatorV2 navigatorScript = Navigator.GetComponent<NavigatorV2>();
-            navigatorScript.speed = Speed;
+
+            if (Speed != 0.0f)
+            {
+                navigatorScript.speed = Speed;
+            }
 
             //Create route and destory self id unable to find route
             if (!navigatorScript.SentTo(FirstTarget))
