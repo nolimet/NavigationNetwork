@@ -54,6 +54,7 @@ namespace TowerDefence
                         break;
 
                     case Target_Priority.Last:
+                        GetLastEntered();
                         break;
 
                     case Target_Priority.Strongest:
@@ -121,22 +122,40 @@ namespace TowerDefence
 
         protected virtual void GetFirstEntered()
         {
-            //TODO write code for GetFirst entered
+            Target = Enemies[0].transform;
         }
 
         protected virtual void GetLastEntered()
         {
-            //TODO write code for GetLastEntered
+            if (Enemies.Count > 0) {
+                Target = Enemies[Enemies.Count - 1].transform;
+            }
         }
 
         protected virtual void FindStrongest()
         {
-            //TODO write code for FindStrongest
+            BaseEnemy closest = Enemies[0];
+            foreach (BaseEnemy hit in Enemies)
+            {
+                if (closest.Health > hit.Health)
+                {
+                    closest = hit;
+                }
+            }
+            Target = closest.transform;
         }
 
         protected virtual void FindWeakest()
         {
-            //TODO write code for FindWeakest
+            BaseEnemy closest = Enemies[0];
+            foreach (BaseEnemy hit in Enemies)
+            {
+                if (closest.Health < hit.Health)
+                {
+                    closest = hit;
+                }
+            }
+            Target = closest.transform;
         }
         #endregion
 

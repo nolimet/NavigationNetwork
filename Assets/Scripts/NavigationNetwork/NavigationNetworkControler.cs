@@ -75,7 +75,7 @@ namespace NavigationNetwork
             name = "--NetworkControler";
             StartCoroutine("CheckForChanges");
             
-            if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WebGLPlayer)
+            if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
             {
                 GridBuilder = new Thread(RangeCheckThread);
                 GridBuilder.Start();
@@ -89,7 +89,7 @@ namespace NavigationNetwork
         public void Stop()
         {
             StopCoroutine("CheckForChanges");
-            if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WebGLPlayer)
+            if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
             {
                 GridBuilder.Abort();
             }

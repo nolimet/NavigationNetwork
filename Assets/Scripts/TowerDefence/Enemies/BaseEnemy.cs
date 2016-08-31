@@ -3,19 +3,24 @@ using System.Collections;
 
 namespace TowerDefence
 {
-    public class BaseEnemy : MonoBehaviour
+    public class BaseEnemy : NavigationNetwork.NavigatorV2
     {
-
-        // Use this for initialization
-        void Start()
+        public float Health
         {
-
+            get
+            {
+                return health;
+            }
         }
-
-        // Update is called once per frame
-        void Update()
+        private float health;
+        
+        public float Armor
         {
-
+            get
+            {
+                return armor;
+            }
         }
+        private float armor;
     }
 }
