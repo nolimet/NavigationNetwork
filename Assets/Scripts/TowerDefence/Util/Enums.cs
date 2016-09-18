@@ -13,4 +13,9 @@ namespace TowerDefence
         Weakest,
         Strongest
     }
+
+    public enum BulletType
+    {
+        Base
+    }
 }

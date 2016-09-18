@@ -22,5 +22,10 @@ namespace TowerDefence
             }
         }
         private float armor;
+
+        public void TakeDamage(float Damage)
+        {
+
+        }
     }
 }
