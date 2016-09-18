@@ -1,39 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[AddComponentMenu("Camera-Control/3DFly")]
-[RequireComponent(typeof(MouseLook))]
-public class _3DFly : MonoBehaviour
+namespace Util
 {
-    private bool mouseRightDown;
-    private bool NoRigiBody = false;
-
-    void Update()
+    [AddComponentMenu("Camera-Control/3DFly")]
+    [RequireComponent(typeof(MouseLook))]
+    public class _3DFly : MonoBehaviour
     {
-        float hor = Input.GetAxis("Horizontal");
-        float ver = Input.GetAxis("Vertical");
-        if (hor != 0 || ver != 0)
+        private bool mouseRightDown;
+        private bool NoRigiBody = false;
+
+        void Update()
         {
-            if (!NoRigiBody&& GetComponent<Rigidbody>() != null)
+            float hor = Input.GetAxis("Horizontal");
+            float ver = Input.GetAxis("Vertical");
+            if (hor != 0 || ver != 0)
             {
-                if (Input.GetAxis("Sprint")>0)
-                    GetComponent<Rigidbody>().AddRelativeForce((new Vector3(hor, 0, ver) * 120f) * Time.deltaTime);
+                if (!NoRigiBody && GetComponent<Rigidbody>() != null)
+                {
+                    if (Input.GetAxis("Sprint") > 0)
+                        GetComponent<Rigidbody>().AddRelativeForce((new Vector3(hor, 0, ver) * 120f) * Time.deltaTime);
+                    else
+                        GetComponent<Rigidbody>().AddRelativeForce((new Vector3(hor, 0, ver) * 60f) * Time.deltaTime);
+                }
                 else
-                    GetComponent<Rigidbody>().AddRelativeForce((new Vector3(hor, 0, ver) * 60f) * Time.deltaTime);
+                {
+                    NoRigiBody = true;
+                    if (Input.GetAxis("Sprint") > 0)
+                        transform.Translate((new Vector3(hor, 0, ver) * 12f) * Time.deltaTime);
+                    else
+                        transform.Translate((new Vector3(hor, 0, ver) * 6f) * Time.deltaTime);
+                }
             }
             else
             {
-                NoRigiBody = true;
-                if (Input.GetAxis("Sprint") > 0)
-                    transform.Translate((new Vector3(hor, 0, ver) * 12f) * Time.deltaTime);
-                else
-                    transform.Translate((new Vector3(hor, 0, ver) * 6f) * Time.deltaTime);
+                if (!NoRigiBody && GetComponent<Rigidbody>() != null)
+                    GetComponent<Rigidbody>().velocity = Vector3.zero;
             }
-        }
-        else
-        {
-            if (!NoRigiBody && GetComponent<Rigidbody>() != null)
-            GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
     }
 }

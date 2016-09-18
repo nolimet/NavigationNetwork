@@ -1,10 +1,7 @@
-// Created by: Petar Dimitrov
-// Date: 19/02/2016
-
 using System;
 using UnityEngine;
 
-namespace Events
+namespace Util.Events
 {
 	/// <summary>
 	/// Use this for local event handling.

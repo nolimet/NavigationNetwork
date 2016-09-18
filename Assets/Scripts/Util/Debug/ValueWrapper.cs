@@ -1,4 +1,4 @@
-﻿namespace Util
+﻿namespace Util.Debugger
 {
     [System.Serializable]
     public class ValueWrapper<T>

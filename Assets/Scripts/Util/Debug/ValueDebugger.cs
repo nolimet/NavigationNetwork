@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-namespace Util
+namespace Util.Debugger
 {
     /// <summary>
     /// On screen debugger usefull when working with a game build but you want to do some error tracking

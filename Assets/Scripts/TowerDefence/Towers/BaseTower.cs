@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Util;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,17 +7,27 @@ namespace TowerDefence
 {
     public class BaseTower : MonoBehaviour
     {
-        [SerializeField]
-        protected Transform FirePoint;
+        /// <summary>
+        /// Location the bullet is firedfrom
+        /// </summary>
+        [HideInInspector]
+        public Vector2 fireLocation;
+        
 
+        /// <summary>
+        /// projectiles shot per minute
+        /// </summary>
         [SerializeField]
         protected int fireRate;
         [SerializeField]
         protected int Damage;
         [SerializeField]
         protected float range;
+
         [SerializeField]
         protected float rotationOffset;
+        [SerializeField]
+        protected float shootingOffsetDirection;
 
         public Target_Priority TargetMode = Target_Priority.Closest;
 
@@ -69,7 +80,7 @@ namespace TowerDefence
             }
         }
 
-        
+
         #region targeting
         /// <summary>
         /// Handels the finding of the current target
@@ -149,7 +160,8 @@ namespace TowerDefence
         /// </summary>
         protected virtual void GetLastEntered()
         {
-            if (Enemies.Count > 0) {
+            if (Enemies.Count > 0)
+            {
                 Target = Enemies[Enemies.Count - 1].transform;
             }
         }
@@ -219,5 +231,20 @@ namespace TowerDefence
         {
 
         }
+
+
+
+#if UNITY_EDITOR
+        public void OnDrawGizmosSelected()
+        {
+            Vector2 fireLocationRotated = fireLocation.Rotate(transform.rotation);
+
+            Gizmos.color = Color.red;
+            Vector2 SphereLocation = fireLocationRotated + (Vector2)transform.position;
+            Gizmos.DrawSphere(SphereLocation, 0.05f);
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(((Vector2)transform.position) + fireLocationRotated, ((Vector2)transform.position) + fireLocationRotated + (Util.Common.AngleToVector(shootingOffsetDirection).Rotate(transform.rotation) * 0.5f));
+        }
+#endif
     }
 }

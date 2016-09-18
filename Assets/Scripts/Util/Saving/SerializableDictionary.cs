@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Util
+namespace Util.Serial
 {
 
     [Serializable()]

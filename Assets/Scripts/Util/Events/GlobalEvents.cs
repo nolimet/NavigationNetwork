@@ -1,9 +1,6 @@
-// Created by: Petar Dimitrov
-// Date: 18/02/2016
-
 using System;
 
-namespace Events
+namespace Util.Events
 {
 	/// <summary>
 	/// Use this for global event handling.

@@ -1,7 +1,4 @@
-﻿// Created by: Petar Dimitrov
-// Date: 15/02/2016
-
-namespace Events
+﻿namespace Util.Events
 {
 	/// <summary>
 	/// The base interface for Events.

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-namespace Util
+namespace Util.UI
 {
     public class GridLayoutHeightSetter : MonoBehaviour
     {

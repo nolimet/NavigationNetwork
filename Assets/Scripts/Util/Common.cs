@@ -1,7 +1,13 @@
-﻿using UnityEngine;
+﻿
+
+using UnityEngine;
 using System.Collections;
 using System.Linq;
 
+/// <summary>
+/// Util libary
+/// Contains a quite a few usefull things like a serialization module, A event system and some hacks for the UI system
+/// </summary>
 namespace Util
 {
     /// <summary>
@@ -271,6 +277,40 @@ namespace Util
             }
 
             spriteRenderer.transform.localScale = newScale;
+        }
+
+        /// <summary>
+        /// Rotate a Vector2 to a angle
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="degrees">The angle to rotate it to</param>
+        /// <returns>Rotated Vector2</returns>
+        public static Vector2 Rotate(this Vector2 v, float degrees)
+        {
+            /*
+            Actual Calculation
+
+            float radians = degrees * Mathf.Deg2Rad;
+             float sin = Mathf.Sin(radians);
+             float cos = Mathf.Cos(radians);
+         
+             float tx = v.x;
+             float ty = v.y;
+ 
+             return new Vector2(cos * tx - sin * ty, sin * tx + cos * ty);
+            */
+            return Quaternion.Euler(0, 0, degrees) * v;
+        }
+
+        /// <summary>
+        /// Rotates a Vector2 to a Quaternion
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="rotation">The rotation used to to calculate the new vector</param>
+        /// <returns>Rotated Vector2</returns>
+        public static Vector2 Rotate(this Vector2 v, Quaternion rotation)
+        {
+            return new Quaternion(0,0,rotation.z,rotation.w) * v;
         }
     }
 }

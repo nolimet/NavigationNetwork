@@ -1,10 +1,7 @@
-// Created by: Petar Dimitrov
-// Date: 15/02/2016
-
 using System;
 using System.Collections.Generic;
 
-namespace Events
+namespace Util.Events
 {
 	/// <summary>
 	/// Event dispatcher class.
