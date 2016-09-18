@@ -5,16 +5,52 @@ namespace TowerDefence
 {
     public class CannonTower : BaseTower
     {
-        
+        private float fireDelay;
+        private float weaponCooldown;
+
+        protected override void Start()
+        {
+            base.Start();
+
+            fireDelay = 60f / fireRate;
+        }
+
+        protected override void HasTarget()
+        {      
+            Fire_Update();
+        }
+
         protected override void Update()
         {
             base.Update();
-            Fire_Update();
+
+            if (weaponCooldown > 0)
+            {
+                weaponCooldown -= Time.deltaTime;
+            }
         }
 
         protected virtual void Fire_Update()
         {
+            if (weaponCooldown <= 0)
+            {
+                if (Target != null)
+                {
+                    weaponCooldown = fireDelay;
+                    Shoot();
+                }
+            }
+        }
 
+        protected void Shoot()
+        {
+            Projectile.TowerProjectileBase Bullet = BulletPool.GetObj(BulletType.Base);
+            Bullet.setDamage(Damage);
+            Bullet.setSpeed(2.5f);
+            Bullet.setTarget(Target.gameObject.GetComponent<BaseEnemy>());
+            Bullet.gameObject.SetActive(true);
+            Bullet.transform.position = fireWorldPosition;
+            
         }
     }
 }

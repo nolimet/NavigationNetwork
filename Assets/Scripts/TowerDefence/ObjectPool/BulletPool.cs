@@ -13,8 +13,10 @@ namespace TowerDefence
         public event RemoveObject onRemove;
 
         public List<TowerProjectileBase> ActivePool, InActivePool;
+        [Tooltip("Name needs to be same as enum type")]
+        public GameObject[] ProjectilesPrefabs = new GameObject[0];
 
-        public static void RemoveBullet(TowerProjectileBase item)
+        public static void RemoveObj(TowerProjectileBase item)
         {
             if (instance && instance.ActivePool.Contains(item))
             {
@@ -25,7 +27,7 @@ namespace TowerDefence
             }
         }
 
-        public static TowerProjectileBase GetBullet(BulletType Type)
+        public static TowerProjectileBase GetObj(BulletType Type)
         {
             if (instance)
             {
@@ -41,7 +43,9 @@ namespace TowerDefence
                 }
                 else
                 {
-                    GameObject g = Instantiate(Resources.Load("Weapons/" + Type.ToString()), Vector3.zero, Quaternion.identity) as GameObject;
+                    //GameObject g = Instantiate(Resources.Load("Weapons/" + Type.ToString()), Vector3.zero, Quaternion.identity) as GameObject;
+                    string TypeString = Type.ToString();
+                    GameObject g = Instantiate(instance.ProjectilesPrefabs.FirstOrDefault(e => e.name == TypeString)) as GameObject;
                     w = g.GetComponent<TowerProjectileBase>();
 
                     instance.ActivePool.Add(w);

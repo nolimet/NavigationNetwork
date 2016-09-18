@@ -48,7 +48,7 @@ namespace TowerDefence.Projectile
         Vector2 PositionDelta;
         public virtual void Move_Update()
         {
-            PositionDelta = transform.position - Target.transform.position;
+            PositionDelta = Target.transform.position - transform.position;
 
             PositionDelta = Util.Common.AngleToVector(Util.Common.VectorToAngle(PositionDelta));
 
@@ -57,7 +57,7 @@ namespace TowerDefence.Projectile
 
         public virtual void Remove()
         {
-            BulletPool.RemoveBullet(this);
+            BulletPool.RemoveObj(this);
         }
     }
 }

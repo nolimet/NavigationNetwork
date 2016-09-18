@@ -25,7 +25,17 @@ namespace TowerDefence
 
         public void TakeDamage(float Damage)
         {
+            //TODO Write calc for damage using armor
+           health -= Damage;
+            if (health < 0)
+                Destroy(gameObject);
+        }
 
+        protected override void Start()
+        {
+            base.Start();
+            health = 10f;
+            armor = 0f;
         }
     }
 }

@@ -12,17 +12,17 @@ namespace TowerDefence
         /// </summary>
         [HideInInspector]
         public Vector2 fireLocation;
-        
+        public Vector2 fireWorldPosition { get { return fireLocation.Rotate(transform.rotation) + (Vector2)transform.position; } }
 
         /// <summary>
         /// projectiles shot per minute
         /// </summary>
         [SerializeField]
-        protected int fireRate;
+        protected float fireRate = 10;
         [SerializeField]
-        protected int Damage;
+        protected int Damage = 4;
         [SerializeField]
-        protected float range;
+        protected float range = 5;
 
         [SerializeField]
         protected float rotationOffset;
@@ -45,6 +45,8 @@ namespace TowerDefence
 
             GetComponent<CircleCollider2D>().radius = range;
             GetComponent<CircleCollider2D>().isTrigger = true;
+
+            Debug.Log(BulletType.Base.ToString());
         }
 
         protected virtual void Update()
@@ -55,6 +57,7 @@ namespace TowerDefence
             if (FindTarget())
             {
                 RotateToTarget();
+                HasTarget();
             }
         }
 
@@ -80,6 +83,10 @@ namespace TowerDefence
             }
         }
 
+        /// <summary>
+        /// Runs each update if there is a target
+        /// </summary>
+        protected virtual void HasTarget() { }
 
         #region targeting
         /// <summary>
@@ -130,7 +137,6 @@ namespace TowerDefence
                     Enemies.RemoveAt(i);
                 }
             }
-            Debug.Log(Enemies.Count);
         }
         /// <summary>
         /// Takes target closest to the tower
@@ -223,16 +229,6 @@ namespace TowerDefence
         {
             transform.rotation = Quaternion.Euler(0, 0, Util.Common.VectorToAngle(transform.position - Target.position) + rotationOffset);
         }
-
-        /// <summary>
-        /// Runs each update if there is a target
-        /// </summary>
-        protected virtual void HasTarget()
-        {
-
-        }
-
-
 
 #if UNITY_EDITOR
         public void OnDrawGizmosSelected()
