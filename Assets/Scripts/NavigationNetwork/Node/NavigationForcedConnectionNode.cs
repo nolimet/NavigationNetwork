@@ -7,6 +7,12 @@ namespace NavigationNetwork
     {
         public List<NavigationNode> Connections;
 
+        protected override void Start()
+        {
+            base.Start();
+            Range = 999999;
+        }
+
         public override void GetInRangeNodes(List<NavigationNode> _nodes)
         {
             base.GetInRangeNodes(Connections);
