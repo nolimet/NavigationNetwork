@@ -36,8 +36,12 @@ namespace TowerDefence
             {
                 if (Target != null)
                 {
-                    weaponCooldown = fireDelay;
-                    Shoot();
+                    if (Target.VirtualHealth > 0)
+                    {
+                        Target.TakeVirtualDamage(Damage);
+                        weaponCooldown = fireDelay;
+                        Shoot();
+                    }
                 }
             }
         }
@@ -47,7 +51,7 @@ namespace TowerDefence
             Projectile.TowerProjectileBase Bullet = BulletPool.GetObj(BulletType.Base);
             Bullet.setDamage(Damage);
             Bullet.setSpeed(2.5f);
-            Bullet.setTarget(Target.gameObject.GetComponent<BaseEnemy>());
+            Bullet.setTarget(Target);
             Bullet.gameObject.SetActive(true);
             Bullet.transform.position = fireWorldPosition;
             

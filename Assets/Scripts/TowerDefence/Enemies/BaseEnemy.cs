@@ -5,6 +5,8 @@ namespace TowerDefence
 {
     public class BaseEnemy : NavigationNetwork.NavigatorV2
     {
+        public float MaxHealth;
+
         public float Health
         {
             get
@@ -13,7 +15,16 @@ namespace TowerDefence
             }
         }
         private float health;
-        
+
+        public float VirtualHealth
+        {
+            get
+            {
+                return virtualHealth;
+            }
+        }
+        private float virtualHealth;
+
         public float Armor
         {
             get
@@ -27,14 +38,20 @@ namespace TowerDefence
         {
             //TODO Write calc for damage using armor
            health -= Damage;
-            if (health < 0)
+            if (health <= 0)
                 Destroy(gameObject);
+        }
+
+        public void TakeVirtualDamage(float Damage)
+        {
+            virtualHealth -= Damage;
         }
 
         protected override void Start()
         {
             base.Start();
-            health = 10f;
+            health = MaxHealth;
+            virtualHealth = health;
             armor = 0f;
         }
     }

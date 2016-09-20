@@ -31,9 +31,11 @@ namespace TowerDefence.Projectile
 
         public virtual void Update()
         {
-
-            TargetCheck_Update();
-            Move_Update();
+            if (CheckTargetIsAlive())
+            {
+                TargetCheck_Update();
+                Move_Update();
+            }
         }
 
         public virtual void TargetCheck_Update()
@@ -58,6 +60,16 @@ namespace TowerDefence.Projectile
         public virtual void Remove()
         {
             BulletPool.RemoveObj(this);
+        }
+
+        public virtual bool CheckTargetIsAlive()
+        {
+            if (!Target)
+            {
+                Remove();
+                return false;
+            }
+            return true;
         }
     }
 }

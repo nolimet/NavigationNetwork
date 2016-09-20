@@ -36,7 +36,7 @@ namespace TowerDefence
         int length;
         int mask;
 
-        protected Transform Target;
+        protected BaseEnemy Target;
 
         protected virtual void Start()
         {
@@ -45,8 +45,6 @@ namespace TowerDefence
 
             GetComponent<CircleCollider2D>().radius = range;
             GetComponent<CircleCollider2D>().isTrigger = true;
-
-            Debug.Log(BulletType.Base.ToString());
         }
 
         protected virtual void Update()
@@ -98,29 +96,32 @@ namespace TowerDefence
             if (length > 0)
             {
                 CheckTargets();
-                switch (TargetMode)
+                if (length > 0)
                 {
-                    case Target_Priority.Closest:
-                        FindClosestTarget();
-                        break;
+                    switch (TargetMode)
+                    {
+                        case Target_Priority.Closest:
+                            FindClosestTarget();
+                            break;
 
-                    case Target_Priority.First:
-                        GetFirstEntered();
-                        break;
+                        case Target_Priority.First:
+                            GetFirstEntered();
+                            break;
 
-                    case Target_Priority.Last:
-                        GetLastEntered();
-                        break;
+                        case Target_Priority.Last:
+                            GetLastEntered();
+                            break;
 
-                    case Target_Priority.Strongest:
-                        FindStrongest();
-                        break;
+                        case Target_Priority.Strongest:
+                            FindStrongest();
+                            break;
 
-                    case Target_Priority.Weakest:
-                        FindWeakest();
-                        break;
+                        case Target_Priority.Weakest:
+                            FindWeakest();
+                            break;
+                    }
+                    return true;
                 }
-                return true;
             }
 
             return false;
@@ -132,11 +133,12 @@ namespace TowerDefence
         {
             for (int i = length - 1; i >= 0; i--)
             {
-                if (!Enemies[i] || Enemies[i] == null || !Enemies[i].isActiveAndEnabled)
+                if (!Enemies[i] || Enemies[i] == null || !Enemies[i].isActiveAndEnabled || Enemies[i].VirtualHealth <= 0) 
                 {
                     Enemies.RemoveAt(i);
                 }
             }
+                length = Enemies.Count;
         }
         /// <summary>
         /// Takes target closest to the tower
@@ -152,14 +154,14 @@ namespace TowerDefence
                     closest = hit;
                 }
             }
-            Target = closest.transform;
+            Target = closest;
         }
         /// <summary>
         /// Takes the first target it finds in the list
         /// </summary>
         protected virtual void GetFirstEntered()
         {
-            Target = Enemies[0].transform;
+            Target = Enemies[0];
         }
         /// <summary>
         /// Take last target it find in the list
@@ -168,7 +170,7 @@ namespace TowerDefence
         {
             if (Enemies.Count > 0)
             {
-                Target = Enemies[Enemies.Count - 1].transform;
+                Target = Enemies[Enemies.Count - 1];
             }
         }
         /// <summary>
@@ -184,7 +186,7 @@ namespace TowerDefence
                     closest = hit;
                 }
             }
-            Target = closest.transform;
+            Target = closest;
         }
         /// <summary>
         /// Finds the weakest or first encounterd in the list
@@ -199,7 +201,7 @@ namespace TowerDefence
                     closest = hit;
                 }
             }
-            Target = closest.transform;
+            Target = closest;
         }
         #endregion
 
@@ -227,7 +229,7 @@ namespace TowerDefence
         /// </summary>
         protected virtual void RotateToTarget()
         {
-            transform.rotation = Quaternion.Euler(0, 0, Util.Common.VectorToAngle(transform.position - Target.position) + rotationOffset);
+            transform.rotation = Quaternion.Euler(0, 0, Util.Common.VectorToAngle(transform.position - Target.transform.position) + rotationOffset);
         }
 
 #if UNITY_EDITOR
