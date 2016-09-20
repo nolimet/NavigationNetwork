@@ -8,7 +8,7 @@ namespace NavigationNetwork
     public class NavigatorV2 : MonoBehaviour
     {
         public int SenderID;
-        public int TargetID;
+        public int TargetID = 0;
 
         public NavigationBase currentTargetNode;
         public NavigationBase finalTargetNode;
@@ -65,11 +65,19 @@ namespace NavigationNetwork
             return true;
         }
 
+        /// <summary>
+        /// Sets the path to a premade one
+        /// </summary>
+        /// <param name="path">The path that the navigator will follow</param>
         public virtual void SetPath(List<NavigationBase> path)
         {
             TargetList = path;
         }
 
+        /// <summary>
+        /// Figures out a path
+        /// </summary>
+        /// <returns>The path that it calculated</returns>
         public virtual List<NavigationBase> GetPath()
         {
             List<NavigationBase> tmp = new List<NavigationBase>();
@@ -77,16 +85,17 @@ namespace NavigationNetwork
             bool point = false;
             int maxHoops = 240;
 
-            TargetID = currentTargetNode.Pull.ElementAt(new System.Random().Next(currentTargetNode.Pull.Count)).Key;
+            if (TargetID == 0)
+            {
+                TargetID = currentTargetNode.Pull.ElementAt(new System.Random().Next(currentTargetNode.Pull.Count)).Key;
+            }
+
             tmp.Add(currentTargetNode);
             while (!point)
             {
                 currentTargetNode = currentTargetNode.Pull[TargetID].ClosestNode;
 
                 tmp.Add(currentTargetNode);
-
-                //add node to nodes to moveto
-
 
                 //if the currentnode is a end node then stop the movement or if it went through it's maxium number of search nodes
                 if (currentTargetNode.isEndNode || maxHoops <= 0)
@@ -122,8 +131,10 @@ namespace NavigationNetwork
                         {
                             TargetList.Remove(currentTargetNode);
                         }
-
-                        currentTargetNode = TargetList[0];
+                        if (TargetList.Count > 0)
+                        {
+                            currentTargetNode = TargetList[0];
+                        }
                         startTime = Time.time;
 
                         journeyLength = Vector3.Distance(transform.position, currentTargetNode.position);
