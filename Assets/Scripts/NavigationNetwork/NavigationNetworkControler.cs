@@ -28,9 +28,6 @@ namespace NavigationNetwork
 
         private static NavigationNetworkControler _instance;
 
-        private float CallculedWaitTime = 1f;
-        public int TicksPerSecond = 4;
-
         int _tps = 0;
         public int tps { get { return _tps; } }
         float timer = 0f;
@@ -47,6 +44,8 @@ namespace NavigationNetwork
         public static event VoidDelegate OnRebuild;
         public static event VoidDelegate OnPowerSend;
         public static event VoidDelegate OnPullUpdate;
+
+        public bool collectAllNetworkObjects = true;
 
         float[] tpsar = new float[5];
 
@@ -101,8 +100,6 @@ namespace NavigationNetwork
 
         void Update()
         {
-            CallculedWaitTime = 1f / TicksPerSecond;
-
             timer += Time.deltaTime;
             if (timer >= 1f)
             {

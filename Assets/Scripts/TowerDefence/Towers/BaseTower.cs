@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using Util;
 using System.Collections;
 using System.Collections.Generic;
+using Util;
+using TowerDefence.Enemies;
 
 namespace TowerDefence
 {
@@ -18,9 +19,9 @@ namespace TowerDefence
         /// projectiles shot per minute
         /// </summary>
         [SerializeField]
-        protected float fireRate = 10;
+        protected float fireRate = 60;
         [SerializeField]
-        protected int Damage = 4;
+        protected int Damage = 5;
         [SerializeField]
         protected float range = 5;
 
@@ -43,12 +44,13 @@ namespace TowerDefence
             mask = LayerMask.GetMask(new string[] { LayerTagManager.Enemy });
             Enemies = new List<BaseEnemy>();
 
-            GetComponent<CircleCollider2D>().radius = range;
+            //GetComponent<CircleCollider2D>().radius = range;
             GetComponent<CircleCollider2D>().isTrigger = true;
         }
 
         protected virtual void Update()
         {
+            CircleCast(); 
             length = Enemies.Count;
 
 
@@ -59,24 +61,22 @@ namespace TowerDefence
             }
         }
 
-        public void OnTriggerEnter2D(Collider2D collision)
+        int hitsLength;
+        RaycastHit2D[] hits;
+        void CircleCast()
         {
-            if (collision.tag == TagManager.Enemy)
-            {
-                if (!Enemies.Contains(collision.GetComponent<BaseEnemy>()))
-                {
-                    Enemies.Add(collision.GetComponent<BaseEnemy>());
-                }
-            }
-        }
+            Enemies = new List<BaseEnemy>();
+            hits = Physics2D.CircleCastAll(transform.position, range, Vector2.up, range, mask);
+            hitsLength = hits.Length;
 
-        public void OnTriggerExit2D(Collider2D collision)
-        {
-            if (collision.tag == TagManager.Enemy)
+            for (int i = 0; i < hitsLength; i++)
             {
-                if (Enemies.Contains(collision.GetComponent<BaseEnemy>()))
+                if(hits[i].collider.tag == TagManager.Enemy)
                 {
-                    Enemies.Remove(collision.GetComponent<BaseEnemy>());
+                    if (!Enemies.Contains(hits[i].collider.GetComponent<BaseEnemy>()))
+                    {
+                        Enemies.Add(hits[i].collider.GetComponent<BaseEnemy>());
+                    }
                 }
             }
         }

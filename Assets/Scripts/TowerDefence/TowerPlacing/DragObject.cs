@@ -36,16 +36,17 @@ namespace TowerDefence.Building
                 
                 RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-                if (hit.collider != null) 
+                if (hit.collider != null)
                 {
-
-                    SelectedObject = hit.transform;
-                    if (SelectedObject.tag != dragableObjectTag)
+                    if (hit.collider.tag == dragableObjectTag)
+                    {
+                        SelectedObject = hit.transform;
+                    }
+                    else
                     {
                         SelectedObject = null;
                     }
-
-                }
+                }  
                 else
                 {
                     SelectedObject = null;

@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+using TowerDefence.Enemies;
+
 namespace TowerDefence.Projectile
 {
     public class TowerProjectileBase : MonoBehaviour

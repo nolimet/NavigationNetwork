@@ -40,7 +40,10 @@ namespace NavigationNetwork
 
         protected virtual void Start()
         {
-            transform.parent = NavigationNetworkControler.instance.gameObject.transform;
+            if (NavigationNetworkControler.instance.collectAllNetworkObjects)
+            {
+                transform.parent = NavigationNetworkControler.instance.gameObject.transform;
+            }
 
             NavUtil.AddnewObject(gameObject);
             NodeColor = Color.green;

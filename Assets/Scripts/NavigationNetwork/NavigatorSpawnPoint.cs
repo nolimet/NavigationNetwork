@@ -7,8 +7,8 @@ namespace NavigationNetwork
     public class NavigatorSpawnPoint : NavigationBase
     {
         public bool activated = true;
-        private int waitedTicks;
-        private int controlerTPS;
+        public int MaxTicksTillSpawn = 20;
+        public int waitedTicks;
 
         protected override void Start()
         {
@@ -16,8 +16,6 @@ namespace NavigationNetwork
             name = "Spawner: " + ID;
 
             NavigationNetworkControler.OnPowerSend += sendPower;
-
-            controlerTPS = NavUtil.MaxTPS;
         }
 
         protected override void OnDestroy()
@@ -34,7 +32,7 @@ namespace NavigationNetwork
         public void sendPower()
         {
             waitedTicks++;
-            if (waitedTicks >= controlerTPS)
+            if (waitedTicks >= MaxTicksTillSpawn)
             {
                 waitedTicks = 0;
                 int l = nodes.Count;

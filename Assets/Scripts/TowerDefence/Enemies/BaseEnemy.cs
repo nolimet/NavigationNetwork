@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace TowerDefence
+namespace TowerDefence.Enemies
 {
     public class BaseEnemy : NavigationNetwork.NavigatorV2
     {
+        #region Enemy Stats
         public float MaxHealth;
 
         public float Health
@@ -46,13 +47,16 @@ namespace TowerDefence
         {
             virtualHealth -= Damage;
         }
+        #endregion
 
         protected override void Start()
         {
             base.Start();
             health = MaxHealth;
             virtualHealth = health;
-            armor = 0f;
         }
+
+        
+
     }
 }

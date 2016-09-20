@@ -26,11 +26,6 @@ namespace NavigationNetwork
             NavigationNetworkControler.OnPullUpdate -= getPull;
         }
 
-        public override void GetInRangeNodes(List<NavigationNode> _nodes)
-        {
-            base.GetInRangeNodes(_nodes);
-        }
-
         public virtual void getPull()
         {
             if (isEndNode || nonRecivend)

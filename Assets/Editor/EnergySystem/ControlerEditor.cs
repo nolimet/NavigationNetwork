@@ -11,14 +11,17 @@ namespace NavigationNetwork._Editor
         public override void OnInspectorGUI()
         {
             NavigationNetworkControler net = (NavigationNetworkControler)target;
-            net.TicksPerSecond = EditorGUILayout.IntSlider("TickPerSecond", net.TicksPerSecond, 1, 40);
-            EditorGUILayout.LabelField("TimePerTick: " + 1000 / net.TicksPerSecond + "ms");
+            //net.TicksPerSecond = EditorGUILayout.IntSlider("TickPerSecond", net.TicksPerSecond, 1, 144);
+            //EditorGUILayout.LabelField("TimePerTick: " + 1000 / net.TicksPerSecond + "ms");
+            net.collectAllNetworkObjects = EditorGUILayout.Toggle("Collect all network Objects", net.collectAllNetworkObjects);
             EditorGUILayout.LabelField("CurrenTPS " + net.tps);
+
 
             if (GUILayout.Button("Restart Controler"))
             {
-                net.Start();
                 net.Stop();
+                net.Start();
+                
             }
         }
     }

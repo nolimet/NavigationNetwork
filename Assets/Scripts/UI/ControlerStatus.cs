@@ -38,7 +38,6 @@ namespace BuildSystem
 
         void Update()
         {
-            TickPerSecond.text = controler.TicksPerSecond.ToString();
             NumberOfNodes.text = NavigationNetwork.NavUtil.CurrentNetworkObjects.ToString();
             GridBuildTime.text = controler.GridBuildTime.ToString();
             MultiThreadingEnabled.text = controler.ThreadActive.ToString();

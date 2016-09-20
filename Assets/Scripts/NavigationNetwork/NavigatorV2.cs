@@ -40,32 +40,9 @@ namespace NavigationNetwork
         /// </summary>
         public virtual void GetSendList()
         {
-            if (!currentTargetNode || currentTargetNode.Pull == null || currentTargetNode.Pull.Count == 0) 
+            if (!currentTargetNode || currentTargetNode.Pull == null || currentTargetNode.Pull.Count == 0)
                 return;
-
-            bool point = false;
-            int maxHoops = 240;
-
-            TargetID = currentTargetNode.Pull.ElementAt(new System.Random().Next(currentTargetNode.Pull.Count)).Key;
-            TargetList.Add(currentTargetNode);
-            while (!point)
-            {
-                currentTargetNode = currentTargetNode.Pull[TargetID].ClosestNode;
-
-                TargetList.Add(currentTargetNode);
-
-                //add node to nodes to moveto
-
-
-                //if the currentnode is a end node then stop the movement or if it went through it's maxium number of search nodes
-                if (currentTargetNode.isEndNode || maxHoops <= 0)
-                {
-                    finalTargetNode = currentTargetNode;
-                    point = true;
-                }
-                maxHoops--;
-            }
-
+            TargetList = GetPath();
             //set currentarget to the first one it found
             currentTargetNode = TargetList[0];
         }
@@ -86,6 +63,41 @@ namespace NavigationNetwork
                 return false;
 
             return true;
+        }
+
+        public virtual void SetPath(List<NavigationBase> path)
+        {
+            TargetList = path;
+        }
+
+        public virtual List<NavigationBase> GetPath()
+        {
+            List<NavigationBase> tmp = new List<NavigationBase>();
+
+            bool point = false;
+            int maxHoops = 240;
+
+            TargetID = currentTargetNode.Pull.ElementAt(new System.Random().Next(currentTargetNode.Pull.Count)).Key;
+            tmp.Add(currentTargetNode);
+            while (!point)
+            {
+                currentTargetNode = currentTargetNode.Pull[TargetID].ClosestNode;
+
+                tmp.Add(currentTargetNode);
+
+                //add node to nodes to moveto
+
+
+                //if the currentnode is a end node then stop the movement or if it went through it's maxium number of search nodes
+                if (currentTargetNode.isEndNode || maxHoops <= 0)
+                {
+                    finalTargetNode = currentTargetNode;
+                    point = true;
+                }
+                maxHoops--;
+            }
+
+            return tmp;
         }
 
         /// <summary>

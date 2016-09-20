@@ -50,7 +50,7 @@ namespace TowerDefence
         {
             Projectile.TowerProjectileBase Bullet = BulletPool.GetObj(BulletType.Base);
             Bullet.setDamage(Damage);
-            Bullet.setSpeed(2.5f);
+            Bullet.setSpeed(5f);
             Bullet.setTarget(Target);
             Bullet.gameObject.SetActive(true);
             Bullet.transform.position = fireWorldPosition;
