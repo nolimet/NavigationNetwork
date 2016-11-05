@@ -48,7 +48,7 @@ namespace TowerDefence
 
         protected void Shoot()
         {
-            Projectile.TowerProjectileBase Bullet = BulletPool.GetObj(BulletType.Base);
+            Projectile.TowerProjectileBase Bullet = ObjectPools.BulletPool.GetObj(BulletType.Base);
             Bullet.setDamage(Damage);
             Bullet.setSpeed(10f);
             Bullet.setTarget(Target);

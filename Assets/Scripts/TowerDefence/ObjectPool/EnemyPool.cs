@@ -2,21 +2,21 @@
 using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
-using TowerDefence.Projectile;
+using TowerDefence.Enemies;
 namespace TowerDefence.ObjectPools
 {
-    public class BulletPool : MonoBehaviour
+    public class EnemyPool : MonoBehaviour
     {
 
-        public static BulletPool instance;
-        public delegate void RemoveObject(TowerProjectileBase item);
+        public static EnemyPool instance;
+        public delegate void RemoveObject(BaseEnemy item);
         public event RemoveObject onRemove;
 
-        public List<TowerProjectileBase> ActivePool, InActivePool;
+        public List<BaseEnemy> ActivePool, InActivePool;
         [Tooltip("Name needs to be same as enum type")]
-        public GameObject[] ProjectilesPrefabs = new GameObject[0];
+        public GameObject[] EnemyPrefabs = new GameObject[0];
 
-        public static void RemoveObj(TowerProjectileBase item)
+        public static void RemoveObj(BaseEnemy item)
         {
             if (instance && instance.ActivePool.Contains(item))
             {
@@ -27,14 +27,14 @@ namespace TowerDefence.ObjectPools
             }
         }
 
-        public static TowerProjectileBase GetObj(BulletType Type)
+        public static BaseEnemy GetObj(string Type)
         {
             if (instance)
             {
-                TowerProjectileBase w;
-                if (instance.InActivePool.Any(e => e.Type == Type))
+                BaseEnemy w;
+                if (instance.InActivePool.Any(e => e.typeName == Type))
                 {
-                    w = instance.InActivePool.First(e => e.Type == Type);
+                    w = instance.InActivePool.First(e => e.typeName == Type);
 
                     instance.InActivePool.Remove(w);
                     instance.ActivePool.Add(w);
@@ -45,8 +45,8 @@ namespace TowerDefence.ObjectPools
                 {
                     //GameObject g = Instantiate(Resources.Load("Weapons/" + Type.ToString()), Vector3.zero, Quaternion.identity) as GameObject;
                     string TypeString = Type.ToString();
-                    GameObject g = Instantiate(instance.ProjectilesPrefabs.FirstOrDefault(e => e.name == TypeString)) as GameObject;
-                    w = g.GetComponent<TowerProjectileBase>();
+                    GameObject g = Instantiate(instance.EnemyPrefabs.FirstOrDefault(e => e.name == TypeString)) as GameObject;
+                    w = g.GetComponent<BaseEnemy>();
 
                     instance.ActivePool.Add(w);
                     w.transform.SetParent(instance.transform);

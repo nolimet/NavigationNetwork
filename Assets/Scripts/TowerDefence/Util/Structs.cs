@@ -3,6 +3,14 @@ using System.Collections;
 namespace TowerDefence.Utils
 {
     [System.Serializable]
+    public struct Level
+    {
+        public string LevelName;
+        public Wave[] waves;
+        public Path path;
+    }
+
+    [System.Serializable]
     public struct Wave
     {
         public int waveCountDownTimer;
@@ -34,5 +42,12 @@ namespace TowerDefence.Utils
         {
             refrenceName = gameObject.name;
         }  
+    }
+
+    [System.Serializable]
+    public struct Path
+    {
+        public Vector3[] NodeLocations;
+        
     }
 }

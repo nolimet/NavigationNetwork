@@ -61,7 +61,7 @@ namespace TowerDefence.Projectile
 
         public virtual void Remove()
         {
-            BulletPool.RemoveObj(this);
+            ObjectPools.BulletPool.RemoveObj(this);
         }
 
         public virtual bool CheckTargetIsAlive()

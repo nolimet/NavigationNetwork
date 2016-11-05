@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace TowerDefence
+namespace TowerDefence.Managers
 {
     public class ResourceManager : MonoBehaviour
     {

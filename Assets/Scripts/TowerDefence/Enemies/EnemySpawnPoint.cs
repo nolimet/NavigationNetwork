@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 namespace TowerDefence.Enemies
 {
-    public class EnemySpawner : MonoBehaviour
+    /// <summary>
+    /// Old spawn Script
+    /// </summary>
+    public class EnemySpawnPoint : MonoBehaviour
     {
         public List<Utils.SpawnAbleEnemy> SpawnAbleEnemies;
         private Utils.SpawnAbleEnemy currentEnemy;
@@ -15,10 +18,9 @@ namespace TowerDefence.Enemies
 
         int currentIndex;
 
+        public NavigationNetwork.NavigationNode FirstNode = null;
         [SerializeField]
-        private NavigationNetwork.NavigationNode FirstNode;
-        [SerializeField]
-        private NavigationNetwork.NavigationNode LastNode;
+        public NavigationNetwork.NavigationNode LastNode = null;
 
         float spawnDelayTimer;
 
@@ -30,12 +32,8 @@ namespace TowerDefence.Enemies
             {
                 s.AutoName();
             }
-            Invoke("UpdateNavRoute", 2f);
-           // UpdateNavRoute();
-           
-            //TODO remove DEbug Stuff;
-            string json = JsonUtility.ToJson(currentWave, true);
-            Debug.Log(json);
+           Invoke("UpdateNavRoute",2);
+            //Debug.Log(json);
             SetNewWave(currentWave);
 
         }
@@ -46,7 +44,7 @@ namespace TowerDefence.Enemies
             currentWave = newWave;
         }
 
-        void UpdateNavRoute()
+        public void UpdateNavRoute()
         {
             BaseEnemy e = SpawnAbleEnemies[0].gameObject.GetComponent<BaseEnemy>();
             e.currentTargetNode = FirstNode;
@@ -77,6 +75,7 @@ namespace TowerDefence.Enemies
 
                     if (spawnDelayTimer <= 0)
                     {
+                        currentWave.groups[currentIndex].spawnAmount--;
                         spawnDelayTimer = currentWave.groups[currentIndex].SpawnDelay;
                         SpawnEnemy(currentEnemy);
                     }
@@ -85,7 +84,7 @@ namespace TowerDefence.Enemies
             }
         }
 
-        void SpawnEnemy(Utils.SpawnAbleEnemy enemyPrefab)
+        public void SpawnEnemy(Utils.SpawnAbleEnemy enemyPrefab)
         {
             GameObject g = Instantiate(enemyPrefab.gameObject) as GameObject;
             g.SetActive(true);

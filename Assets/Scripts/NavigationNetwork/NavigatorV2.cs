@@ -22,9 +22,14 @@ namespace NavigationNetwork
 
         protected virtual void Start()
         {
-            name = "EnergyPacket from " + SenderID + " To " + TargetID;
+            
 
             NavigationNetworkControler.OnRebuild += EnergyNetWorkControler_OnRebuild;
+        }
+
+        protected virtual void setName()
+        {
+            name = "Navigator from " + SenderID + " To " + TargetID;
         }
 
         protected virtual void EnergyNetWorkControler_OnRebuild()
@@ -80,6 +85,7 @@ namespace NavigationNetwork
         /// <returns>The path that it calculated</returns>
         public virtual List<NavigationBase> GetPath()
         {
+            name = "Navigator from " + SenderID + " To " + TargetID;
             List<NavigationBase> tmp = new List<NavigationBase>();
 
             bool point = false;

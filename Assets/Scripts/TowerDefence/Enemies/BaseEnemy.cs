@@ -38,7 +38,7 @@ namespace TowerDefence.Enemies
         public void TakeDamage(float Damage)
         {
             //TODO Write calc for damage using armor
-           health -= Damage;
+            health -= Damage;
             if (health <= 0)
                 Destroy(gameObject);
         }
@@ -48,15 +48,25 @@ namespace TowerDefence.Enemies
             virtualHealth -= Damage;
         }
         #endregion
-
+        public string displayName { get; protected set; }
+        public string typeName { get; protected set; }
+        [SerializeField]
+        string _editorTypeName = "base";
+        const string defaultName = "Basic Enemy";
+        protected void Awake()
+        {
+            typeName = _editorTypeName;
+        }
+        protected override void setName()
+        {
+            name = defaultName;
+        }
         protected override void Start()
         {
             base.Start();
             health = MaxHealth;
             virtualHealth = health;
+            displayName = defaultName;
         }
-
-        
-
     }
 }

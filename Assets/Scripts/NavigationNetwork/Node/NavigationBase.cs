@@ -47,10 +47,6 @@ namespace NavigationNetwork
 
             NavUtil.AddnewObject(gameObject);
             NodeColor = Color.green;
-            if (GetComponent<Renderer>() != null)
-            {
-                GetComponent<Renderer>().material.color = NodeColor;
-            }
 
             NavigationNetworkControler.OnNetUpdate += GetInRangeNodes;
         }
@@ -63,7 +59,7 @@ namespace NavigationNetwork
 
         public virtual void GetInRangeNodes(List<NavigationNode> _nodes)
         {
-            
+
             nodes = new List<NavigationNode>();
             foreach (NavigationNode go in _nodes)
             {
@@ -82,6 +78,12 @@ namespace NavigationNetwork
         protected virtual void Update()
         {
             _position = transform.position;
+        }
+
+        public void OnDrawGizmos()
+        {
+            Gizmos.color = NodeColor;
+            Gizmos.DrawSphere(transform.position, 0.30f);
         }
 
         /// <summary>

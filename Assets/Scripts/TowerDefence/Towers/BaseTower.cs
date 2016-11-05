@@ -41,7 +41,7 @@ namespace TowerDefence
 
         protected virtual void Start()
         {
-            mask = LayerMask.GetMask(new string[] { LayerTagManager.Enemy });
+            mask = LayerMask.GetMask(new string[] { Managers.LayerTagManager.Enemy });
             Enemies = new List<BaseEnemy>();
 
             //GetComponent<CircleCollider2D>().radius = range;
@@ -71,7 +71,7 @@ namespace TowerDefence
 
             for (int i = 0; i < hitsLength; i++)
             {
-                if(hits[i].collider.tag == TagManager.Enemy)
+                if(hits[i].collider.tag == Managers.TagManager.Enemy)
                 {
                     if (!Enemies.Contains(hits[i].collider.GetComponent<BaseEnemy>()))
                     {

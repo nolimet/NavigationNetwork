@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace TowerDefence
+namespace TowerDefence.Managers
 {
     public static class TagManager
     {

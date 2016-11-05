@@ -14,7 +14,7 @@ namespace NavigationNetwork
             SetNameID();
             if (isEndNode)
             {
-                GetComponent<Renderer>().material.color = Color.blue;
+                NodeColor = Color.blue;
             }
 
             NavigationNetworkControler.OnPullUpdate += getPull;
