@@ -14,7 +14,7 @@ namespace TowerDefence.ObjectPools
 
         public List<BaseEnemy> ActivePool, InActivePool;
         [Tooltip("Name needs to be same as enum type")]
-        public GameObject[] EnemyPrefabs = new GameObject[0];
+        public PrefabContainer[] EnemyPrefabs = new PrefabContainer[0];
 
         public static void RemoveObj(BaseEnemy item)
         {
@@ -43,9 +43,10 @@ namespace TowerDefence.ObjectPools
                 }
                 else
                 {
+    
                     //GameObject g = Instantiate(Resources.Load("Weapons/" + Type.ToString()), Vector3.zero, Quaternion.identity) as GameObject;
-                    string TypeString = Type.ToString();
-                    GameObject g = Instantiate(instance.EnemyPrefabs.FirstOrDefault(e => e.name == TypeString)) as GameObject;
+                    PrefabContainer prefab = instance.EnemyPrefabs.FirstOrDefault(e => e.script.typeName == Type);
+                    GameObject g = Instantiate(prefab.gameObject) as GameObject;
                     w = g.GetComponent<BaseEnemy>();
 
                     instance.ActivePool.Add(w);
@@ -69,8 +70,13 @@ namespace TowerDefence.ObjectPools
         {
             if (instance == null)
                 instance = this;
+        }
 
-
+        [System.Serializable]
+        public struct PrefabContainer
+        {
+            public BaseEnemy script;
+            public GameObject gameObject;
         }
     }
 }

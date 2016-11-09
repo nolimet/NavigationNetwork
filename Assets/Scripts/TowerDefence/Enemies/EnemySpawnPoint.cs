@@ -53,7 +53,7 @@ namespace TowerDefence.Enemies
             NavRoute = e.GetPath();
         }
 
-        void Update()
+        void f_Update()
         {
             if (NavRoute.Count > 0)
             {

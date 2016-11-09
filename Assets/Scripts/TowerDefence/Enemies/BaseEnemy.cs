@@ -49,14 +49,10 @@ namespace TowerDefence.Enemies
         }
         #endregion
         public string displayName { get; protected set; }
-        public string typeName { get; protected set; }
+        public string typeName { get { return _editorTypeName; } }
         [SerializeField]
         string _editorTypeName = "base";
         const string defaultName = "Basic Enemy";
-        protected void Awake()
-        {
-            typeName = _editorTypeName;
-        }
         protected override void setName()
         {
             name = defaultName;

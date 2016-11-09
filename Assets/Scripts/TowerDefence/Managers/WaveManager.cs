@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Enemies;
 using TowerDefence.Utils;
+using NavigationNetwork;
 namespace TowerDefence.Managers
 {
     /// <summary>
@@ -13,11 +14,12 @@ namespace TowerDefence.Managers
         [SerializeField]
         EnemySpawnPoint[] SpawnPoints;
         [SerializeField]
-        NavigationNetwork.NavigationNode[] EndPoints;
+        NavigationNode[] EndPoints;
         [SerializeField]
         Wave currentWave;
 
-        List<NavigationNetwork.NavigationBase>[,] NavRoute;
+        [SerializeField]
+        List<List<NavigationBase>> NavRoute;
 
         void Awake()
         {
@@ -31,9 +33,7 @@ namespace TowerDefence.Managers
         }
 
         private void Instance_onStartWave()
-        {
-            
-            
+        {           
             currentWave = GameManager.currentLevel.waves[GameManager.currentWave];      
         }
 
@@ -47,23 +47,21 @@ namespace TowerDefence.Managers
 
             int l1 = SpawnPoints.Length;
             int l2 = EndPoints.Length;
-           NavRoute = new List<NavigationNetwork.NavigationBase>[l1, l2];
+            NavRoute = new List<List<NavigationBase>>();
 
             BaseEnemy e = ObjectPools.EnemyPool.GetObj("base");
             for (int i = 0; i < l1; i++)
             {
+                NavRoute.Add(new List<NavigationBase>());
                 for (int j = 0; j < l2; j++)
                 {
                     e.currentTargetNode = SpawnPoints[i].FirstNode;
                     e.TargetID = EndPoints[j].ID;
 
-                    NavRoute[i,j] = e.GetPath();
+                    NavRoute[i] = e.GetPath();
                 }
             }
-        
         }
-
-
 
         void Update()
         {
