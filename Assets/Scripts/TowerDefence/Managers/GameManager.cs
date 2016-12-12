@@ -21,6 +21,7 @@ namespace TowerDefence.Managers
         static GameManager _instance;
         public static Utils.Level currentLevel { get { return instance._currentLevel; } set { if (Application.isEditor) { instance._currentLevel = value; } } }
         public static int currentWave {get { return instance._currentWave; } set { if (Application.isEditor) { instance._currentWave = value; } } }
+        public static bool isPaused;
         public event Utils.VoidDelegate onStartWave;
         public event Utils.VoidDelegate onLoadLevel;
 
@@ -42,6 +43,13 @@ namespace TowerDefence.Managers
             {
                 onStartWave();
             }
+
+            InputManager.instance.onEscape += onEscape;
+        }
+
+        private void onEscape()
+        {
+            isPaused = !isPaused;
         }
 
         public Utils.Level loadLevel(string LevelName)

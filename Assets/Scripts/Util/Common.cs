@@ -195,6 +195,35 @@ namespace Util
         }
 
         /// <summary>
+        /// Input array to return combined bounds of array
+        /// </summary>
+        /// <param name="objs">objects to get combined bound of</param>
+        /// <returns>Combined bound</returns>
+        public static Bounds getBounds(this Transform[] objs)
+        {
+            Bounds bounds;
+            // First find a center for your bounds.
+            Vector3 center = Vector3.zero;
+            foreach (Transform child in objs)
+            {
+                center += child.gameObject.GetComponent<SpriteRenderer>().bounds.center;
+            }
+            center /= objs.Length; //center is average center of children
+
+            //Now you have a center, calculate the bounds by creating a zero sized 'Bounds', 
+            bounds = new Bounds(center, Vector3.zero);
+
+            foreach (Transform child in objs)
+            {
+                bounds.Encapsulate(child.gameObject.GetComponent<SpriteRenderer>().bounds);
+            }
+            return bounds;
+        }
+        public static Bounds getBounds(this Transform obj)
+        {
+            return obj.gameObject.GetComponent<SpriteRenderer>().bounds;
+        }
+        /// <summary>
         /// Draw the bounds of a object
         /// </summary>
         /// <param name="b">Bounds that will be drawn</param>

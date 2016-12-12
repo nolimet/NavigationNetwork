@@ -76,10 +76,8 @@ namespace TowerDefence.Building
     }
 #if UNITY_EDITOR
     [UnityEditor.CustomEditor(typeof(DragObject))]
-    public class CannonTowerEditor : UnityEditor.Editor
-    {
-
-        
+    public class DragObjectEditor : UnityEditor.Editor
+    {      
         public override void OnInspectorGUI()
         {
             string[] tags = UnityEditorInternal.InternalEditorUtility.tags;

@@ -11,11 +11,14 @@ namespace Util
         public bool enabled;
         public ParticleSystem System;
         public ParticleSystem.Particle[] Particles;
+        public ParticleSystem.EmissionModule Emission;
+        public int maxParticles;
 
         public void setup()
         {
-            if (Particles == null || Particles.Length < System.maxParticles)
-                Particles = new ParticleSystem.Particle[System.maxParticles];
+            maxParticles = System.main.maxParticles;
+            if (Particles == null || Particles.Length < maxParticles)
+                Particles = new ParticleSystem.Particle[maxParticles];
         }
     }
 }

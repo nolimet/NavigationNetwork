@@ -9,6 +9,12 @@ namespace TowerDefence
     public class BaseTower : MonoBehaviour
     {
         /// <summary>
+        /// Offset For the context menu on the tower
+        /// </summary>
+        [HideInInspector]
+        public Vector2 ContextMenuOffset = Vector2.zero;
+
+        /// <summary>
         /// Location the bullet is firedfrom
         /// </summary>
         [HideInInspector]
@@ -242,6 +248,9 @@ namespace TowerDefence
             Gizmos.DrawSphere(SphereLocation, 0.05f);
             Gizmos.color = Color.green;
             Gizmos.DrawLine(((Vector2)transform.position) + fireLocationRotated, ((Vector2)transform.position) + fireLocationRotated + (Util.Common.AngleToVector(shootingOffsetDirection).Rotate(transform.rotation) * 0.5f));
+
+            Gizmos.color = Color.blue;
+            Gizmos.DrawSphere(ContextMenuOffset + (Vector2)transform.position, 0.05f);
         }
 #endif
     }
