@@ -58,7 +58,11 @@ namespace TowerDefence.Managers
 
        private void Update()
         {
-            
+            //For debugging the bouding boxes of the nodes
+            //foreach (Bounds b in PathManager.NodeBounds)
+            //{
+            //    Common.DrawBounds(b);
+            //}
             if (isPlacing)
             {
                 Vector3 newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -118,6 +122,7 @@ namespace TowerDefence.Managers
             if(placeAble != null)
             {
                 Bounds p = placeAble.transform.getBounds();
+                
                 foreach (Bounds b in PathManager.NodeBounds)
                 {
                     if (p.Intersects(b))

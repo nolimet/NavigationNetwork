@@ -11,7 +11,8 @@ namespace TowerDefence
         Last,
         Closest,
         Weakest,
-        Strongest
+        Strongest,
+        ClostestToEnd
     }
 
     public enum BulletType

@@ -72,7 +72,7 @@ namespace TowerDefence.Managers
                     }
                     cn2 = cn1;
                 }
-
+                g.transform.position = new Vector3(g.transform.position.x, g.transform.position.y, 0);
                 _NodeList.Add(g);               
             }
 

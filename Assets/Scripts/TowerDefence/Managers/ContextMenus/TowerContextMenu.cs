@@ -6,6 +6,11 @@ namespace TowerDefence.Managers.ContextMenus
     public class TowerContextMenu : MonoBehaviour
     {
         BaseTower currentTower;
+        void Start()
+        {
+            Close();
+        }
+
         public void Open(TowerDefence.BaseTower tower)
         {
             transform.position = tower.ContextMenuOffset + (Vector2)tower.transform.position;

@@ -233,6 +233,8 @@ namespace Util
             Debug.DrawLine(new Vector3(b.max.x, b.min.y), b.min);
             Debug.DrawLine(b.min, new Vector3(b.min.x, b.max.y));
             Debug.DrawLine(new Vector3(b.min.x, b.max.y), b.max);
+            Debug.DrawLine(b.max, b.min, Color.red);
+            Debug.DrawLine(new Vector3(b.min.x, b.max.y), new Vector3(b.max.x, b.min.y), Color.red);
         }
 
         public static float CalculateJumpVerticalSpeed(float targetJumpHeight)
