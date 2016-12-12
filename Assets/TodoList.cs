@@ -9,7 +9,7 @@
  * - Must send event when no live Enemies remain
  * ----------------------------------------------------------------------------------------
  * TODO: PathManager
- * Add support for more than route to PathManager.
+ * Add support for more than one route to PathManager.
  * 
  * CHANGE:
  * Change who nodes are connection. Instead of connecting them in order spawned connect them according to a array system.
@@ -27,6 +27,9 @@
  * - Node A : int (node's location in the position array)
  * - Node B : int
  * A connects to B. Objects will move from A to B in a one way trafic
+ * 
+ * VISUALS: 
+ * Render path connections using line Renders
  * -----------------------------------------------------------------------------------------
  * TODO: PlayField
  * Should the size of the playfield be a fixed size or should game have ablity to zoom in and out?
