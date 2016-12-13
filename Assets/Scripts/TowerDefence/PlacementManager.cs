@@ -30,22 +30,23 @@ namespace TowerDefence.Managers
         public bool isPlacing;
         [SerializeField]
         GameObject placeAble;
+        GameObject ghost;
         Vector3 StartPos = Vector3.zero;
-        bool isGhost = false;
+        bool isNew = false;
 
-        public void onBeginPlace(GameObject placeAble, bool isGhost)
+        public void onBeginPlace(GameObject placeAble, bool isNew)
         {
             if (!isPlacing)
             {
                 isPlacing = true;
             }
             this.placeAble = placeAble;
-            this.isGhost = isGhost;
-
+            this.isNew = isNew;
+            ghost = makeGhostSprite(placeAble);
             InputManager.instance.onLeftMouseClick += EndPlacement;
             InputManager.instance.onRightMouseClick += CancelPlacement;
 
-            if (!isGhost)
+            if (!isNew)
             {
                 StartPos = placeAble.transform.position;
             }
@@ -67,7 +68,16 @@ namespace TowerDefence.Managers
             {
                 Vector3 newPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 newPos.z = placeAble.transform.position.z;
-                placeAble.transform.position = newPos;
+                ghost.transform.position = newPos;
+
+                if (!PlaceLocationIsValid())
+                {
+                    ghost.GetComponent<SpriteRenderer>().color = new Color(0.7f, 0, 0, 0.5f);
+                }
+                else
+                {
+                    ghost.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.5f);
+                }
             }
         }
 
@@ -75,15 +85,20 @@ namespace TowerDefence.Managers
         {
             if (PlaceLocationIsValid())
             {
-                isPlacing = false;
-                InputManager.instance.onLeftMouseClick -= EndPlacement;
-                InputManager.instance.onRightMouseClick -= CancelPlacement;
-
-
-                placeAble = null;
-                if (isGhost)
+                
+                if (isNew)
                 {
                     //TODO tell resource manager to substractCost
+                }
+                else
+                {
+                    isPlacing = false;
+                    InputManager.instance.onLeftMouseClick -= EndPlacement;
+                    InputManager.instance.onRightMouseClick -= CancelPlacement;
+                    placeAble.transform.position = ghost.transform.position;
+                    Destroy(ghost);
+                    ghost = null;
+                    placeAble = null;
                 }
 
                 if (onEndPlacing != null)
@@ -100,14 +115,16 @@ namespace TowerDefence.Managers
             InputManager.instance.onRightMouseClick -= CancelPlacement;
 
             //RemovePlaceAble;
-            if (!isGhost)
+            if (!isNew)
             {
-                placeAble.transform.position = StartPos;
+                Destroy(ghost);
                 placeAble = null;
             }
             else
             {
                 //RemoveGhostImage;
+                Destroy(ghost);
+                placeAble = null;
             }
 
             if (onEndPlacing != null)
@@ -121,7 +138,7 @@ namespace TowerDefence.Managers
         {
             if(placeAble != null)
             {
-                Bounds p = placeAble.transform.getBounds();
+                Bounds p = ghost.transform.getBounds();
                 
                 foreach (Bounds b in PathManager.NodeBounds)
                 {
@@ -133,6 +150,17 @@ namespace TowerDefence.Managers
                 return true;
             }
             return false;
+        }
+
+        GameObject makeGhostSprite(GameObject Gameobj)
+        {
+            GameObject g = new GameObject("PlacementGhost");
+            SpriteRenderer spr = g.AddComponent<SpriteRenderer>();
+            spr.sprite = Gameobj.GetComponent<SpriteRenderer>().sprite;
+
+            spr.color = new Color(1, 1, 1, 0.5f);
+
+            return g;
         }
     }
 }

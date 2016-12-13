@@ -18,6 +18,7 @@ namespace NavigationNetwork
         public bool nonRecivend = false;
         public bool remove;
         public bool isEndNode;
+        public string TagName;
 
         protected Color NodeColor;
         protected List<NavigationNode> nodes = new List<NavigationNode>();

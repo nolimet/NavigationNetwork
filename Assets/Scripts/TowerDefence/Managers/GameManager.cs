@@ -32,17 +32,11 @@ namespace TowerDefence.Managers
 
         public void Start()
         {
-            _currentLevel = loadLevel("lvl0");
+            StartCoroutine(LoadGameLevel("lvl0"));
             _currentWave = 0;
-            if(onLoadLevel != null)
-            {
-                onLoadLevel();
-            }
+            
 
-            if(onStartWave != null)
-            {
-                onStartWave();
-            }
+           
 
             InputManager.instance.onEscape += onEscape;
         }
@@ -57,9 +51,42 @@ namespace TowerDefence.Managers
             return JsonUtility.FromJson<Utils.Level>(System.IO.File.ReadAllText(Application.streamingAssetsPath + "/" + LevelName + ".json", System.Text.Encoding.UTF32));
         }
 
+
+        IEnumerator LoadGameLevel(string LevelName)
+        {
+            if (Application.platform == RuntimePlatform.WebGLPlayer|| true)
+            {
+                WWW request = new WWW("http://jessestam.nl/Games/WebGL/TowerDef/StreamingAssets/" + LevelName + ".json");
+                while (!request.isDone)
+                {
+                    Debug.Log("got: " + request.bytesDownloaded + "/" + request.size);
+                    yield return new WaitForEndOfFrame();
+                }
+
+                Debug.Log("done loading!");
+                //string lvlJson = System.Text.Encoding.UTF8.GetString(request.bytes);
+                Debug.Log(request.text);
+                _currentLevel = JsonUtility.FromJson<Utils.Level>(request.text);
+            }
+            else
+            {
+                _currentLevel = JsonUtility.FromJson<Utils.Level>(System.IO.File.ReadAllText(Application.streamingAssetsPath + "/" + LevelName + ".json", System.Text.Encoding.UTF8));
+            }
+            if (onLoadLevel != null)
+            {
+                onLoadLevel();
+            }
+
+            ///Temp will be done whith on screen button*
+            if (onStartWave != null)
+            {
+                onStartWave();
+            }
+        }
+
         public void SaveLevel()
         {
-            System.IO.File.WriteAllText(Application.streamingAssetsPath +"/" +  _currentLevel.LevelName + ".json", JsonUtility.ToJson(_currentLevel), System.Text.Encoding.UTF32);
+            System.IO.File.WriteAllText(Application.streamingAssetsPath +"/" +  _currentLevel.LevelName + ".json", JsonUtility.ToJson(_currentLevel), System.Text.Encoding.UTF8);
         }
     }
 }

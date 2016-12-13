@@ -19,4 +19,12 @@ namespace TowerDefence
     {
         Base
     }
+
+    [System.Serializable]
+    public enum NodeTypes
+    {
+        Regular = 0,
+        Endpoint = 1,
+        Spawnpoint = 2
+    }
 }

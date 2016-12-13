@@ -14,6 +14,8 @@ namespace TowerDefence.Enemies
 
         public Utils.Wave currentWave;
 
+        public string TagName;
+
         List<NavigationNetwork.NavigationBase> NavRoute;
 
         int currentIndex;

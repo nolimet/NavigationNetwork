@@ -47,7 +47,30 @@ namespace TowerDefence.Utils
     [System.Serializable]
     public struct Path
     {
-        public Vector3[] NodeLocations;
-        
+        public NodeData[] nodes;
+        public NodeConnectionData[] connections;
+    }
+
+    [System.Serializable]
+    public struct NodeData
+    {
+        public Vector3 Location;
+        public NodeTypes NodeType;
+        /// <summary>
+        /// used to identify a node;
+        /// </summary>
+        public string nodeTag;
+        /// <summary>
+        /// used for spawnPoints
+        ///  so they know what is there endpoint
+        /// </summary>
+        public int lastNode;
+    }
+
+    [System.Serializable]
+    public struct NodeConnectionData
+    {
+        public int nodeA;
+        public int nodeB;
     }
 }
