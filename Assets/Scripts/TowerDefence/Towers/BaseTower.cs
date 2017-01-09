@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using Util;
@@ -212,20 +213,67 @@ namespace TowerDefence
         #endregion
 
         #region TowerUpgrades
+        public virtual void AddContextItems(GameObject MenuContainer,GameObject templateButton)
+        {
+            GameObject g = CreateNewButton(templateButton, MenuContainer.transform);
+            setButtonText(g, "upgrade Range");
+            setButtonEvents(g, new UnityEngine.Events.UnityAction(delegate 
+            {
+                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.UpgradeRange(5);
+            }));
+
+            g = CreateNewButton(templateButton, MenuContainer.transform);
+            setButtonText(g, "upgrade Damage");
+            setButtonEvents(g, new UnityEngine.Events.UnityAction(delegate
+            {
+                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.UpgradeDamage(2);
+            }));
+
+            g = CreateNewButton(templateButton, MenuContainer.transform);
+            setButtonText(g, "upgrade FireRate");
+            setButtonEvents(g, new UnityEngine.Events.UnityAction(delegate
+            {
+                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.UpgradeFireRate(TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.GetInstanceID());
+            }));
+
+            g.name = Random.value.ToString();
+        }
+
+        public virtual GameObject CreateNewButton(GameObject template, Transform Parent)
+        {
+            GameObject g = Instantiate(template) as GameObject;
+            g.SetActive(true);
+            g.transform.SetParent(Parent, false);
+            return g;
+        }
+
+        public virtual Text setButtonText(GameObject obj, string newText)
+        {
+             obj.GetComponentInChildren<Text>().text = newText;
+            return obj.GetComponentInChildren<Text>();
+        }
+
+        public virtual Button setButtonEvents(GameObject obj, UnityEngine.Events.UnityAction newEvent)
+        {
+            Button b = obj.GetComponent<Button>();
+            b.onClick.AddListener(newEvent);
+
+            return b;
+        }
 
         public virtual void UpgradeRange(float newRange)
         {
-
+            Debug.Log(newRange);
         }
 
         public virtual void UpgradeDamage(float newDamage)
         {
-
+            Debug.Log(newDamage);
         }
 
         public virtual void UpgradeFireRate(float newFireRate)
         {
-
+            Debug.Log(newFireRate);
         }
 
         #endregion

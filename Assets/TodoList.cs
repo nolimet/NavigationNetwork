@@ -44,4 +44,14 @@
  * -----------------------------------------------------------------------------------------
  * TODO: CONTEXTMENU
  * add right fliped menu so menu is not out of view when near edge of viewfield...
+ * ------------------------------------------------------------------------------------------
+ * TODO: GAME UI
+ * add game UI so player has information and knows who far he has progressed in a level
+ * 
+ * FUNCTIONS:
+ * - Button to start wave
+ * - Button to pause game
+ * 
+ * VISUAL:
+ * -
  */

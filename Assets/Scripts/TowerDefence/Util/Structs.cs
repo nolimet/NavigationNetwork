@@ -8,8 +8,11 @@ namespace TowerDefence.Utils
         public string LevelName;
         public Wave[] waves;
         public Path path;
+        public Resources resources;
+        public WorldSize worldSize;
     }
 
+    #region Waves
     [System.Serializable]
     public struct Wave
     {
@@ -43,7 +46,8 @@ namespace TowerDefence.Utils
             refrenceName = gameObject.name;
         }  
     }
-
+    #endregion
+    #region Path
     [System.Serializable]
     public struct Path
     {
@@ -72,5 +76,18 @@ namespace TowerDefence.Utils
     {
         public int nodeA;
         public int nodeB;
+    }
+    #endregion
+    [System.Serializable]
+    public struct Resources
+    {
+        public int startCash;
+    }
+
+    [System.Serializable]
+    public struct WorldSize
+    {
+        public Vector2 BuildablePlaneSize;
+        public Vector2 ViewSize;
     }
 }

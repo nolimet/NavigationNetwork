@@ -21,6 +21,7 @@ namespace TowerDefence.Managers
 
         [SerializeField]
         List<GameObject> _NodeList;
+        List<GameObject> _lineRender;
         List<Bounds> _nodeBounds;
 
 
@@ -136,6 +137,20 @@ namespace TowerDefence.Managers
             r.endWidth = 0.5f;
 
             r.material = PathMaterial;
+        }
+
+        void ClearPath()
+        {
+            foreach(GameObject g in _lineRender)
+            {
+                Destroy(g);
+            }
+
+            foreach(GameObject g in _NodeList)
+            {
+                g.GetComponent<NavigationNetwork.NavigationBase>().remove = true;
+            }
+
         }
     }
 }

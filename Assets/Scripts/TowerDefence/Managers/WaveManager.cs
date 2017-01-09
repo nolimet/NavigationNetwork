@@ -11,15 +11,33 @@ namespace TowerDefence.Managers
     /// </summary>
     public class WaveManager : MonoBehaviour
     {
+        public static WaveManager instance
+        {
+            get
+            {
+                if (_instance)
+                    return _instance;
+                _instance = FindObjectOfType<WaveManager>();
+                if (_instance)
+                    return _instance;
+
+                Debug.LogError("NO WaveManager FOUND! Check what is calling it");
+                return null;
+            }
+        }
+        static WaveManager _instance;
+
         [SerializeField]
-        EnemySpawnPoint[] SpawnPoints;
-        [SerializeField]
-        NavigationNode[] EndPoints;
+        List<SpawnPoint> SpawnPoints;
         [SerializeField]
         Wave currentWave;
 
+        /// <summary>
+        /// Path  the end point you wane go to
+        /// [Start point, End point]
+        /// </summary>
         [SerializeField]
-        List<List<NavigationBase>> NavRoute;
+        List<NavigationBase>[] NavRoute;
 
         void Awake()
         {
@@ -29,43 +47,56 @@ namespace TowerDefence.Managers
 
         private void Instance_onLoadLevel()
         {
-            Invoke("UpdateNavRoute",3f);
+            SpawnPoints = new List<SpawnPoint>();
+
+            NavRoute = new List<NavigationBase>[0];
         }
 
         private void Instance_onStartWave()
         {           
-            currentWave = GameManager.currentLevel.waves[GameManager.currentWave];      
+            currentWave = GameManager.currentLevel.waves[GameManager.currentWave];
+
+            if (NavRoute.Length == 0)
+            {
+                UpdateNavRoute();
+            }
         }
 
         public void UpdateNavRoute()
         {
-            SpawnPoints = FindObjectsOfType<Enemies.EnemySpawnPoint>();
-            SpawnPoints = SpawnPoints.Where(x => x.isActiveAndEnabled == true).ToArray(); //to filter out and disabled spawnpoints;
+            if (SpawnPoints == null || SpawnPoints.Count == 0)
+            {
+                SpawnPoints = FindObjectsOfType<Enemies.SpawnPoint>().ToList();
+                SpawnPoints = SpawnPoints.Where(x => x.isActiveAndEnabled == true).ToList(); //to filter out and disabled spawnpoints;
+            }
 
-            EndPoints = FindObjectsOfType<NavigationNetwork.NavigationNode>();
-            EndPoints = EndPoints.Where(x => x.isEndNode == true).ToArray();
-
-            int l1 = SpawnPoints.Length;
-            int l2 = EndPoints.Length;
-            NavRoute = new List<List<NavigationBase>>();
+            int l = SpawnPoints.Count;
+            NavRoute = new List<NavigationBase>[l];
 
             BaseEnemy e = ObjectPools.EnemyPool.GetObj("base");
-            for (int i = 0; i < l1; i++)
+            for (int i = 0; i < l; i++)
             {
-                NavRoute.Add(new List<NavigationBase>());
-                for (int j = 0; j < l2; j++)
-                {
-                    e.currentTargetNode = SpawnPoints[i].FirstNode;
-                    e.TargetID = EndPoints[j].ID;
+                e.currentTargetNode = SpawnPoints[i].first;
+                e.TargetID = SpawnPoints[i].last.ID;
 
-                    NavRoute[i] = e.GetPath();
-                }
+                SpawnPoints[i].path = e.GetPath();
             }
+        }
+
+        public void setupSpawnPoints()
+        {
+
         }
 
         void Update()
         {
-            
+            if (!GameManager.isPaused)
+            {
+                foreach(SpawnPoint p in SpawnPoints)
+                {
+                    p._Update();
+                }
+            }
         }
 
     }

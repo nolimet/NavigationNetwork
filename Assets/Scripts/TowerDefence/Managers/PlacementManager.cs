@@ -25,14 +25,30 @@ namespace TowerDefence.Managers
         #endregion
 
         public event Utils.VoidDelegate onStartPlacing;
-        public event Utils.VoidDelegate onEndPlacing; 
+        public event Utils.VoidDelegate onEndPlacing;
+
+
+        [SerializeField]
+        GameObject BackDrop;
+        Bounds BackDropBounds;
 
         public bool isPlacing;
-        [SerializeField]
         GameObject placeAble;
         GameObject ghost;
         Vector3 StartPos = Vector3.zero;
         bool isNew = false;
+
+        void Start()
+        {
+            GameManager.instance.onLoadLevel += Instance_onLoadLevel;
+        }
+
+        private void Instance_onLoadLevel()
+        {
+            BackDrop.transform.localScale = GameManager.currentLevel.worldSize.BuildablePlaneSize;
+
+            BackDropBounds = Util.Common.getBounds(BackDrop.transform);
+        }
 
         public void onBeginPlace(GameObject placeAble, bool isNew)
         {
@@ -84,8 +100,7 @@ namespace TowerDefence.Managers
         public void EndPlacement()
         {
             if (PlaceLocationIsValid())
-            {
-                
+            {                
                 if (isNew)
                 {
                     //TODO tell resource manager to substractCost
@@ -147,8 +162,17 @@ namespace TowerDefence.Managers
                         return false;
                     }
                 }
-                return true;
+                if (BackDrop != null)
+                {
+                    if (!p.Intersects(BackDropBounds))
+                    {
+                        return false;
+                    }
+                }
+                    return true;
             }
+
+           
             return false;
         }
 

@@ -5,7 +5,28 @@ namespace TowerDefence.Managers.ContextMenus
 {
     public class TowerContextMenu : MonoBehaviour
     {
-        BaseTower currentTower;
+        public static TowerContextMenu instance
+        {
+            get
+            {
+                if (_instance)
+                    return _instance;
+                _instance = FindObjectOfType<TowerContextMenu>();
+                if (_instance)
+                    return _instance;
+
+                Debug.LogError("NO TowerContextMenu FOUND! Check what is calling it");
+                return null;
+            }
+        }
+        static TowerContextMenu _instance;
+
+        BaseTower _currentTower;
+        public BaseTower currentTower { get { return _currentTower; } }
+        [SerializeField]
+        GameObject ContainerContextItems = null;
+        [SerializeField]
+        GameObject TemplateButton = null;
         void Start()
         {
             Close();
@@ -13,20 +34,26 @@ namespace TowerDefence.Managers.ContextMenus
 
         public void Open(TowerDefence.BaseTower tower)
         {
+            while (ContainerContextItems.transform.childCount > 0)
+            {
+                DestroyImmediate(ContainerContextItems.transform.GetChild(0).gameObject);
+            }
+
             transform.position = tower.ContextMenuOffset + (Vector2)tower.transform.position;
+            tower.AddContextItems(ContainerContextItems, TemplateButton);
             gameObject.SetActive(true);
-            currentTower = tower;
+            _currentTower = tower;
         }
 
         public void Close()
         {
             gameObject.SetActive(false);
-            currentTower = null;
+            _currentTower = null;
         }
 
         public void Move()
         {
-            Managers.PlacementManager.instance.onBeginPlace(currentTower.gameObject, false);
+            Managers.PlacementManager.instance.onBeginPlace(_currentTower.gameObject, false);
         }
     }
 }

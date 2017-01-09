@@ -35,9 +35,6 @@ namespace TowerDefence.Managers
             StartCoroutine(LoadGameLevel("lvl0"));
             _currentWave = 0;
             
-
-           
-
             InputManager.instance.onEscape += onEscape;
         }
 
@@ -54,12 +51,12 @@ namespace TowerDefence.Managers
 
         IEnumerator LoadGameLevel(string LevelName)
         {
-            if (Application.platform == RuntimePlatform.WebGLPlayer|| true)
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
             {
                 WWW request = new WWW("http://jessestam.nl/Games/WebGL/TowerDef/StreamingAssets/" + LevelName + ".json");
                 while (!request.isDone)
                 {
-                    Debug.Log("got: " + request.bytesDownloaded + "/" + request.size);
+                    Debug.Log("got: " + request.progress);
                     yield return new WaitForEndOfFrame();
                 }
 
@@ -67,6 +64,8 @@ namespace TowerDefence.Managers
                 //string lvlJson = System.Text.Encoding.UTF8.GetString(request.bytes);
                 Debug.Log(request.text);
                 _currentLevel = JsonUtility.FromJson<Utils.Level>(request.text);
+
+                yield return new WaitForEndOfFrame();
             }
             else
             {
@@ -77,16 +76,22 @@ namespace TowerDefence.Managers
                 onLoadLevel();
             }
 
-            ///Temp will be done whith on screen button*
-            if (onStartWave != null)
-            {
-                onStartWave();
-            }
+            ///Should me removed!
+            Invoke("StartWave", 2f);
+           
         }
 
         public void SaveLevel()
         {
             System.IO.File.WriteAllText(Application.streamingAssetsPath +"/" +  _currentLevel.LevelName + ".json", JsonUtility.ToJson(_currentLevel), System.Text.Encoding.UTF8);
+        }
+
+        public void StartWave()
+        {
+            if (onStartWave != null)
+            {
+                onStartWave();
+            }
         }
     }
 }
