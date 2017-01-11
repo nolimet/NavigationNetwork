@@ -22,7 +22,7 @@ namespace NavigationNetwork
 
         protected virtual void Start()
         {
-            
+            setName();
 
             NavigationNetworkControler.OnRebuild += EnergyNetWorkControler_OnRebuild;
         }

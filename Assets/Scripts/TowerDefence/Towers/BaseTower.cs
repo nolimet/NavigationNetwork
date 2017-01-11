@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Util;
 using TowerDefence.Enemies;
+using System.Linq;
 
 namespace TowerDefence
 {
@@ -23,14 +24,20 @@ namespace TowerDefence
         public Vector2 fireWorldPosition { get { return fireLocation.Rotate(transform.rotation) + (Vector2)transform.position; } }
 
         /// <summary>
-        /// projectiles shot per minute
+        /// projectiles shot per minut
         /// </summary>
         [SerializeField]
-        protected float fireRate = 60;
+        protected float _fireRate = 60;
         [SerializeField]
-        protected int Damage = 5;
+        protected int _damage = 5;
         [SerializeField]
-        protected float range = 5;
+        protected float _range = 5;
+        protected string _type = "base";
+
+        public float fireRate { get { return _fireRate; } }
+        public int damage { get { return _damage; } }
+        public float range { get { return _range; } }
+        public string type { get { return _type; } }
 
         [SerializeField]
         protected float rotationOffset;
@@ -70,22 +77,29 @@ namespace TowerDefence
 
         int hitsLength;
         RaycastHit2D[] hits;
+        List<BaseEnemy> tmpList;
+        BaseEnemy e;
         void CircleCast()
         {
-            Enemies = new List<BaseEnemy>();
-            hits = Physics2D.CircleCastAll(transform.position, range, Vector2.up, range, mask);
+            tmpList = new List<BaseEnemy>();
+            hits = Physics2D.CircleCastAll(transform.position, _range, Vector2.up, _range, mask);
             hitsLength = hits.Length;
 
             for (int i = 0; i < hitsLength; i++)
             {
                 if(hits[i].collider.tag == Managers.TagManager.Enemy)
                 {
-                    if (!Enemies.Contains(hits[i].collider.GetComponent<BaseEnemy>()))
+                    e = hits[i].collider.GetComponent<BaseEnemy>();
+                    tmpList.Add(e);
+                    if (!Enemies.Contains(e))
                     {
-                        Enemies.Add(hits[i].collider.GetComponent<BaseEnemy>());
+                        Enemies.Add(e);
+                        
                     }
                 }
             }
+
+            Enemies = Enemies.Intersect(tmpList).ToList();
         }
 
         /// <summary>
@@ -211,35 +225,101 @@ namespace TowerDefence
             Target = closest;
         }
         #endregion
-
-        #region TowerUpgrades
+        #region ContextMenu
         public virtual void AddContextItems(GameObject MenuContainer,GameObject templateButton)
         {
-            GameObject g = CreateNewButton(templateButton, MenuContainer.transform);
+            GameObject g = CloneGameobject(templateButton, MenuContainer.transform);
             setButtonText(g, "upgrade Range");
             setButtonEvents(g, new UnityEngine.Events.UnityAction(delegate 
             {
                 TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.UpgradeRange(5);
             }));
 
-            g = CreateNewButton(templateButton, MenuContainer.transform);
+            g = CloneGameobject(templateButton, MenuContainer.transform);
             setButtonText(g, "upgrade Damage");
             setButtonEvents(g, new UnityEngine.Events.UnityAction(delegate
             {
                 TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.UpgradeDamage(2);
             }));
 
-            g = CreateNewButton(templateButton, MenuContainer.transform);
+            g = CloneGameobject(templateButton, MenuContainer.transform);
             setButtonText(g, "upgrade FireRate");
             setButtonEvents(g, new UnityEngine.Events.UnityAction(delegate
             {
-                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.UpgradeFireRate(TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.GetInstanceID());
+                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.UpgradeFireRate(6);
             }));
-
-            g.name = Random.value.ToString();
         }
 
-        public virtual GameObject CreateNewButton(GameObject template, Transform Parent)
+        /// <summary>
+        /// Add Objects to DropDown Context Menu
+        /// </summary>
+        /// <param name="ToggleContainer">Containter that contains the toggles</param>
+        /// <param name="templateToggle"></param>
+        /// <param name="animationStart"></param>
+        public void AddDropDownMenuItems(GameObject ToggleContainer, GameObject templateToggle, Vector3 animationStart)
+        {
+            GameObject g;
+            Toggle t; 
+
+            g = CloneGameobject(templateToggle, ToggleContainer.transform);
+            setButtonText(g, "Closest");
+            SetActiveToggle(g, Target_Priority.Closest);
+            t = setToggleEvents(g, new UnityEngine.Events.UnityAction<bool>(delegate
+            {
+                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.TargetMode = Target_Priority.Closest;
+            }));
+            g.transform.position = animationStart;
+
+            g = CloneGameobject(templateToggle, ToggleContainer.transform);
+            setButtonText(g, "ClosestToEnd");
+            SetActiveToggle(g, Target_Priority.ClostestToEnd);
+            t = setToggleEvents(g, new UnityEngine.Events.UnityAction<bool>(delegate
+            {
+                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.TargetMode = Target_Priority.ClostestToEnd;
+            }));            
+            g.transform.position = animationStart;
+
+            g = CloneGameobject(templateToggle, ToggleContainer.transform);
+            setButtonText(g, "First");
+            SetActiveToggle(g, Target_Priority.First);
+            t = setToggleEvents(g, new UnityEngine.Events.UnityAction<bool>(delegate
+            {
+                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.TargetMode = Target_Priority.First;
+            }));
+            g.transform.position = animationStart;
+
+            g = CloneGameobject(templateToggle, ToggleContainer.transform);
+            setButtonText(g, "Last");
+            SetActiveToggle(g, Target_Priority.Last);
+            setToggleEvents(g, new UnityEngine.Events.UnityAction<bool>(delegate
+            {
+                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.TargetMode = Target_Priority.Last;
+            }));
+            
+            g.transform.position = animationStart;
+
+            g = CloneGameobject(templateToggle, ToggleContainer.transform);
+            setButtonText(g, "Strongest");
+            SetActiveToggle(g, Target_Priority.Strongest);
+            setToggleEvents(g, new UnityEngine.Events.UnityAction<bool>(delegate
+            {
+                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.TargetMode = Target_Priority.Strongest;
+            }));
+            
+            g.transform.position = animationStart;
+
+            g = CloneGameobject(templateToggle, ToggleContainer.transform);
+            setButtonText(g, "Weakest");
+            SetActiveToggle(g, Target_Priority.Weakest);
+            setToggleEvents(g, new UnityEngine.Events.UnityAction<bool>(delegate
+            {
+                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.TargetMode = Target_Priority.Weakest;
+            }));
+            
+            g.transform.position = animationStart;
+        }
+
+        public virtual GameObject CloneGameobject(GameObject template, Transform Parent)
         {
             GameObject g = Instantiate(template) as GameObject;
             g.SetActive(true);
@@ -261,6 +341,22 @@ namespace TowerDefence
             return b;
         }
 
+        public virtual Toggle setToggleEvents(GameObject obj, UnityEngine.Events.UnityAction<bool> newEvent)
+        {
+            Toggle t = obj.GetComponent<Toggle>();
+            t.onValueChanged.AddListener(newEvent);
+
+            return t;
+        }
+
+        public virtual void SetActiveToggle(GameObject g, Target_Priority type)
+        {
+            Toggle t = g.GetComponent<Toggle>();
+            if (TargetMode == type)
+                t.isOn = true;
+        }
+        #endregion
+        #region TowerUpgrades
         public virtual void UpgradeRange(float newRange)
         {
             Debug.Log(newRange);

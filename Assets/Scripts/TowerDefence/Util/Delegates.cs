@@ -6,5 +6,6 @@ using System.Text;
 namespace TowerDefence.Utils
 {
     public delegate void VoidDelegate();
+    public delegate void GameStateChangeDelegate(GameState state);
 
 }

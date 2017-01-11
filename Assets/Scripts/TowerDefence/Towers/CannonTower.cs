@@ -11,8 +11,8 @@ namespace TowerDefence
         protected override void Start()
         {
             base.Start();
-
-            fireDelay = 60f / fireRate;
+            _type = "Cannon";
+            fireDelay = 60f / _fireRate;
         }
 
         protected override void HasTarget()
@@ -38,7 +38,7 @@ namespace TowerDefence
                 {
                     if (Target.VirtualHealth > 0)
                     {
-                        Target.TakeVirtualDamage(Damage);
+                        Target.TakeVirtualDamage(_damage);
                         weaponCooldown = fireDelay;
                         Shoot();
                     }
@@ -49,8 +49,8 @@ namespace TowerDefence
         protected void Shoot()
         {
             Projectile.TowerProjectileBase Bullet = ObjectPools.BulletPool.GetObj(BulletType.Base);
-            Bullet.setDamage(Damage);
-            Bullet.setSpeed(10f);
+            Bullet.setDamage(_damage);
+            Bullet.setSpeed(20f);
             Bullet.setTarget(Target);
             Bullet.gameObject.SetActive(true);
             Bullet.transform.position = fireWorldPosition;

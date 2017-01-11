@@ -21,15 +21,22 @@ namespace TowerDefence.Managers.ContextMenus
         }
         static TowerContextMenu _instance;
 
-        BaseTower _currentTower;
         public BaseTower currentTower { get { return _currentTower; } }
+        BaseTower _currentTower;        
         [SerializeField]
         GameObject ContainerContextItems = null;
         [SerializeField]
         GameObject TemplateButton = null;
-        void Start()
+        [SerializeField]
+        GameObject DropMenuGroup;
+        [SerializeField]
+        GameObject ToggleTemplate;
+        [SerializeField]
+        GameObject DropDownMenuButton;
+        void Awake()
         {
             Close();
+            _instance = this;
         }
 
         public void Open(TowerDefence.BaseTower tower)
@@ -39,10 +46,23 @@ namespace TowerDefence.Managers.ContextMenus
                 DestroyImmediate(ContainerContextItems.transform.GetChild(0).gameObject);
             }
 
+            while(DropMenuGroup.transform.childCount > 0)
+            {
+                DestroyImmediate(DropMenuGroup.transform.GetChild(0).gameObject);
+            }
+
             transform.position = tower.ContextMenuOffset + (Vector2)tower.transform.position;
             tower.AddContextItems(ContainerContextItems, TemplateButton);
+            tower.AddDropDownMenuItems(DropMenuGroup, ToggleTemplate,DropDownMenuButton.transform.position);
             gameObject.SetActive(true);
+
+            DropMenuGroup.SetActive(false);
             _currentTower = tower;
+        }
+
+        public void OpenDropDown()
+        {
+            DropMenuGroup.SetActive(true);
         }
 
         public void Close()

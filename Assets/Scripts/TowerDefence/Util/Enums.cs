@@ -27,4 +27,11 @@ namespace TowerDefence
         Endpoint = 1,
         Spawnpoint = 2
     }
+
+    public enum GameState
+    {
+        building,
+        playing,
+        editing
+    }
 }

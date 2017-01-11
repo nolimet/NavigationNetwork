@@ -22,13 +22,17 @@ namespace TowerDefence.Managers
         public static Utils.Level currentLevel { get { return instance._currentLevel; } set { if (Application.isEditor) { instance._currentLevel = value; } } }
         public static int currentWave {get { return instance._currentWave; } set { if (Application.isEditor) { instance._currentWave = value; } } }
         public static bool isPaused;
-        public event Utils.VoidDelegate onStartWave;
+        public event Utils.GameStateChangeDelegate onStateChange;
+        public event Utils.VoidDelegate onGameOver;
         public event Utils.VoidDelegate onLoadLevel;
 
         [SerializeField]
         private Utils.Level _currentLevel;
         [SerializeField]
         private int _currentWave;
+
+        GameState _currentGameState;
+        public static GameState currentGameState { get { return instance._currentGameState; } }
 
         public void Start()
         {
@@ -76,9 +80,7 @@ namespace TowerDefence.Managers
                 onLoadLevel();
             }
 
-            ///Should me removed!
-            Invoke("StartWave", 2f);
-           
+            SetGameState(GameState.building);    
         }
 
         public void SaveLevel()
@@ -86,12 +88,23 @@ namespace TowerDefence.Managers
             System.IO.File.WriteAllText(Application.streamingAssetsPath +"/" +  _currentLevel.LevelName + ".json", JsonUtility.ToJson(_currentLevel), System.Text.Encoding.UTF8);
         }
 
+        public void SetGameState(GameState newState)
+        {
+            _currentGameState = newState;
+            if (onStateChange != null)
+            {
+                onStateChange(newState);
+            }
+        }
+
         public void StartWave()
         {
-            if (onStartWave != null)
-            {
-                onStartWave();
-            }
+            SetGameState(GameState.playing);
+        }
+
+        public void EndWave()
+        {
+            SetGameState(GameState.building);
         }
     }
 }

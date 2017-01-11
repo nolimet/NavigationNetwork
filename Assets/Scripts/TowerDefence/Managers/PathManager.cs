@@ -76,6 +76,7 @@ namespace TowerDefence.Managers
                 if(nd.NodeType == NodeTypes.Endpoint)
                 {
                     g.GetComponent<NavigationNetwork.NavigationForcedConnectionNode>().isEndNode = true;
+                    g.AddComponent<Enemies.EndPoint>();
                 }
                 
                              

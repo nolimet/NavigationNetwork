@@ -2,6 +2,7 @@
 
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 /// <summary>
@@ -235,6 +236,17 @@ namespace Util
             Debug.DrawLine(new Vector3(b.min.x, b.max.y), b.max);
             Debug.DrawLine(b.max, b.min, Color.red);
             Debug.DrawLine(new Vector3(b.min.x, b.max.y), new Vector3(b.max.x, b.min.y), Color.red);
+        }
+
+        /// <summary>
+        /// Check if bounds are inside the target
+        /// </summary>
+        /// <param name="bounds"></param>
+        /// <param name="target">Object contained in other bound</param>
+        /// <returns></returns>
+        public static bool ContainBounds(this Bounds bounds, Bounds target)
+        {
+            return bounds.Contains(target.min) && bounds.Contains(target.max);
         }
 
         public static float CalculateJumpVerticalSpeed(float targetJumpHeight)

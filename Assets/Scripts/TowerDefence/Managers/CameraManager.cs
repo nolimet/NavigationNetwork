@@ -10,7 +10,7 @@ namespace TowerDefence.Managers
         [SerializeField]
         new Camera camera;
 
-        void Start()
+        void Awake()
         {
             GameManager.instance.onLoadLevel += onLevelLoaded;
         }
@@ -39,7 +39,6 @@ namespace TowerDefence.Managers
             {
                 c.y = 0;
             }
-
             return c;
         }
         bool[] CameraOutOfViewBox(Vector3 Position, Vector3 ViewConstraint, int neg)
@@ -63,9 +62,12 @@ namespace TowerDefence.Managers
              */
 
             move = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0);
-            move = move * speed * Time.deltaTime;
-            move.Scale(CameraInViewAfterMove(move));
-            camera.transform.Translate(move);
+            if (move.x != 0 || move.y != 0)
+            {
+                move = move * speed * Time.deltaTime;
+                move.Scale(CameraInViewAfterMove(move));
+                camera.transform.Translate(move);
+            }
         }
     }
 }

@@ -29,6 +29,8 @@ namespace TowerDefence.Managers
 
         [SerializeField]
         List<SpawnPoint> SpawnPoints;
+        public int EnemiesLeft { get { return _EnemiesLeft; } }
+        int _EnemiesLeft;
         [SerializeField]
         Wave currentWave;
 
@@ -42,7 +44,13 @@ namespace TowerDefence.Managers
         void Awake()
         {
             GameManager.instance.onLoadLevel += Instance_onLoadLevel;
-            GameManager.instance.onStartWave += Instance_onStartWave;
+            GameManager.instance.onStateChange += Instance_onStartWave;
+            ObjectPools.EnemyPool.instance.onRemove += EnemyPool_onRemove;
+        }
+
+        private void EnemyPool_onRemove(BaseEnemy item)
+        {
+            _EnemiesLeft--;
         }
 
         private void Instance_onLoadLevel()
@@ -52,14 +60,24 @@ namespace TowerDefence.Managers
             NavRoute = new List<NavigationBase>[0];
         }
 
-        private void Instance_onStartWave()
-        {           
+        private void Instance_onStartWave(GameState state)
+        {
+            if (state != GameState.playing)
+                return;
             currentWave = GameManager.currentLevel.waves[GameManager.currentWave];
 
             if (NavRoute.Length == 0)
             {
                 UpdateNavRoute();
             }
+            string s;
+            foreach(SpawnPoint p in SpawnPoints)
+            {
+                s = p.pathBuilderData.nodeData.nodeTag;
+                p.spawnGroup = currentWave.groups.First(x => x.SpawnPointName == s);
+            }
+
+            _EnemiesLeft = currentWave.groups.Sum(x => x.spawnAmount);
         }
 
         public void UpdateNavRoute()
@@ -83,18 +101,17 @@ namespace TowerDefence.Managers
             }
         }
 
-        public void setupSpawnPoints()
-        {
-
-        }
-
         void Update()
         {
-            if (!GameManager.isPaused)
+            if (!GameManager.isPaused && GameManager.currentGameState == GameState.playing)
             {
                 foreach(SpawnPoint p in SpawnPoints)
                 {
                     p._Update();
+                }
+                if (EnemiesLeft <= 0)
+                {
+                    GameManager.instance.EndWave();
                 }
             }
         }

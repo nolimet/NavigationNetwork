@@ -55,8 +55,9 @@ namespace TowerDefence.Enemies
         const string defaultName = "Basic Enemy";
         protected override void setName()
         {
-            name = defaultName;
+            name = displayName + " " + GetInstanceID();
         }
+
         protected override void Start()
         {
             base.Start();

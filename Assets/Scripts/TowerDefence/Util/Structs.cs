@@ -23,6 +23,7 @@ namespace TowerDefence.Utils
     [System.Serializable]
     public struct WaveSpawnGroup
     {
+        public string SpawnPointName;
         public string enemy;
         public float Speed;
         public float SpawnDelay;
@@ -87,7 +88,7 @@ namespace TowerDefence.Utils
     [System.Serializable]
     public struct WorldSize
     {
-        public Vector2 BuildablePlaneSize;
+        public Vector3 BuildablePlaneSize;
         public Vector2 ViewSize;
     }
 }

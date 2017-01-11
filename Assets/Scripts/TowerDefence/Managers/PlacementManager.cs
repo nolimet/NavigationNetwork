@@ -38,7 +38,7 @@ namespace TowerDefence.Managers
         Vector3 StartPos = Vector3.zero;
         bool isNew = false;
 
-        void Start()
+        void Awake()
         {
             GameManager.instance.onLoadLevel += Instance_onLoadLevel;
         }
@@ -46,8 +46,7 @@ namespace TowerDefence.Managers
         private void Instance_onLoadLevel()
         {
             BackDrop.transform.localScale = GameManager.currentLevel.worldSize.BuildablePlaneSize;
-
-            BackDropBounds = Util.Common.getBounds(BackDrop.transform);
+            BackDropBounds = BackDrop.transform.getBounds();
         }
 
         public void onBeginPlace(GameObject placeAble, bool isNew)
@@ -103,7 +102,14 @@ namespace TowerDefence.Managers
             {                
                 if (isNew)
                 {
-                    //TODO tell resource manager to substractCost
+                    InputManager.instance.onLeftMouseClick -= EndPlacement;
+                    InputManager.instance.onRightMouseClick -= CancelPlacement;
+
+                    //tell managers that object was placed succesfully
+
+                    Destroy(ghost);
+                    ghost = null;
+                    placeAble = null;
                 }
                 else
                 {
@@ -164,7 +170,7 @@ namespace TowerDefence.Managers
                 }
                 if (BackDrop != null)
                 {
-                    if (!p.Intersects(BackDropBounds))
+                    if (!BackDropBounds.ContainBounds(p))   
                     {
                         return false;
                     }

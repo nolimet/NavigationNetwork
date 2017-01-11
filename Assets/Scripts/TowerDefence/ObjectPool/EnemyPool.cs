@@ -8,7 +8,22 @@ namespace TowerDefence.ObjectPools
     public class EnemyPool : MonoBehaviour
     {
 
-        public static EnemyPool instance;
+        public static EnemyPool instance
+        {
+            get
+            {
+                if (_instance)
+                    return _instance;
+                _instance = FindObjectOfType<EnemyPool>();
+                if (_instance)
+                    return _instance;
+
+                Debug.LogError("NO EnemyPool FOUND! Check what is calling it");
+                return null;
+            }
+        }
+        static EnemyPool _instance;
+
         public delegate void RemoveObject(BaseEnemy item);
         public event RemoveObject onRemove;
 
@@ -24,6 +39,11 @@ namespace TowerDefence.ObjectPools
                 instance.InActivePool.Add(item);
 
                 item.gameObject.SetActive(false);
+
+                if (instance.onRemove != null)
+                {
+                    instance.onRemove(item);
+                }
             }
         }
 
@@ -56,20 +76,6 @@ namespace TowerDefence.ObjectPools
                 return w;
             }
             return null;
-        }
-
-        public void Awake()
-        {
-            if (instance == null)
-                instance = this;
-            else
-                Destroy(this);
-        }
-
-        public void Update()
-        {
-            if (instance == null)
-                instance = this;
         }
 
         [System.Serializable]

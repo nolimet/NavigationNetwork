@@ -24,6 +24,8 @@ namespace TowerDefence.Managers
         public int cash = 0;
         public int cashGainedWave;
         public int cashGainedLevel;
+
+        public int Health;
         void Start()
         {
             GameManager.instance.onLoadLevel += onLoadLevel;
@@ -56,6 +58,15 @@ namespace TowerDefence.Managers
             if (canBuy(value))
             {
                 instance.cash -= value;
+            }
+        }
+
+        public static void RemoveHealth(int value)
+        {
+            instance.Health -= value;
+            if(instance.Health<= 0)
+            {
+                //TODO: trigger gameover State
             }
         }
     }
