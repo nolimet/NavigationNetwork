@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace TowerDefence
 {
-    public class CannonTower : BaseTower
+    public class RocketTower : BaseTower
     {
         private float fireDelay;
         private float weaponCooldown;
@@ -11,7 +11,7 @@ namespace TowerDefence
         protected override void Start()
         {
             base.Start();
-            _type = "Cannon";
+            _type = "Rocket";
             fireDelay = 60f / _fireRate;
         }
 

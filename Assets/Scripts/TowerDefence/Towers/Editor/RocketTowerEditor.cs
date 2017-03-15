@@ -3,13 +3,13 @@ using UnityEditor;
 using Util;
 namespace TowerDefence.EditorScripts
 {
-    [CustomEditor(typeof(CannonTower))]
-    public class CannonTowerEditor : Editor
+    [CustomEditor(typeof(RocketTower))]
+    public class RocketTowerEditor : Editor
     {
 
         protected void OnSceneGUI()
         {
-            CannonTower t = (CannonTower)target;
+            RocketTower t = (RocketTower)target;
 
             //FireOffset Handle;
             EditorGUI.BeginChangeCheck();
