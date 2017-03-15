@@ -18,7 +18,7 @@ namespace NavigationNetwork
         public float speed = 3f;
 
         [SerializeField]
-        List<NavigationBase> TargetList = new List<NavigationBase>();
+        List<NavigationBase> Path = new List<NavigationBase>();
 
         protected virtual void Start()
         {
@@ -34,7 +34,7 @@ namespace NavigationNetwork
 
         protected virtual void EnergyNetWorkControler_OnRebuild()
         {
-            TargetList = new List<NavigationBase>();
+            Path = new List<NavigationBase>();
             GetSendList();
         }
 
@@ -47,9 +47,9 @@ namespace NavigationNetwork
         {
             if (!currentTargetNode || currentTargetNode.Pull == null || currentTargetNode.Pull.Count == 0)
                 return;
-            TargetList = GetPath();
+            Path = GetPath();
             //set currentarget to the first one it found
-            currentTargetNode = TargetList[0];
+            currentTargetNode = Path[0];
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace NavigationNetwork
         /// <param name="path">The path that the navigator will follow</param>
         public virtual void SetPath(List<NavigationBase> path)
         {
-            TargetList = path;
+            Path = path;
         }
 
         /// <summary>
@@ -116,6 +116,26 @@ namespace NavigationNetwork
         }
 
         /// <summary>
+        /// Returns Length of path
+        /// </summary>
+        /// <returns></returns>
+        public virtual float GetPathLength()
+        {
+            float f = 0;
+            for (int i = 0; i < Path.Count-1; i++)
+            {
+                f += Vector3.Distance(Path[i].position, Path[i + 1].position);
+            }
+
+            return f;
+        }
+
+        public virtual float GetPathLengthLeft()
+        {
+            return GetPathLength() + Vector3.Distance(currentTargetNode.position, transform.position); 
+        }
+
+        /// <summary>
         ///  move to current Target
         /// </summary>
         protected virtual void Update()
@@ -131,15 +151,15 @@ namespace NavigationNetwork
                 if (Vector3.Distance(transform.position, currentTargetNode.position) < 0.1f)
                 {
 
-                    if (TargetList.Count > 0)
+                    if (Path.Count > 0)
                     {
-                        if (currentTargetNode && TargetList.Contains(currentTargetNode))
+                        if (currentTargetNode && Path.Contains(currentTargetNode))
                         {
-                            TargetList.Remove(currentTargetNode);
+                            Path.Remove(currentTargetNode);
                         }
-                        if (TargetList.Count > 0)
+                        if (Path.Count > 0)
                         {
-                            currentTargetNode = TargetList[0];
+                            currentTargetNode = Path[0];
                         }
                         startTime = Time.time;
 

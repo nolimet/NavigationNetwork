@@ -44,7 +44,7 @@ namespace TowerDefence
         [SerializeField]
         protected float shootingOffsetDirection;
 
-        public Target_Priority TargetMode = Target_Priority.Closest;
+        public Target_Priority TargetMode = Target_Priority.ClosestToEnd;
 
         protected List<BaseEnemy> Enemies;
 
@@ -140,6 +140,10 @@ namespace TowerDefence
                         case Target_Priority.Weakest:
                             FindWeakest();
                             break;
+                        case Target_Priority.ClosestToEnd:
+                            FindClosestToEnd();
+                                break;
+
                     }
                     return true;
                 }
@@ -224,6 +228,24 @@ namespace TowerDefence
             }
             Target = closest;
         }
+
+        /// <summary>
+        /// Finds the enemy clostest to the endpoint
+        /// </summary>
+        protected virtual void FindClosestToEnd()
+        {
+            BaseEnemy closest = Enemies[0];
+            float shortestDist = Enemies[0].GetPathLengthLeft();
+            foreach (BaseEnemy hit in Enemies)
+            {
+                if (shortestDist > hit.GetPathLengthLeft())
+                {
+                    closest = hit;
+                    shortestDist = hit.GetPathLengthLeft();
+                }
+            }
+            Target = closest;
+        }
         #endregion
         #region ContextMenu
         public virtual void AddContextItems(GameObject MenuContainer,GameObject templateButton)
@@ -272,10 +294,10 @@ namespace TowerDefence
 
             g = CloneGameobject(templateToggle, ToggleContainer.transform);
             setButtonText(g, "ClosestToEnd");
-            SetActiveToggle(g, Target_Priority.ClostestToEnd);
+            SetActiveToggle(g, Target_Priority.ClosestToEnd);
             t = setToggleEvents(g, new UnityEngine.Events.UnityAction<bool>(delegate
             {
-                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.TargetMode = Target_Priority.ClostestToEnd;
+                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.TargetMode = Target_Priority.ClosestToEnd;
             }));            
             g.transform.position = animationStart;
 

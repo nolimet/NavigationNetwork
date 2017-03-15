@@ -25,6 +25,7 @@ namespace TowerDefence.Utils
     {
         public string SpawnPointName;
         public string enemy;
+        public float StartDelay;
         public float Speed;
         public float SpawnDelay;
         public int spawnAmount;

@@ -74,7 +74,9 @@ namespace TowerDefence.Managers
             foreach(SpawnPoint p in SpawnPoints)
             {
                 s = p.pathBuilderData.nodeData.nodeTag;
-                p.spawnGroup = currentWave.groups.First(x => x.SpawnPointName == s);
+                p.spawnGroup = currentWave.groups.Where(x => x.SpawnPointName==s).ToArray();
+
+                p.PreWaveInit();
             }
 
             _EnemiesLeft = currentWave.groups.Sum(x => x.spawnAmount);

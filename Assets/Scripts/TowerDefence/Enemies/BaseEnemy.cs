@@ -7,6 +7,7 @@ namespace TowerDefence.Enemies
     {
         #region Enemy Stats
         public float MaxHealth;
+        public float DistLeft;
 
         public float Health
         {
@@ -40,7 +41,7 @@ namespace TowerDefence.Enemies
             //TODO Write calc for damage using armor
             health -= Damage;
             if (health <= 0)
-                Destroy(gameObject);
+                ObjectPools.EnemyPool.RemoveObj(this);
         }
 
         public void TakeVirtualDamage(float Damage)
@@ -58,12 +59,27 @@ namespace TowerDefence.Enemies
             name = displayName + " " + GetInstanceID();
         }
 
+        public void Reset()
+        {
+            health = MaxHealth;
+            virtualHealth = MaxHealth;
+        }
+
         protected override void Start()
         {
             base.Start();
             health = MaxHealth;
             virtualHealth = health;
             displayName = defaultName;
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+            DistLeft = GetPathLengthLeft();
+
+            if (health <= 0)
+                ObjectPools.EnemyPool.RemoveObj(this);
         }
     }
 }

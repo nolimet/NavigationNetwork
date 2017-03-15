@@ -14,7 +14,7 @@ namespace TowerDefence.Enemies
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            ObjectPools.EnemyPool.RemoveObj(collision.GetComponent<BaseEnemy>());
+            collision.GetComponent<BaseEnemy>().TakeDamage(Mathf.Infinity);
             Managers.ResourceManager.RemoveHealth(1);
         }
     }
