@@ -92,4 +92,12 @@ namespace TowerDefence.Utils
         public Vector3 BuildablePlaneSize;
         public Vector2 ViewSize;
     }
+
+    [System.Serializable]
+    public struct TowerIdentifyable
+    {
+        public Towers type;
+        public GameObject Tower;
+        public int Cost;
+    }
 }

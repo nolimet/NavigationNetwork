@@ -194,8 +194,9 @@ namespace NavigationNetwork
                 }
                 catch (System.Exception e)
                 {
-                    Debug.LogError("Error in GridBuilder " + e.Message);
+                    Debug.LogError("################# ERROR IN GRIDBUILDER ################# \n" + e.Message);
                     Debug.LogException(e);
+                    Debug.LogError("##################### END OF ERROR #####################");
                     throw;
                 }
                 

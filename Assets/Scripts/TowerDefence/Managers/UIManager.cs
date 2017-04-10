@@ -91,7 +91,7 @@ namespace TowerDefence.Managers
 
         void SharedUpdate()
         {
-            Money.text = ResourceManager.instance.cash.ToString();
+            Money.text = ResourceManager.cash.ToString();
 
             if (ContextMenus.TowerContextMenu.instance.currentTower !=null)
             {

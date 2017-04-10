@@ -21,7 +21,9 @@ namespace TowerDefence.Managers
         }
         static ResourceManager _instance;
 
-        public int cash = 0;
+        public static int cash { get { return instance._cash; } }
+
+        public int _cash;
         public int cashGainedWave;
         public int cashGainedLevel;
 
@@ -29,35 +31,42 @@ namespace TowerDefence.Managers
         void Start()
         {
             GameManager.instance.onLoadLevel += onLoadLevel;
+            ObjectPools.EnemyPool.instance.onRemove += Instance_onRemove;
+        }
+
+        private void Instance_onRemove(Enemies.BaseEnemy item)
+        {
+            addCash(item.resourceDropQuantity);
         }
 
         void onLoadLevel()
         {
-            cash = GameManager.currentLevel.resources.startCash;
+            _cash = GameManager.currentLevel.resources.startCash;
         }
 
         public void addCash(int value)
         {
+            Debug.Log("Cash added " + value);
             if (value < 0)
             {
                 Debug.Log("USE BUY Function instead!");
                 return;
             }
-            cash += value;
+            _cash += value;
             cashGainedWave += value;
             cashGainedLevel += value;
         }
 
         public static bool canBuy(int value)
         {
-            return (instance.cash >= value);
+            return (instance._cash >= value);
         }
 
         public static void Buy(int value)
         {
             if (canBuy(value))
             {
-                instance.cash -= value;
+                instance._cash -= value;
             }
         }
 
@@ -69,5 +78,7 @@ namespace TowerDefence.Managers
                 //TODO: trigger gameover State
             }
         }
+
+
     }
 }

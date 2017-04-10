@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using Util;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace TowerDefence.Managers
 {
+    //ADD ADD NEW TOWER TO TOWER BOUNDS!
+
     public class PlacementManager : MonoBehaviour
     {
         #region Initilazition
@@ -26,11 +29,13 @@ namespace TowerDefence.Managers
 
         public event Utils.VoidDelegate onStartPlacing;
         public event Utils.VoidDelegate onEndPlacing;
-
+        public event Utils.VoidDelegate onSuccesfullPlacement;
 
         [SerializeField]
         GameObject BackDrop;
         Bounds BackDropBounds;
+
+        List<Bounds> Towers;
 
         public bool isPlacing;
         GameObject placeAble;
@@ -43,10 +48,23 @@ namespace TowerDefence.Managers
             GameManager.instance.onLoadLevel += Instance_onLoadLevel;
         }
 
+        public static void Place(GameObject placeAble, bool isNew)
+        {
+            instance.onBeginPlace(placeAble, isNew);
+        }
+
         private void Instance_onLoadLevel()
         {
             BackDrop.transform.localScale = GameManager.currentLevel.worldSize.BuildablePlaneSize;
             BackDropBounds = BackDrop.transform.getBounds();
+
+            Towers = new List<Bounds>();
+
+            BaseTower[] tb = FindObjectsOfType<BaseTower>();
+            foreach (BaseTower t in tb)
+            {
+                Towers.Add(t.transform.getBounds());
+            }
         }
 
         public void onBeginPlace(GameObject placeAble, bool isNew)
@@ -105,7 +123,10 @@ namespace TowerDefence.Managers
                     InputManager.instance.onLeftMouseClick -= EndPlacement;
                     InputManager.instance.onRightMouseClick -= CancelPlacement;
 
-                    //tell managers that object was placed succesfully
+                    if (onSuccesfullPlacement != null)
+                    {
+                        onSuccesfullPlacement();
+                    }
 
                     Destroy(ghost);
                     ghost = null;
@@ -143,7 +164,7 @@ namespace TowerDefence.Managers
             }
             else
             {
-                //RemoveGhostImage;
+                Destroy(placeAble);
                 Destroy(ghost);
                 placeAble = null;
             }
@@ -168,6 +189,14 @@ namespace TowerDefence.Managers
                         return false;
                     }
                 }
+
+                foreach (Bounds b in Towers)
+                {
+                    if (p.Intersects(b))
+                    {
+                        return false;
+                    }
+                }
                 if (BackDrop != null)
                 {
                     if (!BackDropBounds.ContainBounds(p))   
@@ -186,7 +215,7 @@ namespace TowerDefence.Managers
         {
             GameObject g = new GameObject("PlacementGhost");
             SpriteRenderer spr = g.AddComponent<SpriteRenderer>();
-            spr.sprite = Gameobj.GetComponent<SpriteRenderer>().sprite;
+            spr.sprite = Gameobj.GetComponentInChildren<SpriteRenderer>().sprite;
 
             spr.color = new Color(1, 1, 1, 0.5f);
 

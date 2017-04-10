@@ -29,6 +29,7 @@ namespace Util.UI
         /// <summary>
         /// The current space between the objects
         /// </summary>
+        [ReadOnly]
         public Vector2 CurrentSpacing = Vector2.zero;
         /// <summary>
         /// The maxium number of rows

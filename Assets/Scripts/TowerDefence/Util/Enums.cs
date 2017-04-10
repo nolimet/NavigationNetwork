@@ -34,4 +34,10 @@ namespace TowerDefence
         playing,
         editing
     }
+
+    public enum Towers
+    {
+        Laser,
+        Cannon
+    }
 }

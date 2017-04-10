@@ -34,8 +34,7 @@ namespace TowerDefence
                 line = g.AddComponent<LineRenderer>();
                 line.useWorldSpace = true;
 
-                line.SetPosition(0, transform.position + new Vector3(0, 0, -3));
-                line.SetPosition(1, transform.position + new Vector3(0, 0, -3));
+                setBeamPos(fireWorldPosition);
 
                 line.startWidth = beamWidth;
                 line.endWidth = beamWidth;
@@ -54,8 +53,7 @@ namespace TowerDefence
                     if (Target.VirtualHealth > 0)
                     {
 
-                        line.SetPosition(0, transform.position + new Vector3(0, 0, -3));
-                        line.SetPosition(1, Target.transform.position + new Vector3(0, 0, -3));
+                        setBeamPos(Target.transform.position);
 
                         lastbeamWidth = beamWidth = getLineWidth();
                         beamOpacity = 1f;
@@ -110,6 +108,12 @@ namespace TowerDefence
             }
 
             return width;
+        }
+
+        void setBeamPos(Vector3 p)
+        {
+            line.SetPosition(0, ((Vector3)fireWorldPosition) + new Vector3(0, 0, -3));
+            line.SetPosition(1, p + new Vector3(0, 0, -3));
         }
     }
 }

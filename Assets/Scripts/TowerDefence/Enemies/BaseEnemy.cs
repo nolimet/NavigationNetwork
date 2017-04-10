@@ -54,6 +54,8 @@ namespace TowerDefence.Enemies
         [SerializeField]
         string _editorTypeName = "base";
         const string defaultName = "Basic Enemy";
+
+        public int resourceDropQuantity = 4;
         protected override void setName()
         {
             name = displayName + " " + GetInstanceID();
