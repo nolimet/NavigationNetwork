@@ -50,7 +50,7 @@ namespace TowerDefence.Managers
 
         private void Instance_onStartPlacing()
         {
-            throw new System.NotImplementedException();
+            CloseBuildMenu();
         }
 
         public void OpenBuildMenu()
@@ -58,19 +58,37 @@ namespace TowerDefence.Managers
             buildMenu.SetActive(true);
         }
 
+        public void ToggleBuildMenu()
+        {
+            if (buildMenu.activeSelf)
+            {
+                CloseBuildMenu();
+            }
+            else
+            {
+                OpenBuildMenu();
+            }
+        }
+
         public void CloseBuildMenu()
         {
             buildMenu.SetActive(false);
         }
 
-        public void PlaceTower(Towers tower)
+        /// <summary>
+        /// Places a tower based on interger given
+        /// </summary>
+        /// <param name="i">Tower given as interger</param>
+        public void PlaceTower(int i)
         {
+            Debug.Log(i);
+            Towers t = (Towers)i;
             Utils.TowerIdentifyable o =
-            towers.First(x => x.type == tower);
+            towers.First(x => x.type == t);
 
-            GameObject newTower = Instantiate(o.Tower);
-
-            PlacementManager.Place(newTower, true);
+            GameObject nt = Instantiate(o.Tower);
+            nt.transform.position -= new Vector3(0, 0, nt.transform.position.z);
+            PlacementManager.Place(nt, true);
         }
 
     }

@@ -76,6 +76,7 @@ namespace TowerDefence.Managers
             this.placeAble = placeAble;
             this.isNew = isNew;
             ghost = makeGhostSprite(placeAble);
+            
             InputManager.instance.onLeftMouseClick += EndPlacement;
             InputManager.instance.onRightMouseClick += CancelPlacement;
 
@@ -120,6 +121,8 @@ namespace TowerDefence.Managers
             {                
                 if (isNew)
                 {
+                    isPlacing = false;
+
                     InputManager.instance.onLeftMouseClick -= EndPlacement;
                     InputManager.instance.onRightMouseClick -= CancelPlacement;
 
@@ -127,6 +130,8 @@ namespace TowerDefence.Managers
                     {
                         onSuccesfullPlacement();
                     }
+                    placeAble.transform.position = ghost.transform.position;
+                    placeAble.SetActive(true);
 
                     Destroy(ghost);
                     ghost = null;

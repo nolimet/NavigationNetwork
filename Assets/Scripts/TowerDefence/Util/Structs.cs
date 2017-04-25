@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using Util;
 using System.Collections;
 namespace TowerDefence.Utils
 {
@@ -99,5 +101,17 @@ namespace TowerDefence.Utils
         public Towers type;
         public GameObject Tower;
         public int Cost;
+    }
+
+    [System.Serializable]
+    public struct buttonInformation
+    {
+        public Towers type;
+        public Sprite icon;
+
+        [ReadOnly]
+        public Image img;
+        [ReadOnly]
+        public Text price, name;
     }
 }

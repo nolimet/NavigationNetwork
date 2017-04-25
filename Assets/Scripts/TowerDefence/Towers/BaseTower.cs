@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace TowerDefence
 {
-    public class BaseTower : MonoBehaviour
+    public class BaseTower : Util.Update.BaseClass
     {
         /// <summary>
         /// Offset For the context menu on the tower

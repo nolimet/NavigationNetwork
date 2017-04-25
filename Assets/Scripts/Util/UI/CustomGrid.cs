@@ -74,6 +74,16 @@ namespace Util.UI
         /// List that contains positional data for the objects
         /// </summary>
         List<Vector2> newPos = new List<Vector2>(), startPos = new List<Vector2>();
+        /// <summary>
+        /// List of active game objects
+        /// </summary>
+        [ReadOnly,SerializeField]
+        List<RectTransform> ActiveChildren;
+        /// <summary>
+        /// Toggle to only use enabled game ojbects
+        /// </summary>
+        [SerializeField]
+        bool onlyUseActiveObjects;
 
         RectTransform t;
 
@@ -81,6 +91,7 @@ namespace Util.UI
         {
             t = (RectTransform)transform;
             atNewPos = false;
+            ActiveChildren = new List<RectTransform>();
         }
 
         void OnEnable()
@@ -91,9 +102,6 @@ namespace Util.UI
             atNewPos = false;
         }
 
-        /// <summary>
-        /// Used for force call a update
-        /// </summary>
         public void ForceUpdate()
         {
             OnEnable();
@@ -106,11 +114,11 @@ namespace Util.UI
 
         void Update()
         {
-            if (childCountLast != transform.childCount)
+            if (childCountLast != getChildCount())
             {
                 setChildSize();
                 setChildPosition();
-                childCountLast = transform.childCount;
+                childCountLast = getChildCount();
             }
             else if (atNewPos && continuesUpdates)
             {
@@ -131,9 +139,6 @@ namespace Util.UI
             }
         }
 
-        /// <summary>
-        /// Applies size data to all the objects
-        /// </summary>
         void setChildSize()
         {
             RectTransform child;
@@ -141,26 +146,28 @@ namespace Util.UI
             {
                 child = (RectTransform)t.GetChild(i);
                 child.sizeDelta = ObjSize;
+                // child.name = "Obj " + i.ToString();
+                //child.anchorMax = Vector2.one / 2;
+                //child.anchorMin = Vector2.one / 2;
                 child.anchorMax = AnchorPoint;
                 child.anchorMin = AnchorPoint;
 
             }
         }
 
-        /// <summary>
-        /// calculates the postion the object will need to go to. 
-        /// It also figures out the spacing that is allowed between the objects
-        /// </summary>
         void setChildPosition()
         {
             StartTime = Time.time;
             atNewPos = false;
             startPos.Clear();
             newPos.Clear();
+            ActiveChildren.Clear();
+
             if (!t)
                 t = (RectTransform)transform;
+
             Rect WH = t.rect;
-            int noOfChilds = t.childCount;
+            int noOfChilds = getChildCount();
             float spacingY, spacingX;
 
             ///calculate HorizontalSpace
@@ -188,8 +195,8 @@ namespace Util.UI
             if (spacingX > maxSpacing.x)
                 spacingX = maxSpacing.x;
 
-            CurrentSpacing = new Vector2(spacingX, spacingY);
 
+            CurrentSpacing = new Vector2(spacingX, spacingY);
             spacingX += padding.x;
             spacingY += padding.y;
 
@@ -204,109 +211,124 @@ namespace Util.UI
 
             for (int i = 0; i < noOfChilds; i++)
             {
+                Child = ActiveChildren[i];
 
-                if (i % maxRows == 0)
+                if (!onlyUseActiveObjects || onlyUseActiveObjects && Child.gameObject.activeSelf)
                 {
-                    if ((i + 1) / maxRows < totalCollums - 1)
-                        row = maxRows;
-                    else
-                        rowSize = row = noOfChilds - i;
-                }
-
-                Child = (RectTransform)t.GetChild(i);
-
-                if (noOfChilds <= minNeededForFirstRow)
-                {
-
-                    indexLocal = (noOfChilds / 2 - i);
-                    if (noOfChilds == 2)
-                        indexLocal -= 0.5f;
-                    if (noOfChilds == 0)
-                        indexLocal = 0;
-
-                    pos = new Vector2(0f, indexLocal * (spacingY + ObjSize.y));
-                }
-                else
-                {
-                    if (AnchorPoint.y < 1)
-                    {
-                        indexLocal = ((noOfChilds / maxRows) / 2f) - (i / maxRows);
-
-                    }
-                    else
-                    {
-                        indexLocal = (-i / maxRows);
-                        // Debug.Log(indexLocal);
-                    }
-
-                    if (noOfChilds % maxRows == 0)
-                        indexLocal -= yoffset;
-
-                    pos = new Vector2(0f, indexLocal * (spacingY + ObjSize.y));
-
-                    if (maxRows > 1)
+                    if (i % maxRows == 0)
                     {
                         if ((i + 1) / maxRows < totalCollums - 1)
-                        {
-                            OrigenX = (z * (maxRows + 1)) / 2f;
-                        }
-                        else if (row == rowSize)
-                        {
-                            OrigenX = (z * (rowSize + 1)) / 2f;
-                        }
+                            row = maxRows;
+                        else
+                            rowSize = row = noOfChilds - i;
+                    }
 
-                        pos.x = (-z * row) + OrigenX;
+                    if (noOfChilds <= minNeededForFirstRow)
+                    {
+
+                        indexLocal = (noOfChilds / 2 - i);
+                        if (noOfChilds == 2)
+                            indexLocal -= 0.5f;
+                        if (noOfChilds == 0)
+                            indexLocal = 0;
+
+                        pos = new Vector2(0f, indexLocal * (spacingY + ObjSize.y));
                     }
                     else
                     {
-                        pos.x = 0;
+                        if (AnchorPoint.y < 1)
+                        {
+                            indexLocal = ((noOfChilds / maxRows) / 2f) - (i / maxRows);
+
+                        }
+                        else
+                        {
+                            indexLocal = (-i / maxRows);
+                            // Debug.Log(indexLocal);
+                        }
+
+                        if (noOfChilds % maxRows == 0)
+                            indexLocal -= yoffset;
+
+                        pos = new Vector2(0f, indexLocal * (spacingY + ObjSize.y));
+
+                        if (maxRows > 1)
+                        {
+                            if ((i + 1) / maxRows < totalCollums - 1)
+                            {
+                                OrigenX = (z * (maxRows + 1)) / 2f;
+                            }
+                            else if (row == rowSize)
+                            {
+                                OrigenX = (z * (rowSize + 1)) / 2f;
+                            }
+
+                            pos.x = (-z * row) + OrigenX;
+                        }
+                        else
+                        {
+                            pos.x = 0;
+                        }
                     }
+                    pos.x = Mathf.Ceil(pos.x);
+                    pos.y = Mathf.Ceil(pos.y);
+
+                    startPos.Add(Child.anchoredPosition);
+                    newPos.Add(pos);
+
+                    row--;
                 }
-                pos.x = Mathf.Ceil(pos.x);
-                pos.y = Mathf.Ceil(pos.y);
-
-                startPos.Add(Child.anchoredPosition);
-                newPos.Add(pos);
-
-                row--;
             }
         }
 
-        /// <summary>
-        /// Moves the objects around and used in the animation
-        /// </summary>
         void MoveObjectsToPos()
         {
             RectTransform child;
-            for (int i = 0; i < transform.childCount; i++)
+            for (int i = 0; i < ActiveChildren.Count; i++)
             {
-                child = (RectTransform)t.GetChild(i);
+                child = ActiveChildren[i];
                 child.anchoredPosition = Vector2.Lerp(startPos[i], newPos[i], (Time.time - StartTime) * 4f);
                 RoundPos(child);
             }
         }
 
-        /// <summary>
-        /// rounds the position of the childeren so it seems a bit nicer
-        /// </summary>
-        /// <param name="t"></param>
         void RoundPos(RectTransform t)
         {
             Vector2 p = t.anchoredPosition;
             t.anchoredPosition = new Vector2(Mathf.Round(p.x), Mathf.Round(p.y));
         }
 
-        /// <summary>
-        /// Teleport them to there fingal position;
-        /// </summary>
         void SnapToPos()
         {
             RectTransform child;
-            for (int i = 0; i < transform.childCount; i++)
+            for (int i = 0; i < ActiveChildren.Count; i++)
             {
-                child = (RectTransform)t.GetChild(i);
+                child = ActiveChildren[i];
                 child.anchoredPosition = newPos[i];
             }
+        }
+
+        int getChildCount()
+        {
+            ActiveChildren.Clear();
+            for (int i = 0; i < t.childCount; i++)
+            {
+                if (!onlyUseActiveObjects || onlyUseActiveObjects && t.GetChild(i).gameObject.activeSelf)
+                    ActiveChildren.Add((RectTransform)t.GetChild(i));
+            }
+
+            if (onlyUseActiveObjects)
+            {
+                int r = 0;
+                for (int i = 0; i < t.childCount; i++)
+                {
+                    if (t.GetChild(i).gameObject.activeSelf)
+                        r++;
+                }
+
+                return r;
+            }
+            return t.childCount;
         }
     }
 }
