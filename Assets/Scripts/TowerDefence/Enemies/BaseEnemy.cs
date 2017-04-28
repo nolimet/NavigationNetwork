@@ -75,13 +75,18 @@ namespace TowerDefence.Enemies
             displayName = defaultName;
         }
 
-        protected override void Update()
+        public override void IUpdate()
         {
-            base.Update();
+            base.IUpdate();
             DistLeft = GetPathLengthLeft();
 
             if (health <= 0)
+            {
                 ObjectPools.EnemyPool.RemoveObj(this);
+
+                Util.Update.UpdateManager.removeUpdateAble(this);
+            }
+
         }
     }
 }

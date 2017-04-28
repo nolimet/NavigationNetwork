@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace NavigationNetwork
 {
-    public class NavigatorV2 : MonoBehaviour
+    public class NavigatorV2 : MonoBehaviour, Util.Update.IUpdatable
     {
         public int SenderID;
         public int TargetID = 0;
@@ -138,7 +138,7 @@ namespace NavigationNetwork
         /// <summary>
         ///  move to current Target
         /// </summary>
-        protected virtual void Update()
+        public virtual void IUpdate()
         {
             if (currentTargetNode != null)
             {

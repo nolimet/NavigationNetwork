@@ -10,7 +10,7 @@ namespace TowerDefence
         float weaponCooldown;
         const float beamFadeTime = 0.3f;
         const float beamMaxWidth = 0.4f;
-        const float beamMaxDamageScale = 30f; //NOT DAMAGE CAP! just for visuals
+        const float beamMaxDamageScale = 30f; //NOT DAMAGE CAP! just for visuals.
         const float beamMinDamageScale = 1f;
 
         float beamOpacity;
@@ -43,11 +43,11 @@ namespace TowerDefence
             }
         }
 
-        protected override void Update()
+        public override void IUpdate()
         {
             if (weaponCooldown <= 0)
             {
-                base.Update();
+                base.IUpdate();
                 if (Target)
                 {
                     if (Target.VirtualHealth > 0)

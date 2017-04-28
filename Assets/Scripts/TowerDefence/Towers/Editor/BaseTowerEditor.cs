@@ -12,7 +12,7 @@ namespace TowerDefence.EditorScripts
             BaseTower t = (BaseTower)target;
                 //FireOffset Handle;
                 EditorGUI.BeginChangeCheck();
-                Vector3 pos1 = Handles.FreeMoveHandle(t.fireLocation.Rotate(t.transform.rotation) + (Vector2)t.transform.position, Quaternion.identity, .05f, new Vector3(.5f, .5f, .5f), Handles.CircleCap);
+                Vector3 pos1 = Handles.FreeMoveHandle(t.fireLocation.Rotate(t.transform.rotation) + (Vector2)t.transform.position, Quaternion.identity, .05f, new Vector3(.5f, .5f, .5f), Handles.CircleHandleCap);
                 if (EditorGUI.EndChangeCheck())
                 {
                     Undo.RecordObject(target, "Free Move Fire Location");
@@ -23,7 +23,7 @@ namespace TowerDefence.EditorScripts
 
             //ContextMenuOffset
                 EditorGUI.BeginChangeCheck();
-                Vector3 pos2 = Handles.FreeMoveHandle(t.ContextMenuOffset.Rotate(t.transform.rotation) + (Vector2)t.transform.position, Quaternion.identity, .05f, new Vector3(.5f, .5f, .5f), Handles.CircleCap);
+                Vector3 pos2 = Handles.FreeMoveHandle(t.ContextMenuOffset.Rotate(t.transform.rotation) + (Vector2)t.transform.position, Quaternion.identity, .05f, new Vector3(.5f, .5f, .5f), Handles.CircleHandleCap);
                 if (EditorGUI.EndChangeCheck())
                 {
                     Undo.RecordObject(target, "Free Move ContextMenu Location");

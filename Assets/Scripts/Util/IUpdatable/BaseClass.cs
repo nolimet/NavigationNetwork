@@ -23,7 +23,7 @@ namespace Util.Update
             UpdateManager.removeUpdateAble(this);
         }
 
-        public void IUpdate()
+        public virtual void IUpdate()
         {
             Debug.Log(System.DateTime.Now);
         }

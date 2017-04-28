@@ -26,8 +26,11 @@ namespace Util.Update
         }
         private static UpdateManager _instance;
 
+        /// <summary>
+        /// Debug value
+        /// </summary>
         [SerializeField, ReadOnly]
-        int updatablesCount;
+        private int updatablesCount;
         private List<IUpdatable> updateAbles;
         private List<IContinuesUpdateAble> continuesUpdateables;
 

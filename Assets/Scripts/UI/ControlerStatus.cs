@@ -8,8 +8,8 @@ namespace BuildSystem
     {
 
         [SerializeField]
-        private Text TickPerSecond, NumberOfNodes, MultiThreadingEnabled,
-            CortinuesEnabled, GridBuildTime, GridUpdateTime;
+        private Text TickPerSecond = null, NumberOfNodes = null, MultiThreadingEnabled = null,
+            CortinuesEnabled = null, GridBuildTime = null, GridUpdateTime = null;
 
         [SerializeField]
         private RectTransform GridUpdateTimeGauge;

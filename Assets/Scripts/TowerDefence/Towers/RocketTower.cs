@@ -20,9 +20,9 @@ namespace TowerDefence
             Fire_Update();
         }
 
-        protected override void Update()
+        public override void IUpdate()
         {
-            base.Update();
+            base.IUpdate();
 
             if (weaponCooldown > 0)
             {

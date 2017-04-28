@@ -62,7 +62,10 @@ namespace TowerDefence
             GetComponent<CircleCollider2D>().isTrigger = true;
         }
 
-        protected virtual void Update()
+        /// <summary>
+        /// Don't callfunc dicrectly let update manager call it
+        /// </summary>
+        public override void IUpdate()
         {
             CircleCast(); 
             length = Enemies.Count;
