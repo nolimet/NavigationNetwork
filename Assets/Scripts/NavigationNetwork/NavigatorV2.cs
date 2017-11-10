@@ -23,9 +23,20 @@ namespace NavigationNetwork
         protected virtual void Start()
         {
             setName();
-
+            Util.Update.UpdateManager.addUpdateAble(this);
             NavigationNetworkControler.OnRebuild += EnergyNetWorkControler_OnRebuild;
         }
+
+        private void OnEnable()
+        {
+            Util.Update.UpdateManager.addUpdateAble(this);
+        }
+
+        private void OnDisable()
+        {
+            Util.Update.UpdateManager.removeUpdateAble(this);
+        }
+
 
         protected virtual void setName()
         {

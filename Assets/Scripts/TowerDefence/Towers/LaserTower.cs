@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Util.Debugger;
 
 namespace TowerDefence
 {
@@ -55,7 +56,8 @@ namespace TowerDefence
 
                         setBeamPos(Target.transform.position);
 
-                        lastbeamWidth = beamWidth = getLineWidth();
+                        lastbeamWidth = getLineWidth();
+                        beamWidth = lastbeamWidth;
                         beamOpacity = 1f;
 
                         line.startWidth = beamWidth;
@@ -68,6 +70,8 @@ namespace TowerDefence
 
                         Target.TakeVirtualDamage(_damage);
                         Target.TakeDamage(_damage);
+
+                        Target = null;
                     }
                 }
             }
@@ -89,6 +93,9 @@ namespace TowerDefence
             }
             line.startWidth = beamWidth;
             line.endWidth = beamWidth;
+
+            //beamWidth.QuickLog("BeamWidth" + name);
+            //Time.time.QuickLog("TIME");
         }
 
         float getLineWidth()

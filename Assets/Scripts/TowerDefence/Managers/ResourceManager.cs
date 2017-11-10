@@ -46,7 +46,7 @@ namespace TowerDefence.Managers
 
         public void addCash(int value)
         {
-            Debug.Log("Cash added " + value);
+            //Debug.Log("Cash added " + value);
             if (value < 0)
             {
                 Debug.Log("USE BUY Function instead!");

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Enemies;
@@ -118,5 +119,10 @@ namespace TowerDefence.Managers
             }
         }
 
+        //IEnumerator loadLvl(string URL)
+        //{
+        //    WWW loader = new WWW(URL);
+        //    loader.
+        //}
     }
 }

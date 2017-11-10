@@ -13,11 +13,32 @@ namespace TowerDefence
             base.Start();
             _type = "Rocket";
             fireDelay = 60f / _fireRate;
+
+            _hasFireRate = false;
         }
 
         protected override void HasTarget()
-        {      
-            Fire_Update();
+        {
+            if (weaponCooldown <= 0)
+            {
+                if (Target != null)
+                {
+                    if (Target.VirtualHealth > 0)
+                    {
+                        Target.TakeVirtualDamage(_damage);
+                        weaponCooldown = fireDelay;
+
+                        Projectile.TowerProjectileBase Bullet = ObjectPools.BulletPool.GetObj(BulletType.Base);
+                        Bullet.setDamage(_damage);
+                        Bullet.setSpeed(20f);
+                        Bullet.setTarget(Target);
+                        Bullet.gameObject.SetActive(true);
+                        Bullet.transform.position = fireWorldPosition;
+
+                        Target = null;
+                    }
+                }
+            }
         }
 
         public override void IUpdate()
@@ -28,33 +49,6 @@ namespace TowerDefence
             {
                 weaponCooldown -= Time.deltaTime;
             }
-        }
-
-        protected virtual void Fire_Update()
-        {
-            if (weaponCooldown <= 0)
-            {
-                if (Target != null)
-                {
-                    if (Target.VirtualHealth > 0)
-                    {
-                        Target.TakeVirtualDamage(_damage);
-                        weaponCooldown = fireDelay;
-                        Shoot();
-                    }
-                }
-            }
-        }
-
-        protected void Shoot()
-        {
-            Projectile.TowerProjectileBase Bullet = ObjectPools.BulletPool.GetObj(BulletType.Base);
-            Bullet.setDamage(_damage);
-            Bullet.setSpeed(20f);
-            Bullet.setTarget(Target);
-            Bullet.gameObject.SetActive(true);
-            Bullet.transform.position = fireWorldPosition;
-            
         }
     }
 }

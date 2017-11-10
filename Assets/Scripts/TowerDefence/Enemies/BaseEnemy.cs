@@ -9,6 +9,14 @@ namespace TowerDefence.Enemies
         public float MaxHealth;
         public float DistLeft;
 
+        public bool CanBeHit
+        {
+            get
+            {
+                return (invisibltyDistance < 0f) && isActiveAndEnabled;
+            }
+        }
+
         public float Health
         {
             get
@@ -47,6 +55,8 @@ namespace TowerDefence.Enemies
         public void TakeVirtualDamage(float Damage)
         {
             virtualHealth -= Damage;
+            if (invisibltyDistance >= 0)
+                Debug.Log("STILL INVISI!" + name);
         }
         #endregion
         public string displayName { get; protected set; }
@@ -56,15 +66,20 @@ namespace TowerDefence.Enemies
         const string defaultName = "Basic Enemy";
 
         public int resourceDropQuantity = 4;
+
+        Vector2 lastPos;
+        float invisibltyDistance;
         protected override void setName()
         {
             name = displayName + " " + GetInstanceID();
         }
-
+        
         public void Reset()
         {
             health = MaxHealth;
             virtualHealth = MaxHealth;
+            invisibltyDistance = 1.5f;
+            lastPos = transform.position;
         }
 
         protected override void Start()
@@ -85,7 +100,13 @@ namespace TowerDefence.Enemies
                 ObjectPools.EnemyPool.RemoveObj(this);
 
                 Util.Update.UpdateManager.removeUpdateAble(this);
+            }                
+
+            if (invisibltyDistance>=0f)
+            {
+                invisibltyDistance -= Vector2.Distance(lastPos, transform.position);
             }
+            lastPos = transform.position;
 
         }
     }

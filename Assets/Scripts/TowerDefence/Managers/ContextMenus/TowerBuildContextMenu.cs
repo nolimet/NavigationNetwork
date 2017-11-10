@@ -25,7 +25,7 @@ namespace TowerDefence.Managers.ContextMenus
                 g.transform.SetParent(transform,false);
                 g.transform.localScale = Vector3.one;
 
-                g.name = ButtonData[l].type.ToString();
+                g.name = ButtonData[l].type.ToString().Replace('_', ' ');
 
                 ButtonData[l] = g.GetComponent<TowerBuyButton>().setup(ButtonData[l]);
             }

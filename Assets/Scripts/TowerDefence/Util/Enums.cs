@@ -38,6 +38,6 @@ namespace TowerDefence
     public enum Towers
     {
         Laser = 0,
-        Cannon = 1
+        Rocket_Launcher = 1
     }
 }

@@ -13,7 +13,7 @@ public class TowerBuyButton : MonoBehaviour {
         Text t;
         buttonInformation outputData = data;
 
-        i = transform.FindChild("icon").GetComponentInChildren<Image>();
+        i = transform.Find("icon").GetComponentInChildren<Image>();
 
         if (data.icon != null)
         {
@@ -24,8 +24,8 @@ public class TowerBuyButton : MonoBehaviour {
             i.gameObject.SetActive(false);
         }
 
-        t = transform.FindChild("name").GetComponentInChildren<Text>();
-        t.text = data.type.ToString();
+        t = transform.Find("name").GetComponentInChildren<Text>();
+        t.text = data.type.ToString().Replace('_', ' '); 
 
         b = GetComponentInChildren<Button>();
 
@@ -36,7 +36,7 @@ public class TowerBuyButton : MonoBehaviour {
             int tow = tmpInt; TowerDefence.Managers.BuildManager.instance.PlaceTower(tow);
         });
         outputData.name = t;
-        outputData.price = transform.FindChild("price").GetComponentInChildren<Text>();
+        outputData.price = transform.Find("price").GetComponentInChildren<Text>();
         outputData.img = i;
 
         return outputData;

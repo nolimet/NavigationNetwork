@@ -67,11 +67,11 @@ namespace NavigationNetwork
             {
                 NavUtil.createdPackageParent = true;
                 GameObject ep = new GameObject();
-                ep.name = "--EnergyPackages";
+                ep.name = "Navigation.NavigatorParent";
                 NavUtil.packageParent = ep.transform;
             }
 
-            name = "--NetworkControler";
+            name = "Navigation.Controler";
             StartCoroutine("CheckForChanges");
             
             if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
@@ -190,7 +190,7 @@ namespace NavigationNetwork
 
 
                         GridUpdateTime = (float)(System.DateTime.Now - startTime).TotalMilliseconds; ;
-                    Thread.Sleep(10);
+                    Thread.Sleep(50);
                 }
                 catch (System.Exception e)
                 {

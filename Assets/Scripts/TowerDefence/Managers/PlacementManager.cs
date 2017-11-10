@@ -58,9 +58,28 @@ namespace TowerDefence.Managers
             BackDrop.transform.localScale = GameManager.currentLevel.worldSize.BuildablePlaneSize;
             BackDropBounds = BackDrop.transform.getBounds();
 
-            Towers = new List<Bounds>();
+            UpdateBounds(null);
+        }
 
+        private void UpdateBounds(GameObject mask)
+        {
+            Towers = new List<Bounds>();
             BaseTower[] tb = FindObjectsOfType<BaseTower>();
+            if (mask != null)
+            {
+                List<BaseTower> NewArr = new List<BaseTower>();
+                for (int i = tb.Length - 1; i >= 0; i--)
+                {
+                    if (tb[i].gameObject != mask)
+                    {
+                        NewArr.Add(tb[i]);
+                    }
+                }
+
+                tb = NewArr.ToArray();
+            }
+
+            
             foreach (BaseTower t in tb)
             {
                 Towers.Add(t.transform.getBounds());
@@ -68,11 +87,14 @@ namespace TowerDefence.Managers
         }
 
         public void onBeginPlace(GameObject placeAble, bool isNew)
-        {
+        { 
             if (!isPlacing)
             {
                 isPlacing = true;
             }
+
+            UpdateBounds(placeAble);
+
             this.placeAble = placeAble;
             this.isNew = isNew;
             ghost = makeGhostSprite(placeAble);
@@ -152,7 +174,8 @@ namespace TowerDefence.Managers
                 {
                     onEndPlacing();
                 }
-            }
+                
+            }   
         }
 
         public void CancelPlacement()

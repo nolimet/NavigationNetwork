@@ -150,6 +150,21 @@ namespace Util.Serial
         }
 
         /// <summary>
+        /// Load function for web items, Recommended to turn in a Coroutine,
+        /// Will probs only JSon files...
+        /// </summary>
+        /// <typeparam name="T">Can be Any data type</typeparam>
+        /// <param name="URL">Exact file location + file name</param>
+        /// <returns></returns>
+        public static T LoadWeb<T>(string URL)
+        {
+            WWW www = new WWW(URL);
+            T data = JsonUtility.FromJson<T>(www.ToString());
+
+            return data;
+        }
+
+        /// <summary>
         /// Used to generate an error when there is one while saving or loading
         /// </summary>
         /// <param name="message">The message that will be shown</param>

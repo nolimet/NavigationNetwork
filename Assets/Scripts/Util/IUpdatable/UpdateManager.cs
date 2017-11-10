@@ -46,10 +46,15 @@ namespace Util.Update
         // Update is called once per frame
         private void Update()
         {
+            if (updateAbles == null) updateAbles = new List<IUpdatable>();
+
             updatablesCount = updateAbles.Count;
             if (!paused)
-                updateAbles.ForEach(i => i.IUpdate());
-
+            {
+                List<IUpdatable> tmp = updateAbles.ToList();
+                tmp.ForEach(i => i.IUpdate());
+            }
+            
             continuesUpdateables.ForEach(i => i.IContinuesUpdate());
         }
         

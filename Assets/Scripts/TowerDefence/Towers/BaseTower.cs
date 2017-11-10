@@ -39,6 +39,8 @@ namespace TowerDefence
         public float range { get { return _range; } }
         public string type { get { return _type; } }
 
+        protected bool _hasRange = true, _hasDamage = true, _hasFireRate = true;
+
         [SerializeField]
         protected float rotationOffset;
         [SerializeField]
@@ -67,14 +69,18 @@ namespace TowerDefence
         /// </summary>
         public override void IUpdate()
         {
-            CircleCast(); 
-            length = Enemies.Count;
-
-
-            if (FindTarget())
+            CircleCast();
+            if (Enemies != null)
             {
-                RotateToTarget();
-                HasTarget();
+                length = Enemies.Count;
+
+
+                if (FindTarget())
+                {
+                    RotateToTarget();
+                    HasTarget();
+                    Target = null;
+                }
             }
         }
 
@@ -93,16 +99,18 @@ namespace TowerDefence
                 if(hits[i].collider.tag == Managers.TagManager.Enemy)
                 {
                     e = hits[i].collider.GetComponent<BaseEnemy>();
-                    tmpList.Add(e);
-                    if (!Enemies.Contains(e))
+                    if (e.CanBeHit)
                     {
-                        Enemies.Add(e);
-                        
+                        tmpList.Add(e);
+                        if (!Enemies.Contains(e))
+                        {
+                            Enemies.Add(e);
+
+                        }
                     }
                 }
             }
-
-            Enemies = Enemies.Intersect(tmpList).ToList();
+            Enemies = Enemies?.Intersect(tmpList).ToList();
         }
 
         /// <summary>
@@ -253,26 +261,36 @@ namespace TowerDefence
         #region ContextMenu
         public virtual void AddContextItems(GameObject MenuContainer,GameObject templateButton)
         {
-            GameObject g = CloneGameobject(templateButton, MenuContainer.transform);
-            setButtonText(g, "upgrade Range");
-            setButtonEvents(g, new UnityEngine.Events.UnityAction(delegate 
+            GameObject g;
+            if (_hasRange)
             {
-                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.UpgradeRange(5);
-            }));
+                g = CloneGameobject(templateButton, MenuContainer.transform);
+                setButtonText(g, "upgrade Range");
+                setButtonEvents(g, new UnityEngine.Events.UnityAction(delegate
+                {
+                    TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.UpgradeRange(1);
+                }));
+            }
 
-            g = CloneGameobject(templateButton, MenuContainer.transform);
-            setButtonText(g, "upgrade Damage");
-            setButtonEvents(g, new UnityEngine.Events.UnityAction(delegate
+            if (_hasDamage)
             {
-                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.UpgradeDamage(2);
-            }));
+                g = CloneGameobject(templateButton, MenuContainer.transform);
+                setButtonText(g, "upgrade Damage");
+                setButtonEvents(g, new UnityEngine.Events.UnityAction(delegate
+                {
+                    TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.UpgradeDamage(1);
+                }));
+            }
 
-            g = CloneGameobject(templateButton, MenuContainer.transform);
-            setButtonText(g, "upgrade FireRate");
-            setButtonEvents(g, new UnityEngine.Events.UnityAction(delegate
+            if (_hasFireRate)
             {
-                TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.UpgradeFireRate(6);
-            }));
+                g = CloneGameobject(templateButton, MenuContainer.transform);
+                setButtonText(g, "upgrade FireRate");
+                setButtonEvents(g, new UnityEngine.Events.UnityAction(delegate
+                {
+                    TowerDefence.Managers.ContextMenus.TowerContextMenu.instance.currentTower.UpgradeFireRate(1);
+                }));
+            }
         }
 
         /// <summary>
@@ -382,19 +400,19 @@ namespace TowerDefence
         }
         #endregion
         #region TowerUpgrades
-        public virtual void UpgradeRange(float newRange)
+        public virtual void UpgradeRange(float cost)
         {
-            Debug.Log(newRange);
+            Debug.Log("Not Implemented yet Override function - UpgradeRange");
         }
 
-        public virtual void UpgradeDamage(float newDamage)
+        public virtual void UpgradeDamage(float cost)
         {
-            Debug.Log(newDamage);
+            Debug.Log("Not Implemented yet Override function - UpgradeDamage");
         }
 
-        public virtual void UpgradeFireRate(float newFireRate)
+        public virtual void UpgradeFireRate(float cost)
         {
-            Debug.Log(newFireRate);
+            Debug.Log("Not Implemented yet Override function - UpgradeFireRate");
         }
 
         #endregion
