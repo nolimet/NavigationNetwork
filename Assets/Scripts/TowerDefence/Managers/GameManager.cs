@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Util.Debugger;
 
 namespace TowerDefence.Managers
 {
@@ -18,6 +19,7 @@ namespace TowerDefence.Managers
                 return null;
             }
         }
+		
         static GameManager _instance;
         public static Utils.Level currentLevel { get { return instance._currentLevel; } set { if (Application.isEditor) { instance._currentLevel = value; } } }
         public static int currentWave {get { return instance._currentWave; } set { if (Application.isEditor) { instance._currentWave = value; } } }
@@ -67,13 +69,17 @@ namespace TowerDefence.Managers
                 Debug.Log("done loading!");
                 //string lvlJson = System.Text.Encoding.UTF8.GetString(request.bytes);
                 Debug.Log(request.text);
-                _currentLevel = JsonUtility.FromJson<Utils.Level>(request.text);
+
+                byte[] bytes = request.bytes;
+                _currentLevel = JsonUtility.FromJson<Utils.Level>(System.Text.Encoding.UTF8.GetString(bytes, 3, bytes.Length - 3));
+
+               // _currentLevel = JsonUtility.FromJson<Utils.Level>(request.text);
 
                 yield return new WaitForEndOfFrame();
             }
             else
             {
-                _currentLevel = JsonUtility.FromJson<Utils.Level>(System.IO.File.ReadAllText(Application.streamingAssetsPath + "/" + LevelName + ".json", System.Text.Encoding.UTF8));
+                    _currentLevel = JsonUtility.FromJson<Utils.Level>(System.IO.File.ReadAllText(Application.streamingAssetsPath + "/" + LevelName + ".json", System.Text.Encoding.UTF8));
             }
             if (onLoadLevel != null)
             {
