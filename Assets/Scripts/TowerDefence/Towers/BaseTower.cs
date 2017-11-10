@@ -79,7 +79,6 @@ namespace TowerDefence
                 {
                     RotateToTarget();
                     HasTarget();
-                    Target = null;
                 }
             }
         }
