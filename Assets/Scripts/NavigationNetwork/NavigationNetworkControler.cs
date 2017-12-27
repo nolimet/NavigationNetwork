@@ -74,10 +74,11 @@ namespace NavigationNetwork
             name = "Navigation.Controler";
             StartCoroutine("CheckForChanges");
             
-            if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
+            if (Application.platform == RuntimePlatform.WindowsPlayer) //|| Application.platform == RuntimePlatform.WindowsEditor)
             {
-                GridBuilder = new Thread(RangeCheckThread);
-                GridBuilder.Start();
+                // GridBuilder = new Thread(RangeCheckThread);
+                // GridBuilder.Start();
+                StartCoroutine("RangeCheck");
             }
             else
             {

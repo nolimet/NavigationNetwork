@@ -31,7 +31,7 @@ namespace TowerDefence.Enemies
            BaseEnemy e = ObjectPools.EnemyPool.GetObj(spawnGroup[i].enemy);
             e.transform.position = transform.position;
             e.SetPath(new List<NavigationNetwork.NavigationBase>(path));
-            e.speed = spawnGroup[i].Speed;
+            e.baseSpeed = spawnGroup[i].Speed;
             
             e.finalTargetNode = last;
             e.currentTargetNode = first;

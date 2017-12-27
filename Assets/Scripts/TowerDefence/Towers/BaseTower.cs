@@ -29,13 +29,13 @@ namespace TowerDefence
         [SerializeField]
         protected float _fireRate = 60;
         [SerializeField]
-        protected int _damage = 5;
+        protected float _damage = 5;
         [SerializeField]
-        protected float _range = 5;
+        protected float _range = 1.5f;
         protected string _type = "base";
 
         public float fireRate { get { return _fireRate; } }
-        public int damage { get { return _damage; } }
+        public float damage { get { return _damage; } }
         public float range { get { return _range; } }
         public string type { get { return _type; } }
 
@@ -59,9 +59,6 @@ namespace TowerDefence
         {
             mask = LayerMask.GetMask(new string[] { Managers.LayerTagManager.Enemy });
             Enemies = new List<BaseEnemy>();
-
-            //GetComponent<CircleCollider2D>().radius = range;
-            GetComponent<CircleCollider2D>().isTrigger = true;
         }
 
         /// <summary>
@@ -73,7 +70,6 @@ namespace TowerDefence
             if (Enemies != null)
             {
                 length = Enemies.Count;
-
 
                 if (FindTarget())
                 {
@@ -87,7 +83,7 @@ namespace TowerDefence
         RaycastHit2D[] hits;
         List<BaseEnemy> tmpList;
         BaseEnemy e;
-        void CircleCast()
+        protected void CircleCast()
         {
             tmpList = new List<BaseEnemy>();
             hits = Physics2D.CircleCastAll(transform.position, _range, Vector2.up, _range, mask);

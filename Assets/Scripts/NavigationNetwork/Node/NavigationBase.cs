@@ -55,7 +55,8 @@ namespace NavigationNetwork
         protected virtual void OnDestroy()
         {
             NavigationNetworkControler.OnNetUpdate -= GetInRangeNodes;
-            NavUtil.RemoveObject(this.gameObject);
+            if(Application.isPlaying)
+                NavUtil.RemoveObject(this.gameObject);
         }
 
         public virtual void GetInRangeNodes(List<NavigationNode> _nodes)

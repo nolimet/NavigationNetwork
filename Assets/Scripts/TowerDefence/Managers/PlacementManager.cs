@@ -43,6 +43,8 @@ namespace TowerDefence.Managers
         Vector3 StartPos = Vector3.zero;
         bool isNew = false;
 
+        GameObject drawRadius;
+
         void Awake()
         {
             GameManager.instance.onLoadLevel += Instance_onLoadLevel;
@@ -56,8 +58,9 @@ namespace TowerDefence.Managers
         private void Instance_onLoadLevel()
         {
             BackDrop.transform.localScale = GameManager.currentLevel.worldSize.BuildablePlaneSize;
+            
             BackDropBounds = BackDrop.transform.getBounds();
-
+            BackDrop.transform.position = new Vector3(0, 0, 50);
             UpdateBounds(null);
         }
 
@@ -101,6 +104,11 @@ namespace TowerDefence.Managers
             
             InputManager.instance.onLeftMouseClick += EndPlacement;
             InputManager.instance.onRightMouseClick += CancelPlacement;
+
+            if (placeAble.GetComponent<BaseTower>())
+            {
+                drawRadius = Util.DrawCircle.Draw(ghost.transform, new Color(0.2941176470588235f, 0.8196078431372549f, 0.4f), placeAble.GetComponent<BaseTower>().range);
+            }
 
             if (!isNew)
             {
@@ -174,7 +182,8 @@ namespace TowerDefence.Managers
                 {
                     onEndPlacing();
                 }
-                
+
+                Destroy(drawRadius);
             }   
         }
 
@@ -202,6 +211,7 @@ namespace TowerDefence.Managers
                 onEndPlacing();
             }
 
+            Destroy(drawRadius);
         }
 
         public bool PlaceLocationIsValid()
@@ -209,6 +219,7 @@ namespace TowerDefence.Managers
             if(placeAble != null)
             {
                 Bounds p = ghost.transform.getBounds();
+                Common.DrawBounds(p);
                 
                 foreach (Bounds b in PathManager.NodeBounds)
                 {

@@ -93,7 +93,8 @@ namespace TowerDefence.Enemies
             g.transform.position = transform.position;
             BaseEnemy e = g.GetComponent<BaseEnemy>();
 
-            e.speed = 5f;
+            e.baseSpeed = 5f;
+            e.speedEffector = 1f;
             e.SetPath(NavRoute.ToList());
             e.currentTargetNode = NavRoute[0];
         }

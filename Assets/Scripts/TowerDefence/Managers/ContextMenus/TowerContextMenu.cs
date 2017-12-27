@@ -33,6 +33,8 @@ namespace TowerDefence.Managers.ContextMenus
         GameObject ToggleTemplate;
         [SerializeField]
         GameObject DropDownMenuButton;
+
+        GameObject TowerRadius;
         void Awake()
         {
             Close();
@@ -41,6 +43,9 @@ namespace TowerDefence.Managers.ContextMenus
 
         public void Open(TowerDefence.BaseTower tower)
         {
+            if (TowerRadius)
+                Destroy(TowerRadius);
+            
             while (ContainerContextItems.transform.childCount > 0)
             {
                 DestroyImmediate(ContainerContextItems.transform.GetChild(0).gameObject);
@@ -58,6 +63,8 @@ namespace TowerDefence.Managers.ContextMenus
 
             DropMenuGroup.SetActive(false);
             _currentTower = tower;
+
+            TowerRadius = Util.DrawCircle.Draw(_currentTower.transform, new Color(0.2941176470588235f, 0.8196078431372549f, 0.4f), tower.range);
         }
 
         public void OpenDropDown()
@@ -69,6 +76,8 @@ namespace TowerDefence.Managers.ContextMenus
         {
             gameObject.SetActive(false);
             _currentTower = null;
+            Destroy(TowerRadius);
+            TowerRadius = null;
         }
 
         public void Move()

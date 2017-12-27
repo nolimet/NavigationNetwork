@@ -20,8 +20,11 @@ namespace NavigationNetwork
 
         protected override void OnDestroy()
         {
-            base.OnDestroy();
-            NavigationNetworkControler.OnPowerSend -= sendPower;
+            if (Application.isPlaying)
+            {
+                base.OnDestroy();
+                NavigationNetworkControler.OnPowerSend -= sendPower;
+            }
         }
 
         public override void GetInRangeNodes(List<NavigationNode> _nodes)

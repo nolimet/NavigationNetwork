@@ -22,8 +22,11 @@ namespace NavigationNetwork
 
         protected override void OnDestroy()
         {
-            base.OnDestroy();
-            NavigationNetworkControler.OnPullUpdate -= getPull;
+            if (Application.isPlaying)
+            {
+                base.OnDestroy();
+                NavigationNetworkControler.OnPullUpdate -= getPull;
+            }
         }
 
         public virtual void getPull()

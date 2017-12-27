@@ -113,6 +113,7 @@ namespace Util.Debugger
 
         void OnDestroy()
         {
+            if(Application.isPlaying)
             instance = null;
         }
 

@@ -49,7 +49,11 @@ namespace NavigationNetwork
             GetSendList();
         }
 
-        void OnDestroy() { NavigationNetworkControler.OnRebuild -= EnergyNetWorkControler_OnRebuild; }
+        void OnDestroy()
+        {
+            if (Application.isPlaying)
+            { NavigationNetworkControler.OnRebuild -= EnergyNetWorkControler_OnRebuild; }
+        }
 
         /// <summary>
         ///  The max route will only be to what ever the maxHoops is set. This is to avoid a infite loop in the while loop. It only acts as an exit condition
