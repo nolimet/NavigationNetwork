@@ -45,6 +45,11 @@ namespace TowerDefence.World.Path.Data
             this.pointType = pointType;
             this.pointConnections = pointConnections;
         }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
     }
 
     [Serializable]
