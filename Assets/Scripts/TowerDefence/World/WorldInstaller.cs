@@ -12,6 +12,11 @@ namespace TowerDefence.World
 
         public override void InstallBindings()
         {
+            var worldContainer = new GameObject("World Container").AddComponent<WorldContainer>();
+            worldContainer.DoSetup();
+            worldContainer.transform.position = Vector3.zero;
+
+            Container.BindInstance(worldContainer);
             Container.BindFactory<PathLineRenderer, PathLineRenderer.Factory>().FromComponentInNewPrefab(lineGenericPrefab);
 
             Container.Bind<PathBuilderService>().AsSingle();
