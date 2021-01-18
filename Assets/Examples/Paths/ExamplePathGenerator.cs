@@ -46,7 +46,7 @@ namespace Examples.Paths
                 }
             );
 
-            string json = JsonConvert.SerializeObject(pathData);
+            string json = JsonConvert.SerializeObject(pathData, Formatting.Indented);
 
             File.WriteAllText(filePath, json);
         }
