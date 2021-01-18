@@ -11,7 +11,7 @@ namespace Examples.Paths
 {
     public class ExamplePathGenerator : MonoBehaviour
     {
-        private readonly string filePath = Application.streamingAssetsPath + "ExampleLevel.json";
+        private readonly string filePath = Application.streamingAssetsPath + "/ExampleLevel.json";
 
         [Inject]
         private PathBuilderService pathBuilderService;
@@ -36,18 +36,23 @@ namespace Examples.Paths
                 new PathPoint[]
                 {
                     new PathPoint(pointId: pathIds[0], new Vector3(0,0,0),  PointType.Entrance, new Guid[]{pathIds[1], pathIds[2]}),
-                    new PathPoint(pointId: pathIds[1], new Vector3(10,0,0), PointType.Point,    new Guid[]{pathIds[4]}),
-                    new PathPoint(pointId: pathIds[2], new Vector3(10,5,0), PointType.Point,    new Guid[]{pathIds[3]}),
-                    new PathPoint(pointId: pathIds[3], new Vector3(10,5,0), PointType.Point,    new Guid[]{pathIds[5], pathIds[4]}),
+                    new PathPoint(pointId: pathIds[1], new Vector3(5,5,0), PointType.Point,    new Guid[]{pathIds[4]}),
+                    new PathPoint(pointId: pathIds[2], new Vector3(5,-5,0), PointType.Point,    new Guid[]{pathIds[3]}),
+                    new PathPoint(pointId: pathIds[3], new Vector3(10,-5,0), PointType.Point,    new Guid[]{pathIds[5], pathIds[4]}),
                     new PathPoint(pointId: pathIds[4], new Vector3(10,5,0), PointType.Point,    new Guid[]{pathIds[6]}),
-                    new PathPoint(pointId: pathIds[5], new Vector3(10,5,0), PointType.Point,    new Guid[]{pathIds[7]}),
-                    new PathPoint(pointId: pathIds[6], new Vector3(10,5,0), PointType.Point,    new Guid[]{pathIds[7]}),
-                    new PathPoint(pointId: pathIds[7], new Vector3(0,5,0),  PointType.Exit,     new Guid[0])
+                    new PathPoint(pointId: pathIds[5], new Vector3(15,-5,0), PointType.Point,    new Guid[]{pathIds[7]}),
+                    new PathPoint(pointId: pathIds[6], new Vector3(15,5,0), PointType.Point,    new Guid[]{pathIds[7]}),
+                    new PathPoint(pointId: pathIds[7], new Vector3(20,0,0),  PointType.Exit,     new Guid[0])
                 }
             );
 
             string json = JsonConvert.SerializeObject(pathData, Formatting.Indented);
 
+            string dir = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
             File.WriteAllText(filePath, json);
         }
 
@@ -63,7 +68,7 @@ namespace Examples.Paths
 
             var pathData = JsonConvert.DeserializeObject<PathData>(json);
 
-            var constructedPath = new PathWorldData(pathBuilderService.GenerateLineData(pathData), pathBuilderService.GenerateWorldPath(pathData));
+            var constructedPath = new PathWorldData(pathBuilderService.GeneratePaths(pathData), pathBuilderService.GenerateLineRenderers(pathData));
         }
     }
 }
