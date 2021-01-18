@@ -49,6 +49,7 @@ namespace TowerDefence.World.Path
 
             IEnumerable<Guid[]> CrawlPath(PathPoint point)
             {
+                //it return the full path once it hits a end
                 if (point.pointType == PointType.Exit)
                 {
                     return new List<Guid[]>() { visitedPoints.Concat(new[] { point.pointId }).ToArray() };
@@ -115,26 +116,36 @@ namespace TowerDefence.World.Path
                         throw new InfitePathException();
                     }
 
+                    //add point to visited points to avoid endless loops
                     visitedPoints.Add(currentPoint);
+                    //add current point to line
                     line.Add(currentPoint);
-                    if (currentPoint.pointConnections.Length > 1)
-                    {
-                        for (int i = 1; i < currentPoint.pointConnections.Length; i++)
-                        {
-                            virtualLines.Add(new[] { currentPoint }.Concat(CrawlPath(pathLookup[currentPoint.pointConnections[i]])).ToArray());
-                        }
-                    }
+
+                    //Checking if there is any point then do
                     if (currentPoint.pointConnections.Any())
                     {
+                        //if there is more than one connection we will build that
+                        if (currentPoint.pointConnections.Length > 1)
+                        {
+                            //we skip first point we deal with that one below
+                            for (int i = 1; i < currentPoint.pointConnections.Length; i++)
+                            {
+                                virtualLines.Add(new[] { currentPoint }.Concat(CrawlPath(pathLookup[currentPoint.pointConnections[i]])).ToArray());
+                            }
+                        }
+                        //set first point as current
                         currentPoint = pathLookup[currentPoint.pointConnections.First()];
                     }
-                    else
-                    {
-                        currentPoint = null;
-                    }
                 }
-                while (currentPoint != null);
+                while (currentPoint != null && currentPoint.pointType != PointType.Exit);
 
+                //add the last point as the loop did not get a chance to add it
+                if (currentPoint != null && !line.Contains(currentPoint))
+                {
+                    line.Add(currentPoint);
+                }
+
+                //remove the line from visited points as we ended a line
                 foreach (var point in line)
                 {
                     visitedPoints.Remove(point);
