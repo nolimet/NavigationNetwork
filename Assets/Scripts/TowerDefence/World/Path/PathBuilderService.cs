@@ -17,7 +17,7 @@ namespace TowerDefence.World.Path
             this.lineFactory = lineFactory;
         }
 
-        public Vector3[][] GenerateLineData(PathData pathData)
+        public Vector3[][] GeneratePaths(PathData pathData)
         {
             var entrances = pathData.pathPoints.Where(x => x.pointType == PointType.Entrance).ToArray();
             var pathLookup = pathData.pathPoints.ToDictionary(x => x.pointId);
@@ -74,13 +74,13 @@ namespace TowerDefence.World.Path
             }
         }
 
-        public IEnumerable<PathLineRenderer> GenerateWorldPath(PathData pathData)
+        public IEnumerable<PathLineRenderer> GenerateLineRenderers(PathData pathData)
         {
             List<PathLineRenderer> lines = new List<PathLineRenderer>();
             var entrances = pathData.pathPoints.Where(x => x.pointType == PointType.Entrance).ToArray();
             var pathLookup = pathData.pathPoints.ToDictionary(x => x.pointId);
             List<PathPoint> visitedPoints = new List<PathPoint>();
-            List<PathPoint[]> virtualLines = new List<PathPoint[]>();
+            List<IEnumerable<PathPoint>> virtualLines = new List<IEnumerable<PathPoint>>();
             try
             {
                 foreach (var entrance in entrances)
@@ -104,7 +104,7 @@ namespace TowerDefence.World.Path
             }
             return lines;
 
-            PathPoint[] CrawlPath(PathPoint startPoint)
+            IEnumerable<PathPoint> CrawlPath(PathPoint startPoint)
             {
                 PathPoint currentPoint = startPoint;
                 List<PathPoint> line = new List<PathPoint>();
@@ -121,20 +121,19 @@ namespace TowerDefence.World.Path
                     {
                         for (int i = 1; i < currentPoint.pointConnections.Length; i++)
                         {
-                            virtualLines.Add(CrawlPath(pathLookup[currentPoint.pointConnections[i]]));
+                            virtualLines.Add(new[] { currentPoint }.Concat(CrawlPath(pathLookup[currentPoint.pointConnections[i]])).ToArray());
                         }
                     }
                     if (currentPoint.pointConnections.Any())
                     {
                         currentPoint = pathLookup[currentPoint.pointConnections.First()];
                     }
+                    else
+                    {
+                        currentPoint = null;
+                    }
                 }
-                while (currentPoint != null && currentPoint.pointType != PointType.Exit);
-
-                if (currentPoint == null)
-                {
-                    throw new InvalidPathException();
-                }
+                while (currentPoint != null);
 
                 foreach (var point in line)
                 {
