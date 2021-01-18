@@ -51,6 +51,13 @@
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
+    "jillejr.newtonsoft.json-for-unity.converters": {
+      "version": "1.1.0-preview.2",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
