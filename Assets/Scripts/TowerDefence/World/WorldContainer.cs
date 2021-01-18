@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+
+namespace TowerDefence.World
+{
+    public class WorldContainer : MonoBehaviour
+    {
+        public Transform PathContainer { get; private set; }
+        public Transform TurretContainer { get; private set; }
+
+        private void Awake()
+        {
+            PathContainer = new GameObject("Path Container").transform;
+            TurretContainer = new GameObject("Turret Container").transform;
+
+            PathContainer.SetParent(transform, false);
+            TurretContainer.SetParent(transform, false);
+        }
+    }
+}
