@@ -1,0 +1,100 @@
+{
+  "pathPoints": [
+    {
+      "pointId": "5f921a8b-ffa0-47b4-b8fe-e500a568c095",
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "pointType": 0,
+      "pointConnections": [
+        "5a5dc403-efca-4977-85a4-62cf04260a63",
+        "58a78594-7737-43b9-b2ed-cc12ea5dad8a"
+      ]
+    },
+    {
+      "pointId": "5a5dc403-efca-4977-85a4-62cf04260a63",
+      "position": {
+        "x": 5.0,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "pointType": 1,
+      "pointConnections": [
+        "a5411ec9-79ad-4e9c-8ee9-30069946cd6a"
+      ]
+    },
+    {
+      "pointId": "58a78594-7737-43b9-b2ed-cc12ea5dad8a",
+      "position": {
+        "x": 5.0,
+        "y": -5.0,
+        "z": 0.0
+      },
+      "pointType": 1,
+      "pointConnections": [
+        "b9481eb3-6a37-44ae-9706-ec4d6a534447"
+      ]
+    },
+    {
+      "pointId": "b9481eb3-6a37-44ae-9706-ec4d6a534447",
+      "position": {
+        "x": 10.0,
+        "y": -5.0,
+        "z": 0.0
+      },
+      "pointType": 1,
+      "pointConnections": [
+        "c8f1adef-adf1-4b16-966d-550a80a21b37",
+        "a5411ec9-79ad-4e9c-8ee9-30069946cd6a"
+      ]
+    },
+    {
+      "pointId": "a5411ec9-79ad-4e9c-8ee9-30069946cd6a",
+      "position": {
+        "x": 10.0,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "pointType": 1,
+      "pointConnections": [
+        "cb0b19d3-f1ba-412a-b6eb-b69ebd056f78"
+      ]
+    },
+    {
+      "pointId": "c8f1adef-adf1-4b16-966d-550a80a21b37",
+      "position": {
+        "x": 15.0,
+        "y": -5.0,
+        "z": 0.0
+      },
+      "pointType": 1,
+      "pointConnections": [
+        "ef90b5dd-e76e-4f33-8113-31b677aba212"
+      ]
+    },
+    {
+      "pointId": "cb0b19d3-f1ba-412a-b6eb-b69ebd056f78",
+      "position": {
+        "x": 15.0,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "pointType": 1,
+      "pointConnections": [
+        "ef90b5dd-e76e-4f33-8113-31b677aba212"
+      ]
+    },
+    {
+      "pointId": "ef90b5dd-e76e-4f33-8113-31b677aba212",
+      "position": {
+        "x": 20.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "pointType": 2,
+      "pointConnections": []
+    }
+  ]
+}
