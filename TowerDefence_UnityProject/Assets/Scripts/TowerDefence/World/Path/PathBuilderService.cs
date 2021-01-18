@@ -84,11 +84,14 @@ namespace TowerDefence.World.Path
             List<IEnumerable<PathPoint>> virtualLines = new List<IEnumerable<PathPoint>>();
             try
             {
+                //build lines starting at all entrances
                 foreach (var entrance in entrances)
                 {
                     virtualLines.Add(CrawlPath(entrance));
                 }
 
+                //TODO Optimize by removing duplicate lines
+                //Generate lines
                 foreach (var virtualLine in virtualLines)
                 {
                     var newLine = lineFactory.Create(virtualLine.Select(x => x.position).ToArray());
