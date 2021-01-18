@@ -15,6 +15,7 @@ namespace TowerDefence.World.Path
 
         public void SetPath(Vector3[] path)
         {
+            lineRenderer.positionCount = path.Length;
             lineRenderer.SetPositions(path);
         }
 
