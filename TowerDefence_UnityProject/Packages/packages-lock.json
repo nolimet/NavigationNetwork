@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.svermeulen.extenject": {
+      "version": "9.2.0-stcf3",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
@@ -12,16 +19,36 @@
       "source": "builtin",
       "dependencies": {}
     },
-    "com.unity.ide.visualstudio": {
-      "version": "2.0.5",
-      "depth": 0,
+    "com.unity.ext.nunit": {
+      "version": "1.0.6",
+      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.textmeshpro": {
-      "version": "3.0.3",
+    "com.unity.ide.visualstudio": {
+      "version": "2.0.7",
       "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.9"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.test-framework": {
+      "version": "1.1.22",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ext.nunit": "1.0.6",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.textmeshpro": {
+      "version": "3.0.4",
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.ugui": "1.0.0"
@@ -38,25 +65,36 @@
       }
     },
     "com.yasirkula.ingamedebugconsole": {
-      "version": "1.4.1",
+      "version": "1.4.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
     "jillejr.newtonsoft.json-for-unity": {
-      "version": "12.0.301",
-      "depth": 0,
+      "version": "12.0.302",
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
     "jillejr.newtonsoft.json-for-unity.converters": {
       "version": "1.1.0-preview.2",
-      "depth": 0,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://package.openupm.com"
+    },
+    "nl.jessestam.no-util": {
+      "version": "file:I:/dev/Projects/UtilPluginDev/NoUtil-DevEnv/Assets/Util",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.unity.textmeshpro": "3.0.4",
+        "com.svermeulen.extenject": "9.2.0-stcf3",
+        "jillejr.newtonsoft.json-for-unity": "12.0.302",
+        "jillejr.newtonsoft.json-for-unity.converters": "1.1.0-preview.2"
+      }
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
