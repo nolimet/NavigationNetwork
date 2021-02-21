@@ -17,6 +17,11 @@ namespace TowerDefence.World.Path
             this.lineFactory = lineFactory;
         }
 
+        public PathWorldData GeneratePathWorldData(PathData pathData)
+        {
+            return new PathWorldData(GeneratePaths(pathData), GenerateLineRenderers(pathData));
+        }
+
         public Vector3[][] GeneratePaths(PathData pathData)
         {
             var entrances = pathData.pathPoints.Where(x => x.pointType == PointType.Entrance).ToArray();

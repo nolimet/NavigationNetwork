@@ -1,7 +1,7 @@
 {
   "pathPoints": [
     {
-      "pointId": "5f921a8b-ffa0-47b4-b8fe-e500a568c095",
+      "pointId": "309b63a9-66c7-4169-a1e8-834b7cbba331",
       "position": {
         "x": 0.0,
         "y": 0.0,
@@ -9,12 +9,12 @@
       },
       "pointType": 0,
       "pointConnections": [
-        "5a5dc403-efca-4977-85a4-62cf04260a63",
-        "58a78594-7737-43b9-b2ed-cc12ea5dad8a"
+        "88f28a90-e4ca-49e7-93e9-dda4e274a082",
+        "d2c41f16-3f47-4a9e-adb8-67f187f8f7e5"
       ]
     },
     {
-      "pointId": "5a5dc403-efca-4977-85a4-62cf04260a63",
+      "pointId": "88f28a90-e4ca-49e7-93e9-dda4e274a082",
       "position": {
         "x": 5.0,
         "y": 5.0,
@@ -22,11 +22,11 @@
       },
       "pointType": 1,
       "pointConnections": [
-        "a5411ec9-79ad-4e9c-8ee9-30069946cd6a"
+        "cc60a8db-765e-4c74-9e80-18c13b2ae784"
       ]
     },
     {
-      "pointId": "58a78594-7737-43b9-b2ed-cc12ea5dad8a",
+      "pointId": "d2c41f16-3f47-4a9e-adb8-67f187f8f7e5",
       "position": {
         "x": 5.0,
         "y": -5.0,
@@ -34,11 +34,11 @@
       },
       "pointType": 1,
       "pointConnections": [
-        "b9481eb3-6a37-44ae-9706-ec4d6a534447"
+        "e53bfa8e-8bba-4f05-88f6-df7e72c02a30"
       ]
     },
     {
-      "pointId": "b9481eb3-6a37-44ae-9706-ec4d6a534447",
+      "pointId": "e53bfa8e-8bba-4f05-88f6-df7e72c02a30",
       "position": {
         "x": 10.0,
         "y": -5.0,
@@ -46,12 +46,12 @@
       },
       "pointType": 1,
       "pointConnections": [
-        "c8f1adef-adf1-4b16-966d-550a80a21b37",
-        "a5411ec9-79ad-4e9c-8ee9-30069946cd6a"
+        "585fec8b-2576-4b35-a738-6cabb0d8b443",
+        "cc60a8db-765e-4c74-9e80-18c13b2ae784"
       ]
     },
     {
-      "pointId": "a5411ec9-79ad-4e9c-8ee9-30069946cd6a",
+      "pointId": "cc60a8db-765e-4c74-9e80-18c13b2ae784",
       "position": {
         "x": 10.0,
         "y": 5.0,
@@ -59,11 +59,11 @@
       },
       "pointType": 1,
       "pointConnections": [
-        "cb0b19d3-f1ba-412a-b6eb-b69ebd056f78"
+        "8160f573-4290-4990-bf19-eac785dedac9"
       ]
     },
     {
-      "pointId": "c8f1adef-adf1-4b16-966d-550a80a21b37",
+      "pointId": "585fec8b-2576-4b35-a738-6cabb0d8b443",
       "position": {
         "x": 15.0,
         "y": -5.0,
@@ -71,11 +71,11 @@
       },
       "pointType": 1,
       "pointConnections": [
-        "ef90b5dd-e76e-4f33-8113-31b677aba212"
+        "6337c091-b9e4-4b4f-9cc8-7c142048209a"
       ]
     },
     {
-      "pointId": "cb0b19d3-f1ba-412a-b6eb-b69ebd056f78",
+      "pointId": "8160f573-4290-4990-bf19-eac785dedac9",
       "position": {
         "x": 15.0,
         "y": 5.0,
@@ -83,11 +83,11 @@
       },
       "pointType": 1,
       "pointConnections": [
-        "ef90b5dd-e76e-4f33-8113-31b677aba212"
+        "6337c091-b9e4-4b4f-9cc8-7c142048209a"
       ]
     },
     {
-      "pointId": "ef90b5dd-e76e-4f33-8113-31b677aba212",
+      "pointId": "6337c091-b9e4-4b4f-9cc8-7c142048209a",
       "position": {
         "x": 20.0,
         "y": 0.0,

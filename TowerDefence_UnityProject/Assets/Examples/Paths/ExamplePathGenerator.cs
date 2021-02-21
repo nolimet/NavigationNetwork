@@ -13,6 +13,12 @@ namespace Examples.Paths
     {
         private readonly string filePath = Application.streamingAssetsPath + "/ExampleLevel.json";
 
+        [HideInInspector]
+        public PathWorldData ConstructedPath { get; private set; }
+
+        [SerializeField]
+        private GameObject walkerPrefab;
+
         [Inject]
         private PathBuilderService pathBuilderService;
 
@@ -68,7 +74,16 @@ namespace Examples.Paths
 
             var pathData = JsonConvert.DeserializeObject<PathData>(json);
 
-            var constructedPath = new PathWorldData(pathBuilderService.GeneratePaths(pathData), pathBuilderService.GenerateLineRenderers(pathData));
+            ConstructedPath = pathBuilderService.GeneratePathWorldData(pathData);
+        }
+
+        public async void CreateWalker()
+        {
+            var walker = Instantiate(walkerPrefab);
+            walker.SetActive(true);
+            await ConstructedPath.WalkPath(walker.transform, 0, default);
+
+            Destroy(walker);
         }
     }
 }
