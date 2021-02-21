@@ -86,15 +86,16 @@
       "url": "https://package.openupm.com"
     },
     "nl.jessestam.no-util": {
-      "version": "file:I:/dev/Projects/UtilPluginDev/NoUtil-DevEnv/Assets/Util",
+      "version": "https://github.com/nolimet/Util.git",
       "depth": 0,
-      "source": "local",
+      "source": "git",
       "dependencies": {
         "com.unity.textmeshpro": "3.0.4",
         "com.svermeulen.extenject": "9.2.0-stcf3",
         "jillejr.newtonsoft.json-for-unity": "12.0.302",
         "jillejr.newtonsoft.json-for-unity.converters": "1.1.0-preview.2"
-      }
+      },
+      "hash": "c0387542c3928985b3d47f92726e4429626dac57"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
