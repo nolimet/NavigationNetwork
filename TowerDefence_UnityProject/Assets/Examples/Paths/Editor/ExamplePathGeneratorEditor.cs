@@ -12,6 +12,7 @@ namespace Examples.Paths
         {
             base.OnInspectorGUI();
             var target = this.target as ExamplePathGenerator;
+            if (!target) { return; }
             using (var disableScope = new EditorGUI.DisabledGroupScope(!Application.isPlaying))
             {
                 using (var h1 = new EditorGUILayout.HorizontalScope())
@@ -42,6 +43,15 @@ namespace Examples.Paths
 
                     foreach (var path in paths)
                     {
+                        using (var h1 = new EditorGUILayout.HorizontalScope())
+                        {
+                            GUILayout.FlexibleSpace();
+                            if (GUILayout.Button("DumpCurve Keys"))
+                            {
+                                path.Value.LogCurveValues();
+                            }
+                            GUILayout.FlexibleSpace();
+                        }
                         EditorGUILayout.LabelField($"path {path.Key}");
                         using (var indent = new EditorGUI.IndentLevelScope(1))
                         {

@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using System.IO;
 using TowerDefence.World.Path;
 using Zenject;
+using TowerDefence.World;
+using NoUtil.Extentsions;
 
 namespace Examples.Paths
 {
@@ -14,13 +16,13 @@ namespace Examples.Paths
         private readonly string filePath = Application.streamingAssetsPath + "/ExampleLevel.json";
 
         [HideInInspector]
-        public PathWorldData ConstructedPath { get; private set; }
+        public PathWorldData ConstructedPath => worldController?.pathWorldData;
 
         [SerializeField]
         private GameObject walkerPrefab;
 
-        [Inject]
-        private PathBuilderService pathBuilderService;
+        [Inject] private WorldController worldController;
+        [Inject] private PathWalkerService pathWalkerService;
 
         [ContextMenu("Generate Example Path")]
         public void GenerateExamplePath()
@@ -74,16 +76,16 @@ namespace Examples.Paths
 
             var pathData = JsonConvert.DeserializeObject<PathData>(json);
 
-            ConstructedPath = pathBuilderService.GeneratePathWorldData(pathData);
+            worldController.SetPath(pathData);
         }
 
-        public async void CreateWalker()
+        public void CreateWalker()
         {
-            var walker = Instantiate(walkerPrefab);
-            walker.SetActive(true);
-            await ConstructedPath.WalkPath(walker.transform, 0, default);
+            var walkerGameObject = Instantiate(walkerPrefab);
+            var walker = walkerGameObject.GetOrAddComponent<ExampleWalker>();
+            walkerGameObject.SetActive(true);
 
-            Destroy(walker);
+            pathWalkerService.AddWalker(walker);
         }
     }
 }
