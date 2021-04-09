@@ -7,14 +7,22 @@ namespace TowerDefence.World
     public class WorldController
     {
         private readonly PathBuilderService pathBuilderService;
+        public PathWorldData pathWorldData { get; private set; }
 
         public WorldController(PathBuilderService pathBuilderService)
         {
             this.pathBuilderService = pathBuilderService;
         }
+
         public void SetPath(PathData pathData)
         {
-            throw new NotImplementedException("Generate Path!");
+            pathWorldData = pathBuilderService.GeneratePathWorldData(pathData);
+        }
+
+        public void DestroyCurrentPath()
+        {
+            pathWorldData.Destroy();
+            pathWorldData = null;
         }
     }
 }
