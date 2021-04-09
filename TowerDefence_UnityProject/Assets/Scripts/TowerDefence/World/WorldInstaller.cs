@@ -19,6 +19,7 @@ namespace TowerDefence.World
             Container.BindInstance(worldContainer);
             Container.BindFactory<PathLineRenderer, PathLineRenderer.Factory>().FromComponentInNewPrefab(lineGenericPrefab);
 
+            Container.BindInterfacesAndSelfTo<PathWalkerService>().AsSingle();
             Container.Bind<PathBuilderService>().AsSingle();
             Container.Bind<WorldController>().AsSingle();
         }
