@@ -34,33 +34,9 @@ namespace TowerDefence.World.Path.Data
             }
         }
 
-        public Vector3 Evaluate(float position, int pathId)
+        public AnimationCurve3D GetRandomPath()
         {
-            return paths[pathId].Evaluate(position);
-        }
-
-        public async Task WalkPath(Transform target, int pathId, CancellationToken cancellationToken)
-        {
-            float position = 0f;
-            AnimationCurve3D path = paths[pathId];
-            Vector3 lastPosition;
-
-            while (position < path.length && target && !cancellationToken.IsCancellationRequested)
-            {
-                if (target)
-                {
-                    lastPosition = target.position;
-                    target.position = path.Evaluate(position);
-
-                    var dir = lastPosition - target.position;
-                    target.rotation = Quaternion.Euler(dir);
-
-                    Debug.Log(dir);
-
-                    position += Time.deltaTime;
-                    await AsyncAwaiters.NextFrame;
-                }
-            }
+            return paths[Random.Range(0, paths.Count)];
         }
 
         [System.Serializable]
@@ -70,6 +46,7 @@ namespace TowerDefence.World.Path.Data
 
             public readonly float length = 0;
 
+            //TODO fix paths not being generated correctly and causing stops at corners or where there are points
             public AnimationCurve3D(Vector3[] points)
             {
                 curveX = new AnimationCurve();
@@ -96,9 +73,9 @@ namespace TowerDefence.World.Path.Data
 
                     if (points.Length + 1 < points.Length)
                     {
-                        outTangent = (points[i + 1] - cp) / (newPosition - position);
+                        outTangent = (points[i + 1] - cp) / (newPosition - position);// not how you calc tangent!
                     }
-
+                    //In is never set!
                     curveX.AddKey(new Keyframe(position, cp.x, inTangent.y, outTangent.x));
                     curveY.AddKey(new Keyframe(position, cp.y, inTangent.y, outTangent.x));
                     curveZ.AddKey(new Keyframe(position, cp.z, inTangent.y, outTangent.x));
@@ -108,6 +85,10 @@ namespace TowerDefence.World.Path.Data
                 }
 
                 length = position;
+
+                void calculateTangent()
+                {
+                }
 
                 //curveX = new AnimationCurve();
                 //curveY = new AnimationCurve();
@@ -151,6 +132,23 @@ namespace TowerDefence.World.Path.Data
               *   }
               */
 
+            public void LogCurveValues()
+            {
+                Debug.Log("X\n" + LogCurve(curveX));
+                Debug.Log("Y\n" + LogCurve(curveY));
+                Debug.Log("Z\n" + LogCurve(curveZ));
+
+                string LogCurve(AnimationCurve curve)
+                {
+                    StringBuilder log = new StringBuilder();
+                    foreach (var c in curve.keys)
+                    {
+                        log.AppendLine($"t:{c.time}, v{c.value}, tIn{c.inTangent}, tOut{c.outTangent}");
+                    }
+                    return log.ToString();
+                }
+            }
+
             public Vector3 Evaluate(float position)
             {
                 return new Vector3
@@ -163,7 +161,7 @@ namespace TowerDefence.World.Path.Data
 
             public bool PathCompleted(float position)
             {
-                return position < length && !Mathf.Approximately(position, length);
+                return position > length && Mathf.Approximately(position, length);
             }
         }
     }
