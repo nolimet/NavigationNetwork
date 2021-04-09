@@ -95,7 +95,6 @@ namespace TowerDefence.World.Path
                     virtualLines.Add(CrawlPath(entrance));
                 }
 
-                //TODO Optimize by removing duplicate lines
                 //Generate lines
                 foreach (var virtualLine in virtualLines)
                 {
