@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace TowerDefence.World.Path.Data
 {
+    //TODO Fix animation curves. There is a slowdown between keyframes. This should not happen it should be a constant speed
     [System.Serializable]
     public class PathWorldData
     {
@@ -85,52 +86,7 @@ namespace TowerDefence.World.Path.Data
                 }
 
                 length = position;
-
-                void calculateTangent()
-                {
-                }
-
-                //curveX = new AnimationCurve();
-                //curveY = new AnimationCurve();
-                //curveZ = new AnimationCurve();
-
-                //curveX.postWrapMode = WrapMode.Clamp;
-                //curveY.postWrapMode = WrapMode.Clamp;
-                //curveZ.postWrapMode = WrapMode.Clamp;
-
-                //float position = Vector3.Distance(points[0], points[1]);
-                //Vector3 lastPoint = points.First();
-                //Vector3 cp = points.First();
-
-                //curveX.AddKey(0, cp.x);
-                //curveY.AddKey(0, cp.y);
-                //curveZ.AddKey(0, cp.z);
-
-                //for (int i = 1; i < points.Length; i++)
-                //{
-                //    cp = points[i];
-                //    curveX.AddKey(position, cp.x);
-                //    curveY.AddKey(position, cp.y);
-                //    curveZ.AddKey(position, cp.z);
-
-                //    position += Vector3.Distance(cp, lastPoint);
-                //    lastPoint = cp;
-                //}
-                //length = position;
             }
-
-            /*
-              *  public static AnimationCurve Linear(float timeStart, float valueStart, float timeEnd, float valueEnd)
-              *   {
-              *      float num = (valueEnd - valueStart) / (timeEnd - timeStart);
-              *      Keyframe[] keys = new Keyframe[]
-              *       {
-              *           new Keyframe(timeStart, valueStart, 0f, num),
-              *           new Keyframe(timeEnd, valueEnd, num, 0f)
-              *       };
-              *       return new AnimationCurve(keys);
-              *   }
-              */
 
             public void LogCurveValues()
             {
