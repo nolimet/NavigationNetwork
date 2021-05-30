@@ -1,4 +1,3 @@
-using System;
 using TowerDefence.World.Path;
 using TowerDefence.World.Path.Data;
 
