@@ -27,7 +27,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.7",
+      "version": "2.0.8",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -72,14 +72,14 @@
       "url": "https://package.openupm.com"
     },
     "jillejr.newtonsoft.json-for-unity": {
-      "version": "12.0.302",
+      "version": "13.0.102",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
     "jillejr.newtonsoft.json-for-unity.converters": {
-      "version": "1.1.0-preview.2",
+      "version": "1.1.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
@@ -92,10 +92,10 @@
       "dependencies": {
         "com.unity.textmeshpro": "3.0.4",
         "com.svermeulen.extenject": "9.2.0-stcf3",
-        "jillejr.newtonsoft.json-for-unity": "12.0.302",
-        "jillejr.newtonsoft.json-for-unity.converters": "1.1.0-preview.2"
+        "jillejr.newtonsoft.json-for-unity": "13.0.102",
+        "jillejr.newtonsoft.json-for-unity.converters": "1.1.1"
       },
-      "hash": "c0387542c3928985b3d47f92726e4429626dac57"
+      "hash": "d543150499cc0f210b7c7b6a70632869e97f11ca"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
