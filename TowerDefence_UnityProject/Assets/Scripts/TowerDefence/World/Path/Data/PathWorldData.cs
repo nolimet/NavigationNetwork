@@ -115,7 +115,7 @@ namespace TowerDefence.World.Path.Data
 
             public bool PathCompleted(float position)
             {
-                return position > length && Mathf.Approximately(position, length);
+                return position > length || Mathf.Approximately(position, length);
             }
         }
     }
