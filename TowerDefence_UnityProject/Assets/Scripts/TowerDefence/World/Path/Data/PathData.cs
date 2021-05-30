@@ -1,0 +1,64 @@
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
+using System.Runtime.Serialization;
+using UnityEngine;
+
+namespace TowerDefence.World.Path.Data
+{
+    [Serializable]
+    public class PathData
+    {
+        [JsonProperty("pathPoints")]
+        public readonly PathPoint[] pathPoints;
+
+        [JsonConstructor]
+        public PathData(PathPoint[] pathPoints)
+        {
+            this.pathPoints = pathPoints;
+        }
+    }
+
+    [Serializable]
+    public class PathPoint
+    {
+        [JsonProperty("pointId")]
+        public readonly Guid pointId;
+
+        [JsonProperty("position")]
+        public readonly Vector3 position;
+
+        [JsonProperty("pointType"), JsonConverter(typeof(StringEnumConverter))]
+        public readonly PointType pointType;
+
+        [JsonProperty("pointConnections")]
+        public readonly Guid[] pointConnections;
+
+        [JsonConstructor]
+        public PathPoint(Guid pointId, Vector3 position, PointType pointType, Guid[] pointConnections)
+        {
+            this.pointId = pointId;
+            this.position = position;
+            this.pointType = pointType;
+            this.pointConnections = pointConnections;
+        }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
+    }
+
+    [Serializable]
+    public enum PointType
+    {
+        [EnumMember(Value = "Entrance")]
+        Entrance = 0,
+
+        [EnumMember(Value = "Point")]
+        Point = 1,
+
+        [EnumMember(Value = "Exit")]
+        Exit = 2
+    }
+}

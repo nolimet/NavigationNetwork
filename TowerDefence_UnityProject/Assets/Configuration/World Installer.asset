@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f7d8218bd2e7c94f95ec5f5b0b687f3, type: 3}
+  m_Name: World Installer
+  m_EditorClassIdentifier: 
+  lineGenericPrefab: {fileID: 1627210856829272286, guid: ed8a8a5ec16279343a6707a3ffa8de5e,
+    type: 3}

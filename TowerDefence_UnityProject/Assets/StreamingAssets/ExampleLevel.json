@@ -1,0 +1,100 @@
+{
+  "pathPoints": [
+    {
+      "pointId": "cd1a42ac-b814-4602-bf9c-f6964c4ffedb",
+      "position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "pointType": "Entrance",
+      "pointConnections": [
+        "e98820b1-d6d9-4dea-a798-69a357fbe944",
+        "f264aaa3-ced1-441d-b3bc-05f8e2b24a2b"
+      ]
+    },
+    {
+      "pointId": "e98820b1-d6d9-4dea-a798-69a357fbe944",
+      "position": {
+        "x": 5.0,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "pointType": "Point",
+      "pointConnections": [
+        "d282e5e7-83d0-467c-a441-20c8eaa69d4d"
+      ]
+    },
+    {
+      "pointId": "f264aaa3-ced1-441d-b3bc-05f8e2b24a2b",
+      "position": {
+        "x": 5.0,
+        "y": -5.0,
+        "z": 0.0
+      },
+      "pointType": "Point",
+      "pointConnections": [
+        "c6249646-df37-469b-9330-fd30c7395d4f"
+      ]
+    },
+    {
+      "pointId": "c6249646-df37-469b-9330-fd30c7395d4f",
+      "position": {
+        "x": 10.0,
+        "y": -5.0,
+        "z": 0.0
+      },
+      "pointType": "Point",
+      "pointConnections": [
+        "12f0fa66-d5b1-47f8-9d6a-2a2fb7657f11",
+        "d282e5e7-83d0-467c-a441-20c8eaa69d4d"
+      ]
+    },
+    {
+      "pointId": "d282e5e7-83d0-467c-a441-20c8eaa69d4d",
+      "position": {
+        "x": 10.0,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "pointType": "Point",
+      "pointConnections": [
+        "529bba4f-15ec-4498-9a06-4478cd271abb"
+      ]
+    },
+    {
+      "pointId": "12f0fa66-d5b1-47f8-9d6a-2a2fb7657f11",
+      "position": {
+        "x": 15.0,
+        "y": -5.0,
+        "z": 0.0
+      },
+      "pointType": "Point",
+      "pointConnections": [
+        "0a13fde5-3520-4c97-9487-f4fe6fa2c515"
+      ]
+    },
+    {
+      "pointId": "529bba4f-15ec-4498-9a06-4478cd271abb",
+      "position": {
+        "x": 15.0,
+        "y": 5.0,
+        "z": 0.0
+      },
+      "pointType": "Point",
+      "pointConnections": [
+        "0a13fde5-3520-4c97-9487-f4fe6fa2c515"
+      ]
+    },
+    {
+      "pointId": "0a13fde5-3520-4c97-9487-f4fe6fa2c515",
+      "position": {
+        "x": 20.0,
+        "y": 0.0,
+        "z": 0.0
+      },
+      "pointType": "Exit",
+      "pointConnections": []
+    }
+  ]
+}

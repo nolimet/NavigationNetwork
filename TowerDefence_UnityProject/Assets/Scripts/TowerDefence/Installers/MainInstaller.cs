@@ -1,18 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
-public class MainInstaller : MonoBehaviour
+[CreateAssetMenu(fileName = "Main Installer", menuName = "Installers/Main Installer")]
+public class MainInstaller : ScriptableObjectInstaller
 {
-    // Start is called before the first frame update
-    void Start()
+    public override void InstallBindings()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
