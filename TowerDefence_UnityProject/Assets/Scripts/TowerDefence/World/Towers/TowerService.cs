@@ -30,6 +30,14 @@ namespace TowerDefence.World.Towers
             }
         }
 
+        public void DestroyAllTowers()
+        {
+            foreach (var tower in towers)
+            {
+                DestroyTower(tower);
+            }
+        }
+
         public void Tick()
         {
             for (int i = towers.Count - 1; i >= 0; i--)
