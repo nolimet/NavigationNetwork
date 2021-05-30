@@ -17,7 +17,7 @@ namespace TowerDefence.World
             worldContainer.transform.position = Vector3.zero;
 
             Container.BindInstance(worldContainer);
-            Container.BindFactory<PathLineRenderer, PathLineRenderer.Factory>().FromComponentInNewPrefab(lineGenericPrefab);
+            Container.BindFactory<PathRendererBase, PathRendererBase.Factory>().FromComponentInNewPrefab(lineGenericPrefab);
 
             Container.BindInterfacesAndSelfTo<PathWalkerService>().AsSingle();
             Container.Bind<PathBuilderService>().AsSingle();

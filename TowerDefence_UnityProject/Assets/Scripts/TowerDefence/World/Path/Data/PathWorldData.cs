@@ -13,9 +13,9 @@ namespace TowerDefence.World.Path.Data
     {
         public readonly IReadOnlyDictionary<int, AnimationCurve3D> paths;
 
-        private readonly IEnumerable<PathLineRenderer> pathVisuals;
+        private readonly IEnumerable<PathRendererBase> pathVisuals;
 
-        public PathWorldData(Vector3[][] paths, IEnumerable<PathLineRenderer> pathVisuals)
+        public PathWorldData(Vector3[][] paths, IEnumerable<PathRendererBase> pathVisuals)
         {
             Dictionary<int, AnimationCurve3D> animationPaths = new Dictionary<int, AnimationCurve3D>();
             foreach (var path in paths)

@@ -10,9 +10,9 @@ namespace TowerDefence.World.Path
 {
     public class PathBuilderService
     {
-        private readonly PathLineRenderer.Factory lineFactory;
+        private readonly PathRendererBase.Factory lineFactory;
 
-        public PathBuilderService(PathLineRenderer.Factory lineFactory)
+        public PathBuilderService(PathRendererBase.Factory lineFactory)
         {
             this.lineFactory = lineFactory;
         }
@@ -26,8 +26,8 @@ namespace TowerDefence.World.Path
         {
             var entrances = pathData.pathPoints.Where(x => x.pointType == PointType.Entrance).ToArray();
             var pathLookup = pathData.pathPoints.ToDictionary(x => x.pointId);
-            List<Guid> visitedPoints = new List<Guid>();
-            List<Guid[]> tracedPaths = new List<Guid[]>();
+            var visitedPoints = new List<Guid>();
+            var tracedPaths = new List<Guid[]>();
 
             if (!entrances.Any())
             {
@@ -68,7 +68,7 @@ namespace TowerDefence.World.Path
                     throw new InfitePathException("Path loops around forever " + point.ToString());
                 }
 
-                List<Guid[]> points = new List<Guid[]>();
+                var points = new List<Guid[]>();
                 visitedPoints.Add(point.pointId);
                 foreach (var pointId in point.pointConnections)
                 {
@@ -80,13 +80,14 @@ namespace TowerDefence.World.Path
             }
         }
 
-        public IEnumerable<PathLineRenderer> GenerateLineRenderers(PathData pathData)
+        public IEnumerable<PathRendererBase> GenerateLineRenderers(PathData pathData)
         {
-            List<PathLineRenderer> lines = new List<PathLineRenderer>();
+            var lines = new List<PathRendererBase>();
             var entrances = pathData.pathPoints.Where(x => x.pointType == PointType.Entrance).ToArray();
             var pathLookup = pathData.pathPoints.ToDictionary(x => x.pointId);
-            List<PathPoint> visitedPoints = new List<PathPoint>();
-            List<IEnumerable<PathPoint>> virtualLines = new List<IEnumerable<PathPoint>>();
+            var visitedPoints = new List<PathPoint>();
+            var virtualLines = new List<IEnumerable<PathPoint>>();
+
             try
             {
                 //build lines starting at all entrances
@@ -115,7 +116,7 @@ namespace TowerDefence.World.Path
             IEnumerable<PathPoint> CrawlPath(PathPoint startPoint)
             {
                 PathPoint currentPoint = startPoint;
-                List<PathPoint> line = new List<PathPoint>();
+                var line = new List<PathPoint>();
                 do
                 {
                     if (visitedPoints.Contains(currentPoint))
