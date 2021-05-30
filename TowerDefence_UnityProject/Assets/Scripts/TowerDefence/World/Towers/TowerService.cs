@@ -16,6 +16,11 @@ namespace TowerDefence.World.Towers
 
         public T PlaceTower<T>(T towerPrefab) where T : TowerBase
         {
+            if (towerPrefab == null || !towerPrefab)
+            {
+                throw new System.NullReferenceException("towerPrefab was not set! Set the prefab in the installer or check if it's corrupted");
+            }
+
             var newTower = instantiator.InstantiatePrefabForComponent<T>(towerPrefab);
             towers.Add(newTower);
 
@@ -24,7 +29,11 @@ namespace TowerDefence.World.Towers
 
         public void DestroyTower<T>(T tower) where T : TowerBase
         {
-            if (towers.Contains(tower))
+            if (tower == null)
+            {
+                throw new System.NullReferenceException("tower is null");
+            }
+            if (tower && towers.Contains(tower))
             {
                 tower.Destroy();
             }

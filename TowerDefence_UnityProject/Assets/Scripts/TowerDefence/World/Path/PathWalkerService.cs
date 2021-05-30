@@ -16,6 +16,11 @@ namespace TowerDefence.World.Path
 
         public void AddWalker(WalkerBase walker)
         {
+            if (walker == null || !walker)
+            {
+                throw new System.NullReferenceException("Walker is not set! Walker was not set or Destroyed");
+            }
+
             if (worldController.pathWorldData == null)
             {
                 throw new System.NullReferenceException("WorldController.PathWorldData is not set! Path was not set or Destroyed");
