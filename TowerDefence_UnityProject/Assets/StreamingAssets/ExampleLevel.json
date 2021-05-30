@@ -1,99 +1,99 @@
 {
   "pathPoints": [
     {
-      "pointId": "309b63a9-66c7-4169-a1e8-834b7cbba331",
+      "pointId": "cd1a42ac-b814-4602-bf9c-f6964c4ffedb",
       "position": {
         "x": 0.0,
         "y": 0.0,
         "z": 0.0
       },
-      "pointType": 0,
+      "pointType": "Entrance",
       "pointConnections": [
-        "88f28a90-e4ca-49e7-93e9-dda4e274a082",
-        "d2c41f16-3f47-4a9e-adb8-67f187f8f7e5"
+        "e98820b1-d6d9-4dea-a798-69a357fbe944",
+        "f264aaa3-ced1-441d-b3bc-05f8e2b24a2b"
       ]
     },
     {
-      "pointId": "88f28a90-e4ca-49e7-93e9-dda4e274a082",
+      "pointId": "e98820b1-d6d9-4dea-a798-69a357fbe944",
       "position": {
         "x": 5.0,
         "y": 5.0,
         "z": 0.0
       },
-      "pointType": 1,
+      "pointType": "Point",
       "pointConnections": [
-        "cc60a8db-765e-4c74-9e80-18c13b2ae784"
+        "d282e5e7-83d0-467c-a441-20c8eaa69d4d"
       ]
     },
     {
-      "pointId": "d2c41f16-3f47-4a9e-adb8-67f187f8f7e5",
+      "pointId": "f264aaa3-ced1-441d-b3bc-05f8e2b24a2b",
       "position": {
         "x": 5.0,
         "y": -5.0,
         "z": 0.0
       },
-      "pointType": 1,
+      "pointType": "Point",
       "pointConnections": [
-        "e53bfa8e-8bba-4f05-88f6-df7e72c02a30"
+        "c6249646-df37-469b-9330-fd30c7395d4f"
       ]
     },
     {
-      "pointId": "e53bfa8e-8bba-4f05-88f6-df7e72c02a30",
+      "pointId": "c6249646-df37-469b-9330-fd30c7395d4f",
       "position": {
         "x": 10.0,
         "y": -5.0,
         "z": 0.0
       },
-      "pointType": 1,
+      "pointType": "Point",
       "pointConnections": [
-        "585fec8b-2576-4b35-a738-6cabb0d8b443",
-        "cc60a8db-765e-4c74-9e80-18c13b2ae784"
+        "12f0fa66-d5b1-47f8-9d6a-2a2fb7657f11",
+        "d282e5e7-83d0-467c-a441-20c8eaa69d4d"
       ]
     },
     {
-      "pointId": "cc60a8db-765e-4c74-9e80-18c13b2ae784",
+      "pointId": "d282e5e7-83d0-467c-a441-20c8eaa69d4d",
       "position": {
         "x": 10.0,
         "y": 5.0,
         "z": 0.0
       },
-      "pointType": 1,
+      "pointType": "Point",
       "pointConnections": [
-        "8160f573-4290-4990-bf19-eac785dedac9"
+        "529bba4f-15ec-4498-9a06-4478cd271abb"
       ]
     },
     {
-      "pointId": "585fec8b-2576-4b35-a738-6cabb0d8b443",
+      "pointId": "12f0fa66-d5b1-47f8-9d6a-2a2fb7657f11",
       "position": {
         "x": 15.0,
         "y": -5.0,
         "z": 0.0
       },
-      "pointType": 1,
+      "pointType": "Point",
       "pointConnections": [
-        "6337c091-b9e4-4b4f-9cc8-7c142048209a"
+        "0a13fde5-3520-4c97-9487-f4fe6fa2c515"
       ]
     },
     {
-      "pointId": "8160f573-4290-4990-bf19-eac785dedac9",
+      "pointId": "529bba4f-15ec-4498-9a06-4478cd271abb",
       "position": {
         "x": 15.0,
         "y": 5.0,
         "z": 0.0
       },
-      "pointType": 1,
+      "pointType": "Point",
       "pointConnections": [
-        "6337c091-b9e4-4b4f-9cc8-7c142048209a"
+        "0a13fde5-3520-4c97-9487-f4fe6fa2c515"
       ]
     },
     {
-      "pointId": "6337c091-b9e4-4b4f-9cc8-7c142048209a",
+      "pointId": "0a13fde5-3520-4c97-9487-f4fe6fa2c515",
       "position": {
         "x": 20.0,
         "y": 0.0,
         "z": 0.0
       },
-      "pointType": 2,
+      "pointType": "Exit",
       "pointConnections": []
     }
   ]

@@ -32,7 +32,7 @@ namespace TowerDefence.World.Path.Data
         [JsonProperty("position")]
         public readonly Vector3 position;
 
-        [JsonProperty("pointType", ItemConverterType = typeof(StringEnumConverter))]
+        [JsonProperty("pointType"), JsonConverter(typeof(StringEnumConverter))]
         public readonly PointType pointType;
 
         [JsonProperty("pointConnections")]
