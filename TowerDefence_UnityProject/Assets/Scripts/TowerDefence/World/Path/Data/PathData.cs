@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace TowerDefence.World.Path.Data
         [JsonProperty("position")]
         public readonly Vector3 position;
 
-        [JsonProperty("pointType")]
+        [JsonProperty("pointType", ItemConverterType = typeof(StringEnumConverter))]
         public readonly PointType pointType;
 
         [JsonProperty("pointConnections")]
