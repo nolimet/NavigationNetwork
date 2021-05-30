@@ -7,7 +7,10 @@ namespace TowerDefence.World.Path
     {
         private AnimationCurve3D path;
         private Vector3 lastPosition;
-        private float position = 0f;
+        protected float position { get; private set; }
+
+        [SerializeField]
+        private float speedMult = 1;
 
         public bool AtEndOfPath => path.PathCompleted(position);
 
@@ -30,10 +33,11 @@ namespace TowerDefence.World.Path
                 lastPosition = transform.position;
                 transform.position = path.Evaluate(position);
 
-                var dir = lastPosition - transform.position;
-                transform.rotation = Quaternion.Euler(dir);
+                var dir = NoUtil.Common.VectorToAngle(lastPosition - transform.position);
 
-                position += Time.deltaTime;
+                transform.rotation = Quaternion.Euler(0, 0, dir);
+
+                position += Time.deltaTime * speedMult;
             }
         }
     }
