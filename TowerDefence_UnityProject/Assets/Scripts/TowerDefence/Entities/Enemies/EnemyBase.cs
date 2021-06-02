@@ -7,7 +7,8 @@ namespace TowerDefence.Entities.Enemies
 {
     public abstract class EnemyBase : WalkerBase
     {
-        private UnityAction<EnemyBase> ReachedEndAction;
+        private UnityAction<EnemyBase> reachedEndAction;
+        private UnityAction<EnemyBase> outOfHealthAction;
 
         [SerializeField] private double currentHealth = 0;
         [SerializeField] private double maxHealth = 0;
@@ -17,20 +18,25 @@ namespace TowerDefence.Entities.Enemies
             currentHealth = maxHealth;
         }
 
-        public void Setup(UnityAction<EnemyBase> ReachedEndAction, AnimationCurve3D path)
+        //TODO add sources or types support
+        public virtual void ApplyDamage(double damage)
         {
-            this.ReachedEndAction = ReachedEndAction;
+            currentHealth -= damage;
+            if (currentHealth <= 0)
+            {
+                outOfHealthAction?.Invoke(this);
+            }
+        }
+
+        public void Setup(UnityAction<EnemyBase> reachedEndAction, UnityAction<EnemyBase> outOfHealthAction, AnimationCurve3D path)
+        {
+            this.reachedEndAction = reachedEndAction;
             this.SetPath(path);
         }
 
         public override void ReachedEnd()
         {
-            ReachedEndAction?.Invoke(this);
-        }
-
-        public bool IsDead
-        {
-            get => currentHealth <= 0;
+            reachedEndAction?.Invoke(this);
         }
     }
 }
