@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Zenject;
 
 namespace TowerDefence.World.Path
@@ -26,6 +26,14 @@ namespace TowerDefence.World.Path
             }
             walker.SetPath(worldController.pathWorldData.GetRandomPath());
             walkers.Add(walker);
+        }
+
+        public void RemoveWalker(WalkerBase walker)
+        {
+            if (walkers.Contains(walker))
+            {
+                walkers.Remove(walker);
+            }
         }
 
         public void Tick()
