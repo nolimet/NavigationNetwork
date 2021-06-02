@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Zenject;
 
 namespace TowerDefence.World.Path
@@ -42,7 +42,6 @@ namespace TowerDefence.World.Path
                     if (walker.AtEndOfPath)
                     {
                         walker.ReachedEnd();
-                        walker.DestroyWalker();
                     }
                     else
                     {

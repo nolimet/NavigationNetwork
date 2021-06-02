@@ -16,11 +16,6 @@ namespace TowerDefence.World.Path
 
         public abstract void ReachedEnd();
 
-        public void DestroyWalker()
-        {
-            Destroy(gameObject);
-        }
-
         public void SetPath(AnimationCurve3D path)
         {
             this.path = path;
