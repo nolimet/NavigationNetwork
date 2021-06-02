@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TowerDefence.World.Path;
+﻿using TowerDefence.World.Path;
 using UnityEngine;
+using UnityEngine.Events;
+using static TowerDefence.World.Path.Data.PathWorldData;
 
 namespace TowerDefence.Entities.Enemies
 {
     public abstract class EnemyBase : WalkerBase
     {
-        private Action ReachedEndAction;
+        private UnityAction<EnemyBase> ReachedEndAction;
 
         [SerializeField] private double currentHealth = 0;
         [SerializeField] private double maxHealth = 0;
@@ -20,9 +17,15 @@ namespace TowerDefence.Entities.Enemies
             currentHealth = maxHealth;
         }
 
+        public void Setup(UnityAction<EnemyBase> ReachedEndAction, AnimationCurve3D path)
+        {
+            this.ReachedEndAction = ReachedEndAction;
+            this.SetPath(path);
+        }
+
         public override void ReachedEnd()
         {
-            ReachedEndAction?.Invoke();
+            ReachedEndAction?.Invoke(this);
         }
 
         public bool IsDead
