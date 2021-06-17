@@ -41,14 +41,15 @@ namespace TowerDefence.Entities.Enemies
         {
             enemies.Remove(enemy);
             pathWalkerService.RemoveWalker(enemy);
-            Object.Destroy(enemy.gameObject);
+            Object.DestroyImmediate(enemy.gameObject);
+            enemy.gameObject.SetActive(false);
         }
 
         private void EnemyReachedEnd(EnemyBase enemy)
         {
             enemies.Remove(enemy);
             pathWalkerService.RemoveWalker(enemy);
-            Object.Destroy(enemy.gameObject);
+            Object.DestroyImmediate(enemy.gameObject);
 
             //TODO send a message to player lives tracker or somethin
         }

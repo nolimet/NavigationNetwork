@@ -8,6 +8,8 @@ using TowerDefence.World.Path;
 using Zenject;
 using TowerDefence.World;
 using NoUtil.Extentsions;
+using TowerDefence.Entities.Enemies;
+using System.Linq;
 
 namespace Examples.Paths
 {
@@ -18,11 +20,9 @@ namespace Examples.Paths
         [HideInInspector]
         public PathWorldData ConstructedPath => worldController?.pathWorldData;
 
-        [SerializeField]
-        private GameObject walkerPrefab;
-
-        [Inject] private WorldController worldController;
-        [Inject] private PathWalkerService pathWalkerService;
+        [Inject] private WorldController worldController = null;
+        [Inject] private EnemyController enemyController = null;
+        [Inject] private EnemyConfigurationData enemyConfiguration = null;
 
         [ContextMenu("Generate Example Path")]
         public void GenerateExamplePath()
@@ -79,13 +79,17 @@ namespace Examples.Paths
             worldController.SetPath(pathData);
         }
 
-        public void CreateWalker()
+        public async void CreateWalker()
         {
-            var walkerGameObject = Instantiate(walkerPrefab);
-            var walker = walkerGameObject.GetOrAddComponent<ExampleWalker>();
-            walkerGameObject.SetActive(true);
+            var path = worldController.pathWorldData.GetRandomPath();
+            await enemyController.CreateNewEnemy<EnemyBase>(enemyConfiguration.Enemies.First().Value, path);
+        }
 
-            pathWalkerService.AddWalker(walker);
+        public async void CreateWalkerDelayed(float delay)
+        {
+            await new WaitForSeconds(delay);
+            var path = worldController.pathWorldData.GetRandomPath();
+            await enemyController.CreateNewEnemy<EnemyBase>(enemyConfiguration.Enemies.First().Value, path);
         }
     }
 }
