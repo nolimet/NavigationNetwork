@@ -31,6 +31,7 @@ namespace TowerDefence.Entities.Enemies
         public void Setup(UnityAction<EnemyBase> reachedEndAction, UnityAction<EnemyBase> outOfHealthAction, AnimationCurve3D path)
         {
             this.reachedEndAction = reachedEndAction;
+            this.outOfHealthAction = outOfHealthAction;
             this.SetPath(path);
         }
 
