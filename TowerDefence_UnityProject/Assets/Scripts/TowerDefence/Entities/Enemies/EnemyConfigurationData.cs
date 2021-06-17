@@ -14,7 +14,7 @@ namespace TowerDefence.Entities.Enemies
         [SerializeField]
         private EnemyConfiguration[] enemies;
 
-        private void Awake()
+        private void OnEnable()
         {
             Enemies = enemies.ToDictionary(x => x.Id, x => x.Reference);
         }
