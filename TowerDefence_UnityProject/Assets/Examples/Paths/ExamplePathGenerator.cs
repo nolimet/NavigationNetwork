@@ -10,6 +10,8 @@ using TowerDefence.World;
 using NoUtil.Extentsions;
 using TowerDefence.Entities.Enemies;
 using System.Linq;
+using TowerDefence.Systems.Waves.Data;
+using static TowerDefence.Systems.Waves.Data.Wave;
 
 namespace Examples.Paths
 {
@@ -43,18 +45,28 @@ namespace Examples.Paths
             (
                 new PathPoint[]
                 {
-                    new PathPoint(pointId: pathIds[0], new Vector3(0,0,0),  PointType.Entrance, new Guid[]{pathIds[1], pathIds[2]}),
-                    new PathPoint(pointId: pathIds[1], new Vector3(5,5,0), PointType.Point,    new Guid[]{pathIds[4]}),
-                    new PathPoint(pointId: pathIds[2], new Vector3(5,-5,0), PointType.Point,    new Guid[]{pathIds[3]}),
-                    new PathPoint(pointId: pathIds[3], new Vector3(10,-5,0), PointType.Point,    new Guid[]{pathIds[5], pathIds[4]}),
-                    new PathPoint(pointId: pathIds[4], new Vector3(10,5,0), PointType.Point,    new Guid[]{pathIds[6]}),
-                    new PathPoint(pointId: pathIds[5], new Vector3(15,-5,0), PointType.Point,    new Guid[]{pathIds[7]}),
-                    new PathPoint(pointId: pathIds[6], new Vector3(15,5,0), PointType.Point,    new Guid[]{pathIds[7]}),
-                    new PathPoint(pointId: pathIds[7], new Vector3(20,0,0),  PointType.Exit,     new Guid[0])
+                    new PathPoint(id: pathIds[0], new Vector3(0,0,0),  PointType.Entrance, new Guid[]{pathIds[1], pathIds[2]}),
+                    new PathPoint(id: pathIds[1], new Vector3(5,5,0), PointType.Point,    new Guid[]{pathIds[4]}),
+                    new PathPoint(id: pathIds[2], new Vector3(5,-5,0), PointType.Point,    new Guid[]{pathIds[3]}),
+                    new PathPoint(id: pathIds[3], new Vector3(10,-5,0), PointType.Point,    new Guid[]{pathIds[5], pathIds[4]}),
+                    new PathPoint(id: pathIds[4], new Vector3(10,5,0), PointType.Point,    new Guid[]{pathIds[6]}),
+                    new PathPoint(id: pathIds[5], new Vector3(15,-5,0), PointType.Point,    new Guid[]{pathIds[7]}),
+                    new PathPoint(id: pathIds[6], new Vector3(15,5,0), PointType.Point,    new Guid[]{pathIds[7]}),
+                    new PathPoint(id: pathIds[7], new Vector3(20,0,0),  PointType.Exit,     new Guid[0])
                 }
             );
 
-            string json = JsonConvert.SerializeObject(pathData, Formatting.Indented);
+            Wave[] waves = new Wave[]
+            {
+                new Wave(new[]
+                {
+                    new EnemyGroup("Walker", 0, new[]{0f,0.2f,0.3f,0.5f })
+                })
+            };
+
+            var levelData = new LevelData(waves, pathData);
+
+            string json = JsonConvert.SerializeObject(levelData, Formatting.Indented);
 
             string dir = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(dir))
@@ -74,9 +86,9 @@ namespace Examples.Paths
             }
             string json = File.ReadAllText(filePath);
 
-            var pathData = JsonConvert.DeserializeObject<PathData>(json);
+            var levelData = JsonConvert.DeserializeObject<LevelData>(json);
 
-            worldController.SetPath(pathData);
+            worldController.SetPath(levelData.path);
         }
 
         public async void CreateWalker()
