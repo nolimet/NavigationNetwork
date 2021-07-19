@@ -22,25 +22,25 @@ namespace TowerDefence.World.Path.Data
     [Serializable]
     public class PathPoint
     {
-        [JsonProperty("pointId")]
-        public readonly Guid pointId;
+        [JsonProperty("id")]
+        public readonly Guid id;
 
         [JsonProperty("position")]
         public readonly Vector3 position;
 
-        [JsonProperty("pointType"), JsonConverter(typeof(StringEnumConverter))]
-        public readonly PointType pointType;
+        [JsonProperty("type"), JsonConverter(typeof(StringEnumConverter))]
+        public readonly PointType type;
 
-        [JsonProperty("pointConnections")]
-        public readonly Guid[] pointConnections;
+        [JsonProperty("connections")]
+        public readonly Guid[] connections;
 
         [JsonConstructor]
-        public PathPoint(Guid pointId, Vector3 position, PointType pointType, Guid[] pointConnections)
+        public PathPoint(Guid id, Vector3 position, PointType type, Guid[] connections)
         {
-            this.pointId = pointId;
+            this.id = id;
             this.position = position;
-            this.pointType = pointType;
-            this.pointConnections = pointConnections;
+            this.type = type;
+            this.connections = connections;
         }
 
         public override string ToString()

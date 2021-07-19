@@ -1,15 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
-public class Wave
+namespace TowerDefence.Systems.Waves.Data
 {
-    public readonly EnemyGroup[] enemyGroups;
-
-    public class EnemyGroup
+    [Serializable]
+    public class Wave
     {
-        public readonly string enemyID;
-        public readonly int pathID;
-        public readonly float[] spawnTime;
+        public readonly EnemyGroup[] enemyGroups = new EnemyGroup[0];
+
+        public Wave(EnemyGroup[] enemyGroups)
+        {
+            this.enemyGroups = enemyGroups;
+        }
+
+        [Serializable]
+        public class EnemyGroup
+        {
+            public readonly string enemyID = string.Empty;
+            public readonly int pathID = 0;
+            public readonly float[] spawnTime = new float[0];
+
+            public EnemyGroup(string enemyID, int pathID, float[] spawnTime)
+            {
+                this.enemyID = enemyID;
+                this.pathID = pathID;
+                this.spawnTime = spawnTime;
+            }
+        }
     }
 }

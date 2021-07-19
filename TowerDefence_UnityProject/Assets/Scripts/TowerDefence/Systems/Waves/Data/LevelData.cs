@@ -1,12 +1,18 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TowerDefence.World.Path.Data;
-using UnityEngine;
 
-[Serializable]
-public class LevelData
+namespace TowerDefence.Systems.Waves.Data
 {
-    public readonly Wave waves;
-    public readonly PathData path;
+    [Serializable]
+    public class LevelData
+    {
+        public readonly Wave[] waves;
+        public readonly PathData path;
+
+        public LevelData(Wave[] waves, PathData path)
+        {
+            this.waves = waves;
+            this.path = path;
+        }
+    }
 }
