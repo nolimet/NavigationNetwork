@@ -7,7 +7,7 @@ using UnityEngine;
 namespace TowerDefence.Systems.Waves.Data
 {
     /// <summary>
-    /// Inspector for .SVG assets
+    /// Inspector for .lvl assets
     /// </summary>
     [CustomEditor(typeof(DefaultAsset))]
     public class LevelDataEditor : Editor
