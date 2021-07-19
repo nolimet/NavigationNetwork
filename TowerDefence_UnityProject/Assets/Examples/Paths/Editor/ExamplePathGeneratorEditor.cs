@@ -34,6 +34,14 @@ namespace Examples.Paths
                         {
                             target.CreateWalker();
                         }
+
+                        if (GUILayout.Button("Create 20 walkers"))
+                        {
+                            for (int i = 0; i < 20; i++)
+                            {
+                                target.CreateWalkerDelayed(Random.Range(0, 1f));
+                            }
+                        }
                     }
                     GUILayout.FlexibleSpace();
                 }

@@ -19,6 +19,18 @@
       "source": "builtin",
       "dependencies": {}
     },
+    "com.unity.addressables": {
+      "version": "1.16.19",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.scriptablebuildpipeline": "1.15.2",
+        "com.unity.modules.assetbundle": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.unitywebrequestassetbundle": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.ext.nunit": {
       "version": "1.0.6",
       "depth": 2,
@@ -27,7 +39,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.7",
+      "version": "2.0.9",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -35,8 +47,41 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unity.render-pipelines.core": {
+      "version": "10.5.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.scriptablebuildpipeline": {
+      "version": "1.15.2",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.searcher": {
+      "version": "4.3.2",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.shadergraph": {
+      "version": "10.5.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "10.5.1",
+        "com.unity.searcher": "4.3.2"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.test-framework": {
-      "version": "1.1.24",
+      "version": "1.1.26",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -47,7 +92,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.textmeshpro": {
-      "version": "3.0.4",
+      "version": "3.0.6",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -65,21 +110,21 @@
       }
     },
     "com.yasirkula.ingamedebugconsole": {
-      "version": "1.4.8",
+      "version": "1.4.9",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
     "jillejr.newtonsoft.json-for-unity": {
-      "version": "12.0.302",
+      "version": "13.0.102",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
     "jillejr.newtonsoft.json-for-unity.converters": {
-      "version": "1.1.0-preview.2",
+      "version": "1.1.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
@@ -92,10 +137,10 @@
       "dependencies": {
         "com.unity.textmeshpro": "3.0.4",
         "com.svermeulen.extenject": "9.2.0-stcf3",
-        "jillejr.newtonsoft.json-for-unity": "12.0.302",
-        "jillejr.newtonsoft.json-for-unity.converters": "1.1.0-preview.2"
+        "jillejr.newtonsoft.json-for-unity": "13.0.102",
+        "jillejr.newtonsoft.json-for-unity.converters": "1.1.1"
       },
-      "hash": "c0387542c3928985b3d47f92726e4429626dac57"
+      "hash": "d543150499cc0f210b7c7b6a70632869e97f11ca"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

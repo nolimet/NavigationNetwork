@@ -24,8 +24,16 @@ namespace TowerDefence.World.Path
             {
                 throw new System.NullReferenceException("WorldController.PathWorldData is not set! Path was not set or Destroyed");
             }
-            walker.SetPath(worldController.pathWorldData.GetRandomPath());
+
             walkers.Add(walker);
+        }
+
+        public void RemoveWalker(WalkerBase walker)
+        {
+            if (walkers.Contains(walker))
+            {
+                walkers.Remove(walker);
+            }
         }
 
         public void Tick()
@@ -42,7 +50,6 @@ namespace TowerDefence.World.Path
                     if (walker.AtEndOfPath)
                     {
                         walker.ReachedEnd();
-                        walker.DestroyWalker();
                     }
                     else
                     {

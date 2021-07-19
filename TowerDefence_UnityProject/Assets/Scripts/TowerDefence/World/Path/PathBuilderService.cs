@@ -24,8 +24,8 @@ namespace TowerDefence.World.Path
 
         public Vector3[][] GeneratePaths(PathData pathData)
         {
-            var entrances = pathData.pathPoints.Where(x => x.pointType == PointType.Entrance).ToArray();
-            var pathLookup = pathData.pathPoints.ToDictionary(x => x.pointId);
+            var entrances = pathData.pathPoints.Where(x => x.type == PointType.Entrance).ToArray();
+            var pathLookup = pathData.pathPoints.ToDictionary(x => x.id);
             var visitedPoints = new List<Guid>();
             var tracedPaths = new List<Guid[]>();
 
@@ -43,7 +43,7 @@ namespace TowerDefence.World.Path
             //filtering paths and converting them to vector3 arrays
 
             return tracedPaths
-                .Where(x => pathLookup[x.Last()].pointType == PointType.Exit)
+                .Where(x => pathLookup[x.Last()].type == PointType.Exit)
                 .Select
                 (x =>
                     x.Select
@@ -55,26 +55,26 @@ namespace TowerDefence.World.Path
             IEnumerable<Guid[]> CrawlPath(PathPoint point)
             {
                 //it return the full path once it hits a end
-                if (point.pointType == PointType.Exit)
+                if (point.type == PointType.Exit)
                 {
-                    return new List<Guid[]>() { visitedPoints.Concat(new[] { point.pointId }).ToArray() };
+                    return new List<Guid[]>() { visitedPoints.Concat(new[] { point.id }).ToArray() };
                 }
-                if (!point.pointConnections.Any())
+                if (!point.connections.Any())
                 {
                     throw new InvalidPathException("Point is not exit! " + point.ToString());
                 }
-                if (visitedPoints.Contains(point.pointId))
+                if (visitedPoints.Contains(point.id))
                 {
                     throw new InfitePathException("Path loops around forever " + point.ToString());
                 }
 
                 var points = new List<Guid[]>();
-                visitedPoints.Add(point.pointId);
-                foreach (var pointId in point.pointConnections)
+                visitedPoints.Add(point.id);
+                foreach (var pointId in point.connections)
                 {
                     points.AddRange(CrawlPath(pathLookup[pointId]));
                 }
-                visitedPoints.Remove(point.pointId);
+                visitedPoints.Remove(point.id);
 
                 return points.Distinct();
             }
@@ -83,8 +83,8 @@ namespace TowerDefence.World.Path
         public IEnumerable<PathRendererBase> GenerateLineRenderers(PathData pathData)
         {
             var lines = new List<PathRendererBase>();
-            var entrances = pathData.pathPoints.Where(x => x.pointType == PointType.Entrance).ToArray();
-            var pathLookup = pathData.pathPoints.ToDictionary(x => x.pointId);
+            var entrances = pathData.pathPoints.Where(x => x.type == PointType.Entrance).ToArray();
+            var pathLookup = pathData.pathPoints.ToDictionary(x => x.id);
             var visitedPoints = new List<PathPoint>();
             var virtualLines = new List<IEnumerable<PathPoint>>();
 
@@ -130,22 +130,22 @@ namespace TowerDefence.World.Path
                     line.Add(currentPoint);
 
                     //Checking if there is any point then do
-                    if (currentPoint.pointConnections.Any())
+                    if (currentPoint.connections.Any())
                     {
                         //if there is more than one connection we will build that
-                        if (currentPoint.pointConnections.Length > 1)
+                        if (currentPoint.connections.Length > 1)
                         {
                             //we skip first point we deal with that one below
-                            for (int i = 1; i < currentPoint.pointConnections.Length; i++)
+                            for (int i = 1; i < currentPoint.connections.Length; i++)
                             {
-                                virtualLines.Add(new[] { currentPoint }.Concat(CrawlPath(pathLookup[currentPoint.pointConnections[i]])).ToArray());
+                                virtualLines.Add(new[] { currentPoint }.Concat(CrawlPath(pathLookup[currentPoint.connections[i]])).ToArray());
                             }
                         }
                         //set first point as current
-                        currentPoint = pathLookup[currentPoint.pointConnections.First()];
+                        currentPoint = pathLookup[currentPoint.connections.First()];
                     }
                 }
-                while (currentPoint != null && currentPoint.pointType != PointType.Exit);
+                while (currentPoint != null && currentPoint.type != PointType.Exit);
 
                 //add the last point as the loop did not get a chance to add it
                 if (currentPoint != null && !line.Contains(currentPoint))
@@ -165,18 +165,18 @@ namespace TowerDefence.World.Path
 
         public bool ValidatePath(PathData pathData)
         {
-            if (!pathData.pathPoints.Any(x => x.pointType == PointType.Exit))
+            if (!pathData.pathPoints.Any(x => x.type == PointType.Exit))
             {
                 throw new NoPathExitException();
             }
 
-            if (!pathData.pathPoints.Any(x => x.pointType == PointType.Entrance))
+            if (!pathData.pathPoints.Any(x => x.type == PointType.Entrance))
             {
                 throw new NoPathEntranceException();
             }
 
-            var entrances = pathData.pathPoints.Where(x => x.pointType == PointType.Entrance);
-            var pathPoints = pathData.pathPoints.ToDictionary(point => point.pointId);
+            var entrances = pathData.pathPoints.Where(x => x.type == PointType.Entrance);
+            var pathPoints = pathData.pathPoints.ToDictionary(point => point.id);
             List<Guid> visitedPoints = new List<Guid>();
             List<bool> walkResults = new List<bool>();
 
@@ -193,17 +193,17 @@ namespace TowerDefence.World.Path
 
             bool WalkPath(PathPoint current)
             {
-                if (current.pointType == PointType.Exit)
+                if (current.type == PointType.Exit)
                 {
                     return true;
                 }
 
-                if (!visitedPoints.Contains(current.pointId))
+                if (!visitedPoints.Contains(current.id))
                 {
                     List<(bool hasExit, PathPoint point)> connections = new List<(bool hasExit, PathPoint point)>();
-                    visitedPoints.Add(current.pointId);
+                    visitedPoints.Add(current.id);
 
-                    foreach (var pointId in current.pointConnections)
+                    foreach (var pointId in current.connections)
                     {
                         if (pathPoints.TryGetValue(pointId, out var point))
                         {
@@ -211,7 +211,7 @@ namespace TowerDefence.World.Path
                         }
                     }
 
-                    visitedPoints.Remove(current.pointId);
+                    visitedPoints.Remove(current.id);
                     return connections.All(x => x.hasExit) && connections.Count > 0;
                 }
                 else

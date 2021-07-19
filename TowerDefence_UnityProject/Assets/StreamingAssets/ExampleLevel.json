@@ -1,100 +1,118 @@
 {
-  "pathPoints": [
+  "waves": [
     {
-      "pointId": "cd1a42ac-b814-4602-bf9c-f6964c4ffedb",
-      "position": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "pointType": "Entrance",
-      "pointConnections": [
-        "e98820b1-d6d9-4dea-a798-69a357fbe944",
-        "f264aaa3-ced1-441d-b3bc-05f8e2b24a2b"
+      "enemyGroups": [
+        {
+          "enemyID": "Walker",
+          "pathID": 0,
+          "spawnTime": [
+            0.0,
+            0.2,
+            0.3,
+            0.5
+          ]
+        }
       ]
-    },
-    {
-      "pointId": "e98820b1-d6d9-4dea-a798-69a357fbe944",
-      "position": {
-        "x": 5.0,
-        "y": 5.0,
-        "z": 0.0
-      },
-      "pointType": "Point",
-      "pointConnections": [
-        "d282e5e7-83d0-467c-a441-20c8eaa69d4d"
-      ]
-    },
-    {
-      "pointId": "f264aaa3-ced1-441d-b3bc-05f8e2b24a2b",
-      "position": {
-        "x": 5.0,
-        "y": -5.0,
-        "z": 0.0
-      },
-      "pointType": "Point",
-      "pointConnections": [
-        "c6249646-df37-469b-9330-fd30c7395d4f"
-      ]
-    },
-    {
-      "pointId": "c6249646-df37-469b-9330-fd30c7395d4f",
-      "position": {
-        "x": 10.0,
-        "y": -5.0,
-        "z": 0.0
-      },
-      "pointType": "Point",
-      "pointConnections": [
-        "12f0fa66-d5b1-47f8-9d6a-2a2fb7657f11",
-        "d282e5e7-83d0-467c-a441-20c8eaa69d4d"
-      ]
-    },
-    {
-      "pointId": "d282e5e7-83d0-467c-a441-20c8eaa69d4d",
-      "position": {
-        "x": 10.0,
-        "y": 5.0,
-        "z": 0.0
-      },
-      "pointType": "Point",
-      "pointConnections": [
-        "529bba4f-15ec-4498-9a06-4478cd271abb"
-      ]
-    },
-    {
-      "pointId": "12f0fa66-d5b1-47f8-9d6a-2a2fb7657f11",
-      "position": {
-        "x": 15.0,
-        "y": -5.0,
-        "z": 0.0
-      },
-      "pointType": "Point",
-      "pointConnections": [
-        "0a13fde5-3520-4c97-9487-f4fe6fa2c515"
-      ]
-    },
-    {
-      "pointId": "529bba4f-15ec-4498-9a06-4478cd271abb",
-      "position": {
-        "x": 15.0,
-        "y": 5.0,
-        "z": 0.0
-      },
-      "pointType": "Point",
-      "pointConnections": [
-        "0a13fde5-3520-4c97-9487-f4fe6fa2c515"
-      ]
-    },
-    {
-      "pointId": "0a13fde5-3520-4c97-9487-f4fe6fa2c515",
-      "position": {
-        "x": 20.0,
-        "y": 0.0,
-        "z": 0.0
-      },
-      "pointType": "Exit",
-      "pointConnections": []
     }
-  ]
+  ],
+  "path": {
+    "pathPoints": [
+      {
+        "id": "9c35b01b-239c-496f-92d8-f88e8c9655a7",
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "type": "Entrance",
+        "connections": [
+          "1352169c-d3ce-4a09-9f9b-ec74f3074361",
+          "72985b3d-d9af-466d-8924-23755eb27797"
+        ]
+      },
+      {
+        "id": "1352169c-d3ce-4a09-9f9b-ec74f3074361",
+        "position": {
+          "x": 5.0,
+          "y": 5.0,
+          "z": 0.0
+        },
+        "type": "Point",
+        "connections": [
+          "746bebeb-8336-479a-893e-73ae2a9c1d1c"
+        ]
+      },
+      {
+        "id": "72985b3d-d9af-466d-8924-23755eb27797",
+        "position": {
+          "x": 5.0,
+          "y": -5.0,
+          "z": 0.0
+        },
+        "type": "Point",
+        "connections": [
+          "af91e27e-bbb8-41eb-858f-1f3698292594"
+        ]
+      },
+      {
+        "id": "af91e27e-bbb8-41eb-858f-1f3698292594",
+        "position": {
+          "x": 10.0,
+          "y": -5.0,
+          "z": 0.0
+        },
+        "type": "Point",
+        "connections": [
+          "6fc8c61f-a632-4b5a-b64d-d9aaca98eb49",
+          "746bebeb-8336-479a-893e-73ae2a9c1d1c"
+        ]
+      },
+      {
+        "id": "746bebeb-8336-479a-893e-73ae2a9c1d1c",
+        "position": {
+          "x": 10.0,
+          "y": 5.0,
+          "z": 0.0
+        },
+        "type": "Point",
+        "connections": [
+          "b24d5f33-292e-43db-88b6-66f63b851741"
+        ]
+      },
+      {
+        "id": "6fc8c61f-a632-4b5a-b64d-d9aaca98eb49",
+        "position": {
+          "x": 15.0,
+          "y": -5.0,
+          "z": 0.0
+        },
+        "type": "Point",
+        "connections": [
+          "f07de4c6-da89-47c3-a781-2283c4cf1e9d"
+        ]
+      },
+      {
+        "id": "b24d5f33-292e-43db-88b6-66f63b851741",
+        "position": {
+          "x": 15.0,
+          "y": 5.0,
+          "z": 0.0
+        },
+        "type": "Point",
+        "connections": [
+          "f07de4c6-da89-47c3-a781-2283c4cf1e9d"
+        ]
+      },
+      {
+        "id": "f07de4c6-da89-47c3-a781-2283c4cf1e9d",
+        "position": {
+          "x": 20.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "type": "Exit",
+        "connections": []
+      }
+    ]
+  }
 }
