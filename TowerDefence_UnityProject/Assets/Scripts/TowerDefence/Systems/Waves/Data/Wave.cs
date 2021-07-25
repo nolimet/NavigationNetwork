@@ -3,9 +3,9 @@ using System;
 namespace TowerDefence.Systems.Waves.Data
 {
     [Serializable]
-    public class Wave
+    public readonly struct Wave
     {
-        public readonly EnemyGroup[] enemyGroups = new EnemyGroup[0];
+        public readonly EnemyGroup[] enemyGroups;
 
         public Wave(EnemyGroup[] enemyGroups)
         {
@@ -13,11 +13,11 @@ namespace TowerDefence.Systems.Waves.Data
         }
 
         [Serializable]
-        public class EnemyGroup
+        public readonly struct EnemyGroup
         {
-            public readonly string enemyID = string.Empty;
-            public readonly int pathID = 0;
-            public readonly float[] spawnTime = new float[0];
+            public readonly string enemyID;
+            public readonly int pathID;
+            public readonly float[] spawnTime;
 
             public EnemyGroup(string enemyID, int pathID, float[] spawnTime)
             {

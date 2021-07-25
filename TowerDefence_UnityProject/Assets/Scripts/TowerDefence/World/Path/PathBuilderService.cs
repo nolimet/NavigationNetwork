@@ -145,7 +145,7 @@ namespace TowerDefence.World.Path
                         currentPoint = pathLookup[currentPoint.connections.First()];
                     }
                 }
-                while (currentPoint != null && currentPoint.type != PointType.Exit);
+                while (currentPoint != PathPoint.Empty && currentPoint.type != PointType.Exit);
 
                 //add the last point as the loop did not get a chance to add it
                 if (currentPoint != null && !line.Contains(currentPoint))

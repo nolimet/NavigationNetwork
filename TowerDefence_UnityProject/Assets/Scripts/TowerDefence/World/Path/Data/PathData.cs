@@ -7,7 +7,7 @@ using UnityEngine;
 namespace TowerDefence.World.Path.Data
 {
     [Serializable]
-    public class PathData
+    public readonly struct PathData
     {
         [JsonProperty("pathPoints")]
         public readonly PathPoint[] pathPoints;
@@ -20,8 +20,20 @@ namespace TowerDefence.World.Path.Data
     }
 
     [Serializable]
-    public class PathPoint
+    public readonly struct PathPoint
     {
+        public static readonly PathPoint Empty = default;
+
+        public static bool operator !=(PathPoint a, PathPoint b)
+        {
+            return !a.Equals(b);
+        }
+
+        public static bool operator ==(PathPoint a, PathPoint b)
+        {
+            return a.Equals(b);
+        }
+
         [JsonProperty("id")]
         public readonly Guid id;
 
@@ -46,6 +58,23 @@ namespace TowerDefence.World.Path.Data
         public override string ToString()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is PathPoint point)
+            {
+                if (point.id == id && point.type == type && point.connections == connections && point.position == position)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 
