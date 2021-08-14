@@ -17,7 +17,7 @@ namespace TowerDefence.World.Towers
         public override void InstallBindings()
         {
             Container.BindInstance(towerConfigurationData).AsSingle();
-            Container.Bind<TowerService>().ToSelf().AsSingle();
+            Container.BindInterfacesAndSelfTo<TowerService>().AsSingle();
         }
     }
 }
