@@ -10,17 +10,30 @@ using UnityEngine;
 
 namespace Examples.Towers
 {
-    public class ExampleTower : TowerBase
+    public class ExampleTower : SingleTargetTowerBase
     {
-        public override float TargetRadius => 10f;
+        public override float TargetRadius => 4f;
+
+        public override float AttacksPerSecond => 2;
+
+        private float attackDelay;
 
         public override void Tick()
         {
-            Debug.Log("TICK");
-            var enemies = GetWalkersInRange<EnemyBase>();
-            foreach (var enemy in enemies)
+            attackDelay -= Time.deltaTime;
+            UpdateTargetList();
+
+            if (attackDelay <= 0)
             {
-                enemy.ApplyDamage(1);
+                attackDelay = 1 / AttacksPerSecond;
+
+                var target = GetFirst<EnemyBase>();
+
+                if (target)
+                {
+                    Debug.Log(target);
+                    target.ApplyDamage(10);
+                }
             }
         }
     }
