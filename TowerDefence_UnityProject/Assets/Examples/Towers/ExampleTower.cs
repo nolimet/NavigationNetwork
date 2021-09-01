@@ -16,17 +16,12 @@ namespace Examples.Towers
 
         public override float AttacksPerSecond => 2;
 
-        private float attackDelay;
-
         public override void Tick()
         {
-            attackDelay -= Time.deltaTime;
             UpdateTargetList();
 
-            if (attackDelay <= 0)
+            if (CanAttack())
             {
-                attackDelay = 1 / AttacksPerSecond;
-
                 var target = GetFirst<EnemyBase>();
 
                 if (target)

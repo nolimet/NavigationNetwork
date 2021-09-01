@@ -9,6 +9,21 @@ namespace TowerDefence.World.Towers
     {
         public abstract float TargetRadius { get; }
         public abstract float AttacksPerSecond { get; }
+        protected float attackDelay;
+
+        protected virtual bool CanAttack(bool tickDelay = true)
+        {
+            if (tickDelay)
+            {
+                attackDelay -= Time.deltaTime;
+            }
+            if (attackDelay <= 0)
+            {
+                attackDelay = 1 / AttacksPerSecond;
+                return true;
+            }
+            return false;
+        }
 
         public abstract void Tick();
 
