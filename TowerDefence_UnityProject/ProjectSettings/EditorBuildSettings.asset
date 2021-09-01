@@ -5,12 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/_Scenes/Network/base.unity
-    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/_Scenes/TowerDefence/base.unity
-    guid: 00000000000000000000000000000000
+    path: Assets/Examples/Paths/Path Generation Example.unity
+    guid: 22c637b073e7ba14a84e718bbc87cfca
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 8313decc8a0768b409b032900b51902d,
       type: 2}
