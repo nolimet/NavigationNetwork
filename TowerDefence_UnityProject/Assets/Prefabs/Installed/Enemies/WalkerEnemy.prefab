@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5371426622042873379}
   - component: {fileID: 5371426622042873376}
-  - component: {fileID: 5371426622042873378}
+  - component: {fileID: -6261217147935514592}
   - component: {fileID: 8419930632482706330}
   m_Layer: 0
   m_Name: WalkerEnemy
@@ -170,7 +170,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5371426622042873378
+--- !u!114 &-6261217147935514592
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,12 +179,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5371426622042873377}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bb039baccb81b045b11028526bb3f9d, type: 3}
+  m_Script: {fileID: 11500000, guid: 939392b904c64c447893c642e1e6e878, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speedMult: 3
   currentHealth: 10
   maxHealth: 10
+  renderer: {fileID: 5371426622042873376}
 --- !u!61 &8419930632482706330
 BoxCollider2D:
   m_ObjectHideFlags: 0
