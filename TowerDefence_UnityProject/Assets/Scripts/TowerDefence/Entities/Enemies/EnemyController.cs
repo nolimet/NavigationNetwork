@@ -42,7 +42,6 @@ namespace TowerDefence.Entities.Enemies
             enemies.Remove(enemy);
             pathWalkerService.RemoveWalker(enemy);
             Object.DestroyImmediate(enemy.gameObject);
-            enemy.gameObject.SetActive(false);
         }
 
         private void EnemyReachedEnd(EnemyBase enemy)
