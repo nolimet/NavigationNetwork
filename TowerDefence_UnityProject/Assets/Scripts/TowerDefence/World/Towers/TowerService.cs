@@ -9,7 +9,6 @@ namespace TowerDefence.World.Towers
     {
         private readonly List<TowerBase> towers = new List<TowerBase>();
         private readonly DiContainer diContainer;
-        private readonly ResolveProvider resolveProvider;
 
         private readonly TowerConfigurationData towerConfiguration;
         private readonly WorldContainer worldContainer;
