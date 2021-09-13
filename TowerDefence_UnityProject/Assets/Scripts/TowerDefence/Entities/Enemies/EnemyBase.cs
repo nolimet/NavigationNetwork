@@ -13,6 +13,9 @@ namespace TowerDefence.Entities.Enemies
         [SerializeField] private double currentHealth = 0;
         [SerializeField] private double maxHealth = 0;
 
+        public double CurrentHealth => currentHealth;
+        public double MaxHealth => maxHealth;
+
         private void Awake()
         {
             currentHealth = maxHealth;

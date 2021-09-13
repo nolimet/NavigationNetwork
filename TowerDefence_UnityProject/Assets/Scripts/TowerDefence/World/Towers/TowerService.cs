@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine;
 using Zenject;
 
 namespace TowerDefence.World.Towers
@@ -6,24 +8,36 @@ namespace TowerDefence.World.Towers
     public class TowerService : ITickable
     {
         private readonly List<TowerBase> towers = new List<TowerBase>();
-        private readonly IInstantiator instantiator;
+        private readonly DiContainer diContainer;
 
-        public TowerService(IInstantiator instantiator)
+        private readonly TowerConfigurationData towerConfiguration;
+        private readonly WorldContainer worldContainer;
+
+        public TowerService(DiContainer diContainer, TowerConfigurationData towerConfiguration, WorldContainer worldContainer)
         {
-            this.instantiator = instantiator;
+            this.diContainer = diContainer;
+            this.towerConfiguration = towerConfiguration;
+            this.worldContainer = worldContainer;
         }
 
-        public T PlaceTower<T>(T towerPrefab) where T : TowerBase
+        public async Task<TowerBase> PlaceTower(string towerID, Vector2 position)
         {
-            if (towerPrefab == null || !towerPrefab)
+            var assetReference = towerConfiguration.GetTower(towerID);
+            if (assetReference == null)
             {
-                throw new System.NullReferenceException("towerPrefab was not set! Set the prefab in the installer or check if it's corrupted");
+                throw new System.NullReferenceException("Tower ID seems to be invalid! Case does not matter just check the spelling or if it exists in the configuration data for the towers");
             }
 
-            var newTower = instantiator.InstantiatePrefabForComponent<T>(towerPrefab);
-            towers.Add(newTower);
+            var newTowerObject = await assetReference.InstantiateAsync(position, Quaternion.identity, worldContainer.TurretContainer);
+            diContainer.Inject(newTowerObject);
 
-            return newTower;
+            if (newTowerObject is GameObject gameObject)
+            {
+                var newTower = gameObject.GetComponent<TowerBase>();
+                towers.Add(newTower);
+                return gameObject.GetComponent<TowerBase>();
+            }
+            return null;
         }
 
         public void DestroyTower<T>(T tower) where T : TowerBase
@@ -35,6 +49,7 @@ namespace TowerDefence.World.Towers
             if (tower && towers.Contains(tower))
             {
                 tower.Destroy();
+                towers.Remove(tower);
             }
         }
 
@@ -42,8 +57,9 @@ namespace TowerDefence.World.Towers
         {
             foreach (var tower in towers)
             {
-                DestroyTower(tower);
+                tower.Destroy();
             }
+            towers.Clear();
         }
 
         public void Tick()

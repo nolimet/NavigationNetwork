@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TowerDefence.World.Path;
 using UnityEngine;
@@ -42,7 +40,6 @@ namespace TowerDefence.Entities.Enemies
             enemies.Remove(enemy);
             pathWalkerService.RemoveWalker(enemy);
             Object.DestroyImmediate(enemy.gameObject);
-            enemy.gameObject.SetActive(false);
         }
 
         private void EnemyReachedEnd(EnemyBase enemy)
