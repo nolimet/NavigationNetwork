@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using TowerDefence.World.Path.Data;
 using UnityEngine;
-using FilePathPoint = TowerDefence.World.Path.Data.PathPoint;
 using FileEnemyGroup = TowerDefence.Systems.Waves.Data.Wave.EnemyGroup;
+using FilePathPoint = TowerDefence.World.Path.Data.PathPoint;
 
 namespace TowerDefence.Systems.Waves.Data
 {
@@ -136,12 +136,12 @@ namespace TowerDefence.Systems.Waves.Data
                     this.id = id.ToString();
                     this.position = position;
                     this.type = type;
-                    this.connections = connections.Select(x=>x.ToString()).ToArray();
+                    this.connections = connections.Select(x => x.ToString()).ToArray();
                 }
 
                 public static implicit operator FilePathPoint(PathPoint point)
                 {
-                    return new FilePathPoint(new Guid(point.id), point.position, point.type, point.connections.Select(x=>new Guid(x)).ToArray());
+                    return new FilePathPoint(new Guid(point.id), point.position, point.type, point.connections.Select(x => new Guid(x)).ToArray());
                 }
 
                 public static implicit operator PathPoint(FilePathPoint point)

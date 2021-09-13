@@ -17,11 +17,13 @@ namespace TowerDefence.World.Towers
             {
                 attackDelay -= Time.deltaTime;
             }
+
             if (attackDelay <= 0)
             {
                 attackDelay = 1 / AttacksPerSecond;
                 return true;
             }
+
             return false;
         }
 
