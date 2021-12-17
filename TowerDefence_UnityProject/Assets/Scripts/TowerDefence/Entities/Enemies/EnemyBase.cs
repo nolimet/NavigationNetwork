@@ -12,9 +12,12 @@ namespace TowerDefence.Entities.Enemies
 
         [SerializeField] private double currentHealth = 0;
         [SerializeField] private double maxHealth = 0;
+        [SerializeField] private Vector2 healthBarOffset = Vector2.zero;
 
         public double CurrentHealth => currentHealth;
         public double MaxHealth => maxHealth;
+
+        public Vector3 HealthBarOffset => healthBarOffset;
 
         private void Awake()
         {

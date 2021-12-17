@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Zenject;
 using static TowerDefence.World.Path.Data.PathWorldData;
+using TowerDefence.UI.Health;
 
 namespace TowerDefence.Entities.Enemies
 {
@@ -13,11 +14,13 @@ namespace TowerDefence.Entities.Enemies
         private readonly List<EnemyBase> enemies = new List<EnemyBase>();
         private readonly DiContainer container;
         private readonly PathWalkerService pathWalkerService;
+        private readonly HealthDrawerController healthDrawerController;
 
-        public EnemyController(DiContainer container, PathWalkerService pathWalkerService)
+        public EnemyController(DiContainer container, PathWalkerService pathWalkerService, HealthDrawerController healthDrawerController)
         {
             this.container = container;
             this.pathWalkerService = pathWalkerService;
+            this.healthDrawerController = healthDrawerController;
         }
 
         public async Task<T> CreateNewEnemy<T>(AssetReference enemyAssetRefrence, AnimationCurve3D path) where T : EnemyBase
@@ -28,6 +31,8 @@ namespace TowerDefence.Entities.Enemies
             if (newEnemyGameObject.TryGetComponent<T>(out var newEnemy))
             {
                 newEnemy.Setup(EnemyReachedEnd, EnemyOutOfHealth, path);
+                healthDrawerController.AddHealthBar(newEnemy);
+
                 pathWalkerService.AddWalker(newEnemy);
 
                 return newEnemy;
