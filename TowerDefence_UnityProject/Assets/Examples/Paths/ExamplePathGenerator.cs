@@ -13,7 +13,7 @@ using System.Linq;
 using TowerDefence.Systems.Waves.Data;
 using static TowerDefence.Systems.Waves.Data.Wave;
 
-namespace Examples.Paths
+namespace TowerDefence.Examples.Paths
 {
     public class ExamplePathGenerator : MonoBehaviour
     {

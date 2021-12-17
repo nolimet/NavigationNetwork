@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Examples.Paths
+namespace TowerDefence.Examples.Paths
 {
     [CustomEditor(typeof(ExamplePathGenerator))]
     public class ExamplePathGeneratorEditor : Editor
