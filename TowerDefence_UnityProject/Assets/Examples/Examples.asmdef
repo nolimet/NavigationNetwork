@@ -1,6 +1,6 @@
 {
     "name": "Examples",
-    "rootNamespace": "",
+    "rootNamespace": "TowerDefence.Examples",
     "references": [
         "GUID:9bd48fbefffd5dc4aba3ddf210be4b2e",
         "GUID:eb33c307fc4be5d48a08b14a48224415",
