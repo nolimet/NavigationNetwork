@@ -27,7 +27,7 @@ namespace Examples.Towers
                 if (target)
                 {
                     Debug.Log(target);
-                    target.ApplyDamage(10);
+                    target.ApplyDamage(1);
                 }
             }
         }
