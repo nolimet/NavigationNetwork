@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.World.Path.Data;
 using UnityEngine;
@@ -99,12 +100,19 @@ namespace TowerDefence.Systems.Waves.Data
 
             public static implicit operator EditablePathData(PathData pathData)
             {
-                var pathPoints = new PathPoint[pathData.pathPoints.Length];
-                for (int i = 0; i < pathData.pathPoints.Length; i++)
+                var pathPoints = new List<PathPoint>();
+                var groupedPoints = pathData.pathPoints.GroupBy(x => x.type);
+                foreach (var group in groupedPoints)
                 {
-                    pathPoints[i] = pathData.pathPoints[i];
+                    var arr = group.ToArray();
+                    for (int i = 0; i < group.Count(); i++)
+                    {
+                        var point = arr[i];
+                        pathPoints.Add(new PathPoint($"{i:00} - {group.Key}", point.id, point.position, point.type, point.connections));
+                    }
                 }
-                return new EditablePathData(pathPoints);
+
+                return new EditablePathData(pathPoints.ToArray());
             }
 
             public static implicit operator PathData(EditablePathData pathData)
