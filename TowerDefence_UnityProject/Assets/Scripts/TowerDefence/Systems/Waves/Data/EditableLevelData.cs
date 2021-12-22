@@ -20,6 +20,26 @@ namespace TowerDefence.Systems.Waves.Data
         public EditablePathData Pathdata { get => pathdata; set => pathdata = value; }
         public EditableWave[] Waves { get => waves; set => waves = value; }
 
+        public LevelData ToLevelData()
+        {
+            var waves = new Wave[Waves?.Length ?? 0];
+
+            return new LevelData(waves, Pathdata);
+        }
+
+        public void FromLevelData(LevelData levelData)
+        {
+            var waveCount = levelData.waves?.Length ?? 0;
+            var waves = new EditableWave[waveCount];
+
+            for (int i = 0; i < waveCount; i++)
+            {
+                waves[i] = levelData.waves[i];
+            }
+            Waves = waves;
+            Pathdata = levelData.path;
+        }
+
         [Serializable]
         public class EditableWave
         {
@@ -46,11 +66,15 @@ namespace TowerDefence.Systems.Waves.Data
 
             public static implicit operator EditableWave(Wave wave)
             {
-                var enemygroups = new EnemyGroup[wave.enemyGroups.Length];
-                for (int i = 0; i < wave.enemyGroups.Length; i++)
+                var enemygroups = new EnemyGroup[wave.enemyGroups?.Length ?? 0];
+                if (enemygroups.Length > 0)
                 {
-                    enemygroups[i] = wave.enemyGroups[i];
+                    for (int i = 0; i < wave.enemyGroups.Length; i++)
+                    {
+                        enemygroups[i] = wave.enemyGroups[i];
+                    }
                 }
+
                 return new EditableWave(enemygroups);
             }
 
@@ -108,7 +132,7 @@ namespace TowerDefence.Systems.Waves.Data
                     for (int i = 0; i < group.Count(); i++)
                     {
                         var point = arr[i];
-                        pathPoints.Add(new PathPoint($"{i:00} - {group.Key}", point.id, point.position, point.type, point.connections));
+                        pathPoints.Add(new PathPoint($"{i + 1:00} - {group.Key}", point.id, point.position, point.type, point.connections));
                     }
                 }
 

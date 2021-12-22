@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Linq;
 using TowerDefence.World.Path.Data;
@@ -13,6 +14,9 @@ namespace TowerDefence.Systems.Waves.Data
     {
         private ReorderableList waves;
         private SerializedProperty pathdata;
+
+        private GUIContent saveToJson = new GUIContent("Save To Json", "For development (indended json)");
+        private GUIContent saveToLvL = new GUIContent("Save To lvl", "For production (single line json)");
 
         public void OnEnable()
         {
@@ -37,31 +41,21 @@ namespace TowerDefence.Systems.Waves.Data
                     string path = EditorUtility.OpenFilePanelWithFilters("Select json", Application.dataPath, new[] { "LevelData", "json,lvl" });
                     if (File.Exists(path))
                     {
-                        string jsonData = File.ReadAllText(path);
-                        var levelData = Newtonsoft.Json.JsonConvert.DeserializeObject<LevelData>(jsonData);
-
                         var editableLevel = target as EditableLevelData;
-                        var waveCount = levelData.waves?.Length ?? 0;
-                        var waves = new EditableLevelData.EditableWave[waveCount];
-                        for (int i = 0; i < waveCount; i++)
-                        {
-                            waves[i] = levelData.waves[i];
-                        }
-                        editableLevel.Waves = waves;
-                        editableLevel.Pathdata = levelData.path;
+                        editableLevel.FromLevelData(JsonConvert.DeserializeObject<LevelData>(File.ReadAllText(path)));
 
                         serializedObject.Update();
                     }
                 }
 
-                if (GUILayout.Button("Save To Json"))
+                if (GUILayout.Button(saveToJson))
                 {
-                    SaveData("json");
+                    SaveData("json", Formatting.Indented);
                 }
 
-                if (GUILayout.Button("Save To lvl"))
+                if (GUILayout.Button(saveToLvL))
                 {
-                    SaveData("lvl");
+                    SaveData("lvl", Formatting.None);
                 }
 
                 if (GUILayout.Button("Save File"))
@@ -151,7 +145,7 @@ namespace TowerDefence.Systems.Waves.Data
                 }
             }
 
-            void SaveData(string extension)
+            void SaveData(string extension, Formatting formatting)
             {
                 string path = EditorUtility.SaveFilePanel("Select Save Location", Application.dataPath, target.name, extension);
                 var file = new FileInfo(path);
@@ -159,17 +153,15 @@ namespace TowerDefence.Systems.Waves.Data
                 {
                     file.Directory.Create();
                 }
-                var editableLevelData = target as EditableLevelData;
-                var waves = new Wave[editableLevelData.Waves?.Length ?? 0];
 
-                string json = Newtonsoft.Json.JsonConvert.SerializeObject(new LevelData(waves, editableLevelData.Pathdata), Newtonsoft.Json.Formatting.None);
                 if (file.Exists)
                 {
                     file.Delete();
                 }
+
                 using (var stream = File.CreateText(path))
                 {
-                    stream.Write(json);
+                    stream.Write(JsonConvert.SerializeObject((target as EditableLevelData).ToLevelData(), formatting));
                 }
 
                 AssetDatabase.Refresh();
