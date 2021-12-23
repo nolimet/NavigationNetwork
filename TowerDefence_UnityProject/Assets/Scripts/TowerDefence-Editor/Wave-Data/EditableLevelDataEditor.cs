@@ -12,7 +12,7 @@ namespace TowerDefence.Systems.Waves.Data
     [CustomEditor(typeof(EditableLevelData))]
     public class EditableLevelDataEditor : Editor
     {
-        private ReorderableList waves;
+        private SerializedProperty waves;
         private SerializedProperty pathdata;
 
         private GUIContent saveToJson = new GUIContent("Save To Json", "For development (indended json)");
@@ -20,11 +20,8 @@ namespace TowerDefence.Systems.Waves.Data
 
         public void OnEnable()
         {
-            waves = new ReorderableList(serializedObject, serializedObject.FindProperty("waves"), true, true, true, true);
+            waves = serializedObject.FindProperty("waves");
             pathdata = serializedObject.FindProperty("pathdata").FindPropertyRelative("pathPoints");
-            waves.drawElementCallback += OnDrawWave;
-
-            waves.drawHeaderCallback += (rect) => { EditorGUI.LabelField(rect, "Waves"); };
         }
 
         private void OnDrawWave(Rect rect, int index, bool isActive, bool isFocused)
@@ -69,7 +66,8 @@ namespace TowerDefence.Systems.Waves.Data
             using (var changedScope = new EditorGUI.ChangeCheckScope())
             {
                 DrawPathData();
-                waves.DoLayoutList();
+                EditorGUILayout.PropertyField(waves);
+
                 if (changedScope.changed)
                 {
                     serializedObject.ApplyModifiedProperties();
