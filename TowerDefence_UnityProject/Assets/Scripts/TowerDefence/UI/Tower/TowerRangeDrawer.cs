@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NoUtil.Math;
 using TowerDefence.World.Towers;
 using UnityEngine;
 
@@ -85,7 +81,7 @@ namespace TowerDefence.UI.Tower
 
             Vector3 GetCirclePosition(float radius)
             {
-                return NoUtil.Common.AngleToVector(angle) * radius;
+                return Math.AngleToVector(angle) * radius;
             }
         }
     }
