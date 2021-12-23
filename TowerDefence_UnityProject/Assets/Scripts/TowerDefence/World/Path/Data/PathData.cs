@@ -9,7 +9,7 @@ namespace TowerDefence.World.Path.Data
     [Serializable]
     public readonly struct PathData
     {
-        [JsonProperty("pathPoints")]
+        [JsonProperty("PathPoints", Required = Required.Always)]
         public readonly PathPoint[] pathPoints;
 
         [JsonConstructor]
@@ -34,16 +34,16 @@ namespace TowerDefence.World.Path.Data
             return a.Equals(b);
         }
 
-        [JsonProperty("id")]
+        [JsonProperty("Id", Required = Required.Always)]
         public readonly Guid id;
 
-        [JsonProperty("position")]
+        [JsonProperty("Position", Required = Required.Always)]
         public readonly Vector3 position;
 
-        [JsonProperty("type"), JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty("Type", Required = Required.Always), JsonConverter(typeof(StringEnumConverter))]
         public readonly PointType type;
 
-        [JsonProperty("connections")]
+        [JsonProperty("Connections", NullValueHandling = NullValueHandling.Ignore)]
         public readonly Guid[] connections;
 
         [JsonConstructor]
