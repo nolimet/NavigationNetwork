@@ -20,11 +20,11 @@
       "dependencies": {}
     },
     "com.unity.addressables": {
-      "version": "1.19.14",
+      "version": "1.19.15",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.scriptablebuildpipeline": "1.19.4",
+        "com.unity.scriptablebuildpipeline": "1.19.5",
         "com.unity.modules.assetbundle": "1.0.0",
         "com.unity.modules.imageconversion": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0",
@@ -60,7 +60,7 @@
       }
     },
     "com.unity.scriptablebuildpipeline": {
-      "version": "1.19.4",
+      "version": "1.19.5",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
@@ -111,6 +111,25 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "com.unity.vectorgraphics": {
+      "version": "2.0.0-preview.18",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.2d.sprite": "1.0.0",
+        "com.unity.ugui": "1.0.0",
+        "com.unity.modules.animation": "1.0.0",
+        "com.unity.modules.imageconversion": "1.0.0",
+        "com.unity.modules.physics": "1.0.0",
+        "com.unity.modules.physics2d": "1.0.0",
+        "com.unity.modules.ui": "1.0.0",
+        "com.unity.modules.uielements": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.unitywebrequesttexture": "1.0.0",
+        "com.unity.modules.unitywebrequestwww": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.yasirkula.ingamedebugconsole": {
       "version": "1.5.3",
       "depth": 0,
@@ -126,7 +145,7 @@
       "url": "https://package.openupm.com"
     },
     "jillejr.newtonsoft.json-for-unity.converters": {
-      "version": "1.1.1",
+      "version": "1.3.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
@@ -137,12 +156,12 @@
       "depth": 0,
       "source": "git",
       "dependencies": {
-        "com.unity.textmeshpro": "3.0.4",
+        "com.unity.textmeshpro": "3.0.6",
         "com.svermeulen.extenject": "9.2.0-stcf3",
         "jillejr.newtonsoft.json-for-unity": "13.0.102",
-        "jillejr.newtonsoft.json-for-unity.converters": "1.1.1"
+        "jillejr.newtonsoft.json-for-unity.converters": "1.3.0"
       },
-      "hash": "8c65c990db504fa8744d47347b89368e07d510b2"
+      "hash": "04fdef341bec1ef1c577f044391c769551d01cc6"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
