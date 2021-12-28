@@ -1,6 +1,8 @@
+using NoUtil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TowerDefence.Entities.Enemies;
 using TowerDefence.World.Path.Data;
 using UnityEngine;
 using FileEnemyGroup = TowerDefence.Systems.Waves.Data.Wave.EnemyGroup;
@@ -81,7 +83,9 @@ namespace TowerDefence.Systems.Waves.Data
             [Serializable]
             public class EnemyGroup
             {
+                [StringDropdown("enemies.id", typeof(EnemyConfigurationData))]
                 public string enemyID = string.Empty;
+
                 public int pathID = 0;
                 public float[] spawnTime = new float[0];
 

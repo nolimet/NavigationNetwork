@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using TowerDefence.World.Towers.Models;
 using UnityEngine;
 using Zenject;
 
@@ -7,14 +7,15 @@ namespace TowerDefence.World.Towers
 {
     public class TowerService : ITickable
     {
-        private readonly List<TowerBase> towers = new List<TowerBase>();
+        private readonly ITowerModel towerModel;
         private readonly DiContainer diContainer;
 
         private readonly TowerConfigurationData towerConfiguration;
         private readonly WorldContainer worldContainer;
 
-        public TowerService(DiContainer diContainer, TowerConfigurationData towerConfiguration, WorldContainer worldContainer)
+        public TowerService(DiContainer diContainer, ITowerModel towerModel, TowerConfigurationData towerConfiguration, WorldContainer worldContainer)
         {
+            this.towerModel = towerModel;
             this.diContainer = diContainer;
             this.towerConfiguration = towerConfiguration;
             this.worldContainer = worldContainer;
@@ -34,7 +35,7 @@ namespace TowerDefence.World.Towers
             if (newTowerObject is GameObject gameObject)
             {
                 var newTower = gameObject.GetComponent<TowerBase>();
-                towers.Add(newTower);
+                towerModel.Towers.Add(newTower);
                 return gameObject.GetComponent<TowerBase>();
             }
             return null;
@@ -46,30 +47,30 @@ namespace TowerDefence.World.Towers
             {
                 throw new System.NullReferenceException("tower is null");
             }
-            if (tower && towers.Contains(tower))
+            if (tower && towerModel.Towers.Contains(tower))
             {
                 tower.Destroy();
-                towers.Remove(tower);
+                towerModel.Towers.Remove(tower);
             }
         }
 
         public void DestroyAllTowers()
         {
-            foreach (var tower in towers)
+            foreach (var tower in towerModel.Towers)
             {
                 tower.Destroy();
             }
-            towers.Clear();
+            towerModel.Towers.Clear();
         }
 
         public void Tick()
         {
-            for (int i = towers.Count - 1; i >= 0; i--)
+            for (int i = towerModel.Towers.Count - 1; i >= 0; i--)
             {
-                var tower = towers[i];
+                var tower = towerModel.Towers[i];
                 if (!tower)
                 {
-                    towers.Remove(tower);
+                    towerModel.Towers.Remove(tower);
                     continue;
                 }
 

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using TowerDefence.UI.Health;
 using TowerDefence.World.Path;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Zenject;
 using static TowerDefence.World.Path.Data.PathWorldData;
-using TowerDefence.UI.Health;
 
 namespace TowerDefence.Entities.Enemies
 {

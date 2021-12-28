@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TowerDefence.Entities.Enemies;
-using TowerDefence.World.Path;
+﻿using TowerDefence.Entities.Enemies;
 using TowerDefence.World.Towers;
-using UnityEngine;
 
 namespace Examples.Towers
 {
@@ -26,7 +19,6 @@ namespace Examples.Towers
 
                 if (target)
                 {
-                    Debug.Log(target);
                     target.ApplyDamage(1);
                 }
             }
