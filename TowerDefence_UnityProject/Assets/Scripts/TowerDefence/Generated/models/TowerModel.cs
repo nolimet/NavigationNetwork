@@ -1,76 +1,55 @@
+ 
+ 
 // ========================================================================
 // !! DO NOT EDIT THIS SCRIPT !! This script is auto generated and will be replaced soon
 // ========================================================================
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using DataBinding.BaseClasses;
 
-namespace TowerDefence.World.Towers.Models
-{
-    public class TowerModel : TowerDefence.World.Towers.Models.ITowerModel
-    {
-        public event Action OnChange;
+namespace TowerDefence.World.Towers.Models {
+	public class TowerModel : TowerDefence.World.Towers.Models.ITowerModel {
+		public event Action OnChange;
+			// Position
+		public event System.Action<UnityEngine.Vector3> OnChangePosition;
+		private UnityEngine.Vector3 _Position ; 
+		public UnityEngine.Vector3 Position {
+			get => _Position;
+			set {
+								_Position = value; 
 
-        // SelectedTower
-        public event System.Action<TowerDefence.World.Towers.TowerBase> OnChangeSelectedTower;
+				OnChangePosition?.Invoke(value);
+				OnChange?.Invoke();
+			}
+		}
+			// Range
+		public event System.Action<System.Double> OnChangeRange;
+		private System.Double _Range ; 
+		public System.Double Range {
+			get => _Range;
+			set {
+								_Range = value; 
 
-        private TowerDefence.World.Towers.TowerBase _SelectedTower;
+				OnChangeRange?.Invoke(value);
+				OnChange?.Invoke();
+			}
+		}
+			// TowerRenderer
+		public event System.Action<TowerDefence.World.Towers.TowerBase> OnChangeTowerRenderer;
+		private TowerDefence.World.Towers.TowerBase _TowerRenderer ; 
+		public TowerDefence.World.Towers.TowerBase TowerRenderer {
+			get => _TowerRenderer;
+			set {
+								_TowerRenderer = value; 
 
-        public TowerDefence.World.Towers.TowerBase SelectedTower
-        {
-            get => _SelectedTower;
-            set
-            {
-                _SelectedTower = value;
+				OnChangeTowerRenderer?.Invoke(value);
+				OnChange?.Invoke();
+			}
+		}
+	
+		public TowerModel() { 
+				}
 
-                OnChangeSelectedTower?.Invoke(value);
-                OnChange?.Invoke();
-            }
-        }
-
-        // Towers
-        public event System.Action<System.Collections.Generic.IList<TowerDefence.World.Towers.TowerBase>> OnChangeTowers;
-
-        private System.Collections.Generic.IList<TowerDefence.World.Towers.TowerBase> _Towers;
-
-        public System.Collections.Generic.IList<TowerDefence.World.Towers.TowerBase> Towers
-        {
-            get => _Towers;
-            set
-            {
-                if (_Towers != null)
-                {
-                    ((ObservableCollection<TowerDefence.World.Towers.TowerBase>)_Towers).CollectionChanged -= new NotifyCollectionChangedEventHandler(TriggerTowersEvents);
-                }
-
-                if (value != null && (value as ObservableCollection<TowerDefence.World.Towers.TowerBase>) == null)
-                {
-                    _Towers = new ObservableCollection<TowerDefence.World.Towers.TowerBase>(value);
-                }
-                else
-                {
-                    _Towers = value;
-                }
-
-                if (_Towers != null)
-                {
-                    ((ObservableCollection<TowerDefence.World.Towers.TowerBase>)_Towers).CollectionChanged += new NotifyCollectionChangedEventHandler(TriggerTowersEvents);
-                }
-
-                OnChangeTowers?.Invoke(value);
-                OnChange?.Invoke();
-            }
-        }
-
-        public TowerModel()
-        {
-            Towers = new System.Collections.ObjectModel.ObservableCollection<TowerDefence.World.Towers.TowerBase>();
-        }
-
-        private void TriggerTowersEvents(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            OnChangeTowers?.Invoke(Towers);
-            OnChange?.Invoke();
-        }
-    }
+			}
 }

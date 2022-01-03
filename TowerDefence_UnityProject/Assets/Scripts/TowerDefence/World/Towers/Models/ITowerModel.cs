@@ -1,14 +1,14 @@
 ﻿using DataBinding.BaseClasses;
 using DataBinding.Helpers;
-using System.Collections.Generic;
+using UnityEngine;
 
 namespace TowerDefence.World.Towers.Models
 {
-    [DataModel(AddToZenject = true, Shared = true)]
+    [DataModel(AddToZenject = false, Shared = false)]
     public interface ITowerModel : IModelBase
     {
-        IList<TowerBase> Towers { get; set; }
-
-        TowerBase SelectedTower { get; set; }
+        Vector3 Position { get; set; }
+        double Range { get; set; }
+        TowerBase TowerRenderer { get; set; }
     }
 }
