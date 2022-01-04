@@ -1,4 +1,7 @@
-﻿using TowerDefence.World.Path;
+﻿using DataBinding;
+using System;
+using TowerDefence.Entities.Enemies.Models;
+using TowerDefence.World.Path;
 using UnityEngine;
 using UnityEngine.Events;
 using static TowerDefence.World.Path.Data.PathWorldData;
@@ -7,43 +10,51 @@ namespace TowerDefence.Entities.Enemies
 {
     public abstract class EnemyBase : WalkerBase
     {
-        private UnityAction<EnemyBase> reachedEndAction;
-        private UnityAction<EnemyBase> outOfHealthAction;
+        private UnityAction<IEnemyBase> onEnemyDied;
 
-        [SerializeField] private double currentHealth = 0;
         [SerializeField] private double maxHealth = 0;
         [SerializeField] private Vector2 healthBarOffset = Vector2.zero;
 
-        public double CurrentHealth => currentHealth;
-        public double MaxHealth => maxHealth;
+        private IEnemyBase model;
+        protected BindingContext bindingContext = new(true);
 
-        public Vector3 HealthBarOffset => healthBarOffset;
-
-        private void Awake()
-        {
-            currentHealth = maxHealth;
-        }
+        public IEnemyBase Model => model;
 
         //TODO add sources or types support
         public virtual void ApplyDamage(double damage)
         {
-            currentHealth -= damage;
-            if (currentHealth <= 0)
-            {
-                outOfHealthAction?.Invoke(this);
-            }
+            model.health -= damage;
         }
 
-        public void Setup(UnityAction<EnemyBase> reachedEndAction, UnityAction<EnemyBase> outOfHealthAction, AnimationCurve3D path)
+        public void Setup(UnityAction<IEnemyBase> onEnemyDied, AnimationCurve3D path, IEnemyBase model)
         {
-            this.reachedEndAction = reachedEndAction;
-            this.outOfHealthAction = outOfHealthAction;
+            this.onEnemyDied = onEnemyDied;
+
             this.SetPath(path);
+            this.model = model;
+
+            model.health = maxHealth;
+            model.maxHealth = maxHealth;
+            model.healthOffset = healthBarOffset;
+            bindingContext.Bind(model, x => x.health, OnHealthChanged);
+        }
+
+        private void OnHealthChanged(double obj)
+        {
+            if (model.health <= 0)
+            {
+                onEnemyDied?.Invoke(model);
+            }
         }
 
         public override void ReachedEnd()
         {
-            reachedEndAction?.Invoke(this);
+            onEnemyDied?.Invoke(model);
+        }
+
+        private void OnDestroy()
+        {
+            bindingContext.Dispose();
         }
     }
 }

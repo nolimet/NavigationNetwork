@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using DataBinding;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using TowerDefence.Entities.Enemies.Models;
 using TowerDefence.UI.Health;
+using TowerDefence.World;
 using TowerDefence.World.Path;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -11,49 +14,44 @@ namespace TowerDefence.Entities.Enemies
 {
     public class EnemyController
     {
-        private readonly List<EnemyBase> enemies = new List<EnemyBase>();
+        private readonly IEnemiesModel model;
+        private readonly WorldContainer worldContainer;
         private readonly DiContainer container;
         private readonly PathWalkerService pathWalkerService;
-        private readonly HealthDrawerController healthDrawerController;
 
-        public EnemyController(DiContainer container, PathWalkerService pathWalkerService, HealthDrawerController healthDrawerController)
+        public EnemyController(DiContainer container, IEnemiesModel model, PathWalkerService pathWalkerService, WorldContainer worldContainer)
         {
             this.container = container;
             this.pathWalkerService = pathWalkerService;
-            this.healthDrawerController = healthDrawerController;
+            this.model = model;
+            this.worldContainer = worldContainer;
         }
 
         public async Task<T> CreateNewEnemy<T>(AssetReference enemyAssetRefrence, AnimationCurve3D path) where T : EnemyBase
         {
-            var newEnemyGameObject = (GameObject)await enemyAssetRefrence.InstantiateAsync();
+            var newEnemyGameObject = (GameObject)await enemyAssetRefrence.InstantiateAsync(worldContainer.EnemyContainer);
             container.InjectGameObject(newEnemyGameObject);
 
             if (newEnemyGameObject.TryGetComponent<T>(out var newEnemy))
             {
-                newEnemy.Setup(EnemyReachedEnd, EnemyOutOfHealth, path);
-                healthDrawerController.AddHealthBar(newEnemy);
+                var model = ModelFactory.Create<IEnemyBase>();
+                model.obj = newEnemy;
+                model.transform = newEnemy.transform;
+
+                newEnemy.Setup(EnemyDied, path, model);
 
                 pathWalkerService.AddWalker(newEnemy);
-
+                this.model.Enemies.Add(model);
                 return newEnemy;
             }
             throw new System.Exception("Could not load enemy");
         }
 
-        private void EnemyOutOfHealth(EnemyBase enemy)
+        private void EnemyDied(IEnemyBase enemy)
         {
-            enemies.Remove(enemy);
-            pathWalkerService.RemoveWalker(enemy);
-            Object.DestroyImmediate(enemy.gameObject);
-        }
-
-        private void EnemyReachedEnd(EnemyBase enemy)
-        {
-            enemies.Remove(enemy);
-            pathWalkerService.RemoveWalker(enemy);
-            Object.DestroyImmediate(enemy.gameObject);
-
-            //TODO send a message to player lives tracker or somethin
+            model.Enemies.Remove(enemy);
+            pathWalkerService.RemoveWalker(enemy.obj);
+            Object.DestroyImmediate(enemy.obj.gameObject);
         }
     }
 }
