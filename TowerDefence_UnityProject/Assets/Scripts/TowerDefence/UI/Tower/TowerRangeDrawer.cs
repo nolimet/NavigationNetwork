@@ -1,5 +1,6 @@
-using NoUtil.Math;
+﻿using NoUtil.Math;
 using TowerDefence.World.Towers;
+using TowerDefence.World.Towers.Models;
 using UnityEngine;
 
 namespace TowerDefence.UI.Tower
@@ -25,6 +26,8 @@ namespace TowerDefence.UI.Tower
             var normals = new Vector3[segments * 2];
             var triangles = new int[segments * 2 * 3];
 
+            int endRing = segments * 2;
+
             for (int i = 0; i < segments; i++)
             {
                 normals[i] = Vector3.up;
@@ -33,25 +36,29 @@ namespace TowerDefence.UI.Tower
                 int j = i * 2;
                 triangles[triOffSet + 0] = j + 1;
                 triangles[triOffSet + 1] = j + 0;
-                triangles[triOffSet + 2] = j + 2 >= segments * 2 ? 0 : j + 2;
+                triangles[triOffSet + 2] = j + 2 >= endRing ? 0 : j + 2;
 
                 triangles[triOffSet + 3] = j + 1;
-                triangles[triOffSet + 4] = j + 2 >= segments * 2 ? 0 : j + 2;
-                triangles[triOffSet + 5] = j + 3 >= segments * 2 ? 1 : j + 3;
+                triangles[triOffSet + 4] = j + 2 >= endRing ? 0 : j + 2;
+                triangles[triOffSet + 5] = j + 3 >= endRing ? 1 : j + 3;
             }
-
-            Debug.Log(string.Join(", ", triangles));
 
             mesh.vertices = vertices;
             mesh.normals = normals;
             mesh.triangles = triangles;
 
+            Debug.Log(vertices.Length);
+            Debug.Log(string.Join(", ", vertices));
+            Debug.Log(normals.Length);
+            Debug.Log(triangles.Length);
+            Debug.Log(string.Join(", ", triangles));
             return mesh;
         }
 
-        public void DrawRange(TowerBase towerBase)
+        public void DrawRange(ITowerModel towerModel)
         {
-            DrawRange(towerBase.TargetRadius);
+            DrawRange((float)towerModel.Range);
+            transform.position = towerModel.Position;
         }
 
         private void DrawRange(float radius)
@@ -73,8 +80,6 @@ namespace TowerDefence.UI.Tower
 
                 angle += i % 2 == 1 ? angleFraction : 0;
             }
-
-            Debug.Log(string.Join(", ", verts));
 
             mesh.vertices = verts;
             mesh.UploadMeshData(false);
