@@ -1,4 +1,7 @@
-﻿using TowerDefence.Entities.Enemies;
+﻿using DataBinding;
+using System;
+using TowerDefence.Entities.Enemies;
+using TowerDefence.Entities.Enemies.Models;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -10,20 +13,36 @@ namespace TowerDefence.UI.Health
         [SerializeField]
         private Image healthbarImage;
 
-        private EnemyBase targetEnemy;
+        private IEnemyBase target;
+
+        private BindingContext bindingContext = new(true);
+
+        private void Start()
+        {
+            bindingContext.Bind(target, x => x.health, OnHealthChanged);
+        }
+
+        private void OnDestroy()
+        {
+            bindingContext.Dispose();
+        }
+
+        private void OnHealthChanged(double _)
+        {
+            healthbarImage.fillAmount = (float)(target.health / target.maxHealth);
+        }
 
         public void UpdateHealthBar()
         {
-            if (targetEnemy)
+            if (target.obj)
             {
-                healthbarImage.fillAmount = (float)(targetEnemy.CurrentHealth / targetEnemy.MaxHealth);
-                transform.position = targetEnemy.transform.position + targetEnemy.HealthBarOffset;
+                transform.position = target.transform.position + target.healthOffset;
             }
         }
 
         public bool TargetIsAlive()
         {
-            return targetEnemy;
+            return target.obj;
         }
 
         public void Destroy()
@@ -36,12 +55,12 @@ namespace TowerDefence.UI.Health
             [Inject]
             private UIContainer uiContainer;
 
-            public HealthDrawer Create(EnemyBase targetEnemy)
+            public HealthDrawer Create(IEnemyBase target)
             {
                 var newHealthBar = base.Create();
 
                 newHealthBar.transform.SetParent(uiContainer.WorldUIContainer, false);
-                newHealthBar.targetEnemy = targetEnemy;
+                newHealthBar.target = target;
 
                 return newHealthBar;
             }
