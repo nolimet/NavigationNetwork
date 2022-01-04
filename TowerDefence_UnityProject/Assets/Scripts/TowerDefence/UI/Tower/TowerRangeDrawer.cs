@@ -1,4 +1,4 @@
-﻿using NoUtil.Math;
+using NoUtil.Math;
 using TowerDefence.World.Towers;
 using UnityEngine;
 
@@ -62,7 +62,7 @@ namespace TowerDefence.UI.Tower
                 filter.mesh = mesh;
             }
 
-            float angleFraction = 360 / segments;
+            float angleFraction = 360f / segments;
             float angle = 0f;
             var verts = mesh.vertices;
             for (int i = 0; i < verts.Length; i++)
