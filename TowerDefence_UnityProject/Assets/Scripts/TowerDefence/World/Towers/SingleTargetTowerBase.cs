@@ -32,20 +32,20 @@ namespace TowerDefence.World.Towers
             return nearest is T enemy ? enemy : null;
         }
 
-        protected T GetHealthiest<T>() where T : WalkerBase
+        protected T GetHealthiest<T>() where T : EnemyBase
         {
             if (TargetList.Count == 0)
             {
                 return null;
             }
 
-            var healthiest = TargetList.Cast<EnemyBase>().OrderBy(x => x.CurrentHealth / x.CurrentHealth).Last();
+            var healthiest = TargetList.Cast<EnemyBase>().OrderBy(x => x.Model.maxHealth / x.Model.health).Last();
             return healthiest is T enemy ? enemy : null;
         }
 
-        protected T GetDeadest<T>() where T : WalkerBase
+        protected T GetDeadest<T>() where T : EnemyBase
         {
-            var deadest = TargetList.Cast<EnemyBase>().OrderBy(x => x.CurrentHealth / x.CurrentHealth).First();
+            var deadest = TargetList.Cast<EnemyBase>().OrderBy(x => x.Model.maxHealth / x.Model.health).First();
             return deadest is T enemy ? enemy : null;
         }
 
