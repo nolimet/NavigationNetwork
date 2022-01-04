@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using DataBinding;
+using System.Linq;
+using System.Threading.Tasks;
 using TowerDefence.World.Towers.Models;
 using UnityEngine;
 using Zenject;
@@ -7,13 +9,13 @@ namespace TowerDefence.World.Towers
 {
     public class TowerService : ITickable
     {
-        private readonly ITowerModel towerModel;
+        private readonly ITowerModels towerModel;
         private readonly DiContainer diContainer;
 
         private readonly TowerConfigurationData towerConfiguration;
         private readonly WorldContainer worldContainer;
 
-        public TowerService(DiContainer diContainer, ITowerModel towerModel, TowerConfigurationData towerConfiguration, WorldContainer worldContainer)
+        public TowerService(DiContainer diContainer, ITowerModels towerModel, TowerConfigurationData towerConfiguration, WorldContainer worldContainer)
         {
             this.towerModel = towerModel;
             this.diContainer = diContainer;
@@ -35,7 +37,13 @@ namespace TowerDefence.World.Towers
             if (newTowerObject is GameObject gameObject)
             {
                 var newTower = gameObject.GetComponent<TowerBase>();
-                towerModel.Towers.Add(newTower);
+                var newTowerModel = ModelFactory.Create<ITowerModel>();
+                newTowerModel.TowerRenderer = newTower;
+                newTowerModel.Position = position;
+
+                newTower.Setup(newTowerModel);
+
+                towerModel.Towers.Add(newTowerModel);
                 return gameObject.GetComponent<TowerBase>();
             }
             return null;
@@ -47,10 +55,11 @@ namespace TowerDefence.World.Towers
             {
                 throw new System.NullReferenceException("tower is null");
             }
-            if (tower && towerModel.Towers.Contains(tower))
+            if (tower && towerModel.Towers.Any(x => x is T && x == tower))
             {
+                var model = towerModel.Towers.First(x => x == tower);
                 tower.Destroy();
-                towerModel.Towers.Remove(tower);
+                towerModel.Towers.Remove(model);
             }
         }
 
@@ -58,8 +67,10 @@ namespace TowerDefence.World.Towers
         {
             foreach (var tower in towerModel.Towers)
             {
-                tower.Destroy();
+                tower.TowerRenderer.Destroy();
             }
+
+            towerModel.SelectedTower = null;
             towerModel.Towers.Clear();
         }
 
@@ -68,13 +79,13 @@ namespace TowerDefence.World.Towers
             for (int i = towerModel.Towers.Count - 1; i >= 0; i--)
             {
                 var tower = towerModel.Towers[i];
-                if (!tower)
+                if (!tower.TowerRenderer)
                 {
                     towerModel.Towers.Remove(tower);
                     continue;
                 }
 
-                tower.Tick();
+                tower.TowerRenderer.Tick();
             }
         }
     }

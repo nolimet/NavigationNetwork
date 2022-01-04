@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using TowerDefence.Systems.Selection;
 using TowerDefence.World.Path;
+using TowerDefence.World.Towers.Models;
 using UnityEngine;
 
 namespace TowerDefence.World.Towers
 {
-    public abstract class TowerBase : MonoBehaviour
+    //Keep this part kind of but use ITowerComponents to define the behaviour of the tower
+    public abstract class TowerBase : MonoBehaviour, ISelectable
     {
         public abstract float TargetRadius { get; }
         public abstract float AttacksPerSecond { get; }
@@ -32,6 +35,12 @@ namespace TowerDefence.World.Towers
         public virtual void Destroy()
         {
             Destroy(gameObject);
+        }
+
+        //TODO Create settings object
+        public void Setup(ITowerModel towerModel)
+        {
+            towerModel.Range = TargetRadius;
         }
 
         protected virtual IEnumerable<T> GetWalkersInRange<T>() where T : WalkerBase
