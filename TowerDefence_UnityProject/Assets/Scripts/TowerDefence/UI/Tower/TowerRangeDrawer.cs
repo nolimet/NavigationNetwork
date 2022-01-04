@@ -47,11 +47,6 @@ namespace TowerDefence.UI.Tower
             mesh.normals = normals;
             mesh.triangles = triangles;
 
-            Debug.Log(vertices.Length);
-            Debug.Log(string.Join(", ", vertices));
-            Debug.Log(normals.Length);
-            Debug.Log(triangles.Length);
-            Debug.Log(string.Join(", ", triangles));
             return mesh;
         }
 
