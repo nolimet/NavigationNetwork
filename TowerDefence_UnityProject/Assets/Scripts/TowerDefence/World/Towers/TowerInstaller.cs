@@ -13,6 +13,8 @@ namespace TowerDefence.World.Towers
         {
             Container.BindInstance(towerConfigurationData).AsSingle();
             Container.BindInterfacesAndSelfTo<TowerService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<TowerController>().AsSingle().NonLazy();
+            Container.BindTickableExecutionOrder<TowerController>(999);
         }
     }
 }
