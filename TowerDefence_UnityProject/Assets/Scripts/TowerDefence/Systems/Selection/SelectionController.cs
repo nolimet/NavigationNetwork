@@ -41,15 +41,18 @@ namespace TowerDefence.Systems.Selection
             selectionInput.Main.Drag.canceled -= OnDragEnded;
         }
 
-        private void OnDragEnded(InputAction.CallbackContext obj)
-        {
-            //selectionInput.Main.MousePosition.ReadValue<Vector2>().QuickLog("Drag Ended");
-        }
-
         private void OnDragStarted(InputAction.CallbackContext obj)
         {
-            //selectionInput.Main.MousePosition.ReadValue<Vector2>().QuickLog("Drag Started");
+            selectionModel.DragStartPosition = selectionInput.Main.MousePosition.ReadValue<Vector2>();
+            selectionModel.Dragging = true;
         }
+        private void OnDragEnded(InputAction.CallbackContext obj)
+        {
+
+            selectionModel.DragEndPosition = selectionInput.Main.MousePosition.ReadValue<Vector2>();
+            selectionModel.Dragging = false;
+        }
+
 
         private void OnClickPreformed(InputAction.CallbackContext obj)
         {

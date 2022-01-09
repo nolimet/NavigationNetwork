@@ -26,7 +26,7 @@ namespace TowerDefence.Systems.Selection.Models {
 			// Draggin
 		public event System.Action<System.Boolean> OnChangeDraggin;
 		private System.Boolean _Draggin ; 
-		public System.Boolean Draggin {
+		public System.Boolean Dragging {
 			get => _Draggin;
 			set {
 								_Draggin = value; 

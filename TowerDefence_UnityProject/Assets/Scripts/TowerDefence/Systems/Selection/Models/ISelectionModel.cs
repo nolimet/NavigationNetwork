@@ -14,7 +14,7 @@ namespace TowerDefence.Systems.Selection.Models
     {
         IList<ISelectable> Selection { get; }
 
-        bool Draggin { get; set; }
+        bool Dragging { get; set; }
         Vector3 DragStartPosition { get; set; }
         Vector3 DragEndPosition { get; set; }
     }
