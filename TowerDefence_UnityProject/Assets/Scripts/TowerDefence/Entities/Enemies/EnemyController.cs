@@ -34,7 +34,7 @@ namespace TowerDefence.Entities.Enemies
 
             if (newEnemyGameObject.TryGetComponent<T>(out var newEnemy))
             {
-                var model = ModelFactory.Create<IEnemyBase>();
+                var model = ModelFactory.Create<IEnemyBaseModel>();
                 model.obj = newEnemy;
                 model.transform = newEnemy.transform;
 
@@ -47,7 +47,7 @@ namespace TowerDefence.Entities.Enemies
             throw new System.Exception("Could not load enemy");
         }
 
-        private void EnemyDied(IEnemyBase enemy)
+        private void EnemyDied(IEnemyBaseModel enemy)
         {
             model.Enemies.Remove(enemy);
             pathWalkerService.RemoveWalker(enemy.obj);
