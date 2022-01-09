@@ -43,24 +43,23 @@ namespace TowerDefence.Systems.Selection
 
         private void OnDragEnded(InputAction.CallbackContext obj)
         {
-            selectionInput.Main.MousePosition.ReadValue<Vector2>().QuickLog("Drag Ended");
+            //selectionInput.Main.MousePosition.ReadValue<Vector2>().QuickLog("Drag Ended");
         }
 
         private void OnDragStarted(InputAction.CallbackContext obj)
         {
-            selectionInput.Main.MousePosition.ReadValue<Vector2>().QuickLog("Drag Started");
+            //selectionInput.Main.MousePosition.ReadValue<Vector2>().QuickLog("Drag Started");
         }
 
         private void OnClickPreformed(InputAction.CallbackContext obj)
         {
-            selectionInput.Main.MousePosition.ReadValue<Vector2>().QuickLog("Click");
             SelectObject(selectionInput.Main.MousePosition.ReadValue<Vector2>());
         }
 
         private void SelectObject(Vector2 cursorPosition)
         {
             var results = Physics2D.OverlapPointAll(Camera.main.ScreenToWorldPoint(cursorPosition));
-            results.Count().QuickLog("Click Results");
+
             selectionModel.Selection.Clear();
             if (results != null && results.Length > 0)
             {
