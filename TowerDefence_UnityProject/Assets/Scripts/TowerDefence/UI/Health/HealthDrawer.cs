@@ -13,7 +13,7 @@ namespace TowerDefence.UI.Health
         [SerializeField]
         private Image healthbarImage;
 
-        private IEnemyBase target;
+        private IEnemyBaseModel target;
 
         private BindingContext bindingContext = new(true);
 
@@ -55,7 +55,7 @@ namespace TowerDefence.UI.Health
             [Inject]
             private UIContainer uiContainer;
 
-            public HealthDrawer Create(IEnemyBase target)
+            public HealthDrawer Create(IEnemyBaseModel target)
             {
                 var newHealthBar = base.Create();
 

@@ -31,7 +31,7 @@ namespace TowerDefence.UI.Health
             bindingContext.Dispose();
         }
 
-        private void OnEnemiesChanged(IList<IEnemyBase> obj)
+        private void OnEnemiesChanged(IList<IEnemyBaseModel> obj)
         {
             var newEnemies = obj.Where(x => !x.healthBar);
             var removedEnemies = healthBars.Where(x => !x.TargetIsAlive());
