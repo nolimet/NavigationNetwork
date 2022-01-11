@@ -23,15 +23,15 @@ namespace TowerDefence.Systems.Selection.Models {
 				OnChange?.Invoke();
 			}
 		}
-			// Draggin
-		public event System.Action<System.Boolean> OnChangeDraggin;
-		private System.Boolean _Draggin ; 
+			// Dragging
+		public event System.Action<System.Boolean> OnChangeDragging;
+		private System.Boolean _Dragging ; 
 		public System.Boolean Dragging {
-			get => _Draggin;
+			get => _Dragging;
 			set {
-								_Draggin = value; 
+								_Dragging = value; 
 
-				OnChangeDraggin?.Invoke(value);
+				OnChangeDragging?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}

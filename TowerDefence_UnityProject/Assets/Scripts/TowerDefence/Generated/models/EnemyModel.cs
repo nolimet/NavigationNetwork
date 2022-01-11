@@ -9,7 +9,7 @@ using System.Collections.Specialized;
 using DataBinding.BaseClasses;
 
 namespace TowerDefence.Entities.Enemies.Models {
-	public class EnemyBaseModel : TowerDefence.Entities.Enemies.Models.IEnemyBaseModel {
+	public class EnemyModel : TowerDefence.Entities.Enemies.Models.IEnemyModel {
 		public event Action OnChange;
 			// health
 		public event System.Action<System.Double> OnChangehealth;
@@ -84,7 +84,7 @@ namespace TowerDefence.Entities.Enemies.Models {
 			}
 		}
 	
-		public EnemyBaseModel() { 
+		public EnemyModel() { 
 				}
 
 			}

@@ -8,18 +8,18 @@ namespace DataBinding
 	{
 
 			private static TowerDefence.Entities.Enemies.Models.IEnemiesModel CreateEnemiesModel() { return new TowerDefence.Entities.Enemies.Models.EnemiesModel(); }
-			private static TowerDefence.Entities.Enemies.Models.IEnemyBaseModel CreateEnemyBaseModel() { return new TowerDefence.Entities.Enemies.Models.EnemyBaseModel(); }
+			private static TowerDefence.Entities.Enemies.Models.IEnemyModel CreateEnemyModel() { return new TowerDefence.Entities.Enemies.Models.EnemyModel(); }
 			private static TowerDefence.Systems.Selection.Models.ISelectionModel CreateSelectionModel() { return new TowerDefence.Systems.Selection.Models.SelectionModel(); }
-			private static TowerDefence.World.Towers.Models.ITowerModel CreateTowerModel() { return new TowerDefence.World.Towers.Models.TowerModel(); }
-			private static TowerDefence.World.Towers.Models.ITowerModels CreateTowerModels() { return new TowerDefence.World.Towers.Models.TowerModels(); }
+			private static TowerDefence.Entities.Towers.Models.ITowerModel CreateTowerModel() { return new TowerDefence.Entities.Towers.Models.TowerModel(); }
+			private static TowerDefence.Entities.Towers.Models.ITowerModels CreateTowerModels() { return new TowerDefence.Entities.Towers.Models.TowerModels(); }
 	
 		public static T Create<T>() where T : DataBinding.BaseClasses.IModelBase {
 
 						if (typeof(T) == typeof(TowerDefence.Entities.Enemies.Models.IEnemiesModel )) { return (T)(CreateEnemiesModel()); }
-					if (typeof(T) == typeof(TowerDefence.Entities.Enemies.Models.IEnemyBaseModel )) { return (T)(CreateEnemyBaseModel()); }
+					if (typeof(T) == typeof(TowerDefence.Entities.Enemies.Models.IEnemyModel )) { return (T)(CreateEnemyModel()); }
 					if (typeof(T) == typeof(TowerDefence.Systems.Selection.Models.ISelectionModel )) { return (T)(CreateSelectionModel()); }
-					if (typeof(T) == typeof(TowerDefence.World.Towers.Models.ITowerModel )) { return (T)(CreateTowerModel()); }
-					if (typeof(T) == typeof(TowerDefence.World.Towers.Models.ITowerModels )) { return (T)(CreateTowerModels()); }
+					if (typeof(T) == typeof(TowerDefence.Entities.Towers.Models.ITowerModel )) { return (T)(CreateTowerModel()); }
+					if (typeof(T) == typeof(TowerDefence.Entities.Towers.Models.ITowerModels )) { return (T)(CreateTowerModels()); }
 					return default(T);
 		}
 	}

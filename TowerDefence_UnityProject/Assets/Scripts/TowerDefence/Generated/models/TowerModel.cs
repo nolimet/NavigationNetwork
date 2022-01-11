@@ -8,24 +8,24 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using DataBinding.BaseClasses;
 
-namespace TowerDefence.World.Towers.Models {
-	public class TowerModel : TowerDefence.World.Towers.Models.ITowerModel {
+namespace TowerDefence.Entities.Towers.Models {
+	public class TowerModel : TowerDefence.Entities.Towers.Models.ITowerModel {
 		public event Action OnChange;
 			// Components
-		public event System.Action<System.Collections.Generic.IList<TowerDefence.World.Towers.Components.ITowerComponent>> OnChangeComponents;
-		private System.Collections.Generic.IList<TowerDefence.World.Towers.Components.ITowerComponent> _Components ; 
-		public System.Collections.Generic.IList<TowerDefence.World.Towers.Components.ITowerComponent> Components {
+		public event System.Action<System.Collections.Generic.IList<TowerDefence.Entities.Towers.Components.ITowerComponent>> OnChangeComponents;
+		private System.Collections.Generic.IList<TowerDefence.Entities.Towers.Components.ITowerComponent> _Components ; 
+		public System.Collections.Generic.IList<TowerDefence.Entities.Towers.Components.ITowerComponent> Components {
 			get => _Components;
 			set {
 						
 				if (_Components != null)
 				{
-					((ObservableCollection<TowerDefence.World.Towers.Components.ITowerComponent>)_Components).CollectionChanged -= new NotifyCollectionChangedEventHandler(TriggerComponentsEvents);
+					((ObservableCollection<TowerDefence.Entities.Towers.Components.ITowerComponent>)_Components).CollectionChanged -= new NotifyCollectionChangedEventHandler(TriggerComponentsEvents);
 				}
 
-				if (value != null && (value as ObservableCollection<TowerDefence.World.Towers.Components.ITowerComponent>) == null) 
+				if (value != null && (value as ObservableCollection<TowerDefence.Entities.Towers.Components.ITowerComponent>) == null) 
 				{
-					_Components = new ObservableCollection<TowerDefence.World.Towers.Components.ITowerComponent>(value);
+					_Components = new ObservableCollection<TowerDefence.Entities.Towers.Components.ITowerComponent>(value);
 				}
 				else
 				{
@@ -34,7 +34,7 @@ namespace TowerDefence.World.Towers.Models {
 
 				if (_Components != null)
 				{
-					((ObservableCollection<TowerDefence.World.Towers.Components.ITowerComponent>)_Components).CollectionChanged += new NotifyCollectionChangedEventHandler(TriggerComponentsEvents);
+					((ObservableCollection<TowerDefence.Entities.Towers.Components.ITowerComponent>)_Components).CollectionChanged += new NotifyCollectionChangedEventHandler(TriggerComponentsEvents);
 				}
 
 				OnChangeComponents?.Invoke(value);
@@ -66,9 +66,9 @@ namespace TowerDefence.World.Towers.Models {
 			}
 		}
 			// TowerObject
-		public event System.Action<TowerDefence.World.Towers.ITowerObject> OnChangeTowerObject;
-		private TowerDefence.World.Towers.ITowerObject _TowerObject ; 
-		public TowerDefence.World.Towers.ITowerObject TowerObject {
+		public event System.Action<TowerDefence.Entities.Towers.ITowerObject> OnChangeTowerObject;
+		private TowerDefence.Entities.Towers.ITowerObject _TowerObject ; 
+		public TowerDefence.Entities.Towers.ITowerObject TowerObject {
 			get => _TowerObject;
 			set {
 								_TowerObject = value; 
@@ -78,9 +78,9 @@ namespace TowerDefence.World.Towers.Models {
 			}
 		}
 			// TowerRenderer
-		public event System.Action<TowerDefence.World.Towers.TowerBase> OnChangeTowerRenderer;
-		private TowerDefence.World.Towers.TowerBase _TowerRenderer ; 
-		public TowerDefence.World.Towers.TowerBase TowerRenderer {
+		public event System.Action<TowerDefence.Entities.Towers.TowerBase> OnChangeTowerRenderer;
+		private TowerDefence.Entities.Towers.TowerBase _TowerRenderer ; 
+		public TowerDefence.Entities.Towers.TowerBase TowerRenderer {
 			get => _TowerRenderer;
 			set {
 								_TowerRenderer = value; 
@@ -91,7 +91,7 @@ namespace TowerDefence.World.Towers.Models {
 		}
 	
 		public TowerModel() { 
-				Components = new System.Collections.ObjectModel.ObservableCollection<TowerDefence.World.Towers.Components.ITowerComponent>();
+				Components = new System.Collections.ObjectModel.ObservableCollection<TowerDefence.Entities.Towers.Components.ITowerComponent>();
 			}
 
 		private void TriggerComponentsEvents(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
