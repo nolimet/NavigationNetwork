@@ -4,7 +4,7 @@ using TowerDefence.Entities.Enemies;
 using TowerDefence.World.Path;
 using UnityEngine;
 
-namespace TowerDefence.World.Towers
+namespace TowerDefence.Entities.Towers
 {
     public abstract class SingleTargetTowerBase : TowerBase
     {

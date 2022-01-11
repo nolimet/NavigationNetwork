@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using TowerDefence.Entities.Enemies;
-using TowerDefence.World.Towers.Models;
+using TowerDefence.Entities.Towers.Models;
 using UnityEngine;
 
-namespace TowerDefence.World.Towers.Components.TargetFinders
+namespace TowerDefence.Entities.Towers.Components.TargetFinders
 {
     public class NearestTargetFinder : TargetFindBase
     {

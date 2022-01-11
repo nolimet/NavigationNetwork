@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using TowerDefence.Entities.Towers.Models;
 using TowerDefence.Systems.Selection;
 using TowerDefence.World.Path;
-using TowerDefence.World.Towers.Models;
 using UnityEngine;
 
-namespace TowerDefence.World.Towers
+namespace TowerDefence.Entities.Towers
 {
     //Keep this part kind of but use ITowerComponents to define the behaviour of the tower
     public abstract class TowerBase : MonoBehaviour, ISelectable

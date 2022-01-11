@@ -1,11 +1,12 @@
 ﻿using DataBinding;
 using System.Linq;
 using System.Threading.Tasks;
-using TowerDefence.World.Towers.Models;
+using TowerDefence.Entities.Towers.Models;
+using TowerDefence.World;
 using UnityEngine;
 using Zenject;
 
-namespace TowerDefence.World.Towers
+namespace TowerDefence.Entities.Towers
 {
     public class TowerService : ITickable
     {

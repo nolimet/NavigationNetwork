@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TowerDefence.World.Towers.Components;
-using TowerDefence.World.Towers.Models;
+﻿using System.Linq;
+using TowerDefence.Entities.Towers.Components;
+using TowerDefence.Entities.Towers.Models;
 using Zenject;
 
-namespace TowerDefence.World.Towers
+namespace TowerDefence.Entities.Towers
 {
     public class TowerController : ITickable
     {

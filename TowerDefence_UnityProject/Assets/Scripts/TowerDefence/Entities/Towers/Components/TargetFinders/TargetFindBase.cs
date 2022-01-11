@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Enemies;
-using TowerDefence.World.Towers.Models;
+using TowerDefence.Entities.Towers.Models;
 using UnityEngine;
 
-namespace TowerDefence.World.Towers.Components.TargetFinders
+namespace TowerDefence.Entities.Towers.Components.TargetFinders
 {
     public abstract class TargetFindBase : ITargetFindComponent
     {
@@ -27,13 +27,12 @@ namespace TowerDefence.World.Towers.Components.TargetFinders
 
         protected IEnumerable<IEnemyObject> GetEnemyObjectsInRange()
         {
-           var hits = Physics2D.CircleCastAll(towerObject.GetWorldPosition(), (float)towerModel.Range, Vector2.up);
+            var hits = Physics2D.CircleCastAll(towerObject.GetWorldPosition(), (float)towerModel.Range, Vector2.up);
             if (hits.Length > 0)
             {
-                return hits.Select(x => x.collider.GetComponent<IEnemyObject>()).Where(x=>x!=null);
+                return hits.Select(x => x.collider.GetComponent<IEnemyObject>()).Where(x => x != null);
             }
             return Array.Empty<IEnemyObject>();
         }
-
     }
 }

@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
-namespace TowerDefence.World.Towers
+namespace TowerDefence.Entities.Towers
 {
-    public class TowerObject : MonoBehaviour ,ITowerObject
+    public class TowerObject : MonoBehaviour, ITowerObject
     {
         public Transform Transform => transform;
 

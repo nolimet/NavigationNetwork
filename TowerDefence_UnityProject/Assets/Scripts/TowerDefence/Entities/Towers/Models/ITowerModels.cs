@@ -2,7 +2,7 @@
 using DataBinding.Helpers;
 using System.Collections.Generic;
 
-namespace TowerDefence.World.Towers.Models
+namespace TowerDefence.Entities.Towers.Models
 {
     [DataModel(AddToZenject = true, Shared = true)]
     public interface ITowerModels : IModelBase

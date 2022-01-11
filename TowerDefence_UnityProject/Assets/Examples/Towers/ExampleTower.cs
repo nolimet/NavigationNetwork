@@ -1,5 +1,5 @@
 ﻿using TowerDefence.Entities.Enemies;
-using TowerDefence.World.Towers;
+using TowerDefence.Entities.Towers;
 
 namespace Examples.Towers
 {

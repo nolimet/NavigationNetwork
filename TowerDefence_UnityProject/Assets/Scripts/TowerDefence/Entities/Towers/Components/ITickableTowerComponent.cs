@@ -1,4 +1,4 @@
-﻿namespace TowerDefence.World.Towers.Components
+﻿namespace TowerDefence.Entities.Towers.Components
 {
     public interface ITickableTowerComponent : ITowerComponent
     {

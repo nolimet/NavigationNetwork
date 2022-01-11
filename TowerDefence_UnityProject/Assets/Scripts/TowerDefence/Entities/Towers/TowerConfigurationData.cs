@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace TowerDefence.World.Towers
+namespace TowerDefence.Entities.Towers
 {
     [CreateAssetMenu(fileName = "Tower Configuration Data", menuName = "Configuration/Tower Configuration")]
     public class TowerConfigurationData : ScriptableObject

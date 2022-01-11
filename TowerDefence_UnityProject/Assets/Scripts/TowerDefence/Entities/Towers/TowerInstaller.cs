@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-namespace TowerDefence.World.Towers
+namespace TowerDefence.Entities.Towers
 {
     [CreateAssetMenu(fileName = "Tower Installer", menuName = "Installers/Tower Installer")]
     public class TowerInstaller : ScriptableObjectInstaller
