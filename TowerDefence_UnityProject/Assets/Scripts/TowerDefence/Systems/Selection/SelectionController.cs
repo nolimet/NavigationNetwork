@@ -1,14 +1,8 @@
-﻿using NoUtil.Debugging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TowerDefence.Input;
 using TowerDefence.Systems.Selection.Models;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Zenject;
 
 namespace TowerDefence.Systems.Selection
 {
@@ -46,13 +40,12 @@ namespace TowerDefence.Systems.Selection
             selectionModel.DragStartPosition = selectionInput.Main.MousePosition.ReadValue<Vector2>();
             selectionModel.Dragging = true;
         }
+
         private void OnDragEnded(InputAction.CallbackContext obj)
         {
-
             selectionModel.DragEndPosition = selectionInput.Main.MousePosition.ReadValue<Vector2>();
             selectionModel.Dragging = false;
         }
-
 
         private void OnClickPreformed(InputAction.CallbackContext obj)
         {
