@@ -6,7 +6,7 @@ using UnityEngine;
 namespace TowerDefence.Entities.Enemies.Models
 {
     [DataModel(AddToZenject = false, Shared = false)]
-    public interface IEnemyBaseModel : IModelBase
+    public interface IEnemyModel : IModelBase
     {
         TowerDefence.Entities.Enemies.EnemyBase obj { get; set; }
         HealthDrawer healthBar { get; set; }

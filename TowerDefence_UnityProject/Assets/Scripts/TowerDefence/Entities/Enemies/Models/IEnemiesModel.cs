@@ -6,6 +6,6 @@ namespace TowerDefence.Entities.Enemies.Models
     [DataBinding.Helpers.DataModel(AddToZenject = true, Shared = true)]
     public interface IEnemiesModel : IModelBase
     {
-        public IList<IEnemyBaseModel> Enemies { get; set; }
+        public IList<IEnemyModel> Enemies { get; set; }
     }
 }

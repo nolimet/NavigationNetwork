@@ -10,15 +10,15 @@ namespace TowerDefence.Entities.Enemies
 {
     public abstract class EnemyBase : WalkerBase
     {
-        private UnityAction<IEnemyBaseModel> onEnemyDied;
+        private UnityAction<IEnemyModel> onEnemyDied;
 
         [SerializeField] private double maxHealth = 0;
         [SerializeField] private Vector2 healthBarOffset = Vector2.zero;
 
-        private IEnemyBaseModel model;
+        private IEnemyModel model;
         protected BindingContext bindingContext = new(true);
 
-        public IEnemyBaseModel Model => model;
+        public IEnemyModel Model => model;
 
         //TODO add sources or types support
         public virtual void ApplyDamage(double damage)
@@ -26,7 +26,7 @@ namespace TowerDefence.Entities.Enemies
             model.health -= damage;
         }
 
-        public void Setup(UnityAction<IEnemyBaseModel> onEnemyDied, AnimationCurve3D path, IEnemyBaseModel model)
+        public void Setup(UnityAction<IEnemyModel> onEnemyDied, AnimationCurve3D path, IEnemyModel model)
         {
             this.onEnemyDied = onEnemyDied;
 

@@ -1,8 +1,6 @@
 ﻿using DataBinding;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TowerDefence.Entities.Enemies.Models;
-using TowerDefence.UI.Health;
 using TowerDefence.World;
 using TowerDefence.World.Path;
 using UnityEngine;
@@ -34,7 +32,7 @@ namespace TowerDefence.Entities.Enemies
 
             if (newEnemyGameObject.TryGetComponent<T>(out var newEnemy))
             {
-                var model = ModelFactory.Create<IEnemyBaseModel>();
+                var model = ModelFactory.Create<IEnemyModel>();
                 model.obj = newEnemy;
                 model.transform = newEnemy.transform;
 
@@ -47,7 +45,7 @@ namespace TowerDefence.Entities.Enemies
             throw new System.Exception("Could not load enemy");
         }
 
-        private void EnemyDied(IEnemyBaseModel enemy)
+        private void EnemyDied(IEnemyModel enemy)
         {
             model.Enemies.Remove(enemy);
             pathWalkerService.RemoveWalker(enemy.obj);
