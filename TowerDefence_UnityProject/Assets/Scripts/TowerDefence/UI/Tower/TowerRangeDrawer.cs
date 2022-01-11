@@ -1,6 +1,5 @@
 ﻿using NoUtil.Math;
-using TowerDefence.World.Towers;
-using TowerDefence.World.Towers.Models;
+using TowerDefence.Entities.Towers.Models;
 using UnityEngine;
 
 namespace TowerDefence.UI.Tower

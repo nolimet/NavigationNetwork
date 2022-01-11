@@ -1,13 +1,11 @@
 ﻿using DataBinding;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using TowerDefence.Entities.Towers;
+using TowerDefence.Entities.Towers.Models;
 using TowerDefence.Systems.Selection;
 using TowerDefence.Systems.Selection.Models;
-using TowerDefence.World.Towers;
-using TowerDefence.World.Towers.Models;
 using UnityEngine.AddressableAssets;
 
 namespace TowerDefence.UI.Tower
