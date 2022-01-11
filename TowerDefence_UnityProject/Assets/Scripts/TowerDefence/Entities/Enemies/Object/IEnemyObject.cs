@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using TowerDefence.Entities.Enemies.Models;
 
 namespace TowerDefence.Entities.Enemies
 {
-    public interface IEnemyObject
+    public interface IEnemyObject : IEntityObjectBase
     {
-        public Transform Transform { get; }
-        public Vector3 GetWorldPosition();
+        IEnemyModel EnemyModel { get; }
+
         public float DistanceToTarget();
     }
 }

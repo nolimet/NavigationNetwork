@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TowerDefence.Entities.Enemies;
+using TowerDefence.Entities.Enemies.Models;
 using UnityEngine;
 
 namespace TowerDefence.Entities.Enemies
@@ -11,6 +7,8 @@ namespace TowerDefence.Entities.Enemies
     public class EnemyObject : MonoBehaviour, IEnemyObject
     {
         public Transform Transform => transform;
+
+        public IEnemyModel EnemyModel => throw new NotImplementedException();
 
         public float DistanceToTarget() => throw new NotImplementedException();
 
