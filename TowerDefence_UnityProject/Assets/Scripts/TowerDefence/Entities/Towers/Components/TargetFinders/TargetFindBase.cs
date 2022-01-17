@@ -9,21 +9,21 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
 {
     public abstract class TargetFindBase : ITargetFindComponent
     {
-        protected readonly List<IEnemyObject> targetList;
+        protected readonly List<IEnemyObject> targetList = new();
         protected readonly ITowerObject towerObject;
         protected readonly ITowerModel towerModel;
+
+        public IEnumerable<IEnemyObject> FoundTargets => targetList;
+
+        public short TickPriority => short.MinValue;
+
+        public abstract void Tick();
 
         protected TargetFindBase(ITowerObject towerObject, ITowerModel towerModel)
         {
             this.towerObject = towerObject;
             this.towerModel = towerModel;
         }
-
-        public IEnumerable<IEnemyObject> FoundTarget => targetList;
-
-        public short TickPriority => short.MinValue;
-
-        public abstract void Tick();
 
         protected IEnumerable<IEnemyObject> GetEnemyObjectsInRange()
         {

@@ -18,8 +18,8 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
             var positionTower = towerObject.GetWorldPosition();
             var rawTargets = GetEnemyObjectsInRange();
             var orderedTargets = rawTargets.Select(x => new TargetFindHelper(Vector3.Distance(x.GetWorldPosition(), positionTower), x)).OrderBy(x => x.distance);
-
-            targetList.Add(orderedTargets.First().enemy);
+            if (orderedTargets.Any())
+                targetList.Add(orderedTargets.First().enemy);
         }
 
         private struct TargetFindHelper

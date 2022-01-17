@@ -8,6 +8,6 @@ namespace TowerDefence.Entities.Towers.Components
         /// <summary>
         /// List of defined list of a single or multiple targets to apply any effects too
         /// </summary>
-        IEnumerable<IEnemyObject> FoundTarget { get; }
+        IEnumerable<IEnemyObject> FoundTargets { get; }
     }
 }
