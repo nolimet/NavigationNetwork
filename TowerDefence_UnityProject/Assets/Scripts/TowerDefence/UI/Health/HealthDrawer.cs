@@ -13,13 +13,13 @@ namespace TowerDefence.UI.Health
         [SerializeField]
         private Image healthbarImage;
 
-        private IEnemyBaseModel target;
+        private IEnemyModel target;
 
         private BindingContext bindingContext = new(true);
 
         private void Start()
         {
-            bindingContext.Bind(target, x => x.health, OnHealthChanged);
+            bindingContext.Bind(target, x => x.Health, OnHealthChanged);
         }
 
         private void OnDestroy()
@@ -29,20 +29,20 @@ namespace TowerDefence.UI.Health
 
         private void OnHealthChanged(double _)
         {
-            healthbarImage.fillAmount = (float)(target.health / target.maxHealth);
+            healthbarImage.fillAmount = (float)(target.Health / target.MaxHealth);
         }
 
         public void UpdateHealthBar()
         {
-            if (target.obj)
+            if (target.Obj)
             {
-                transform.position = target.transform.position + target.healthOffset;
+                transform.position = target.Transform.position + target.HealthOffset;
             }
         }
 
         public bool TargetIsAlive()
         {
-            return target.obj;
+            return target.Obj;
         }
 
         public void Destroy()
@@ -55,7 +55,7 @@ namespace TowerDefence.UI.Health
             [Inject]
             private UIContainer uiContainer;
 
-            public HealthDrawer Create(IEnemyBaseModel target)
+            public HealthDrawer Create(IEnemyModel target)
             {
                 var newHealthBar = base.Create();
 

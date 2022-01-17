@@ -31,9 +31,9 @@ namespace TowerDefence.UI.Health
             bindingContext.Dispose();
         }
 
-        private void OnEnemiesChanged(IList<IEnemyBaseModel> obj)
+        private void OnEnemiesChanged(IList<IEnemyModel> obj)
         {
-            var newEnemies = obj.Where(x => !x.healthBar);
+            var newEnemies = obj.Where(x => !x.HealthBar);
             var removedEnemies = healthBars.Where(x => !x.TargetIsAlive());
 
             if (removedEnemies.Count() > 0)
@@ -47,7 +47,7 @@ namespace TowerDefence.UI.Health
             foreach (var enemy in newEnemies)
             {
                 var newHealthBar = healthDrawerFactory.Create(enemy);
-                enemy.healthBar = newHealthBar;
+                enemy.HealthBar = newHealthBar;
                 healthBars.Add(newHealthBar);
             }
         }
@@ -63,7 +63,7 @@ namespace TowerDefence.UI.Health
 
         private void TrimDrawers()
         {
-            if (healthBars.Any(x => enemiesModel.Enemies.All(y => y.healthBar != x)))
+            if (healthBars.Any(x => enemiesModel.Enemies.All(y => y.HealthBar != x)))
             {
                 "Triming Healthbars".QuickCLog("HealthBarController");
 
