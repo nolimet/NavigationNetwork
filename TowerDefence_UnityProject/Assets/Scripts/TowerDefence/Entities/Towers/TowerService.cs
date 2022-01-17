@@ -8,7 +8,7 @@ using Zenject;
 
 namespace TowerDefence.Entities.Towers
 {
-    public class TowerService : ITickable
+    public class TowerService
     {
         private readonly ITowerModels towerModel;
         private readonly DiContainer diContainer;
@@ -37,30 +37,27 @@ namespace TowerDefence.Entities.Towers
 
             if (newTowerObject is GameObject gameObject)
             {
-                var newTower = gameObject.GetComponent<TowerBase>();
+                var newTower = gameObject.GetComponent<TowerObject>() ?? gameObject.AddComponent<TowerObject>();
                 var newTowerModel = ModelFactory.Create<ITowerModel>();
-                newTowerModel.TowerRenderer = newTower;
-                newTowerModel.Position = position;
-
                 newTower.Setup(newTowerModel);
 
-                towerModel.Towers.Add(newTowerModel);
+                towerModel.Towers.Add(newTower);
                 return gameObject.GetComponent<TowerBase>();
             }
             return null;
         }
 
-        public void DestroyTower<T>(T tower) where T : TowerBase
+        public void DestroyTower<T>(T tower) where T : ITowerObject
         {
             if (tower == null)
             {
                 throw new System.NullReferenceException("tower is null");
             }
-            if (tower && towerModel.Towers.Any(x => x is T && x == tower))
+
+            if (towerModel.Towers.Contains(tower))
             {
-                var model = towerModel.Towers.First(x => x == tower);
                 tower.Destroy();
-                towerModel.Towers.Remove(model);
+                towerModel.Towers.Remove(tower);
             }
         }
 
@@ -68,26 +65,11 @@ namespace TowerDefence.Entities.Towers
         {
             foreach (var tower in towerModel.Towers)
             {
-                tower.TowerRenderer.Destroy();
+                tower.Destroy();
             }
 
             towerModel.SelectedTower = null;
             towerModel.Towers.Clear();
-        }
-
-        public void Tick()
-        {
-            for (int i = towerModel.Towers.Count - 1; i >= 0; i--)
-            {
-                var tower = towerModel.Towers[i];
-                if (!tower.TowerRenderer)
-                {
-                    towerModel.Towers.Remove(tower);
-                    continue;
-                }
-
-                tower.TowerRenderer.Tick();
-            }
         }
     }
 }
