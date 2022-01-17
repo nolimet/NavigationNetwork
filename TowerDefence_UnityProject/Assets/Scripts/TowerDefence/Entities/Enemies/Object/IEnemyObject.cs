@@ -4,8 +4,10 @@ namespace TowerDefence.Entities.Enemies
 {
     public interface IEnemyObject : IEntityObjectBase
     {
-        IEnemyModel EnemyModel { get; }
+        IEnemyModel Model { get; }
 
         public float DistanceToTarget();
+
+        public void Damage(double damage);
     }
 }
