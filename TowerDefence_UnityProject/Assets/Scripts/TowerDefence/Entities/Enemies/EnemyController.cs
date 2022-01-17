@@ -33,8 +33,8 @@ namespace TowerDefence.Entities.Enemies
             if (newEnemyGameObject.TryGetComponent<T>(out var newEnemy))
             {
                 var model = ModelFactory.Create<IEnemyModel>();
-                model.obj = newEnemy;
-                model.transform = newEnemy.transform;
+                model.Obj = newEnemy;
+                model.Transform = newEnemy.transform;
 
                 newEnemy.Setup(EnemyDied, path, model);
 
@@ -48,8 +48,8 @@ namespace TowerDefence.Entities.Enemies
         private void EnemyDied(IEnemyModel enemy)
         {
             model.Enemies.Remove(enemy);
-            pathWalkerService.RemoveWalker(enemy.obj);
-            Object.DestroyImmediate(enemy.obj.gameObject);
+            pathWalkerService.RemoveWalker(enemy.Obj);
+            Object.DestroyImmediate(enemy.Obj.gameObject);
         }
     }
 }
