@@ -39,13 +39,13 @@ namespace TowerDefence.Entities.Towers
                 return null;
             }
 
-            var healthiest = TargetList.Cast<EnemyBase>().OrderBy(x => x.Model.maxHealth / x.Model.health).Last();
+            var healthiest = TargetList.Cast<EnemyBase>().OrderBy(x => x.Model.MaxHealth / x.Model.Health).Last();
             return healthiest is T enemy ? enemy : null;
         }
 
         protected T GetDeadest<T>() where T : EnemyBase
         {
-            var deadest = TargetList.Cast<EnemyBase>().OrderBy(x => x.Model.maxHealth / x.Model.health).First();
+            var deadest = TargetList.Cast<EnemyBase>().OrderBy(x => x.Model.MaxHealth / x.Model.Health).First();
             return deadest is T enemy ? enemy : null;
         }
 
