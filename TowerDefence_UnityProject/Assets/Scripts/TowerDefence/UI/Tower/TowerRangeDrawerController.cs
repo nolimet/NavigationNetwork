@@ -7,6 +7,7 @@ using TowerDefence.Entities.Towers.Models;
 using TowerDefence.Systems.Selection;
 using TowerDefence.Systems.Selection.Models;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Events;
 
 namespace TowerDefence.UI.Tower
 {
@@ -22,12 +23,10 @@ namespace TowerDefence.UI.Tower
             this.selectionModel = selectionModel;
             this.towerModels = towerModels;
 
-            bindingContext.Bind(selectionModel, x => x.Selection, SelectionChanged);
-
-            SetRangeDrawer(rangeDrawer);
+            SetRangeDrawer(rangeDrawer, SetBindings);
         }
 
-        private async void SetRangeDrawer(AssetReference rangeDrawer)
+        private async void SetRangeDrawer(AssetReference rangeDrawer, UnityAction onComplete)
         {
             await AsyncAwaiters.NextFrame;
             this.rangeDrawer = await GetTowerRangeDrawer();
@@ -37,24 +36,25 @@ namespace TowerDefence.UI.Tower
                 await task;
                 return task.Result.GetComponent<TowerRangeDrawer>();
             }
+            onComplete?.Invoke();
+        }
+
+        private void SetBindings()
+        {
+            bindingContext.Bind(selectionModel, x => x.Selection, SelectionChanged);
         }
 
         private void SelectionChanged(IList<ISelectable> selection)
         {
-            var subSelection = selection.Where(x => x is TowerBase);
-            if (subSelection.Count() == 0)
+            var subSelection = selection.Where(x => x is ITowerObject);
+            if (subSelection.Any() && subSelection.First() is ITowerObject tower)
             {
-                rangeDrawer?.gameObject.SetActive(false);
+                rangeDrawer.gameObject.SetActive(true);
+                rangeDrawer.DrawRange(tower);
             }
-            else if (subSelection.First() is TowerBase tower)
+            else
             {
-                var towerModel = towerModels.Towers.FirstOrDefault(x => x.TowerRenderer == tower);
-
-                rangeDrawer.gameObject.SetActive(towerModel?.TowerRenderer);
-                if (towerModel?.TowerRenderer)
-                {
-                    rangeDrawer.DrawRange(towerModel);
-                }
+                rangeDrawer.gameObject.SetActive(false);
             }
         }
 

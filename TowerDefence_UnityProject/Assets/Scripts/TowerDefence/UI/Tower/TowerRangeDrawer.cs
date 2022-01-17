@@ -1,4 +1,5 @@
 ﻿using NoUtil.Math;
+using TowerDefence.Entities.Towers;
 using TowerDefence.Entities.Towers.Models;
 using UnityEngine;
 
@@ -49,10 +50,10 @@ namespace TowerDefence.UI.Tower
             return mesh;
         }
 
-        public void DrawRange(ITowerModel towerModel)
+        public void DrawRange(ITowerObject tower)
         {
-            DrawRange((float)towerModel.Range);
-            transform.position = towerModel.Position;
+            DrawRange((float)tower.Model.Range);
+            transform.position = tower.GetWorldPosition();
         }
 
         private void DrawRange(float radius)
