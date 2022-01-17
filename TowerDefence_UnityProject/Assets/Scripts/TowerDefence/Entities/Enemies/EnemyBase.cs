@@ -23,7 +23,7 @@ namespace TowerDefence.Entities.Enemies
         //TODO add sources or types support
         public virtual void ApplyDamage(double damage)
         {
-            model.health -= damage;
+            model.Health -= damage;
         }
 
         public void Setup(UnityAction<IEnemyModel> onEnemyDied, AnimationCurve3D path, IEnemyModel model)
@@ -33,15 +33,15 @@ namespace TowerDefence.Entities.Enemies
             this.SetPath(path);
             this.model = model;
 
-            model.health = maxHealth;
-            model.maxHealth = maxHealth;
-            model.healthOffset = healthBarOffset;
-            bindingContext.Bind(model, x => x.health, OnHealthChanged);
+            model.Health = maxHealth;
+            model.MaxHealth = maxHealth;
+            model.HealthOffset = healthBarOffset;
+            bindingContext.Bind(model, x => x.Health, OnHealthChanged);
         }
 
         private void OnHealthChanged(double obj)
         {
-            if (model.health <= 0)
+            if (model.Health <= 0)
             {
                 onEnemyDied?.Invoke(model);
             }
