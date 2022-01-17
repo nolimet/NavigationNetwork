@@ -8,7 +8,7 @@ using UnityEngine;
 namespace TowerDefence.Entities.Towers
 {
     //Keep this part kind of but use ITowerComponents to define the behaviour of the tower
-    public abstract class TowerBase : MonoBehaviour, ISelectable
+    public abstract class TowerBase : MonoBehaviour
     {
         public abstract float TargetRadius { get; }
         public abstract float AttacksPerSecond { get; }
