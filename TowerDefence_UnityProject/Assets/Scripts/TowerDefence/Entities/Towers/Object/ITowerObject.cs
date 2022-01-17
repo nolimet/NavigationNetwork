@@ -6,7 +6,7 @@ namespace TowerDefence.Entities.Towers
 {
     public interface ITowerObject : IEntityObjectBase
     {
-        ITowerModel TowerModel { get; }
+        ITowerModel Model { get; }
 
         Vector2 GetGridPosition();
     }
