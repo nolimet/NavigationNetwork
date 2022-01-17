@@ -7,8 +7,8 @@ namespace TowerDefence.Entities.Towers.Models
     [DataModel(AddToZenject = true, Shared = true)]
     public interface ITowerModels : IModelBase
     {
-        IList<ITowerModel> Towers { get; set; }
+        IList<ITowerObject> Towers { get; set; }
 
-        TowerBase SelectedTower { get; set; }
+        ITowerObject SelectedTower { get; set; }
     }
 }

@@ -8,11 +8,11 @@ namespace TowerDefence.Entities.Enemies.Models
     [DataModel(AddToZenject = false, Shared = false)]
     public interface IEnemyModel : IModelBase
     {
-        TowerDefence.Entities.Enemies.EnemyBase obj { get; set; }
-        HealthDrawer healthBar { get; set; }
-        Transform transform { get; set; }
-        double health { get; set; }
-        double maxHealth { get; set; }
-        Vector3 healthOffset { get; set; }
+        EnemyBase Obj { get; set; }
+        HealthDrawer HealthBar { get; set; }
+        Transform Transform { get; set; }
+        double Health { get; set; }
+        double MaxHealth { get; set; }
+        Vector3 HealthOffset { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace TowerDefence.Entities.Enemies.Models {
 			// health
 		public event System.Action<System.Double> OnChangehealth;
 		private System.Double _health ; 
-		public System.Double health {
+		public System.Double Health {
 			get => _health;
 			set {
 								_health = value; 
@@ -26,7 +26,7 @@ namespace TowerDefence.Entities.Enemies.Models {
 			// healthBar
 		public event System.Action<TowerDefence.UI.Health.HealthDrawer> OnChangehealthBar;
 		private TowerDefence.UI.Health.HealthDrawer _healthBar ; 
-		public TowerDefence.UI.Health.HealthDrawer healthBar {
+		public TowerDefence.UI.Health.HealthDrawer HealthBar {
 			get => _healthBar;
 			set {
 								_healthBar = value; 
@@ -38,7 +38,7 @@ namespace TowerDefence.Entities.Enemies.Models {
 			// healthOffset
 		public event System.Action<UnityEngine.Vector3> OnChangehealthOffset;
 		private UnityEngine.Vector3 _healthOffset ; 
-		public UnityEngine.Vector3 healthOffset {
+		public UnityEngine.Vector3 HealthOffset {
 			get => _healthOffset;
 			set {
 								_healthOffset = value; 
@@ -50,7 +50,7 @@ namespace TowerDefence.Entities.Enemies.Models {
 			// maxHealth
 		public event System.Action<System.Double> OnChangemaxHealth;
 		private System.Double _maxHealth ; 
-		public System.Double maxHealth {
+		public System.Double MaxHealth {
 			get => _maxHealth;
 			set {
 								_maxHealth = value; 
@@ -62,7 +62,7 @@ namespace TowerDefence.Entities.Enemies.Models {
 			// obj
 		public event System.Action<TowerDefence.Entities.Enemies.EnemyBase> OnChangeobj;
 		private TowerDefence.Entities.Enemies.EnemyBase _obj ; 
-		public TowerDefence.Entities.Enemies.EnemyBase obj {
+		public TowerDefence.Entities.Enemies.EnemyBase Obj {
 			get => _obj;
 			set {
 								_obj = value; 
@@ -74,7 +74,7 @@ namespace TowerDefence.Entities.Enemies.Models {
 			// transform
 		public event System.Action<UnityEngine.Transform> OnChangetransform;
 		private UnityEngine.Transform _transform ; 
-		public UnityEngine.Transform transform {
+		public UnityEngine.Transform Transform {
 			get => _transform;
 			set {
 								_transform = value; 

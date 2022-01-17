@@ -41,18 +41,6 @@ namespace TowerDefence.Entities.Towers.Models {
 				OnChange?.Invoke();
 			}
 		}
-			// Position
-		public event System.Action<UnityEngine.Vector3> OnChangePosition;
-		private UnityEngine.Vector3 _Position ; 
-		public UnityEngine.Vector3 Position {
-			get => _Position;
-			set {
-								_Position = value; 
-
-				OnChangePosition?.Invoke(value);
-				OnChange?.Invoke();
-			}
-		}
 			// Range
 		public event System.Action<System.Double> OnChangeRange;
 		private System.Double _Range ; 
@@ -62,30 +50,6 @@ namespace TowerDefence.Entities.Towers.Models {
 								_Range = value; 
 
 				OnChangeRange?.Invoke(value);
-				OnChange?.Invoke();
-			}
-		}
-			// TowerObject
-		public event System.Action<TowerDefence.Entities.Towers.ITowerObject> OnChangeTowerObject;
-		private TowerDefence.Entities.Towers.ITowerObject _TowerObject ; 
-		public TowerDefence.Entities.Towers.ITowerObject TowerObject {
-			get => _TowerObject;
-			set {
-								_TowerObject = value; 
-
-				OnChangeTowerObject?.Invoke(value);
-				OnChange?.Invoke();
-			}
-		}
-			// TowerRenderer
-		public event System.Action<TowerDefence.Entities.Towers.TowerBase> OnChangeTowerRenderer;
-		private TowerDefence.Entities.Towers.TowerBase _TowerRenderer ; 
-		public TowerDefence.Entities.Towers.TowerBase TowerRenderer {
-			get => _TowerRenderer;
-			set {
-								_TowerRenderer = value; 
-
-				OnChangeTowerRenderer?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
