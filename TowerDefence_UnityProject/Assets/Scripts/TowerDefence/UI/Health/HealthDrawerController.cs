@@ -13,14 +13,12 @@ namespace TowerDefence.UI.Health
     public class HealthDrawerController : ITickable
     {
         private readonly HealthDrawer.Factory healthDrawerFactory;
-        private readonly IEnemiesModel enemiesModel;
         private readonly List<HealthDrawer> healthBars = new List<HealthDrawer>();
         private readonly BindingContext bindingContext = new(true);
 
         public HealthDrawerController(HealthDrawer.Factory healthDrawerFactory, IEnemiesModel enemiesModel)
         {
             this.healthDrawerFactory = healthDrawerFactory;
-            this.enemiesModel = enemiesModel;
 
             bindingContext.Bind(enemiesModel, x => x.Enemies, OnEnemiesChanged);
         }
@@ -31,14 +29,14 @@ namespace TowerDefence.UI.Health
             bindingContext.Dispose();
         }
 
-        private void OnEnemiesChanged(IList<IEnemyModel> obj)
+        private void OnEnemiesChanged(IList<IEnemyObject> obj)
         {
-            var newEnemies = obj.Where(x => !x.HealthBar);
-            var removedEnemies = healthBars.Where(x => !x.TargetIsAlive());
+            var newEnemies = obj.Where(x => !x.Model.HealthBar);
+            var deadHealthBars = healthBars.Where(x => !x);
 
-            if (removedEnemies.Count() > 0)
+            if (deadHealthBars.Any())
             {
-                foreach (var deadHealthbar in removedEnemies.ToArray())
+                foreach (var deadHealthbar in deadHealthBars.ToArray())
                 {
                     healthBars.Remove(deadHealthbar);
                 }
@@ -46,33 +44,22 @@ namespace TowerDefence.UI.Health
 
             foreach (var enemy in newEnemies)
             {
-                var newHealthBar = healthDrawerFactory.Create(enemy);
-                enemy.HealthBar = newHealthBar;
+                var newHealthBar = healthDrawerFactory.Create(enemy, OnHeathbarDestroyed);
+                enemy.Model.HealthBar = newHealthBar;
                 healthBars.Add(newHealthBar);
             }
         }
 
+        private void OnHeathbarDestroyed(HealthDrawer arg0)
+        {
+            healthBars.Remove(arg0);
+        }
+
         public void Tick()
         {
-            TrimDrawers();
             foreach (HealthDrawer healthBar in healthBars)
             {
                 healthBar.UpdateHealthBar();
-            }
-        }
-
-        private void TrimDrawers()
-        {
-            if (healthBars.Any(x => enemiesModel.Enemies.All(y => y.HealthBar != x)))
-            {
-                "Triming Healthbars".QuickCLog("HealthBarController");
-
-                var deadDrawers = healthBars.Where(x => !x.TargetIsAlive()).ToArray();
-                foreach (var deadDrawer in deadDrawers)
-                {
-                    deadDrawer.Destroy();
-                    healthBars.Remove(deadDrawer);
-                }
             }
         }
     }

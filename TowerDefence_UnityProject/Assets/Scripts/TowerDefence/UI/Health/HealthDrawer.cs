@@ -3,6 +3,7 @@ using System;
 using TowerDefence.Entities.Enemies;
 using TowerDefence.Entities.Enemies.Models;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Zenject;
 
@@ -13,13 +14,14 @@ namespace TowerDefence.UI.Health
         [SerializeField]
         private Image healthbarImage;
 
-        private IEnemyModel target;
+        private IEnemyObject target;
+        private UnityAction<HealthDrawer> destroyedAction;
 
         private BindingContext bindingContext = new(true);
 
         private void Start()
         {
-            bindingContext.Bind(target, x => x.Health, OnHealthChanged);
+            bindingContext.Bind(target.Model, x => x.Health, OnHealthChanged);
         }
 
         private void OnDestroy()
@@ -29,25 +31,18 @@ namespace TowerDefence.UI.Health
 
         private void OnHealthChanged(double _)
         {
-            healthbarImage.fillAmount = (float)(target.Health / target.MaxHealth);
+            healthbarImage.fillAmount = (float)(target.Model.Health / target.Model.MaxHealth);
         }
 
         public void UpdateHealthBar()
         {
-            if (target.Obj)
-            {
-                transform.position = target.Transform.position + target.HealthOffset;
-            }
-        }
-
-        public bool TargetIsAlive()
-        {
-            return target.Obj;
+            transform.position = target.Transform.position + target.Model.HealthOffset;
         }
 
         public void Destroy()
         {
             Destroy(gameObject);
+            destroyedAction?.Invoke(this);
         }
 
         public class Factory : PlaceholderFactory<HealthDrawer>
@@ -55,12 +50,13 @@ namespace TowerDefence.UI.Health
             [Inject]
             private UIContainer uiContainer;
 
-            public HealthDrawer Create(IEnemyModel target)
+            public HealthDrawer Create(IEnemyObject target, UnityAction<HealthDrawer> destroyedAction)
             {
                 var newHealthBar = base.Create();
 
                 newHealthBar.transform.SetParent(uiContainer.WorldUIContainer, false);
                 newHealthBar.target = target;
+                newHealthBar.destroyedAction = destroyedAction;
 
                 return newHealthBar;
             }
