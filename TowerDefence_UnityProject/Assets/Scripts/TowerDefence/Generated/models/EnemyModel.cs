@@ -11,81 +11,94 @@ using DataBinding.BaseClasses;
 namespace TowerDefence.Entities.Enemies.Models {
 	public class EnemyModel : TowerDefence.Entities.Enemies.Models.IEnemyModel {
 		public event Action OnChange;
-			// health
-		public event System.Action<System.Double> OnChangehealth;
-		private System.Double _health ; 
+			// Components
+		public event System.Action<System.Collections.Generic.IList<TowerDefence.Entities.Enemies.Components.IEnemyComponent>> OnChangeComponents;
+		private System.Collections.Generic.IList<TowerDefence.Entities.Enemies.Components.IEnemyComponent> _Components ; 
+		public System.Collections.Generic.IList<TowerDefence.Entities.Enemies.Components.IEnemyComponent> Components {
+			get => _Components;
+			set {
+						
+				if (_Components != null)
+				{
+					((ObservableCollection<TowerDefence.Entities.Enemies.Components.IEnemyComponent>)_Components).CollectionChanged -= new NotifyCollectionChangedEventHandler(TriggerComponentsEvents);
+				}
+
+				if (value != null && (value as ObservableCollection<TowerDefence.Entities.Enemies.Components.IEnemyComponent>) == null) 
+				{
+					_Components = new ObservableCollection<TowerDefence.Entities.Enemies.Components.IEnemyComponent>(value);
+				}
+				else
+				{
+					_Components = value;
+				}
+
+				if (_Components != null)
+				{
+					((ObservableCollection<TowerDefence.Entities.Enemies.Components.IEnemyComponent>)_Components).CollectionChanged += new NotifyCollectionChangedEventHandler(TriggerComponentsEvents);
+				}
+
+				OnChangeComponents?.Invoke(value);
+				OnChange?.Invoke();
+			}
+		}
+			// Health
+		public event System.Action<System.Double> OnChangeHealth;
+		private System.Double _Health ; 
 		public System.Double Health {
-			get => _health;
+			get => _Health;
 			set {
-								_health = value; 
+								_Health = value; 
 
-				OnChangehealth?.Invoke(value);
+				OnChangeHealth?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
-			// healthBar
-		public event System.Action<TowerDefence.UI.Health.HealthDrawer> OnChangehealthBar;
-		private TowerDefence.UI.Health.HealthDrawer _healthBar ; 
+			// HealthBar
+		public event System.Action<TowerDefence.UI.Health.HealthDrawer> OnChangeHealthBar;
+		private TowerDefence.UI.Health.HealthDrawer _HealthBar ; 
 		public TowerDefence.UI.Health.HealthDrawer HealthBar {
-			get => _healthBar;
+			get => _HealthBar;
 			set {
-								_healthBar = value; 
+								_HealthBar = value; 
 
-				OnChangehealthBar?.Invoke(value);
+				OnChangeHealthBar?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
-			// healthOffset
-		public event System.Action<UnityEngine.Vector3> OnChangehealthOffset;
-		private UnityEngine.Vector3 _healthOffset ; 
+			// HealthOffset
+		public event System.Action<UnityEngine.Vector3> OnChangeHealthOffset;
+		private UnityEngine.Vector3 _HealthOffset ; 
 		public UnityEngine.Vector3 HealthOffset {
-			get => _healthOffset;
+			get => _HealthOffset;
 			set {
-								_healthOffset = value; 
+								_HealthOffset = value; 
 
-				OnChangehealthOffset?.Invoke(value);
+				OnChangeHealthOffset?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
-			// maxHealth
-		public event System.Action<System.Double> OnChangemaxHealth;
-		private System.Double _maxHealth ; 
+			// MaxHealth
+		public event System.Action<System.Double> OnChangeMaxHealth;
+		private System.Double _MaxHealth ; 
 		public System.Double MaxHealth {
-			get => _maxHealth;
+			get => _MaxHealth;
 			set {
-								_maxHealth = value; 
+								_MaxHealth = value; 
 
-				OnChangemaxHealth?.Invoke(value);
-				OnChange?.Invoke();
-			}
-		}
-			// obj
-		public event System.Action<TowerDefence.Entities.Enemies.EnemyBase> OnChangeobj;
-		private TowerDefence.Entities.Enemies.EnemyBase _obj ; 
-		public TowerDefence.Entities.Enemies.EnemyBase Obj {
-			get => _obj;
-			set {
-								_obj = value; 
-
-				OnChangeobj?.Invoke(value);
-				OnChange?.Invoke();
-			}
-		}
-			// transform
-		public event System.Action<UnityEngine.Transform> OnChangetransform;
-		private UnityEngine.Transform _transform ; 
-		public UnityEngine.Transform Transform {
-			get => _transform;
-			set {
-								_transform = value; 
-
-				OnChangetransform?.Invoke(value);
+				OnChangeMaxHealth?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
 	
 		public EnemyModel() { 
-				}
-
+				Components = new System.Collections.ObjectModel.ObservableCollection<TowerDefence.Entities.Enemies.Components.IEnemyComponent>();
 			}
+
+		private void TriggerComponentsEvents(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			OnChangeComponents?.Invoke(Components);
+			OnChange?.Invoke();
+		}
+
+		}
 }
