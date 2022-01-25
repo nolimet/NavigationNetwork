@@ -1,10 +1,10 @@
 ﻿using DataBinding;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Enemies.Components;
 using TowerDefence.Entities.Enemies.Models;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace TowerDefence.Entities.Enemies
 {
@@ -14,9 +14,11 @@ namespace TowerDefence.Entities.Enemies
         public IEnemyModel Model { get; private set; }
         public string Name { get => this.name; set => this.name = value; }
 
+        public UnityAction<IEnemyObject> DeathAction { get; private set; }
+
         private readonly List<ITickableEnemyComponent> tickableComponents = new();
         private readonly BindingContext bindingContext = new(true);
-        private Action<IEnemyObject> outOfHealthAction;
+        
 
         [SerializeField] private Vector2 healthbarOffset = Vector2.zero;
 
@@ -25,15 +27,15 @@ namespace TowerDefence.Entities.Enemies
             Model.Health -= damage;
         }
 
-        public float DistanceToTarget() => throw new NotImplementedException();
+        public float DistanceToTarget() => 0f;
 
         public Vector3 GetWorldPosition() => transform.position;
 
-        public void Setup(IEnemyModel enemyModel, Action<IEnemyObject> outOfHealthAction)
+        public void Setup(IEnemyModel enemyModel, UnityAction<IEnemyObject> outOfHealthAction)
         {
             this.Model = enemyModel;
             Model.HealthOffset = healthbarOffset;
-            this.outOfHealthAction = outOfHealthAction;
+            this.DeathAction = outOfHealthAction;
 
             bindingContext.Bind(enemyModel, m => m.Components, OnComponentsChanged);
             bindingContext.Bind(enemyModel, m => m.Health, OnHealthChanged);
@@ -43,7 +45,7 @@ namespace TowerDefence.Entities.Enemies
         {
             if (health <= 0)
             {
-                outOfHealthAction?.Invoke(this);
+                DeathAction?.Invoke(this);
             }
         }
 
