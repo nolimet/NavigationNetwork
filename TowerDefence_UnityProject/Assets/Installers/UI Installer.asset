@@ -18,6 +18,11 @@ MonoBehaviour:
     type: 3}
   screenUIContainerPrefab: {fileID: 8959962442709614013, guid: a8eb013babd75384a9701e29027cd962,
     type: 3}
+  hudControllerPrefab:
+    m_AssetGUID: 46fe94b8612dc6b41b974b8e361ee968
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   towerRangeDrawer:
     m_AssetGUID: 3516108c6cd76994bae92c06df8619b4
     m_SubObjectName: 

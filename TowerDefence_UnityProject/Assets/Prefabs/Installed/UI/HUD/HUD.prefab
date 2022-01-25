@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6015155098811055491}
   - component: {fileID: 2444209631370142142}
   - component: {fileID: 7902980840546756891}
+  - component: {fileID: -5607562817643570569}
   m_Layer: 0
   m_Name: HUD
   m_TagString: Untagged
@@ -52,7 +53,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
-  _monoInstallers: []
+  _monoInstallers:
+  - {fileID: -5607562817643570569}
   _installerPrefabs: []
   _autoRun: 1
   _kernel: {fileID: 0}
@@ -68,6 +70,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2f960fcf1e437c48bfe5441289e143f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-5607562817643570569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610732243830532412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba207e5365c28bd4f8e68623dcf2be8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  towerHud: {fileID: 3376586465597014653}
 --- !u!1 &7856598796928931256
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,6 +279,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 985aaad9bd8f9864cbf58dcc6dd5b8d9, type: 3}
+--- !u!114 &3376586465597014653 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6334347834475880859, guid: 985aaad9bd8f9864cbf58dcc6dd5b8d9,
+    type: 3}
+  m_PrefabInstance: {fileID: 8733627891058631654}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eddca2d4a528dcb4c847fe1dd808fbf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &5635984887835918357 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3964045281008313331, guid: 985aaad9bd8f9864cbf58dcc6dd5b8d9,

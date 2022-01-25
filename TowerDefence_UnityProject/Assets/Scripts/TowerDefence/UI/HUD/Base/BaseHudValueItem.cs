@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace TowerDefence.UI.HUD
+namespace TowerDefence.UI.Hud
 {
     public class BaseHudValueItem : MonoBehaviour
     {
