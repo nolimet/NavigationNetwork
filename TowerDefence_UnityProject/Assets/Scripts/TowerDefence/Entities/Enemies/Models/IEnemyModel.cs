@@ -1,4 +1,4 @@
-using DataBinding.BaseClasses;
+﻿using DataBinding.BaseClasses;
 using DataBinding.Helpers;
 using System.Collections.Generic;
 using TowerDefence.Entities.Enemies.Components;
@@ -14,5 +14,7 @@ namespace TowerDefence.Entities.Enemies.Models
         double Health { get; set; }
         double MaxHealth { get; set; }
         Vector3 HealthOffset { get; set; }
+
+        IList<IEnemyComponent> Components { get; }
     }
 }
