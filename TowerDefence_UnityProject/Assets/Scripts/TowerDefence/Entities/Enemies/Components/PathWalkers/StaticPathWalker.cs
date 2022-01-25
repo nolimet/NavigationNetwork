@@ -14,10 +14,10 @@ namespace TowerDefence.Entities.Enemies.Components
 
         private Vector3 lastPosition;
 
-        public StaticPathWalker(AnimationCurve3D path, Transform transform, float speedMult, IEnemyObject self, UnityAction<IEnemyObject> reachedEnd) : base(reachedEnd)
+        public StaticPathWalker(AnimationCurve3D path, float speedMult, IEnemyObject self) : base(self.DeathAction)
         {
             this.path = path;
-            this.transform = transform;
+            this.transform = self.Transform;
             this.speedMult = speedMult;
             this.self = self;
         }
