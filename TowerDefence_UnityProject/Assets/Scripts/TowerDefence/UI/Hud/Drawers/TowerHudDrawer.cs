@@ -27,7 +27,8 @@ namespace TowerDefence.UI.Hud
             rangeField.SetValue(tower.Model.Range.ToString());
 
             var damageComponent = tower.Model.Components.FirstOrDefault(x => x is IDamageComponent) as IDamageComponent;
-            damageField.SetValue(Math.Floor(damageComponent?.DamagePerSecond ?? 0d).ToString());
+            var damagePerSecond = damageComponent?.DamagePerSecond ?? 0d;
+            damageField.SetValue(damagePerSecond.ToString("0.#"));
 
             towerType.SetValue(tower.Name);
         }
