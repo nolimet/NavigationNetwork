@@ -4,8 +4,9 @@ using TowerDefence.World.Path;
 using UnityEngine;
 using NoUtil.Extentsions;
 using TowerDefence.Entities.Enemies;
+using TowerDefence.Entities.Enemies.Components;
 
-public class ExampleWalker : EnemyBase
+public class ExampleWalker : MonoBehaviour
 {
     [SerializeField]
     private SpriteRenderer renderer;
@@ -16,7 +17,12 @@ public class ExampleWalker : EnemyBase
         name = "enemy-" + Random.Range(0, 10000);
     }
 
-    public override void ReachedEnd()
+    private void Start()
     {
+        var enemyObject = GetComponent<IEnemyObject>();
+
+        var model = enemyObject.Model;
+        model.Health = 10;
+        model.MaxHealth = 10;
     }
 }

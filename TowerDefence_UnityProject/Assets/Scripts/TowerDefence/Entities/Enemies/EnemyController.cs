@@ -35,9 +35,9 @@ namespace TowerDefence.Entities.Enemies
             if (newEnemyGameObject.TryGetComponent<EnemyObject>(out var newEnemy))
             {
                 var model = ModelFactory.Create<IEnemyModel>();
-                model.Components.Add(new Components.StaticPathWalker(path, newEnemy.transform, 5f, newEnemy, EnemyDied));
-                model.Health = 10;
-                model.MaxHealth = 10;
+                model.Components.Add(new Components.StaticPathWalker(path, 5f, newEnemy));
+
+                //TODO do enemy Init stuff somewhereElse
 
                 newEnemy.Setup(model, EnemyDied);
                 this.model.Enemies.Add(newEnemy);
