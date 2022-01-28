@@ -24,7 +24,7 @@ namespace TowerDefence.Entities.Towers
             this.worldContainer = worldContainer;
         }
 
-        public async Task<TowerBase> PlaceTower(string towerID, Vector2 position)
+        public async Task<ITowerObject> PlaceTower(string towerID, Vector2 position)
         {
             var assetReference = towerConfiguration.GetTower(towerID);
             if (assetReference == null)
@@ -42,7 +42,7 @@ namespace TowerDefence.Entities.Towers
                 newTower.Setup(newTowerModel);
 
                 towerModel.Towers.Add(newTower);
-                return gameObject.GetComponent<TowerBase>();
+                return gameObject.GetComponent<ITowerObject>();
             }
             return null;
         }
