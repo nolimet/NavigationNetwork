@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using NoUtil.Math;
+using UnityEngine;
 using static TowerDefence.World.Path.Data.PathWorldData;
 
 namespace TowerDefence.World.Path
@@ -28,7 +29,7 @@ namespace TowerDefence.World.Path
                 lastPosition = transform.position;
                 transform.position = path.Evaluate(position);
 
-                var dir = NoUtil.Common.VectorToAngle(lastPosition - transform.position);
+                var dir = Math.VectorToAngle(lastPosition - transform.position);
 
                 transform.rotation = Quaternion.Euler(0, 0, dir);
 

@@ -1,5 +1,8 @@
+using NoUtil;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using TowerDefence.Entities.Enemies;
 using TowerDefence.World.Path.Data;
 using UnityEngine;
 using FileEnemyGroup = TowerDefence.Systems.Waves.Data.Wave.EnemyGroup;
@@ -18,6 +21,26 @@ namespace TowerDefence.Systems.Waves.Data
 
         public EditablePathData Pathdata { get => pathdata; set => pathdata = value; }
         public EditableWave[] Waves { get => waves; set => waves = value; }
+
+        public LevelData ToLevelData()
+        {
+            var waves = new Wave[Waves?.Length ?? 0];
+
+            return new LevelData(waves, Pathdata);
+        }
+
+        public void FromLevelData(LevelData levelData)
+        {
+            var waveCount = levelData.waves?.Length ?? 0;
+            var waves = new EditableWave[waveCount];
+
+            for (int i = 0; i < waveCount; i++)
+            {
+                waves[i] = levelData.waves[i];
+            }
+            Waves = waves;
+            Pathdata = levelData.path;
+        }
 
         [Serializable]
         public class EditableWave
@@ -45,18 +68,24 @@ namespace TowerDefence.Systems.Waves.Data
 
             public static implicit operator EditableWave(Wave wave)
             {
-                var enemygroups = new EnemyGroup[wave.enemyGroups.Length];
-                for (int i = 0; i < wave.enemyGroups.Length; i++)
+                var enemygroups = new EnemyGroup[wave.enemyGroups?.Length ?? 0];
+                if (enemygroups.Length > 0)
                 {
-                    enemygroups[i] = wave.enemyGroups[i];
+                    for (int i = 0; i < wave.enemyGroups.Length; i++)
+                    {
+                        enemygroups[i] = wave.enemyGroups[i];
+                    }
                 }
+
                 return new EditableWave(enemygroups);
             }
 
             [Serializable]
             public class EnemyGroup
             {
+                [StringDropdown("enemies.id", typeof(EnemyConfigurationData))]
                 public string enemyID = string.Empty;
+
                 public int pathID = 0;
                 public float[] spawnTime = new float[0];
 
@@ -99,12 +128,19 @@ namespace TowerDefence.Systems.Waves.Data
 
             public static implicit operator EditablePathData(PathData pathData)
             {
-                var pathPoints = new PathPoint[pathData.pathPoints.Length];
-                for (int i = 0; i < pathData.pathPoints.Length; i++)
+                var pathPoints = new List<PathPoint>();
+                var groupedPoints = pathData.pathPoints.GroupBy(x => x.type);
+                foreach (var group in groupedPoints)
                 {
-                    pathPoints[i] = pathData.pathPoints[i];
+                    var arr = group.ToArray();
+                    for (int i = 0; i < group.Count(); i++)
+                    {
+                        var point = arr[i];
+                        pathPoints.Add(new PathPoint($"{i + 1:00} - {group.Key}", point.id, point.position, point.type, point.connections));
+                    }
                 }
-                return new EditablePathData(pathPoints);
+
+                return new EditablePathData(pathPoints.ToArray());
             }
 
             public static implicit operator PathData(EditablePathData pathData)

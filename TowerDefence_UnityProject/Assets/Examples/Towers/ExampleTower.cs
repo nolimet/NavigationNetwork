@@ -1,35 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TowerDefence.Entities.Enemies;
-using TowerDefence.World.Path;
-using TowerDefence.World.Towers;
+﻿using TowerDefence.Entities.Towers;
+using TowerDefence.Entities.Towers.Components.Damage;
+using TowerDefence.Entities.Towers.Components.TargetFinders;
 using UnityEngine;
 
 namespace Examples.Towers
 {
-    public class ExampleTower : SingleTargetTowerBase
+    public class ExampleTower : MonoBehaviour
     {
-        public override float TargetRadius => 4f;
+        [SerializeField]
+        private double range;
 
-        public override float AttacksPerSecond => 2;
+        [SerializeField]
+        private double damage;
 
-        public override void Tick()
+        [SerializeField]
+        private float attackCooldown;
+
+        private async void Start()
         {
-            UpdateTargetList();
+            var towerObject = GetComponent<ITowerObject>();
+            await new WaitUntil(() => towerObject.Model != null);
 
-            if (CanAttack())
-            {
-                var target = GetFirst<EnemyBase>();
+            var model = towerObject.Model;
 
-                if (target)
-                {
-                    Debug.Log(target);
-                    target.ApplyDamage(10);
-                }
-            }
+            model.Range = range;
+            model.Components.Add(new NearestTargetFinder(towerObject, model));
+            model.Components.Add(new DamageAllTargets(model, damage, attackCooldown));
         }
     }
 }

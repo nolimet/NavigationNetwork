@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using DataBinding;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using TowerDefence.World.Path;
+using TowerDefence.Entities.Enemies.Models;
+using TowerDefence.World;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Zenject;
@@ -8,47 +11,64 @@ using static TowerDefence.World.Path.Data.PathWorldData;
 
 namespace TowerDefence.Entities.Enemies
 {
-    public class EnemyController
+    public class EnemyController : ITickable
     {
-        private readonly List<EnemyBase> enemies = new List<EnemyBase>();
+        private readonly IEnemiesModel model;
+        private readonly WorldContainer worldContainer;
         private readonly DiContainer container;
-        private readonly PathWalkerService pathWalkerService;
 
-        public EnemyController(DiContainer container, PathWalkerService pathWalkerService)
+        private readonly Queue<IEnemyObject> deadEnemies = new();
+
+        public EnemyController(DiContainer container, IEnemiesModel model, WorldContainer worldContainer)
         {
             this.container = container;
-            this.pathWalkerService = pathWalkerService;
+            this.model = model;
+            this.worldContainer = worldContainer;
         }
 
-        public async Task<T> CreateNewEnemy<T>(AssetReference enemyAssetRefrence, AnimationCurve3D path) where T : EnemyBase
+        //TODO Rework completely when adding new system. Current implementation is completely wrong
+        public async Task<IEnemyObject> CreateNewEnemy(AssetReference enemyAssetRefrence, AnimationCurve3D path)
         {
-            var newEnemyGameObject = (GameObject)await enemyAssetRefrence.InstantiateAsync();
+            var newEnemyGameObject = (GameObject)await enemyAssetRefrence.InstantiateAsync(worldContainer.EnemyContainer);
             container.InjectGameObject(newEnemyGameObject);
 
-            if (newEnemyGameObject.TryGetComponent<T>(out var newEnemy))
+            if (newEnemyGameObject.TryGetComponent<EnemyObject>(out var newEnemy))
             {
-                newEnemy.Setup(EnemyReachedEnd, EnemyOutOfHealth, path);
-                pathWalkerService.AddWalker(newEnemy);
+                var model = ModelFactory.Create<IEnemyModel>();
+                model.Components.Add(new Components.StaticPathWalker(path, 5f, newEnemy));
 
+                //TODO do enemy Init stuff somewhereElse
+
+                newEnemy.Setup(model, EnemyDied);
+                this.model.Enemies.Add(newEnemy);
                 return newEnemy;
             }
             throw new System.Exception("Could not load enemy");
         }
 
-        private void EnemyOutOfHealth(EnemyBase enemy)
+        public void Tick()
         {
-            enemies.Remove(enemy);
-            pathWalkerService.RemoveWalker(enemy);
-            Object.DestroyImmediate(enemy.gameObject);
+            while (deadEnemies.Any())
+            {
+                DestroyEnemy(deadEnemies.Dequeue());
+            }
+
+            foreach (var enemy in this.model.Enemies)
+                enemy.Tick();
+
+            void DestroyEnemy(IEnemyObject enemy)
+            {
+                model.Enemies.Remove(enemy);
+                Object.Destroy(enemy.Transform.gameObject);
+            }
         }
 
-        private void EnemyReachedEnd(EnemyBase enemy)
+        private void EnemyDied(IEnemyObject enemy)
         {
-            enemies.Remove(enemy);
-            pathWalkerService.RemoveWalker(enemy);
-            Object.DestroyImmediate(enemy.gameObject);
-
-            //TODO send a message to player lives tracker or somethin
+            if (!deadEnemies.Contains(enemy))
+            {
+                deadEnemies.Enqueue(enemy);
+            }
         }
     }
 }
