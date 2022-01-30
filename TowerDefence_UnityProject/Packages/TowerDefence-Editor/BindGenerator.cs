@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class BindGenerator
 {
-    private static string GenerationPath = $"{Application.dataPath}/Scripts/TowerDefence/Generated";
+    private static string GenerationPath = $"{Application.dataPath}/../Packages/TowerDefence/Generated";
 
     [MenuItem("Plugins/Models/Create Models")]
     private static void CreateModels()

@@ -2,9 +2,9 @@
     "name": "TowerDefence-Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:eb33c307fc4be5d48a08b14a48224415",
         "GUID:9bd48fbefffd5dc4aba3ddf210be4b2e",
-        "GUID:5e5e5ab02a85f684f841adcc10819586"
+        "GUID:5e5e5ab02a85f684f841adcc10819586",
+        "GUID:291cd74d5242177428b7d45f83781cc3"
     ],
     "includePlatforms": [
         "Editor"
