@@ -24,8 +24,14 @@ namespace Examples.Towers
             var model = towerObject.Model;
 
             model.Range = range;
-            model.Components.Add(new NearestTargetFinder(towerObject, model));
-            model.Components.Add(new DamageAllTargets(model, damage, attackCooldown));
+            var targetComp = new NearestTargetFinder();
+            targetComp.PostInit(towerObject, model);
+
+            var damageComp = new DamageAllTargets(damage, attackCooldown);
+            damageComp.PostInit(model);
+
+            model.Components.Add(targetComp);
+            model.Components.Add(damageComp);
         }
     }
 }
