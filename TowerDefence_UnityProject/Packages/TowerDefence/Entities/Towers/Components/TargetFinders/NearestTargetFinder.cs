@@ -1,13 +1,15 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using TowerDefence.Entities.Enemies;
-using TowerDefence.Entities.Towers.Models;
+using TowerDefence.Entities.Towers.Builder;
 using UnityEngine;
 
 namespace TowerDefence.Entities.Towers.Components.TargetFinders
 {
+    [Serializable, TowerComponent]
     public class NearestTargetFinder : TargetFindBase
     {
-        public NearestTargetFinder(ITowerObject towerObject, ITowerModel towerModel) : base(towerObject, towerModel)
+        public NearestTargetFinder()
         {
         }
 

@@ -7,17 +7,18 @@ using TowerDefence.Entities.Towers.Models;
 
 namespace TowerDefence.Entities.Towers.Components.Damage
 {
+    [Serializable]
     public abstract class DamageComponentBase : IDamageComponent
     {
-        protected readonly ITowerModel model;
-
-        protected DamageComponentBase(ITowerModel model)
-        {
-            this.model = model;
-        }
+        protected ITowerModel model { get; private set; }
 
         public abstract double DamagePerSecond { get; }
 
         public abstract void Tick();
+
+        public virtual void PostInit(ITowerModel model)
+        {
+            this.model = model;
+        }
     }
 }

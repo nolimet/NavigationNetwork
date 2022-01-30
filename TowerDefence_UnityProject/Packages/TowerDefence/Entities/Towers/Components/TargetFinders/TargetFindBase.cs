@@ -7,11 +7,12 @@ using UnityEngine;
 
 namespace TowerDefence.Entities.Towers.Components.TargetFinders
 {
+    [Serializable]
     public abstract class TargetFindBase : ITargetFindComponent
     {
-        protected readonly List<IEnemyObject> targetList = new();
-        protected readonly ITowerObject towerObject;
-        protected readonly ITowerModel towerModel;
+        [NonSerialized] protected readonly List<IEnemyObject> targetList = new();
+        protected ITowerObject towerObject { get; private set; }
+        protected ITowerModel towerModel { get; private set; }
 
         public IEnumerable<IEnemyObject> FoundTargets => targetList;
 
@@ -19,7 +20,7 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
 
         public abstract void Tick();
 
-        protected TargetFindBase(ITowerObject towerObject, ITowerModel towerModel)
+        public virtual void PostInit(ITowerObject towerObject, ITowerModel towerModel)
         {
             this.towerObject = towerObject;
             this.towerModel = towerModel;
