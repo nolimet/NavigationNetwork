@@ -1,4 +1,5 @@
 ﻿using DataBinding;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,47 +12,28 @@ namespace TowerDefence.Entities.Towers.Components.Damage
     [Serializable, TowerComponent]
     public class DamageAllTargets : DamageComponentBase
     {
-        private readonly double damage;
-        private readonly float attackCooldownTime;
-        [NonSerialized] private readonly BindingContext bindingContext = new(true);
+        [JsonProperty] private readonly double damage = 5;
+        [JsonProperty] private readonly float damageInterval = 1;
 
-        [NonSerialized] private ITargetFindComponent targetFindComponent;
-        [NonSerialized] private float cooldownTimer = 0f;
-
-        public DamageAllTargets(double damage, float attackCooldownTime)
-        {
-            this.damage = damage;
-            if (attackCooldownTime < 0f)
-            {
-                throw new ArgumentOutOfRangeException("Invalid attack cooldown Time. Value should be greater or equal then 0");
-            }
-            this.attackCooldownTime = attackCooldownTime;
-        }
+        [NonSerialized] private float intervalTimer = 0f;
+        public override double DamagePerSecond => damage / damageInterval;
 
         public override void PostInit(ITowerModel model)
         {
             base.PostInit(model);
-            bindingContext.Bind(model, x => x.Components, OnComponentsChanged);
-        }
 
-        ~DamageAllTargets()
-        {
-            bindingContext.Dispose();
+            if (damageInterval < 0f)
+            {
+                throw new ArgumentOutOfRangeException("Invalid attack cooldown Time. Value should be greater or equal then 0");
+            }
         }
-
-        private void OnComponentsChanged(IList<ITowerComponent> obj)
-        {
-            targetFindComponent = obj.Any(x => x is ITargetFindComponent) ? obj.First(x => x is ITargetFindComponent) as ITargetFindComponent : null;
-        }
-
-        public override double DamagePerSecond => damage / attackCooldownTime;
 
         public override void Tick()
         {
-            cooldownTimer -= Time.deltaTime;
-            if (cooldownTimer <= 0 && targetFindComponent != null && targetFindComponent.FoundTargets.Any())
+            intervalTimer -= Time.deltaTime;
+            if (intervalTimer <= 0 && targetFindComponent != null && targetFindComponent.FoundTargets.Any())
             {
-                cooldownTimer = attackCooldownTime;
+                intervalTimer = damageInterval;
                 foreach (var target in targetFindComponent.FoundTargets)
                 {
                     target.Damage(damage);
