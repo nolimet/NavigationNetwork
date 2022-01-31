@@ -1,20 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using TowerDefence.Entities.Towers.Builder.Data;
+using TowerDefence.Entities.Towers.Components;
 using UnityEditor;
 using UnityEngine;
 
 namespace TowerDefence.Entities.Towers.Popup
 {
-    internal class StringPopup : PopupWindowContent
+    internal class AddComponentPopup : PopupWindowContent
     {
-        private readonly IEnumerable<string> values;
+        private readonly IReadOnlyDictionary<string, Type> values;
+        private readonly TowerConfigurationObject towerConfigurationObject;
+
         public string SelectedValue { get; private set; } = string.Empty;
-        public bool InputCancelled { get; private set; }
 
         private Vector2 scrollRectPosition = Vector2.zero;
 
-        public StringPopup(IEnumerable<string> values)
+        public AddComponentPopup(IReadOnlyDictionary<string, Type> values, TowerConfigurationObject towerConfigurationObject)
         {
             this.values = values;
+            this.towerConfigurationObject = towerConfigurationObject;
         }
 
         public override Vector2 GetWindowSize()
@@ -28,22 +33,25 @@ namespace TowerDefence.Entities.Towers.Popup
             {
                 using (var d1 = new EditorGUI.DisabledGroupScope(SelectedValue == string.Empty))
                 {
-                    if (GUILayout.Button("Confirm"))
+                    if (GUILayout.Button("Add"))
                     {
-                        InputCancelled = false;
+                        var newComponent = Activator.CreateInstance(values[SelectedValue]) as ITowerComponent;
+                        var newComponentData = new TowerComponentData();
+                        newComponentData.SerializeTowerComponent(newComponent);
+                        towerConfigurationObject.components.Add(newComponentData);
+
                         editorWindow.Close();
                     }
                 }
 
                 if (GUILayout.Button("Cancel"))
                 {
-                    InputCancelled = true;
                     editorWindow.Close();
                 }
             }
             using (var scrollRect = new EditorGUILayout.ScrollViewScope(scrollRectPosition))
             {
-                foreach (string value in values)
+                foreach (string value in values.Keys)
                 {
                     using (var disableGroup = new EditorGUI.DisabledGroupScope(value == SelectedValue))
                     {

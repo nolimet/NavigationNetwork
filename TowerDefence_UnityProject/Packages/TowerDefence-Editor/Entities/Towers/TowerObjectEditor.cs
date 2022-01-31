@@ -14,43 +14,100 @@ namespace TowerDefence.Entities.Towers
     [CustomEditor(typeof(TowerConfigurationObject))]
     internal class TowerObjectEditor : Editor
     {
-        private readonly List<Type> componentTypes = new();
-        private readonly List<string> componentNames = new();
-
-        private readonly Dictionary<TowerComponentData, ITowerComponent> componentsCache = new();
+        private readonly Dictionary<string, Type> componentTypesMap = new Dictionary<string, Type>();
+        private readonly Dictionary<TowerComponentData, DisplayData> componentsCache = new();
 
         public override void OnInspectorGUI()
         {
-            var target = this.target as TowerConfigurationObject;
-            if (GUILayout.Button("Add Component"))
-            {
-                var popup = new StringPopup(componentNames);
-                PopupWindow.Show(GUILayoutUtility.GetLastRect(), popup);
+            //TODO Add data validator
+            //TODO Add data updater
 
-                Debug.Log(popup.SelectedValue);
+            var target = this.target as TowerConfigurationObject;
+            if (target.components.Count != componentsCache.Count || !target.components.All(x => componentsCache.Keys.Any(c => x == c)))
+            {
+                RebuildComponentCache();
             }
 
-            foreach (var type in componentNames)
+            if (GUILayout.Button("Add Component"))
             {
-                EditorGUILayout.LabelField(type);
+                var popup = new AddComponentPopup(componentTypesMap, target);
+                PopupWindow.Show(GUILayoutUtility.GetLastRect(), popup);
+            }
+
+            foreach (var kv in componentsCache)
+            {
+                using (var h1 = new EditorGUILayout.HorizontalScope())
+                {
+                    kv.Value.isExpanded = EditorGUILayout.Foldout(kv.Value.isExpanded, kv.Value.componentName, true);
+                    GUILayout.FlexibleSpace();
+                    if (GUILayout.Button("Edit"))
+                    {
+                        var popup = new ComponentEditPopup(kv.Value);
+                        PopupWindow.Show(GUILayoutUtility.GetLastRect(), popup);
+                    }
+
+                    if (GUILayout.Button("Remove"))
+                    {
+                        target.components.Remove(kv.Key);
+                    }
+                }
+
+                if (kv.Value.isExpanded)
+                {
+                    using (var i1 = new EditorGUI.IndentLevelScope(1))
+                    {
+                        using (var d1 = new EditorGUI.DisabledGroupScope(true))
+                        {
+                            EditorGUILayout.TextArea(kv.Value.displayJson);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void RebuildComponentCache()
+        {
+            componentsCache.Clear();
+
+            var target = this.target as TowerConfigurationObject;
+            foreach (var component in target.components)
+            {
+                var displaydata = new DisplayData
+                {
+                    towerComponent = component.DeserializeTowerComponent(),
+                    towerComponentData = component
+                };
+
+                displaydata.componentType = displaydata.towerComponent.GetType();
+                displaydata.componentName = componentTypesMap.First(x => x.Value.Equals(displaydata.componentType)).Key;
+                displaydata.ComponentToJson();
+
+                componentsCache.Add(component, displaydata);
             }
         }
 
         private void OnEnable()
         {
-            componentsCache.Clear();
+            componentTypesMap.Clear();
 
             //Get all the marked components
             AppDomain.CurrentDomain.GetAssemblies();
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(x => x.FullName.ToLower().Contains("towerdefence")))
             {
-                componentTypes.AddRange(assembly.GetTypes().Where(t => t.IsDefined(typeof(TowerComponentAttribute)) && !t.IsAbstract));
-            }
+                var components = assembly.GetTypes()
+                    .Where
+                    (type =>
+                        type.IsDefined(typeof(TowerComponentAttribute)) && //Checking if it the required attribute
+                        !type.IsAbstract &&
+                        type.GetInterfaces().Any(x => x.Equals(typeof(ITowerComponent))) //And that it implements the interface.
+                    );
 
-            foreach (var type in componentTypes)
-            {
-                componentNames.Add(type.ToString().Replace("TowerDefence.Entities.Towers.Components.", ""));
+                foreach (var component in components)
+                {
+                    componentTypesMap.Add(component.ToString().Replace("TowerDefence.Entities.Towers.Components.", ""), component);
+                }
             }
+            RebuildComponentCache();
         }
     }
 }
