@@ -10,7 +10,7 @@ namespace TowerDefence.Entities.Towers.Builder.Data
     [Serializable]
     internal class TowerComponentData
     {
-        [SerializeField] private string type;
+        [SerializeField] internal string type;
         [SerializeField] internal byte[] componentData;
 
         internal void SerializeTowerComponent(ITowerComponent component)
@@ -32,10 +32,7 @@ namespace TowerDefence.Entities.Towers.Builder.Data
                 using (var memoryStream = new MemoryStream(this.componentData))
                 {
                     var formatter = new BinaryFormatter();
-                    var r = formatter.Deserialize(memoryStream);
-                    Debug.Log(r);
-
-                    result = r as ITowerComponent;
+                    result = formatter.Deserialize(memoryStream) as ITowerComponent; ;
                 }
             }
             catch (Exception ex)
