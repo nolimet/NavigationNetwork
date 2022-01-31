@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Enemies;
@@ -10,13 +11,13 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
     [Serializable]
     public abstract class TargetFindBase : ITargetFindComponent
     {
-        [NonSerialized] protected readonly List<IEnemyObject> targetList = new();
-        protected ITowerObject towerObject { get; private set; }
-        protected ITowerModel towerModel { get; private set; }
+        [NonSerialized, JsonIgnore] protected readonly List<IEnemyObject> targetList = new();
+        [JsonIgnore] protected ITowerObject towerObject { get; private set; }
+        [JsonIgnore] protected ITowerModel towerModel { get; private set; }
 
-        public IEnumerable<IEnemyObject> FoundTargets => targetList;
+        [JsonIgnore] public IEnumerable<IEnemyObject> FoundTargets => targetList;
 
-        public short TickPriority => short.MinValue;
+        [JsonIgnore] public short TickPriority => short.MinValue;
 
         public abstract void Tick();
 
