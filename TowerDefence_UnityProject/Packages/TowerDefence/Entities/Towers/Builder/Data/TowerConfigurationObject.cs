@@ -22,7 +22,7 @@ namespace TowerDefence.Entities.Towers.Builder.Data
             }
 
             components.Add(new NearestTargetFinder());
-            components.Add(new DamageAllTargets(10, 10));
+            components.Add(new DamageAllTargets());
 
             foreach (var component in components)
             {

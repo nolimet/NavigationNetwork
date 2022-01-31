@@ -27,7 +27,7 @@ namespace Examples.Towers
             var targetComp = new NearestTargetFinder();
             targetComp.PostInit(towerObject, model);
 
-            var damageComp = new DamageAllTargets(damage, attackCooldown);
+            var damageComp = new DamageAllTargets();
             damageComp.PostInit(model);
 
             model.Components.Add(targetComp);
