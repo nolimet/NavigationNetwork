@@ -1,12 +1,7 @@
-﻿using DataBinding;
-using System.Linq;
-using System.Threading.Tasks;
-using TowerDefence.Entities.Components.Data;
+﻿using System.Threading.Tasks;
 using TowerDefence.Entities.Towers.Builder;
 using TowerDefence.Entities.Towers.Models;
-using TowerDefence.World;
 using UnityEngine;
-using Zenject;
 
 namespace TowerDefence.Entities.Towers
 {
@@ -26,16 +21,13 @@ namespace TowerDefence.Entities.Towers
 
         public async Task<ITowerObject> PlaceTower(string towerID, Vector2 position)
         {
-            var configurationRefrence = towerConfiguration.GetTower(towerID);
-            if (configurationRefrence == null)
+            var configuration = await towerConfiguration.GetTowerAsync(towerID);
+            if (configuration == null)
             {
                 throw new System.NullReferenceException("Tower ID seems to be invalid! Case does not matter just check the spelling or if it exists in the configuration data for the towers");
             }
 
-            var configurationData = configurationRefrence.LoadAssetAsync();
-            await configurationData;
-
-            var newTower = await towerFactory.CreateTower(configurationData.Result, position);
+            var newTower = await towerFactory.CreateTower(configuration, position);
             newTower.Transform.position = position;
 
             return newTower;

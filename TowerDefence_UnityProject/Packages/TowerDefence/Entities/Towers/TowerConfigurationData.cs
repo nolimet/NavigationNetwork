@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TowerDefence.Entities.Components.Data;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -16,13 +17,13 @@ namespace TowerDefence.Entities.Towers
         /// <summary>
         /// Id's are in lower case to remove any case sensativity
         /// </summary>
-        internal IReadOnlyDictionary<string, AssetReferenceT<ComponentConfigurationObject>> Towers { get; private set; }
+        internal IReadOnlyDictionary<string, Tower> Towers { get; private set; }
 
-        internal AssetReferenceT<ComponentConfigurationObject> GetTower(string id)
+        internal async Task<ComponentConfigurationObject> GetTowerAsync(string id)
         {
             if (Towers.TryGetValue(id.ToLower(), out var value))
             {
-                return value;
+                return await value.GetComponentConfiguration();
             }
             return null;
         }
@@ -31,16 +32,16 @@ namespace TowerDefence.Entities.Towers
         {
             if (towers.Any())
             {
-                Towers = towers.ToDictionary(x => x.Id.ToLower(), x => x.Reference);
+                Towers = towers.ToDictionary(x => x.Id.ToLower(), x => x);
             }
             else
             {
-                Towers = new Dictionary<string, AssetReferenceT<ComponentConfigurationObject>>();
+                Towers = new Dictionary<string, Tower>();
             }
         }
 
         [Serializable]
-        private class Tower
+        internal class Tower
         {
             [SerializeField]
             private string id;
@@ -48,8 +49,20 @@ namespace TowerDefence.Entities.Towers
             [SerializeField]
             private AssetReferenceT<ComponentConfigurationObject> reference;
 
-            internal AssetReferenceT<ComponentConfigurationObject> Reference => reference;
+            private ComponentConfigurationObject configurationObject;
+
             internal string Id => id;
+
+            public async Task<ComponentConfigurationObject> GetComponentConfiguration()
+            {
+                if (!configurationObject)
+                {
+                    var handle = reference.LoadAssetAsync();
+                    await handle;
+                    configurationObject = handle.Result;
+                }
+                return configurationObject;
+            }
         }
     }
 }
