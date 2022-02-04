@@ -11,7 +11,7 @@ using UnityEngine;
 namespace TowerDefence.Entities.Towers
 {
     [CustomEditor(typeof(ComponentConfigurationObject))]
-    internal class TowerObjectEditor : Editor
+    internal class ComponentConfigurationEditor : Editor
     {
         private readonly Dictionary<string, Type> componentTypesMap = new Dictionary<string, Type>();
         private readonly Dictionary<ComponentData, DisplayData> componentsCache = new();
