@@ -7,7 +7,7 @@ using TowerDefence.Entities.Components;
 
 namespace TowerDefence.Entities.Towers.Components.BaseComponents
 {
-    [Component(ComponentType.Tower)]
+    [Serializable, Component(ComponentType.Tower)]
     internal class TowerSettings : IComponent
     {
         public readonly string Name;
