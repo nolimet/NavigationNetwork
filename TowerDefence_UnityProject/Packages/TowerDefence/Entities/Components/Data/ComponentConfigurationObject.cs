@@ -4,13 +4,13 @@ using TowerDefence.Entities.Towers.Components.Damage;
 using TowerDefence.Entities.Towers.Components.TargetFinders;
 using UnityEngine;
 
-namespace TowerDefence.Entities.Towers.Builder.Data
+namespace TowerDefence.Entities.Components.Data
 {
-    [CreateAssetMenu(menuName = "Entities/Towers")]
-    internal class TowerConfigurationObject : ScriptableObject
+    [CreateAssetMenu(menuName = "Entities/ComponentObject")]
+    internal class ComponentConfigurationObject : ScriptableObject
     {
         [SerializeField]
-        internal List<TowerComponentData> components;
+        internal List<ComponentData> components;
 
         [ContextMenu("Test-Write")]
         private void TestWrite()
@@ -26,7 +26,7 @@ namespace TowerDefence.Entities.Towers.Builder.Data
 
             foreach (var component in components)
             {
-                var componentData = new TowerComponentData();
+                var componentData = new ComponentData();
                 componentData.SerializeTowerComponent(component);
                 this.components.Add(componentData);
             }

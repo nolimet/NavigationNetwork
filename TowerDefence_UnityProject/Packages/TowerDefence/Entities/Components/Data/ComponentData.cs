@@ -5,15 +5,15 @@ using System.Runtime.Serialization.Formatters.Binary;
 using TowerDefence.Entities.Towers.Components;
 using UnityEngine;
 
-namespace TowerDefence.Entities.Towers.Builder.Data
+namespace TowerDefence.Entities.Components.Data
 {
     [Serializable]
-    internal class TowerComponentData
+    internal class ComponentData
     {
         [SerializeField] internal string type;
         [SerializeField] internal byte[] componentData;
 
-        internal void SerializeTowerComponent(ITowerComponent component)
+        internal void SerializeTowerComponent(IComponent component)
         {
             type = component.GetType().ToString().Replace("TowerDefence.Entities.Towers.Components.", "");
             using (var memoryStream = new MemoryStream())
@@ -24,15 +24,15 @@ namespace TowerDefence.Entities.Towers.Builder.Data
             }
         }
 
-        internal ITowerComponent DeserializeTowerComponent()
+        internal IComponent DeserializeTowerComponent()
         {
-            ITowerComponent result = null;
+            IComponent result = null;
             try
             {
                 using (var memoryStream = new MemoryStream(this.componentData))
                 {
                     var formatter = new BinaryFormatter();
-                    result = formatter.Deserialize(memoryStream) as ITowerComponent; ;
+                    result = formatter.Deserialize(memoryStream) as IComponent; ;
                 }
             }
             catch (Exception ex)

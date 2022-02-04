@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace TowerDefence.Entities.Towers.Builder
+namespace TowerDefence.Entities.Components
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, Inherited = true, AllowMultiple = false)]
-    internal sealed class TowerComponentAttribute : Attribute
+    internal sealed class ComponentAttribute : Attribute
     {
     }
 }
