@@ -1,6 +1,6 @@
-﻿namespace TowerDefence.Entities.Towers.Components.Interfaces
+﻿namespace TowerDefence.Entities.Components.Interfaces
 {
-    public interface ITickableTowerComponent : ITowerComponent
+    public interface ITickableComponent : IComponent
     {
         /// <summary>
         /// The lower the value the higher the priorty use any value between -32,768 to 32,767

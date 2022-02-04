@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TowerDefence.Entities.Components;
+using TowerDefence.Entities.Components.Interfaces;
 using TowerDefence.Entities.Towers.Components;
 using TowerDefence.Entities.Towers.Models;
 using UnityEngine;
@@ -12,7 +14,7 @@ namespace TowerDefence.Entities.Towers
     {
         private readonly BindingContext bindingContext = new(true);
 
-        private readonly List<ITickableTowerComponent> tickableComponents = new();
+        private readonly List<ITickableComponent> tickableComponents = new();
 
         public Transform Transform => transform;
 
@@ -31,10 +33,10 @@ namespace TowerDefence.Entities.Towers
             bindingContext.Bind(model, m => m.Components, OnComponentsChanged);
         }
 
-        private void OnComponentsChanged(IList<ITowerComponent> obj)
+        private void OnComponentsChanged(IList<IComponent> obj)
         {
             tickableComponents.Clear();
-            tickableComponents.AddRange(obj.Where(x => x is ITickableTowerComponent).Cast<ITickableTowerComponent>().OrderBy(x => x.TickPriority));
+            tickableComponents.AddRange(obj.Where(x => x is ITickableComponent).Cast<ITickableComponent>().OrderBy(x => x.TickPriority));
         }
 
         public void Tick()

@@ -1,6 +1,7 @@
 ﻿using DataBinding.BaseClasses;
 using DataBinding.Helpers;
 using System.Collections.Generic;
+using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Towers.Components;
 using UnityEngine;
 
@@ -10,6 +11,6 @@ namespace TowerDefence.Entities.Towers.Models
     public interface ITowerModel : IModelBase
     {
         double Range { get; set; }
-        IList<ITowerComponent> Components { get; set; }
+        IList<IComponent> Components { get; set; }
     }
 }

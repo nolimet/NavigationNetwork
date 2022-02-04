@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using TowerDefence.Entities.Towers.Builder;
-using TowerDefence.Entities.Towers.Builder.Data;
-using TowerDefence.Entities.Towers.Components;
+using TowerDefence.Entities.Components;
+using TowerDefence.Entities.Components.Data;
 using TowerDefence.Entities.Towers.Popup;
 using UnityEditor;
 using UnityEngine;
@@ -74,7 +73,7 @@ namespace TowerDefence.Entities.Towers
             {
                 var displaydata = new DisplayData
                 {
-                    towerComponent = component.DeserializeTowerComponent(),
+                    towerComponent = component.DeserializeComponent(),
                     towerComponentData = component
                 };
 
@@ -99,7 +98,7 @@ namespace TowerDefence.Entities.Towers
                     (type =>
                         type.IsDefined(typeof(ComponentAttribute)) && //Checking if it the required attribute
                         !type.IsAbstract &&
-                        type.GetInterfaces().Any(x => x.Equals(typeof(ITowerComponent))) //And that it implements the interface.
+                        type.GetInterfaces().Any(x => x.Equals(typeof(IComponent))) //And that it implements the interface.
                     );
 
                 foreach (var component in components)

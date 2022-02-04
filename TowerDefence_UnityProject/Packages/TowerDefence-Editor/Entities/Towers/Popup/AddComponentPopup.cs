@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using TowerDefence.Entities.Towers.Builder.Data;
-using TowerDefence.Entities.Towers.Components;
+using TowerDefence.Entities.Components;
+using TowerDefence.Entities.Components.Data;
 using UnityEditor;
 using UnityEngine;
 
@@ -35,9 +35,9 @@ namespace TowerDefence.Entities.Towers.Popup
                 {
                     if (GUILayout.Button("Add"))
                     {
-                        var newComponent = Activator.CreateInstance(values[SelectedValue]) as ITowerComponent;
+                        var newComponent = Activator.CreateInstance(values[SelectedValue]) as IComponent;
                         var newComponentData = new ComponentData();
-                        newComponentData.SerializeTowerComponent(newComponent);
+                        newComponentData.SerializeComponent(newComponent);
                         towerConfigurationObject.components.Add(newComponentData);
 
                         editorWindow.Close();

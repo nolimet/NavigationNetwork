@@ -13,9 +13,9 @@ namespace TowerDefence.Entities.Components.Data
         [SerializeField] internal string type;
         [SerializeField] internal byte[] componentData;
 
-        internal void SerializeTowerComponent(IComponent component)
+        internal void SerializeComponent(IComponent component)
         {
-            type = component.GetType().ToString().Replace("TowerDefence.Entities.Towers.Components.", "");
+            type = component.GetType().ToString().Replace("TowerDefence.Entities.", "");
             using (var memoryStream = new MemoryStream())
             {
                 IFormatter formatter = new BinaryFormatter();
@@ -24,7 +24,7 @@ namespace TowerDefence.Entities.Components.Data
             }
         }
 
-        internal IComponent DeserializeTowerComponent()
+        internal IComponent DeserializeComponent()
         {
             IComponent result = null;
             try

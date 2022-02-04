@@ -15,7 +15,7 @@ namespace TowerDefence.Entities.Components.Data
         [ContextMenu("Test-Write")]
         private void TestWrite()
         {
-            List<ITowerComponent> components = new();
+            List<IComponent> components = new();
             if (this.components == null)
             {
                 this.components = new();
@@ -27,7 +27,7 @@ namespace TowerDefence.Entities.Components.Data
             foreach (var component in components)
             {
                 var componentData = new ComponentData();
-                componentData.SerializeTowerComponent(component);
+                componentData.SerializeComponent(component);
                 this.components.Add(componentData);
             }
         }
@@ -35,13 +35,13 @@ namespace TowerDefence.Entities.Components.Data
         [ContextMenu("Test-Read")]
         private void TestRead()
         {
-            List<ITowerComponent> components = new();
+            List<IComponent> components = new();
 
             if (this.components != null)
             {
                 foreach (var component in this.components)
                 {
-                    components.Add(component.DeserializeTowerComponent());
+                    components.Add(component.DeserializeComponent());
                 }
 
                 foreach (var component in components)

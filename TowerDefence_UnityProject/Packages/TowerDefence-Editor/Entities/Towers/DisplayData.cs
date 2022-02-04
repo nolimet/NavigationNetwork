@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
-using TowerDefence.Entities.Towers.Builder.Data;
-using TowerDefence.Entities.Towers.Components;
+using TowerDefence.Entities.Components;
+using TowerDefence.Entities.Components.Data;
 
 namespace TowerDefence.Entities.Towers
 {
@@ -12,7 +12,7 @@ namespace TowerDefence.Entities.Towers
         public string componentName;
 
         public ComponentData towerComponentData;
-        public ITowerComponent towerComponent;
+        public IComponent towerComponent;
         public Type componentType;
 
         public void ComponentToJson()
@@ -22,12 +22,12 @@ namespace TowerDefence.Entities.Towers
 
         public void ComponentFromJson()
         {
-            towerComponent = JsonConvert.DeserializeObject(displayJson, componentType) as ITowerComponent;
+            towerComponent = JsonConvert.DeserializeObject(displayJson, componentType) as IComponent;
         }
 
         public void UpdateTowerComponentData()
         {
-            towerComponentData.SerializeTowerComponent(towerComponent);
+            towerComponentData.SerializeComponent(towerComponent);
         }
     }
 }

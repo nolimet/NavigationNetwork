@@ -10,7 +10,7 @@ using UnityEngine;
 namespace TowerDefence.Entities.Towers.Components.TargetFinders
 {
     [Serializable]
-    public abstract class TargetFindBase : ITargetFindComponent, IInitializableComponent
+    public abstract class TargetFindBase : ITargetFindComponent, IInitializable
     {
         [NonSerialized, JsonIgnore] protected readonly List<IEnemyObject> targetList = new();
         [JsonIgnore] protected ITowerObject towerObject { get; private set; }
