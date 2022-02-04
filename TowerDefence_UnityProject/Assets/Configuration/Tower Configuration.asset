@@ -12,9 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 815d9220a2717734e81a549f77050da9, type: 3}
   m_Name: Tower Configuration
   m_EditorClassIdentifier: 
+  <TowerBase>k__BackingField:
+    m_AssetGUID: 019bb257e0fd37242a5641bf79528ff8
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   towers:
-  - reference:
-      m_AssetGUID: 019bb257e0fd37242a5641bf79528ff8
+  - id: Example
+    reference:
+      m_AssetGUID: 29932a3030c8ff541af32380fa3493f1
       m_SubObjectName: 
       m_SubObjectType: 
-    id: Example
+      m_EditorAssetChanged: 0
