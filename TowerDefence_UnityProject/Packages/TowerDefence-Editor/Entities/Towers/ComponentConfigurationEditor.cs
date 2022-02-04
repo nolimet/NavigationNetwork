@@ -18,6 +18,7 @@ namespace TowerDefence.Entities.Towers
 
         public override void OnInspectorGUI()
         {
+            //TODO Add component type selector
             //TODO Add data validator
             //TODO Add data updater
 
