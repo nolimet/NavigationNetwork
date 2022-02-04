@@ -1,5 +1,7 @@
 ﻿using NoUtil.Math;
+using System.Linq;
 using TowerDefence.Entities.Towers;
+using TowerDefence.Entities.Towers.Components.BaseComponents;
 using TowerDefence.Entities.Towers.Models;
 using UnityEngine;
 
@@ -52,8 +54,12 @@ namespace TowerDefence.UI.Tower
 
         public void DrawRange(ITowerObject tower)
         {
-            DrawRange((float)tower.Model.Range);
-            transform.position = tower.GetWorldPosition();
+            if (!tower.Model.Components.Any(x => x is TowerSettings))
+            {
+                var towerSettings = tower.Model.Components.First(x => x is TowerSettings) as TowerSettings;
+                DrawRange((float)towerSettings.Range);
+                transform.position = tower.GetWorldPosition();
+            }
         }
 
         private void DrawRange(float radius)

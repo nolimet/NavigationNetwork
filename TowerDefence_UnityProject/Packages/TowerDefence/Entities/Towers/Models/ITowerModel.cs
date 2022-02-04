@@ -10,7 +10,6 @@ namespace TowerDefence.Entities.Towers.Models
     [DataModel(AddToZenject = false, Shared = false)]
     public interface ITowerModel : IModelBase
     {
-        double Range { get; set; }
         IList<IComponent> Components { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using TMPro;
 using TowerDefence.Entities.Towers;
 using TowerDefence.Entities.Towers.Components;
+using TowerDefence.Entities.Towers.Components.BaseComponents;
 using TowerDefence.Entities.Towers.Components.Interfaces;
 using TowerDefence.Entities.Towers.Models;
 using UnityEngine;
@@ -25,13 +26,14 @@ namespace TowerDefence.UI.Hud
 
         public void SetValues(ITowerObject tower)
         {
-            rangeField.SetValue(tower.Model.Range.ToString());
+            var towerSettings = tower.Model.Components.FirstOrDefault(x => x is TowerSettings) as TowerSettings;
+
+            rangeField.SetValue(towerSettings.Range.ToString());
+            towerType.SetValue(towerSettings.Name);
 
             var damageComponent = tower.Model.Components.FirstOrDefault(x => x is IDamageComponent) as IDamageComponent;
             var damagePerSecond = damageComponent?.DamagePerSecond ?? 0d;
             damageField.SetValue(damagePerSecond.ToString("0.#"));
-
-            towerType.SetValue(tower.Name);
         }
     }
 }
