@@ -1,6 +1,8 @@
 ﻿using DataBinding;
 using System.Linq;
 using System.Threading.Tasks;
+using TowerDefence.Entities.Components.Data;
+using TowerDefence.Entities.Towers.Builder;
 using TowerDefence.Entities.Towers.Models;
 using TowerDefence.World;
 using UnityEngine;
@@ -11,40 +13,32 @@ namespace TowerDefence.Entities.Towers
     public class TowerService
     {
         private readonly ITowerModels towerModel;
-        private readonly DiContainer diContainer;
 
         private readonly TowerConfigurationData towerConfiguration;
-        private readonly WorldContainer worldContainer;
+        private readonly TowerFactory towerFactory;
 
-        public TowerService(DiContainer diContainer, ITowerModels towerModel, TowerConfigurationData towerConfiguration, WorldContainer worldContainer)
+        internal TowerService(ITowerModels towerModel, TowerConfigurationData towerConfiguration, TowerFactory towerFactory)
         {
             this.towerModel = towerModel;
-            this.diContainer = diContainer;
             this.towerConfiguration = towerConfiguration;
-            this.worldContainer = worldContainer;
+            this.towerFactory = towerFactory;
         }
 
         public async Task<ITowerObject> PlaceTower(string towerID, Vector2 position)
         {
-            var assetReference = towerConfiguration.GetTower(towerID);
-            if (assetReference == null)
+            var configurationRefrence = towerConfiguration.GetTower(towerID);
+            if (configurationRefrence == null)
             {
                 throw new System.NullReferenceException("Tower ID seems to be invalid! Case does not matter just check the spelling or if it exists in the configuration data for the towers");
             }
 
-            var newTowerObject = await assetReference.InstantiateAsync(position, Quaternion.identity, worldContainer.TowerContainer);
-            diContainer.Inject(newTowerObject);
+            var configurationData = configurationRefrence.LoadAssetAsync();
+            await configurationData;
 
-            if (newTowerObject is GameObject gameObject)
-            {
-                var newTower = gameObject.GetComponent<TowerObject>() ?? gameObject.AddComponent<TowerObject>();
-                var newTowerModel = ModelFactory.Create<ITowerModel>();
-                newTower.Setup(newTowerModel);
+            var newTower = await towerFactory.CreateTower(configurationData.Result, position);
+            newTower.Transform.position = position;
 
-                towerModel.Towers.Add(newTower);
-                return gameObject.GetComponent<ITowerObject>();
-            }
-            return null;
+            return newTower;
         }
 
         public void DestroyTower<T>(T tower) where T : ITowerObject

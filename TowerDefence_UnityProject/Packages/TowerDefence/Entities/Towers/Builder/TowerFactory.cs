@@ -14,20 +14,20 @@ namespace TowerDefence.Entities.Towers.Builder
 {
     internal class TowerFactory
     {
-        private readonly AssetReference baseTower;
         private readonly WorldContainer worldContainer;
         private readonly ComponentFactory componentFactory;
+        private readonly TowerConfigurationData towerConfiguration;
 
-        public TowerFactory(AssetReference baseTower, WorldContainer worldContainer, ComponentFactory componentFactory)
+        public TowerFactory(WorldContainer worldContainer, ComponentFactory componentFactory, TowerConfigurationData towerConfiguration)
         {
-            this.baseTower = baseTower;
             this.worldContainer = worldContainer;
             this.componentFactory = componentFactory;
+            this.towerConfiguration = towerConfiguration;
         }
 
-        public async Task<ITowerObject> CreateTower(ComponentConfigurationObject componentConfiguration)
+        public async Task<ITowerObject> CreateTower(ComponentConfigurationObject componentConfiguration, Vector2 position)
         {
-            var towerGameObject = await baseTower.InstantiateAsync(worldContainer.TowerContainer, false) as GameObject;
+            var towerGameObject = await towerConfiguration.TowerBase.InstantiateAsync(worldContainer.TowerContainer, false) as GameObject;
 
             var towerObject = towerGameObject.GetComponent<TowerObject>();
             var model = ModelFactory.Create<ITowerModel>();

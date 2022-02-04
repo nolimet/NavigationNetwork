@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TowerDefence.Entities.Components.Data;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -9,15 +10,15 @@ namespace TowerDefence.Entities.Towers
     [CreateAssetMenu(fileName = "Tower Configuration Data", menuName = "Configuration/Tower Configuration")]
     public class TowerConfigurationData : ScriptableObject
     {
-        [SerializeField]
-        private Tower[] towers;
+        [field: SerializeField] internal AssetReferenceT<GameObject> TowerBase { get; private set; }
+        [SerializeField] private Tower[] towers = new Tower[0];
 
         /// <summary>
         /// Id's are in lower case to remove any case sensativity
         /// </summary>
-        public IReadOnlyDictionary<string, AssetReference> Towers { get; private set; }
+        internal IReadOnlyDictionary<string, AssetReferenceT<ComponentConfigurationObject>> Towers { get; private set; }
 
-        public AssetReference GetTower(string id)
+        internal AssetReferenceT<ComponentConfigurationObject> GetTower(string id)
         {
             if (Towers.TryGetValue(id.ToLower(), out var value))
             {
@@ -28,27 +29,27 @@ namespace TowerDefence.Entities.Towers
 
         private void OnEnable()
         {
-            if (towers != null && towers.Length > 0)
+            if (towers.Any())
             {
                 Towers = towers.ToDictionary(x => x.Id.ToLower(), x => x.Reference);
             }
             else
             {
-                Towers = new Dictionary<string, AssetReference>();
+                Towers = new Dictionary<string, AssetReferenceT<ComponentConfigurationObject>>();
             }
         }
 
         [Serializable]
-        public class Tower
+        private class Tower
         {
             [SerializeField]
             private string id;
 
             [SerializeField]
-            private AssetReference reference;
+            private AssetReferenceT<ComponentConfigurationObject> reference;
 
-            public AssetReference Reference => reference;
-            public string Id => id;
+            internal AssetReferenceT<ComponentConfigurationObject> Reference => reference;
+            internal string Id => id;
         }
     }
 }
