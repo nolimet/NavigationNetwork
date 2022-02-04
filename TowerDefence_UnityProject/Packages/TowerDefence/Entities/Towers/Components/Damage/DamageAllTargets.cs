@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace TowerDefence.Entities.Towers.Components.Damage
 {
-    [Serializable, Component]
+    [Serializable, Component(ComponentType.Tower)]
     public class DamageAllTargets : DamageComponentBase
     {
         [JsonProperty] private readonly double damage = 5;

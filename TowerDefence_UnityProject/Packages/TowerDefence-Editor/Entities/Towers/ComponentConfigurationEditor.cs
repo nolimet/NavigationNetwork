@@ -104,7 +104,17 @@ namespace TowerDefence.Entities.Towers
 
                 foreach (var component in components)
                 {
-                    componentTypesMap.Add(component.ToString().Replace("TowerDefence.Entities.Towers.Components.", ""), component);
+                    var att = component.GetCustomAttribute<ComponentAttribute>();
+                    string name = component.ToString();
+
+                    name = att.ComponentType switch
+                    {
+                        ComponentType.Enemy => name.Replace("TowerDefence.Entities.Enemies.Components.", ""),
+                        ComponentType.Tower => name.Replace("TowerDefence.Entities.Towers.Components.", ""),
+                        _ => throw new ArgumentOutOfRangeException()
+                    };
+                    
+                    componentTypesMap.Add(name, component);
                 }
             }
             RebuildComponentCache();

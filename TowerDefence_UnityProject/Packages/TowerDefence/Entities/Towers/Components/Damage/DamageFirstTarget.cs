@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace TowerDefence.Entities.Towers.Components.Damage
 {
-    [Serializable, Component]
+    [Serializable, Component(ComponentType.Tower)]
     internal class DamageFirstTarget : DamageComponentBase
     {
         [JsonProperty] private readonly double damage;
