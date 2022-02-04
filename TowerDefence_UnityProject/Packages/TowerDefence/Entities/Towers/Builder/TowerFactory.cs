@@ -1,46 +1,55 @@
-﻿using System.Threading.Tasks;
+﻿using DataBinding;
+using System;
+using System.Threading.Tasks;
+using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
+using TowerDefence.Entities.Towers.Models;
 using TowerDefence.World;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
+using TowerDefence.Entities.Components.Interfaces;
+using TowerDefence.Entities.Towers.Components.Interfaces;
 
 namespace TowerDefence.Entities.Towers.Builder
 {
     internal class TowerFactory
     {
-        private AssetReference baseTower;
-        private WorldContainer worldContainer;
+        private readonly AssetReference baseTower;
+        private readonly WorldContainer worldContainer;
+        private readonly ComponentFactory componentFactory;
 
-        public async Task<ITowerObject> CreateTower(ComponentConfigurationObject towerconfiguration)
+        public TowerFactory(AssetReference baseTower, WorldContainer worldContainer, ComponentFactory componentFactory)
         {
-            //var towerGameObject = await baseTower.InstantiateAsync(worldContainer.TowerContainer, false) as GameObject;
+            this.baseTower = baseTower;
+            this.worldContainer = worldContainer;
+            this.componentFactory = componentFactory;
+        }
 
-            //var towerObject = towerGameObject.GetComponent<TowerObject>();
-            //var model = ModelFactory.Create<ITowerModel>();
+        public async Task<ITowerObject> CreateTower(ComponentConfigurationObject componentConfiguration)
+        {
+            var towerGameObject = await baseTower.InstantiateAsync(worldContainer.TowerContainer, false) as GameObject;
 
-            //foreach (var componentData in towerconfiguration.components)
-            //{
-            //    var component = componentData.DeserializeComponent();
+            var towerObject = towerGameObject.GetComponent<TowerObject>();
+            var model = ModelFactory.Create<ITowerModel>();
 
-            //    model.Components.Add(component);
-            //}
+            await componentFactory.GetComponents(componentConfiguration.components, ProcessComponentInit);
 
-            //List<Task> asyncInitTasks = new List<Task>();
-            //foreach (var component in model.Components)
-            //{
-            //    if (component is IInitializableComponent initializable)
-            //    {
-            //        initializable.PostInit(towerObject, model);
-            //    }
-            //    if (component is IAsyncInitializer asyncInitializer)
-            //    {
-            //        asyncInitTasks.Add(asyncInitializer.AsyncPostInit(towerObject, model));
-            //    }
-            //}
+            return towerObject;
 
-            //await asyncInitTasks.WaitForAll();
+            async Task<IComponent> ProcessComponentInit(IComponent arg)
+            {
+                if (arg is IInitializable initializable)
+                {
+                    initializable.PostInit(towerObject, model);
+                }
 
-            //return towerObject;
-            return default;
+                if (arg is IAsyncInitializer asyncInitializer)
+                {
+                    await asyncInitializer.AsyncPostInit(towerObject, model);
+                }
+
+                return arg;
+            }
         }
     }
 }
