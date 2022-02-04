@@ -32,7 +32,7 @@ namespace TowerDefence.Entities.Towers
                 throw new System.NullReferenceException("Tower ID seems to be invalid! Case does not matter just check the spelling or if it exists in the configuration data for the towers");
             }
 
-            var newTowerObject = await assetReference.InstantiateAsync(position, Quaternion.identity, worldContainer.TurretContainer);
+            var newTowerObject = await assetReference.InstantiateAsync(position, Quaternion.identity, worldContainer.TowerContainer);
             diContainer.Inject(newTowerObject);
 
             if (newTowerObject is GameObject gameObject)

@@ -11,7 +11,7 @@ namespace TowerDefence.Entities.Towers
         public string displayJson;
         public string componentName;
 
-        public TowerComponentData towerComponentData;
+        public ComponentData towerComponentData;
         public ITowerComponent towerComponent;
         public Type componentType;
 

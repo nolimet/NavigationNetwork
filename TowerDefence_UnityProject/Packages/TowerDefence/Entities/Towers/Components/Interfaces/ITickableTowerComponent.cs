@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TowerDefence.Entities.Towers.Components
+﻿namespace TowerDefence.Entities.Towers.Components.Interfaces
 {
     public interface ITickableTowerComponent : ITowerComponent
     {

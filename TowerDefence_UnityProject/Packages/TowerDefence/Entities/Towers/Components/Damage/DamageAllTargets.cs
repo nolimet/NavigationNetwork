@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TowerDefence.Entities.Towers.Components.Damage
 {
-    [Serializable, TowerComponent]
+    [Serializable, Component]
     public class DamageAllTargets : DamageComponentBase
     {
         [JsonProperty] private readonly double damage = 5;
@@ -18,9 +18,9 @@ namespace TowerDefence.Entities.Towers.Components.Damage
         [NonSerialized] private float intervalTimer = 0f;
         public override double DamagePerSecond => damage / damageInterval;
 
-        public override void PostInit(ITowerModel model)
+        public override void PostInit(ITowerObject towerObject, ITowerModel towerModel)
         {
-            base.PostInit(model);
+            base.PostInit(towerObject, towerModel);
 
             if (damageInterval < 0f)
             {

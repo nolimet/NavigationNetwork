@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using TowerDefence.Entities.Enemies;
 
-namespace TowerDefence.Entities.Towers.Components
+namespace TowerDefence.Entities.Towers.Components.Interfaces
 {
     public interface ITargetFindComponent : ITickableTowerComponent
     {

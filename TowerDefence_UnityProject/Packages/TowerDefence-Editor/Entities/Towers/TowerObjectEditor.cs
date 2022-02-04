@@ -11,18 +11,18 @@ using UnityEngine;
 
 namespace TowerDefence.Entities.Towers
 {
-    [CustomEditor(typeof(TowerConfigurationObject))]
+    [CustomEditor(typeof(ComponentConfigurationObject))]
     internal class TowerObjectEditor : Editor
     {
         private readonly Dictionary<string, Type> componentTypesMap = new Dictionary<string, Type>();
-        private readonly Dictionary<TowerComponentData, DisplayData> componentsCache = new();
+        private readonly Dictionary<ComponentData, DisplayData> componentsCache = new();
 
         public override void OnInspectorGUI()
         {
             //TODO Add data validator
             //TODO Add data updater
 
-            var target = this.target as TowerConfigurationObject;
+            var target = this.target as ComponentConfigurationObject;
             if (target.components.Count != componentsCache.Count || !target.components.All(x => componentsCache.Keys.Any(c => x == c)))
             {
                 RebuildComponentCache();
@@ -69,7 +69,7 @@ namespace TowerDefence.Entities.Towers
         {
             componentsCache.Clear();
 
-            var target = this.target as TowerConfigurationObject;
+            var target = this.target as ComponentConfigurationObject;
             foreach (var component in target.components)
             {
                 var displaydata = new DisplayData
@@ -97,7 +97,7 @@ namespace TowerDefence.Entities.Towers
                 var components = assembly.GetTypes()
                     .Where
                     (type =>
-                        type.IsDefined(typeof(TowerComponentAttribute)) && //Checking if it the required attribute
+                        type.IsDefined(typeof(ComponentAttribute)) && //Checking if it the required attribute
                         !type.IsAbstract &&
                         type.GetInterfaces().Any(x => x.Equals(typeof(ITowerComponent))) //And that it implements the interface.
                     );

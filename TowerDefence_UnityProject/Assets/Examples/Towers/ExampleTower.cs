@@ -28,7 +28,7 @@ namespace Examples.Towers
             targetComp.PostInit(towerObject, model);
 
             var damageComp = new DamageAllTargets();
-            damageComp.PostInit(model);
+            damageComp.PostInit(towerObject, model);
 
             model.Components.Add(targetComp);
             model.Components.Add(damageComp);
