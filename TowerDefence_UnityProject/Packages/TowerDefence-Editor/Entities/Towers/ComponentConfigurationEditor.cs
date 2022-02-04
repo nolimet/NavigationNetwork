@@ -27,11 +27,20 @@ namespace TowerDefence.Entities.Towers
             {
                 RebuildComponentCache();
             }
-
-            if (GUILayout.Button("Add Component"))
+            using (var h1 = new EditorGUILayout.HorizontalScope())
             {
-                var popup = new AddComponentPopup(componentTypesMap, target);
-                PopupWindow.Show(GUILayoutUtility.GetLastRect(), popup);
+                if (GUILayout.Button("Add Component"))
+                {
+                    var popup = new AddComponentPopup(componentTypesMap, target);
+                    PopupWindow.Show(GUILayoutUtility.GetLastRect(), popup);
+                }
+
+                if (GUILayout.Button("Save"))
+                {
+                    EditorUtility.SetDirty(target);
+                    AssetDatabase.SaveAssetIfDirty(target);
+                    AssetDatabase.Refresh();
+                }
             }
 
             foreach (var kv in componentsCache)
@@ -113,7 +122,7 @@ namespace TowerDefence.Entities.Towers
                         ComponentType.Tower => name.Replace("TowerDefence.Entities.Towers.Components.", ""),
                         _ => throw new ArgumentOutOfRangeException()
                     };
-                    
+
                     componentTypesMap.Add(name, component);
                 }
             }
