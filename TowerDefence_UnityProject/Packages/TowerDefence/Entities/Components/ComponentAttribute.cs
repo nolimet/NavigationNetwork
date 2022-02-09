@@ -6,13 +6,14 @@ namespace TowerDefence.Entities.Components
     internal sealed class ComponentAttribute : Attribute
     {
         public readonly ComponentType ComponentType;
-        public ComponentAttribute(ComponentType componentType)
+
+        public ComponentAttribute(ComponentType componentType, params Type[] restirctions)
         {
             this.ComponentType = componentType;
         }
     }
 
-    enum ComponentType
+    internal enum ComponentType
     {
         Enemy,
         Tower
