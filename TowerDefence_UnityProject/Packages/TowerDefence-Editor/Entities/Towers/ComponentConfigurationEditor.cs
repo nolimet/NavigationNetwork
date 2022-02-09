@@ -13,7 +13,7 @@ namespace TowerDefence.Entities.Towers
     [CustomEditor(typeof(ComponentConfigurationObject))]
     internal class ComponentConfigurationEditor : Editor
     {
-        private readonly Dictionary<string, Type> componentTypesMap = new Dictionary<string, Type>();
+        private readonly Dictionary<ComponentType, Dictionary<string, Type>> componentTypesMap = new();
         private readonly Dictionary<ComponentData, DisplayData> componentsCache = new();
 
         public override void OnInspectorGUI()
@@ -23,15 +23,18 @@ namespace TowerDefence.Entities.Towers
             //TODO Add data updater
 
             var target = this.target as ComponentConfigurationObject;
+            target.type = (ComponentType)EditorGUILayout.EnumPopup("Components Type", target.type);
+
             if (target.components.Count != componentsCache.Count || !target.components.All(x => componentsCache.Keys.Any(c => x == c)))
             {
                 RebuildComponentCache();
             }
+
             using (var h1 = new EditorGUILayout.HorizontalScope())
             {
                 if (GUILayout.Button("Add Component"))
                 {
-                    var popup = new AddComponentPopup(componentTypesMap, target);
+                    var popup = new AddComponentPopup(componentTypesMap[target.type], target);
                     PopupWindow.Show(GUILayoutUtility.GetLastRect(), popup);
                 }
 
@@ -79,6 +82,7 @@ namespace TowerDefence.Entities.Towers
             componentsCache.Clear();
 
             var target = this.target as ComponentConfigurationObject;
+
             foreach (var component in target.components)
             {
                 var displaydata = new DisplayData
@@ -88,7 +92,7 @@ namespace TowerDefence.Entities.Towers
                 };
 
                 displaydata.componentType = displaydata.towerComponent.GetType();
-                displaydata.componentName = componentTypesMap.First(x => x.Value.Equals(displaydata.componentType)).Key;
+                displaydata.componentName = componentTypesMap[target.type].First(x => x.Value.Equals(displaydata.componentType)).Key;
                 displaydata.ComponentToJson();
 
                 componentsCache.Add(component, displaydata);
@@ -111,6 +115,8 @@ namespace TowerDefence.Entities.Towers
                         type.GetInterfaces().Any(x => x.Equals(typeof(IComponent))) //And that it implements the interface.
                     );
 
+                Enum.GetValues(typeof(ComponentType)).Cast<ComponentType>().Distinct().Where(x => !componentTypesMap.ContainsKey(x)).ToList().ForEach(type => componentTypesMap.Add(type, new()));
+
                 foreach (var component in components)
                 {
                     var att = component.GetCustomAttribute<ComponentAttribute>();
@@ -123,10 +129,15 @@ namespace TowerDefence.Entities.Towers
                         _ => throw new ArgumentOutOfRangeException()
                     };
 
-                    componentTypesMap.Add(name, component);
+                    componentTypesMap[att.ComponentType].Add(name, component);
                 }
             }
             RebuildComponentCache();
+        }
+
+        private bool ValidateComponents(ComponentType type)
+        {
+            componentsCache.All()
         }
     }
 }
