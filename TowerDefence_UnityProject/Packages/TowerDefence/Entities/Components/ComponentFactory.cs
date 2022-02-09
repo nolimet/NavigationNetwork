@@ -10,6 +10,11 @@ namespace TowerDefence.Entities.Components
     {
         private readonly DiContainer diContainer;
 
+        public ComponentFactory(DiContainer diContainer)
+        {
+            this.diContainer = diContainer;
+        }
+
         public async Task<IEnumerable<IComponent>> GetComponents(IEnumerable<ComponentData> componentDatas, Func<IComponent, Task<IComponent>> InitHandler)
         {
             List<IComponent> components = new();
