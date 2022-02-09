@@ -9,8 +9,9 @@ namespace TowerDefence.Entities.Components.Data
     [CreateAssetMenu(menuName = "Entities/ComponentObject")]
     internal class ComponentConfigurationObject : ScriptableObject
     {
-        [SerializeField]
-        internal List<ComponentData> components = new ();
+        [SerializeField] internal List<ComponentData> components = new();
+
+        [SerializeField] internal ComponentType type;
 
         [ContextMenu("Test-Write")]
         private void TestWrite()
