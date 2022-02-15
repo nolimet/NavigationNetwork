@@ -15,6 +15,7 @@ namespace TowerDefence.Entities.Towers
     {
         private readonly Dictionary<ComponentType, Dictionary<string, Type>> componentTypesMap = new();
         private readonly Dictionary<ComponentData, DisplayData> componentsCache = new();
+        private readonly Dictionary<Type, ComponentAttribute> componentAttributesMap = new();
 
         public override void OnInspectorGUI()
         {
@@ -102,6 +103,7 @@ namespace TowerDefence.Entities.Towers
         private void OnEnable()
         {
             componentTypesMap.Clear();
+            componentAttributesMap.Clear();
 
             //Get all the marked components
             AppDomain.CurrentDomain.GetAssemblies();
@@ -130,14 +132,38 @@ namespace TowerDefence.Entities.Towers
                     };
 
                     componentTypesMap[att.ComponentType].Add(name, component);
+                    componentAttributesMap.Add(component, att);
                 }
             }
             RebuildComponentCache();
         }
 
-        private bool ValidateComponents(ComponentType type)
+        private bool ValidateComponents()
         {
-            componentsCache.All()
+            var usedTypes = componentsCache.Values.Select(x => x.componentType).ToArray();
+
+            bool duplicates = false;
+            bool invalidCombinations = false;
+
+            int length = usedTypes.Length;
+            for (int i = 0; i < length; i++)
+            {
+                var self = usedTypes[i];
+                for (int j = 0; j < length; j++)
+                {
+                    var other = usedTypes[j];
+                    if (i != j)
+                    {
+                        duplicates = !duplicates && self == other;
+                        if(componentAttributesMap[self].AnyRestrictionsMatch(self, other))
+                        {
+
+                        }
+                    }
+                }
+            }
+
+            return !(duplicates || invalidCombinations);
         }
     }
 }
