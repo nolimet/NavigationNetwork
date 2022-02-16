@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace TowerDefence.Entities.Components
 {
@@ -22,15 +23,23 @@ namespace TowerDefence.Entities.Components
                 return true;
             }
 
-            for (int i = 0; i < restirctions.Length; i++)
+            foreach (var restriction in restirctions)
             {
-                if (restirctions[i] == other && restirctions[i] != self)
+                if (restriction == other && restriction != self)
                 {
-                    return false;
+                    return true;
+                }
+                if (restriction.IsInterface)
+                {
+                    var interfaces = self.GetInterfaces();
+                    if (interfaces.Any() && interfaces.Contains(restriction))
+                    {
+                        return true;
+                    }
                 }
             }
 
-           return false;
+            return false;
         }
     }
 
