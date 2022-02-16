@@ -1,16 +1,14 @@
-﻿using DataBinding;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Components;
-using TowerDefence.Entities.Towers.Builder;
+using TowerDefence.Entities.Towers.Components.Interfaces;
 using TowerDefence.Entities.Towers.Models;
 using UnityEngine;
 
 namespace TowerDefence.Entities.Towers.Components.Damage
 {
-    [Serializable, Component(ComponentType.Tower)]
+    [Serializable, Component(ComponentType.Tower, typeof(IDamageComponent))]
     public class DamageAllTargets : DamageComponentBase
     {
         [JsonProperty] private readonly double damage = 5;
