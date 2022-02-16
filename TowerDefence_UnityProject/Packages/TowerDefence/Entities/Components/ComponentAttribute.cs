@@ -31,7 +31,7 @@ namespace TowerDefence.Entities.Components
                 }
                 if (restriction.IsInterface)
                 {
-                    var interfaces = self.GetInterfaces();
+                    var interfaces = other.GetInterfaces();
                     if (interfaces.Any() && interfaces.Contains(restriction))
                     {
                         return true;
