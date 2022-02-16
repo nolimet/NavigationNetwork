@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -8081907516936440110}
   - component: {fileID: 8332762889862471438}
   m_Layer: 0
-  m_Name: ExampleTower
+  m_Name: BaseTower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
