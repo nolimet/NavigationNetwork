@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace TowerDefence.Entities.Towers.Components.BaseComponents
     [Serializable, Component(ComponentType.Tower)]
     internal class TowerSettings : IComponent
     {
-        public readonly string Name;
-        public readonly double Range;
+        [JsonProperty] public readonly string Name;
+        [JsonProperty] public readonly double Range;
     }
 }
