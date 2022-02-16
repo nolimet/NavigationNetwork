@@ -1,5 +1,4 @@
 ﻿using TowerDefence.Entities.Towers.Models;
-using TowerDefence.Systems.Selection;
 using UnityEngine;
 
 namespace TowerDefence.Entities.Towers

@@ -1,7 +1,5 @@
 ﻿using DataBinding;
-using System;
 using TowerDefence.Entities.Enemies;
-using TowerDefence.Entities.Enemies.Models;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;

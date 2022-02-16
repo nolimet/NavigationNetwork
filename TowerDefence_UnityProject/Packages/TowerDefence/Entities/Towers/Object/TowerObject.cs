@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Interfaces;
-using TowerDefence.Entities.Towers.Components;
 using TowerDefence.Entities.Towers.Models;
 using UnityEngine;
 

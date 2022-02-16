@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using TowerDefence.Entities.Towers.Components;
 using TowerDefence.Entities.Towers.Components.Damage;
 using TowerDefence.Entities.Towers.Components.TargetFinders;
 using UnityEngine;

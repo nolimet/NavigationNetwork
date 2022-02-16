@@ -2,7 +2,6 @@
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using TowerDefence.Entities.Towers.Components;
 using UnityEngine;
 
 namespace TowerDefence.Entities.Components.Data

@@ -105,7 +105,6 @@ namespace TowerDefence.Entities.Towers
                 component.Key.SerializeComponent(component.Value.component);
             }
             target.components = componentsCache.Keys.ToList();
-
         }
 
         private void RebuildComponentCache()

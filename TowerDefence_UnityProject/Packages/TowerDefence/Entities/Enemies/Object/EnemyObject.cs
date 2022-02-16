@@ -18,7 +18,6 @@ namespace TowerDefence.Entities.Enemies
 
         private readonly List<ITickableEnemyComponent> tickableComponents = new();
         private readonly BindingContext bindingContext = new(true);
-        
 
         [SerializeField] private Vector2 healthbarOffset = Vector2.zero;
 

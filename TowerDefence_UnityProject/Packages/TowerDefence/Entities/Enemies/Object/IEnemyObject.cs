@@ -11,6 +11,5 @@ namespace TowerDefence.Entities.Enemies
         public float DistanceToTarget();
 
         public void Damage(double damage);
-
     }
 }

@@ -1,14 +1,11 @@
 ﻿using DataBinding;
-using System;
 using System.Threading.Tasks;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
+using TowerDefence.Entities.Towers.Components.Interfaces;
 using TowerDefence.Entities.Towers.Models;
 using TowerDefence.World;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using TowerDefence.Entities.Components.Interfaces;
-using TowerDefence.Entities.Towers.Components.Interfaces;
 
 namespace TowerDefence.Entities.Towers.Builder
 {

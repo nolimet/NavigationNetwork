@@ -1,10 +1,6 @@
 ﻿using DataBinding.BaseClasses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataBinding.Helpers;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TowerDefence.Systems.Selection.Models

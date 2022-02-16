@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using TowerDefence.Entities.Components;
-using TowerDefence.Entities.Towers.Builder;
 using TowerDefence.Entities.Towers.Components.Interfaces;
 using TowerDefence.Entities.Towers.Models;
 using UnityEngine;

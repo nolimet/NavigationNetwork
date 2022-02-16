@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
-using TMPro;
+﻿using System.Linq;
 using TowerDefence.Entities.Towers;
-using TowerDefence.Entities.Towers.Components;
 using TowerDefence.Entities.Towers.Components.BaseComponents;
 using TowerDefence.Entities.Towers.Components.Interfaces;
-using TowerDefence.Entities.Towers.Models;
 using UnityEngine;
 
 namespace TowerDefence.UI.Hud

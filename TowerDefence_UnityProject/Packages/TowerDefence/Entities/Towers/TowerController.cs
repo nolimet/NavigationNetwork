@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using TowerDefence.Entities.Towers.Components;
-using TowerDefence.Entities.Towers.Models;
+﻿using TowerDefence.Entities.Towers.Models;
 using Zenject;
 
 namespace TowerDefence.Entities.Towers
