@@ -44,6 +44,7 @@ namespace TowerDefence.Entities.Towers
                 {
                     if (GUILayout.Button("Save") && ValidateComponents())
                     {
+                        SerializeComponents();
                         EditorUtility.SetDirty(target);
                         AssetDatabase.SaveAssetIfDirty(target);
                         AssetDatabase.Refresh();
@@ -95,6 +96,18 @@ namespace TowerDefence.Entities.Towers
             }
         }
 
+        private void SerializeComponents()
+        {
+            var target = this.target as ComponentConfigurationObject;
+
+            foreach (var component in componentsCache)
+            {
+                component.Key.SerializeComponent(component.Value.component);
+            }
+            target.components = componentsCache.Keys.ToList();
+
+        }
+
         private void RebuildComponentCache()
         {
             componentsCache.Clear();
@@ -105,11 +118,11 @@ namespace TowerDefence.Entities.Towers
             {
                 var displaydata = new DisplayData
                 {
-                    towerComponent = component.DeserializeComponent(),
-                    towerComponentData = component
+                    component = component.DeserializeComponent(),
+                    componentData = component
                 };
 
-                displaydata.componentType = displaydata.towerComponent.GetType();
+                displaydata.componentType = displaydata.component.GetType();
                 displaydata.componentName = componentTypesMap[target.type].First(x => x.Value.Equals(displaydata.componentType)).Key;
                 displaydata.ComponentToJson();
 

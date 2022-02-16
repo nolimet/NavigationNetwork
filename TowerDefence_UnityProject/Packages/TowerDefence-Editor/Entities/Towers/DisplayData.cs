@@ -11,23 +11,23 @@ namespace TowerDefence.Entities.Towers
         public string displayJson;
         public string componentName;
 
-        public ComponentData towerComponentData;
-        public IComponent towerComponent;
+        public ComponentData componentData;
+        public IComponent component;
         public Type componentType;
 
         public void ComponentToJson()
         {
-            displayJson = JsonConvert.SerializeObject(towerComponent, Formatting.Indented);
+            displayJson = JsonConvert.SerializeObject(component, Formatting.Indented);
         }
 
         public void ComponentFromJson()
         {
-            towerComponent = JsonConvert.DeserializeObject(displayJson, componentType) as IComponent;
+            component = JsonConvert.DeserializeObject(displayJson, componentType) as IComponent;
         }
 
         public void UpdateTowerComponentData()
         {
-            towerComponentData.SerializeComponent(towerComponent);
+            componentData.SerializeComponent(component);
         }
     }
 }
