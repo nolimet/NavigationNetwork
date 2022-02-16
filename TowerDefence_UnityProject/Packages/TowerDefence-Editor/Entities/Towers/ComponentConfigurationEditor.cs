@@ -16,6 +16,7 @@ namespace TowerDefence.Entities.Towers
         private readonly Dictionary<ComponentType, Dictionary<string, Type>> componentTypesMap = new();
         private readonly Dictionary<ComponentData, DisplayData> componentsCache = new();
         private readonly Dictionary<Type, ComponentAttribute> componentAttributesMap = new();
+        private readonly List<string> validationReslts = new();
 
         public override void OnInspectorGUI()
         {
@@ -39,11 +40,27 @@ namespace TowerDefence.Entities.Towers
                     PopupWindow.Show(GUILayoutUtility.GetLastRect(), popup);
                 }
 
-                if (GUILayout.Button("Save"))
+                using (var d1 = new EditorGUI.DisabledGroupScope(validationReslts.Any()))
                 {
-                    EditorUtility.SetDirty(target);
-                    AssetDatabase.SaveAssetIfDirty(target);
-                    AssetDatabase.Refresh();
+                    if (GUILayout.Button("Save") && ValidateComponents())
+                    {
+                        EditorUtility.SetDirty(target);
+                        AssetDatabase.SaveAssetIfDirty(target);
+                        AssetDatabase.Refresh();
+                    }
+                }
+
+                if (GUILayout.Button("Validate"))
+                {
+                    ValidateComponents();
+                }
+            }
+
+            if (validationReslts.Any())
+            {
+                foreach (var result in validationReslts)
+                {
+                    EditorGUILayout.HelpBox(result, MessageType.Error);
                 }
             }
 
@@ -102,6 +119,7 @@ namespace TowerDefence.Entities.Towers
 
         private void OnEnable()
         {
+            validationReslts.Clear();
             componentTypesMap.Clear();
             componentAttributesMap.Clear();
 
@@ -140,6 +158,8 @@ namespace TowerDefence.Entities.Towers
 
         private bool ValidateComponents()
         {
+            validationReslts.Clear();
+
             var usedTypes = componentsCache.Values.Select(x => x.componentType).ToArray();
 
             bool duplicates = false;
@@ -155,9 +175,19 @@ namespace TowerDefence.Entities.Towers
                     if (i != j)
                     {
                         duplicates = !duplicates && self == other;
-                        if(componentAttributesMap[self].AnyRestrictionsMatch(self, other))
+                        if (componentAttributesMap[self].AnyRestrictionsMatch(self, other))
                         {
+                            string result = "";
+                            if (self == other)
+                            {
+                                result += $"Duplicates of type {self}\n";
+                            }
+                            else
+                            {
+                                result += $"Cannot use {self} with {other}\n";
+                            }
 
+                            validationReslts.Add(result);
                         }
                     }
                 }
