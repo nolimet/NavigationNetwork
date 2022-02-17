@@ -1,4 +1,5 @@
 ﻿using DataBinding;
+using System.Linq;
 using System.Threading.Tasks;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
@@ -29,7 +30,8 @@ namespace TowerDefence.Entities.Towers.Builder
             var towerObject = towerGameObject.GetComponent<TowerObject>();
             var model = ModelFactory.Create<ITowerModel>();
 
-            await componentFactory.GetComponents(componentConfiguration.components, ProcessComponentInit);
+            var components= await componentFactory.GetComponents(componentConfiguration.components, ProcessComponentInit);
+            model.Components = components.ToList();
 
             return towerObject;
 
