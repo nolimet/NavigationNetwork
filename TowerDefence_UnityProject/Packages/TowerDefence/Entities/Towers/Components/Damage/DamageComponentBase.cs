@@ -13,17 +13,20 @@ namespace TowerDefence.Entities.Towers.Components.Damage
     [Serializable]
     public abstract class DamageComponentBase : IDamageComponent, IInitializable
     {
-        [JsonIgnore] protected ITowerModel model { get; private set; }
-        [JsonIgnore] protected ITargetFindComponent targetFindComponent { get; private set; } = NullTargetFinder.Instance;
+        [JsonIgnore][field: NonSerialized] protected ITowerModel model { get; private set; }
+        [JsonIgnore][field: NonSerialized] protected ITargetFindComponent targetFindComponent { get; private set; }
+        [JsonIgnore][field: NonSerialized] protected BindingContext bindingContext { get; private set; }
         [JsonIgnore] public abstract double DamagePerSecond { get; }
-
-        [NonSerialized] protected readonly BindingContext bindingContext = new(true);
 
         public abstract void Tick();
 
-        public virtual void PostInit(ITowerObject towerObject, ITowerModel towerModel)
+        public virtual void PostInit(ITowerObject towerObject, ITowerModel model)
         {
+            targetFindComponent ??= NullTargetFinder.Instance;
+            bindingContext ??= new(true);
+
             this.model = model;
+
             bindingContext.Bind(model, x => x.Components, OnComponentsChanged);
         }
 

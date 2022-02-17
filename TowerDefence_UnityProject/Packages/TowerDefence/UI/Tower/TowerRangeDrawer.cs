@@ -53,7 +53,7 @@ namespace TowerDefence.UI.Tower
 
         public void DrawRange(ITowerObject tower)
         {
-            if (!tower.Model.Components.Any(x => x is TowerSettings))
+            if (tower.Model.Components.Any(x => x is TowerSettings))
             {
                 var towerSettings = tower.Model.Components.First(x => x is TowerSettings) as TowerSettings;
                 DrawRange((float)towerSettings.Range);

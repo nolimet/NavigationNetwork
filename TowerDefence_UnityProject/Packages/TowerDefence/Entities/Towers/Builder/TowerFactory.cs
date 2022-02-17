@@ -30,7 +30,9 @@ namespace TowerDefence.Entities.Towers.Builder
             var towerObject = towerGameObject.GetComponent<TowerObject>();
             var model = ModelFactory.Create<ITowerModel>();
 
-            var components= await componentFactory.GetComponents(componentConfiguration.components, ProcessComponentInit);
+            towerObject.Setup(model);
+
+            var components = await componentFactory.GetComponents(componentConfiguration.components, ProcessComponentInit);
             model.Components = components.ToList();
 
             return towerObject;

@@ -15,11 +15,11 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
     [Serializable]
     public abstract class TargetFindBase : ITargetFindComponent, IInitializable
     {
-        [NonSerialized, JsonIgnore] protected readonly List<IEnemyObject> targetList = new();
-        [NonSerialized, JsonIgnore] protected readonly BindingContext bindingContext = new(true);
+        [JsonIgnore][field: NonSerialized] protected List<IEnemyObject> targetList { get; private set; }
+        [JsonIgnore][field: NonSerialized] protected BindingContext bindingContext { get; private set; }
 
-        [JsonIgnore] protected ITowerObject towerObject { get; private set; }
-        [JsonIgnore] protected ITowerModel towerModel { get; private set; }
+        [JsonIgnore][field: NonSerialized] protected ITowerObject towerObject { get; private set; }
+        [JsonIgnore][field: NonSerialized] protected ITowerModel towerModel { get; private set; }
 
         [JsonIgnore] public IEnumerable<IEnemyObject> FoundTargets => targetList;
 
@@ -29,12 +29,15 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
 
         public abstract void Tick();
 
-        public virtual void PostInit(ITowerObject towerObject, ITowerModel towerModel)
+        public virtual void PostInit(ITowerObject towerObject, ITowerModel model)
         {
-            this.towerObject = towerObject;
-            this.towerModel = towerModel;
+            targetList ??= new();
+            bindingContext ??= new(true);
 
-            bindingContext.Bind(towerModel, m => m.Components, OnComponentsChanged);
+            this.towerObject = towerObject;
+            this.towerModel = model;
+
+            bindingContext.Bind(model, m => m.Components, OnComponentsChanged);
         }
 
         private void OnComponentsChanged(IList<IComponent> components)

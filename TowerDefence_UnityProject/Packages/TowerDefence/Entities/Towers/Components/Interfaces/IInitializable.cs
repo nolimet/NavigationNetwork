@@ -4,6 +4,6 @@ namespace TowerDefence.Entities.Towers.Components.Interfaces
 {
     internal interface IInitializable
     {
-        void PostInit(ITowerObject towerObject, ITowerModel towerModel);
+        void PostInit(ITowerObject towerObject, ITowerModel model);
     }
 }
