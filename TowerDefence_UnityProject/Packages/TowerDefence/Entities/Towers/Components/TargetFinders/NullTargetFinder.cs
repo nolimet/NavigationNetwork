@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TowerDefence.Entities.Enemies;
 using TowerDefence.Entities.Towers.Components.Interfaces;
 
@@ -20,7 +17,7 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
 
         public void Tick()
         {
-            
+
         }
     }
 }

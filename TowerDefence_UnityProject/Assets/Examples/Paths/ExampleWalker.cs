@@ -1,10 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using TowerDefence.World.Path;
-using UnityEngine;
 using NoUtil.Extentsions;
 using TowerDefence.Entities.Enemies;
-using TowerDefence.Entities.Enemies.Components;
+using UnityEngine;
 
 public class ExampleWalker : MonoBehaviour
 {
