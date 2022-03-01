@@ -1,0 +1,106 @@
+{
+  "Waves": [
+    {}
+  ],
+  "Path": {
+    "PathPoints": [
+      {
+        "Id": "9c35b01b-239c-496f-92d8-f88e8c9655a7",
+        "Position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "Type": "Entrance",
+        "Connections": [
+          "1352169c-d3ce-4a09-9f9b-ec74f3074361",
+          "72985b3d-d9af-466d-8924-23755eb27797",
+          "f07de4c6-da89-47c3-a781-2283c4cf1e9d"
+        ]
+      },
+      {
+        "Id": "1352169c-d3ce-4a09-9f9b-ec74f3074361",
+        "Position": {
+          "x": 5.0,
+          "y": 5.0,
+          "z": 0.0
+        },
+        "Type": "Point",
+        "Connections": [
+          "746bebeb-8336-479a-893e-73ae2a9c1d1c",
+          "f07de4c6-da89-47c3-a781-2283c4cf1e9d"
+        ]
+      },
+      {
+        "Id": "72985b3d-d9af-466d-8924-23755eb27797",
+        "Position": {
+          "x": 5.0,
+          "y": -5.0,
+          "z": 0.0
+        },
+        "Type": "Point",
+        "Connections": [
+          "af91e27e-bbb8-41eb-858f-1f3698292594"
+        ]
+      },
+      {
+        "Id": "af91e27e-bbb8-41eb-858f-1f3698292594",
+        "Position": {
+          "x": 10.0,
+          "y": -5.0,
+          "z": 0.0
+        },
+        "Type": "Point",
+        "Connections": [
+          "6fc8c61f-a632-4b5a-b64d-d9aaca98eb49"
+        ]
+      },
+      {
+        "Id": "746bebeb-8336-479a-893e-73ae2a9c1d1c",
+        "Position": {
+          "x": 10.0,
+          "y": 5.0,
+          "z": 0.0
+        },
+        "Type": "Point",
+        "Connections": [
+          "b24d5f33-292e-43db-88b6-66f63b851741"
+        ]
+      },
+      {
+        "Id": "6fc8c61f-a632-4b5a-b64d-d9aaca98eb49",
+        "Position": {
+          "x": 15.0,
+          "y": -5.0,
+          "z": 0.0
+        },
+        "Type": "Point",
+        "Connections": [
+          "f07de4c6-da89-47c3-a781-2283c4cf1e9d"
+        ]
+      },
+      {
+        "Id": "b24d5f33-292e-43db-88b6-66f63b851741",
+        "Position": {
+          "x": 15.0,
+          "y": 5.0,
+          "z": 0.0
+        },
+        "Type": "Point",
+        "Connections": [
+          "af91e27e-bbb8-41eb-858f-1f3698292594"
+        ]
+      },
+      {
+        "Id": "f07de4c6-da89-47c3-a781-2283c4cf1e9d",
+        "Position": {
+          "x": 20.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "Type": "Exit",
+        "Connections": []
+      }
+    ]
+  }
+}
