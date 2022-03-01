@@ -15,17 +15,17 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
     [Serializable]
     public abstract class TargetFindBase : ITargetFindComponent, IInitializable
     {
-        [JsonIgnore][field: NonSerialized] protected List<IEnemyObject> targetList { get; private set; }
-        [JsonIgnore][field: NonSerialized] protected BindingContext bindingContext { get; private set; }
+        [JsonIgnore] protected List<IEnemyObject> targetList { get; private set; }
+        [JsonIgnore] protected BindingContext bindingContext { get; private set; }
 
-        [JsonIgnore][field: NonSerialized] protected ITowerObject towerObject { get; private set; }
-        [JsonIgnore][field: NonSerialized] protected ITowerModel towerModel { get; private set; }
+        [JsonIgnore] protected ITowerObject towerObject { get; private set; }
+        [JsonIgnore] protected ITowerModel towerModel { get; private set; }
 
         [JsonIgnore] public IEnumerable<IEnemyObject> FoundTargets => targetList;
 
         [JsonIgnore] public short TickPriority => short.MinValue;
 
-        [NonSerialized, JsonIgnore] private TowerSettings towerSettings;
+        private TowerSettings towerSettings;
 
         public abstract void Tick();
 

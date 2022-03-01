@@ -14,7 +14,7 @@ namespace TowerDefence.Entities.Towers.Components.Damage
         [JsonProperty] private readonly double damage;
         [JsonProperty] private readonly float damageInterval;
 
-        [NonSerialized] private float intervalTimer = 0f;
+        private float intervalTimer = 0f;
         public override double DamagePerSecond => damage / damageInterval;
 
         public override void PostInit(ITowerObject towerObject, ITowerModel towerModel)
