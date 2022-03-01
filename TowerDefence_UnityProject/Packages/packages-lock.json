@@ -1,11 +1,10 @@
 {
   "dependencies": {
     "com.svermeulen.extenject": {
-      "version": "9.2.0-stcf3",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://package.openupm.com"
+      "version": "file:Zenject",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
@@ -181,7 +180,7 @@
         "com.svermeulen.extenject": "9.2.0-stcf3",
         "jillejr.newtonsoft.json-for-unity": "13.0.102",
         "jillejr.newtonsoft.json-for-unity.converters": "1.1.1",
-        "nl.jessestam.no-util": "1.*.*"
+        "nl.jessestam.no-util": "1.1.0"
       }
     },
     "nl.jessestam.tower-defence-editor": {
