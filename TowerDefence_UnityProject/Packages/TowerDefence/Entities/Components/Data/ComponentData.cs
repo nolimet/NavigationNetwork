@@ -1,8 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 namespace TowerDefence.Entities.Components.Data
@@ -15,7 +12,7 @@ namespace TowerDefence.Entities.Components.Data
 
         internal void SerializeComponent(IComponent component)
         {
-            type = component.GetType().ToString();
+            type = component.GetType().FullName;
             data = JsonConvert.SerializeObject(component);
         }
 
