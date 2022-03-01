@@ -21,6 +21,13 @@ namespace TowerDefence.Entities.Towers.Builder
             this.worldContainer = worldContainer;
             this.componentFactory = componentFactory;
             this.towerConfiguration = towerConfiguration;
+
+            WarmPrefabs();
+        }
+
+        private async void WarmPrefabs()
+        {
+            await towerConfiguration.TowerBase.LoadAssetAsync();
         }
 
         public async Task<ITowerObject> CreateTower(ComponentConfigurationObject componentConfiguration, Vector2 position)
