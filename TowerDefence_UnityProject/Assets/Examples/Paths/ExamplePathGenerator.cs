@@ -1,16 +1,13 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Newtonsoft.Json;
 using System;
-using TowerDefence.World.Path.Data;
-using Newtonsoft.Json;
 using System.IO;
-using TowerDefence.World.Path;
-using Zenject;
-using TowerDefence.World;
-using NoUtil.Extentsions;
-using TowerDefence.Entities.Enemies;
 using System.Linq;
+using TowerDefence.Entities.Enemies;
 using TowerDefence.Systems.Waves.Data;
+using TowerDefence.World;
+using TowerDefence.World.Path.Data;
+using UnityEngine;
+using Zenject;
 using static TowerDefence.Systems.Waves.Data.Wave;
 
 namespace TowerDefence.Examples.Paths

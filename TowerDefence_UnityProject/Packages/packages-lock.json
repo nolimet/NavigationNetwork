@@ -172,6 +172,31 @@
       },
       "hash": "04fdef341bec1ef1c577f044391c769551d01cc6"
     },
+    "nl.jessestam.tower-defence": {
+      "version": "file:TowerDefence",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.textmeshpro": "3.0.4",
+        "com.svermeulen.extenject": "9.2.0-stcf3",
+        "jillejr.newtonsoft.json-for-unity": "13.0.102",
+        "jillejr.newtonsoft.json-for-unity.converters": "1.1.1",
+        "nl.jessestam.no-util": "1.*.*"
+      }
+    },
+    "nl.jessestam.tower-defence-editor": {
+      "version": "file:TowerDefence-Editor",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.textmeshpro": "3.0.4",
+        "com.svermeulen.extenject": "9.2.0-stcf3",
+        "jillejr.newtonsoft.json-for-unity": "13.0.102",
+        "jillejr.newtonsoft.json-for-unity.converters": "1.1.1",
+        "nl.jessestam.no-util": "1.*.*",
+        "nl.jessestam.tower-defence": "1.0.0"
+      }
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,
