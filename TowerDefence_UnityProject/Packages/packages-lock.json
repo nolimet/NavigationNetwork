@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.cysharp.unitask": {
+      "version": "2.3.1",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
     "com.svermeulen.extenject": {
       "version": "9.2.0-stcf3",
       "depth": 1,
@@ -138,6 +145,13 @@
         "com.unity.modules.unitywebrequestwww": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.wooshii.hierarchydecorator": {
+      "version": "0.8.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
     },
     "com.yasirkula.ingamedebugconsole": {
       "version": "1.5.3",

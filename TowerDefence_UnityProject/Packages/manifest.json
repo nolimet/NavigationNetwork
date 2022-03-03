@@ -35,18 +35,22 @@
     "com.unity.modules.unitywebrequestaudio": "1.0.0",
     "com.unity.modules.unitywebrequesttexture": "1.0.0",
     "com.unity.modules.unitywebrequestwww": "1.0.0",
-    "com.unity.modules.video": "1.0.0"
+    "com.unity.modules.video": "1.0.0",
+    "com.wooshii.hierarchydecorator": "0.8.4",
+    "com.cysharp.unitask": "2.3.1"
   },
   "scopedRegistries": [
     {
       "name": "package.openupm.com",
       "url": "https://package.openupm.com",
       "scopes": [
+        "com.cysharp.unitask",
         "com.openupm",
+        "com.svermeulen.extenject",
+        "com.wooshii.hierarchydecorator",
         "com.yasirkula.ingamedebugconsole",
         "jillejr.newtonsoft.json-for-unity",
-        "jillejr.newtonsoft.json-for-unity.converters",
-        "com.svermeulen.extenject"
+        "jillejr.newtonsoft.json-for-unity.converters"
       ]
     }
   ]
