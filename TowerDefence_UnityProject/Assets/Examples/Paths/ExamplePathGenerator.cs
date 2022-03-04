@@ -91,14 +91,14 @@ namespace TowerDefence.Examples.Paths
         public async void CreateWalker()
         {
             var path = worldController.pathWorldData.GetRandomPath();
-            await enemyController.CreateNewEnemy(enemyConfiguration.Enemies.First().Value, path);
+            await enemyController.CreateNewEnemy(enemyConfiguration.EnemyBaseObjects.First().Value, path);
         }
 
         public async void CreateWalkerDelayed(float delay)
         {
             await new WaitForSeconds(delay);
             var path = worldController.pathWorldData.GetRandomPath();
-            await enemyController.CreateNewEnemy(enemyConfiguration.Enemies.First().Value, path);
+            await enemyController.CreateNewEnemy(enemyConfiguration.EnemyBaseObjects.First().Value, path);
         }
     }
 }
