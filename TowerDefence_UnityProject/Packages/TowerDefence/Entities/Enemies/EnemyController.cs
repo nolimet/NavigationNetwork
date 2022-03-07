@@ -33,6 +33,7 @@ namespace TowerDefence.Entities.Enemies
             var enemy = configurationData.Enemies[id];
             var baseObject = configurationData.EnemyBaseObjects[enemy.BaseId];
             var newEnemy = await enemyFactory.CreateEnemy(enemy.ComponentConfiguration, baseObject, EnemyDied);
+
             model.Enemies.Add(newEnemy);
             return newEnemy;
         }
