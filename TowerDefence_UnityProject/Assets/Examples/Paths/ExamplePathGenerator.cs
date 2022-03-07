@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Linq;
 using TowerDefence.Entities.Enemies;
+using TowerDefence.Entities.Enemies.Components;
 using TowerDefence.Systems.Waves.Data;
 using TowerDefence.World;
 using TowerDefence.World.Path.Data;
@@ -90,7 +92,13 @@ namespace TowerDefence.Examples.Paths
         public async void CreateWalker()
         {
             var path = worldController.pathWorldData.GetRandomPath();
-            await enemyController.CreateNewEnemy("Walker");
+            var result = await enemyController.CreateNewEnemy("Walker");
+
+            if (result.Model.Components.Any(x => x is StaticPathWalker))
+            {
+                var walker = result.Model.Components.First(x => x is StaticPathWalker);
+                walker.
+            }
         }
 
         public async void CreateWalkerDelayed(float delay)
