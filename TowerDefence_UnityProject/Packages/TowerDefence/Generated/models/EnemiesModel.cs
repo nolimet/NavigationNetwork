@@ -1,59 +1,60 @@
+ 
+ 
 // ========================================================================
 // !! DO NOT EDIT THIS SCRIPT, AUTO GENERATED !!
 // ========================================================================
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using DataBinding.BaseClasses;
 
-namespace TowerDefence.Entities.Enemies.Models
+namespace TowerDefence.Entities.Enemies.Models 
 {
-    public class EnemiesModel : TowerDefence.Entities.Enemies.Models.IEnemiesModel
-    {
-        public event Action OnChange;
+	public class EnemiesModel : TowerDefence.Entities.Enemies.Models.IEnemiesModel 
+	{
+		public event Action OnChange;
+			// Enemies
+		public event System.Action<System.Collections.Generic.IList<TowerDefence.Entities.Enemies.IEnemyObject>> OnChangeEnemies;
+		private System.Collections.Generic.IList<TowerDefence.Entities.Enemies.IEnemyObject> _Enemies ; 
+		public System.Collections.Generic.IList<TowerDefence.Entities.Enemies.IEnemyObject> Enemies 
+		{
+			get => _Enemies;
+			set 
+			{
+						
+				if (_Enemies != null)
+				{
+					((ObservableCollection<TowerDefence.Entities.Enemies.IEnemyObject>)_Enemies).CollectionChanged -= new NotifyCollectionChangedEventHandler(TriggerEnemiesEvents);
+				}
 
-        // Enemies
-        public event System.Action<System.Collections.Generic.IList<TowerDefence.Entities.Enemies.IEnemyObject>> OnChangeEnemies;
+				if (value != null && (value as ObservableCollection<TowerDefence.Entities.Enemies.IEnemyObject>) == null) 
+				{
+					_Enemies = new ObservableCollection<TowerDefence.Entities.Enemies.IEnemyObject>(value);
+				}
+				else
+				{
+					_Enemies = value;
+				}
 
-        private System.Collections.Generic.IList<TowerDefence.Entities.Enemies.IEnemyObject> _Enemies;
+				if (_Enemies != null)
+				{
+					((ObservableCollection<TowerDefence.Entities.Enemies.IEnemyObject>)_Enemies).CollectionChanged += new NotifyCollectionChangedEventHandler(TriggerEnemiesEvents);
+				}
 
-        public System.Collections.Generic.IList<TowerDefence.Entities.Enemies.IEnemyObject> Enemies
-        {
-            get => _Enemies;
-            set
-            {
-                if (_Enemies != null)
-                {
-                    ((ObservableCollection<TowerDefence.Entities.Enemies.IEnemyObject>)_Enemies).CollectionChanged -= new NotifyCollectionChangedEventHandler(TriggerEnemiesEvents);
-                }
+				OnChangeEnemies?.Invoke(value);
+				OnChange?.Invoke();
+			}
+		}
+	
+		public EnemiesModel() { 
+				Enemies = new System.Collections.ObjectModel.ObservableCollection<TowerDefence.Entities.Enemies.IEnemyObject>();
+			}
 
-                if (value != null && (value as ObservableCollection<TowerDefence.Entities.Enemies.IEnemyObject>) == null)
-                {
-                    _Enemies = new ObservableCollection<TowerDefence.Entities.Enemies.IEnemyObject>(value);
-                }
-                else
-                {
-                    _Enemies = value;
-                }
+		private void TriggerEnemiesEvents(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		{
+			OnChangeEnemies?.Invoke(Enemies);
+			OnChange?.Invoke();
+		}
 
-                if (_Enemies != null)
-                {
-                    ((ObservableCollection<TowerDefence.Entities.Enemies.IEnemyObject>)_Enemies).CollectionChanged += new NotifyCollectionChangedEventHandler(TriggerEnemiesEvents);
-                }
-
-                OnChangeEnemies?.Invoke(value);
-                OnChange?.Invoke();
-            }
-        }
-
-        public EnemiesModel()
-        {
-            Enemies = new System.Collections.ObjectModel.ObservableCollection<TowerDefence.Entities.Enemies.IEnemyObject>();
-        }
-
-        private void TriggerEnemiesEvents(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            OnChangeEnemies?.Invoke(Enemies);
-            OnChange?.Invoke();
-        }
-    }
+		}
 }
