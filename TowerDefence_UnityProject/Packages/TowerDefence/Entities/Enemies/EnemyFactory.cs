@@ -8,6 +8,7 @@ using TowerDefence.Entities.Enemies.Models;
 using TowerDefence.World;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Events;
 
 namespace TowerDefence.Entities.Enemies
 {
@@ -33,17 +34,19 @@ namespace TowerDefence.Entities.Enemies
             await tasks.WaitForAll();
         }
 
-        public async Task<IEnemyObject> CreateEnemy(ComponentConfigurationObject componentConfiguration, AssetReferenceT<EnemyObject> enemyBase)
+        public async Task<IEnemyObject> CreateEnemy(ComponentConfigurationObject componentConfiguration, AssetReferenceT<GameObject> enemyBase, UnityAction<IEnemyObject> outHealthAction)
         {
             var enemyGameObject = await enemyBase.InstantiateAsync(worldContainer.EnemyContainer, false) as GameObject;
 
             var enemyModel = ModelFactory.Create<IEnemyModel>();
             var enemyObject = enemyGameObject.GetComponent<EnemyObject>();
 
-            enemyObject.Setup(enemyModel);
 
             var components = await componentFactory.GetComponents(componentConfiguration.components, InitHandler);
+            enemyObject.Setup(enemyModel, outHealthAction);
+            enemyModel.Components = components.ToList();
 
+            return enemyObject;
             async Task<IComponent> InitHandler(IComponent component)
             {
                 if (component is IInitializable initializable)
