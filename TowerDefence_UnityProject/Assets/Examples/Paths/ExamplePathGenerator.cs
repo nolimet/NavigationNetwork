@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Linq;
 using TowerDefence.Entities.Enemies;
 using TowerDefence.Systems.Waves.Data;
 using TowerDefence.World;
@@ -91,14 +90,14 @@ namespace TowerDefence.Examples.Paths
         public async void CreateWalker()
         {
             var path = worldController.pathWorldData.GetRandomPath();
-            await enemyController.CreateNewEnemy(enemyConfiguration.Enemies.First().Value, path);
+            await enemyController.CreateNewEnemy("Walker");
         }
 
         public async void CreateWalkerDelayed(float delay)
         {
             await new WaitForSeconds(delay);
             var path = worldController.pathWorldData.GetRandomPath();
-            await enemyController.CreateNewEnemy(enemyConfiguration.Enemies.First().Value, path);
+            await enemyController.CreateNewEnemy("Walker");
         }
     }
 }
