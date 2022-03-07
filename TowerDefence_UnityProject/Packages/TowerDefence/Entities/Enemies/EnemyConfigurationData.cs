@@ -22,7 +22,7 @@ namespace TowerDefence.Entities.Enemies
             Enemies = enemies.ToDictionary(x => x.Id, x => x);
         }
 
-        internal IReadOnlyDictionary<string, AssetReferenceT<EnemyObject>> EnemyBaseObjects { get; private set; }
+        internal IReadOnlyDictionary<string, AssetReferenceT<GameObject>> EnemyBaseObjects { get; private set; }
         internal Dictionary<string, EnemyComponentConfiguration> Enemies { get; private set; }
 
         [System.Serializable]
@@ -32,10 +32,10 @@ namespace TowerDefence.Entities.Enemies
             private string id;
 
             [SerializeField]
-            private AssetReferenceT<EnemyObject> reference;
+            private AssetReferenceT<GameObject> reference;
 
             internal string Id => id;
-            internal AssetReferenceT<EnemyObject> Reference => reference;
+            internal AssetReferenceT<GameObject> Reference => reference;
         }
 
         [System.Serializable]

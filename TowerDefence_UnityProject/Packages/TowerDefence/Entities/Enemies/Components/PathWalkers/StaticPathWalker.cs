@@ -1,4 +1,5 @@
-﻿using NoUtil.Math;
+﻿using Newtonsoft.Json;
+using NoUtil.Math;
 using UnityEngine;
 using static TowerDefence.World.Path.Data.PathWorldData;
 
@@ -6,19 +7,24 @@ namespace TowerDefence.Entities.Enemies.Components
 {
     public class StaticPathWalker : BaseEnemyPathWalker
     {
-        private readonly AnimationCurve3D path;
-        private readonly Transform transform;
-        private readonly float speedMult;
-        private readonly IEnemyObject self;
+        [JsonProperty] private readonly float speedMult;
+
+        private AnimationCurve3D path;
+        private Transform transform;
+        private IEnemyObject self;
 
         private Vector3 lastPosition;
 
-        public StaticPathWalker(AnimationCurve3D path, float speedMult, IEnemyObject self) : base(self.DeathAction)
+        public StaticPathWalker(float speedMult, IEnemyObject self) : base(self.DeathAction)
         {
-            this.path = path;
             this.transform = self.Transform;
             this.speedMult = speedMult;
             this.self = self;
+        }
+
+        public void SetPath(AnimationCurve3D path)
+        {
+            this.path = path;
         }
 
         public override float PathProgress { get; protected set; } = 0f;

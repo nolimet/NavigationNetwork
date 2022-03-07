@@ -1,13 +1,10 @@
-﻿using DataBinding;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TowerDefence.Entities.Enemies.Models;
 using TowerDefence.World;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using Zenject;
-using static TowerDefence.World.Path.Data.PathWorldData;
 
 namespace TowerDefence.Entities.Enemies
 {
@@ -15,35 +12,30 @@ namespace TowerDefence.Entities.Enemies
     {
         private readonly IEnemiesModel model;
         private readonly WorldContainer worldContainer;
+        private readonly EnemyFactory enemyFactory;
+        private readonly EnemyConfigurationData configurationData;
         private readonly DiContainer container;
 
         private readonly Queue<IEnemyObject> deadEnemies = new();
 
-        public EnemyController(DiContainer container, IEnemiesModel model, WorldContainer worldContainer)
+        internal EnemyController(DiContainer container, IEnemiesModel model, WorldContainer worldContainer, EnemyFactory enemyFactory, EnemyConfigurationData configurationData)
         {
             this.container = container;
             this.model = model;
             this.worldContainer = worldContainer;
+            this.enemyFactory = enemyFactory;
+            this.configurationData = configurationData;
         }
 
-        //TODO Rework completely when adding new system. Current implementation is completely wrong
-        public async Task<IEnemyObject> CreateNewEnemy(AssetReference enemyAssetRefrence, AnimationCurve3D path)
+        //TODO Simplify workflow and add a enemy Creation service or something similar
+        public async Task<IEnemyObject> CreateNewEnemy(string id)
         {
-            var newEnemyGameObject = (GameObject)await enemyAssetRefrence.InstantiateAsync(worldContainer.EnemyContainer);
-            container.InjectGameObject(newEnemyGameObject);
+            var enemy = configurationData.Enemies[id];
+            var baseObject = configurationData.EnemyBaseObjects[enemy.BaseId];
+            var newEnemy = await enemyFactory.CreateEnemy(enemy.ComponentConfiguration, baseObject, EnemyDied);
 
-            if (newEnemyGameObject.TryGetComponent<EnemyObject>(out var newEnemy))
-            {
-                var model = ModelFactory.Create<IEnemyModel>();
-                model.Components.Add(new Components.StaticPathWalker(path, 5f, newEnemy));
-
-                //TODO do enemy Init stuff somewhereElse
-
-                newEnemy.Setup(model, EnemyDied);
-                this.model.Enemies.Add(newEnemy);
-                return newEnemy;
-            }
-            throw new System.Exception("Could not load enemy");
+            model.Enemies.Add(newEnemy);
+            return newEnemy;
         }
 
         public void Tick()

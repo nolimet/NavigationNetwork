@@ -1,7 +1,8 @@
 ﻿using DataBinding;
 using System.Collections.Generic;
 using System.Linq;
-using TowerDefence.Entities.Enemies.Components;
+using TowerDefence.Entities.Components;
+using TowerDefence.Entities.Components.Interfaces;
 using TowerDefence.Entities.Enemies.Models;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,7 +17,7 @@ namespace TowerDefence.Entities.Enemies
 
         public UnityAction<IEnemyObject> DeathAction { get; private set; }
 
-        private readonly List<ITickableEnemyComponent> tickableComponents = new();
+        private readonly List<ITickableComponent> tickableComponents = new();
         private readonly BindingContext bindingContext = new(true);
 
         [SerializeField] private Vector2 healthbarOffset = Vector2.zero;
@@ -48,10 +49,10 @@ namespace TowerDefence.Entities.Enemies
             }
         }
 
-        private void OnComponentsChanged(IList<IEnemyComponent> components)
+        private void OnComponentsChanged(IList<IComponent> components)
         {
             tickableComponents.Clear();
-            tickableComponents.AddRange(components.Where(x => x is ITickableEnemyComponent).Cast<ITickableEnemyComponent>().OrderBy(x => x.TickPriority));
+            tickableComponents.AddRange(components.Where(x => x is ITickableComponent).Cast<ITickableComponent>().OrderBy(x => x.TickPriority));
         }
 
         public void Tick()
@@ -61,7 +62,7 @@ namespace TowerDefence.Entities.Enemies
 
         private void OnDestroy()
         {
-            Model.HealthBar.Destroy();
+            Model.HealthBar?.Destroy();
             bindingContext.Dispose();
         }
     }
