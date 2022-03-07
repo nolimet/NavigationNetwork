@@ -22,5 +22,5 @@ MonoBehaviour:
   enemies:
   - id: Walker
     baseId: default
-    componentConfiguration: {fileID: 11400000, guid: 29932a3030c8ff541af32380fa3493f1,
+    componentConfiguration: {fileID: 11400000, guid: db7783efdf0c0d84c9df4721caf1c902,
       type: 2}
