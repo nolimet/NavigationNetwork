@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TowerDefence.Entities.Enemies.Components;
 using TowerDefence.Entities.Enemies.Models;
 using TowerDefence.World;
 using UnityEngine;
@@ -28,11 +29,18 @@ namespace TowerDefence.Entities.Enemies
         }
 
         //TODO Simplify workflow and add a enemy Creation service or something similar
-        public async Task<IEnemyObject> CreateNewEnemy(string id)
+        public async Task<IEnemyObject> CreateNewEnemy(string id, World.Path.Data.PathWorldData.AnimationCurve3D path)
         {
-            var enemy = configurationData.Enemies[id];
-            var baseObject = configurationData.EnemyBaseObjects[enemy.BaseId];
-            var newEnemy = await enemyFactory.CreateEnemy(enemy.ComponentConfiguration, baseObject, EnemyDied);
+            var components = configurationData.Enemies[id];
+            var baseObject = configurationData.EnemyBaseObjects[components.BaseId];
+            var newEnemy = await enemyFactory.CreateEnemy(components.ComponentConfiguration, baseObject, EnemyDied);
+
+            if (newEnemy.Model.Components.Any(x => x is StaticPathWalker))
+            {
+                var walker = newEnemy.Model.Components.First(x => x is StaticPathWalker) as StaticPathWalker;
+                walker.SetPath(path);
+                walker.ReachedEnd = EnemyDied;
+            }
 
             model.Enemies.Add(newEnemy);
             return newEnemy;

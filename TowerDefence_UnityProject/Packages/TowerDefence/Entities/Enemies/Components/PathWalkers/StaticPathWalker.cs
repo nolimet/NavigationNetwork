@@ -1,26 +1,19 @@
 ﻿using Newtonsoft.Json;
 using NoUtil.Math;
+using TowerDefence.Entities.Components;
 using UnityEngine;
 using static TowerDefence.World.Path.Data.PathWorldData;
 
 namespace TowerDefence.Entities.Enemies.Components
 {
+    [Component(ComponentType.Enemy, typeof(IPathWalkerComponent))]
     public class StaticPathWalker : BaseEnemyPathWalker
     {
         [JsonProperty] private readonly float speedMult;
 
         private AnimationCurve3D path;
-        private Transform transform;
-        private IEnemyObject self;
 
         private Vector3 lastPosition;
-
-        public StaticPathWalker(float speedMult, IEnemyObject self) : base(self.DeathAction)
-        {
-            this.transform = self.Transform;
-            this.speedMult = speedMult;
-            this.self = self;
-        }
 
         public void SetPath(AnimationCurve3D path)
         {
@@ -31,21 +24,18 @@ namespace TowerDefence.Entities.Enemies.Components
 
         public override void Tick()
         {
-            if (transform)
+            lastPosition = self.Transform.position;
+            self.Transform.position = path.Evaluate(PathProgress);
+
+            var dir = Math.VectorToAngle(lastPosition - self.Transform.position);
+
+            self.Transform.rotation = Quaternion.Euler(0, 0, dir);
+
+            PathProgress += Time.deltaTime * speedMult;
+
+            if (PathProgress >= path.length)
             {
-                lastPosition = transform.position;
-                transform.position = path.Evaluate(PathProgress);
-
-                var dir = Math.VectorToAngle(lastPosition - transform.position);
-
-                transform.rotation = Quaternion.Euler(0, 0, dir);
-
-                PathProgress += Time.deltaTime * speedMult;
-
-                if (PathProgress >= path.length)
-                {
-                    reachedEnd?.Invoke(self);
-                }
+                ReachedEnd?.Invoke(self);
             }
         }
     }

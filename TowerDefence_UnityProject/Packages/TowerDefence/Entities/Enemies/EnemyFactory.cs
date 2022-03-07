@@ -41,10 +41,10 @@ namespace TowerDefence.Entities.Enemies
             var enemyModel = ModelFactory.Create<IEnemyModel>();
             var enemyObject = enemyGameObject.GetComponent<EnemyObject>();
 
-
             var components = await componentFactory.GetComponents(componentConfiguration.components, InitHandler);
-            enemyObject.Setup(enemyModel, outHealthAction);
             enemyModel.Components = components.ToList();
+
+            enemyObject.Setup(enemyModel, outHealthAction);
 
             return enemyObject;
             async Task<IComponent> InitHandler(IComponent component)

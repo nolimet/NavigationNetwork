@@ -1,14 +1,15 @@
-﻿using TowerDefence.Entities.Components;
+﻿using Newtonsoft.Json;
+using TowerDefence.Entities.Components;
 
 namespace TowerDefence.Entities.Enemies.Components.BaseComponents
 {
-    [System.Serializable]
+    [System.Serializable, Component(ComponentType.Enemy, typeof(EnemySettings))]
     internal class EnemySettings : IComponent
     {
-        public readonly string TypeName;
-        public readonly string BaseName;
+        [JsonProperty] public readonly string TypeName = "";
+        [JsonProperty] public readonly string BaseName = "";
 
-        public readonly double MaxHealth;
-        public readonly double Speed;
+        [JsonProperty] public readonly double MaxHealth = 10;
+        [JsonProperty] public readonly double Speed = 5;
     }
 }

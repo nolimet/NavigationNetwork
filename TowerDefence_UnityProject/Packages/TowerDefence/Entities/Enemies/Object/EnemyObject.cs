@@ -1,8 +1,10 @@
 ﻿using DataBinding;
+using NoUtil.Extentsions;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Interfaces;
+using TowerDefence.Entities.Enemies.Components.BaseComponents;
 using TowerDefence.Entities.Enemies.Models;
 using UnityEngine;
 using UnityEngine.Events;
@@ -37,6 +39,11 @@ namespace TowerDefence.Entities.Enemies
             Model.HealthOffset = healthbarOffset;
             this.DeathAction = outOfHealthAction;
 
+            if (Model.Components.TryFind(x => x is EnemySettings, out var result) && result is EnemySettings settings)
+            {
+                Model.Health = settings.MaxHealth;
+            }
+
             bindingContext.Bind(enemyModel, m => m.Components, OnComponentsChanged);
             bindingContext.Bind(enemyModel, m => m.Health, OnHealthChanged);
         }
@@ -45,6 +52,7 @@ namespace TowerDefence.Entities.Enemies
         {
             if (health <= 0)
             {
+                Debug.Log("Splat");
                 DeathAction?.Invoke(this);
             }
         }

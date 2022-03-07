@@ -1,4 +1,5 @@
-﻿using TowerDefence.Entities.Enemies.Components.Interfaces;
+﻿using Newtonsoft.Json;
+using TowerDefence.Entities.Enemies.Components.Interfaces;
 using TowerDefence.Entities.Enemies.Models;
 using UnityEngine.Events;
 
@@ -6,24 +7,19 @@ namespace TowerDefence.Entities.Enemies.Components
 {
     public abstract class BaseEnemyPathWalker : IPathWalkerComponent, IInitializable
     {
-        protected readonly UnityAction<IEnemyObject> reachedEnd;
-        protected IEnemyObject self { get; private set; }
-        protected IEnemyModel model { get; private set; }
+        [JsonIgnore] public UnityAction<IEnemyObject> ReachedEnd { get; set; }
 
-        protected BaseEnemyPathWalker(UnityAction<IEnemyObject> reachedEnd)
-        {
-            this.reachedEnd = reachedEnd;
-        }
-
-        public short TickPriority => short.MinValue;
-
-        public abstract float PathProgress { get; protected set; }
+        [JsonIgnore] protected IEnemyObject self { get; private set; }
+        [JsonIgnore] protected IEnemyModel model { get; private set; }
+        [JsonIgnore] public abstract float PathProgress { get; protected set; }
+        [JsonIgnore] public short TickPriority => short.MinValue;
 
         public void PostInit(IEnemyObject enemyObject, IEnemyModel enemyModel)
         {
             self = enemyObject;
             model = enemyModel;
         }
+
         public abstract void Tick();
     }
 }
