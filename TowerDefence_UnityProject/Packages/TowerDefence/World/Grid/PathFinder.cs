@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TowerDefence.World.Grid
 {
@@ -6,7 +7,7 @@ namespace TowerDefence.World.Grid
     {
         public IReadOnlyList<IGridNode> GetPath(IGridNode start, IGridNode end)
         {
-
+            throw new NotImplementedException();
         }
     }
 }
