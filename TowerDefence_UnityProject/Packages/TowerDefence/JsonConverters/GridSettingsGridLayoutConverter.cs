@@ -2,12 +2,14 @@
 using System;
 using System.Collections.Generic;
 using TowerDefence.World.Grid;
+using UnityEngine;
 
 namespace TowerDefence.JsonConverters
 {
     internal class GridSettingsGridLayoutConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType) => objectType == typeof(GridSettings.GridLayout);
+
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             if (existingValue is string value)
@@ -29,7 +31,10 @@ namespace TowerDefence.JsonConverters
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            if (value is GridSettings.GridLayout layout)
+            {
+                Debug.Log(serializer.Context);
+            }
         }
     }
 }
