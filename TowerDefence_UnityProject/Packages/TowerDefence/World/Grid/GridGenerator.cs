@@ -62,13 +62,11 @@ namespace TowerDefence.World.Grid
                 }
             }
 
-
             void Validate()
             {
                 int gridCount = settings.GridWidth * settings.GridHeight;
                 if (gridCount != settings.gridLayout.Length) throw new Exception("layout and size do not match!");
             }
-
         }
     }
 }
