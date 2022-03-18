@@ -24,9 +24,22 @@ namespace TowerDefence.World.Grid
         /// </summary>
         [JsonProperty] public GridLayout gridLayout { get; private set; }
 
+        [System.Serializable]
         internal readonly struct GridLayout
         {
-            public readonly LayoutNode[] gridLayout;
+            public readonly LayoutNode[] nodes;
+
+            public int Length => nodes.Length;
+
+            public LayoutNode this[int index]
+            {
+                get => nodes[index];
+            }
+
+            public GridLayout(LayoutNode[] gridLayout)
+            {
+                this.nodes = gridLayout;
+            }
         }
 
         internal readonly struct LayoutNode
@@ -44,7 +57,13 @@ namespace TowerDefence.World.Grid
         [MenuItem("Test/Settings")]
         public static void TestWrite()
         {
-            var settings = new GridSettings(10, 10, new[] { new  });
+            var layoutNodes = new LayoutNode[100];
+            var r = new System.Random();
+            for (int i = 0; i < layoutNodes.Length; i++)
+            {
+                layoutNodes[i] = new((byte)r.Next(0, 255));
+            }
+            var settings = new GridSettings(10, 10, new GridLayout(layoutNodes));
             string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
             Debug.Log(json);
             var val = JsonConvert.DeserializeObject<GridSettings>(json);
