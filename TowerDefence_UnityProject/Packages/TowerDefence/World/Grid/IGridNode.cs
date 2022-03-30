@@ -8,6 +8,7 @@ namespace TowerDefence.World.Grid
         Vector2Int Position { get; }
         double NodeWeight { get; }
         bool HasStructure { get; }
+        bool HasVirtualStructure { get; }
         IReadOnlyCollection<IGridNode> ConnectedNodes { get; }
     }
 }
