@@ -9,11 +9,12 @@ namespace TowerDefence.World.Grid
         public IEnumerable<IGridNode> CreateNodes(GridSettings settings)
         {
             Validate();
-            var nodes = new GridNode[settings.GridHeight][];
+            var returnValue = new List<IGridNode>();
+            var nodes = new GridNode[settings.GridHeight, settings.GridWidth];
             CreateNodes();
             LinkNodes();
 
-            return nodes.SelectMany(x => x).Cast<IGridNode>().ToArray();
+            return returnValue;
 
             void LinkNodes()
             {
@@ -27,36 +28,37 @@ namespace TowerDefence.World.Grid
                         neightbours.Add(GetNode(x - 1, y));
                         neightbours.Add(GetNode(x + 1, y));
 
-                        nodes[x][y].SetConnectedNodes(neightbours.Where(x => x != null).ToArray());
+                        nodes[x, y].SetConnectedNodes(neightbours.Where(x => x != null).ToArray());
                         neightbours.Clear();
                     }
                 }
 
                 IGridNode GetNode(int x, int y)
                 {
-                    if (y > 0)
-                        return nodes[y][x];
+                    if (y >= 0)
+                        return nodes[y, x];
 
-                    if (x > 0)
-                        return nodes[y][x];
+                    if (x >= 0)
+                        return nodes[y, x];
 
-                    if (x < settings.GridWidth - 1)
-                        return nodes[y][x];
+                    if (x < settings.GridWidth)
+                        return nodes[y, x];
 
-                    if (y < settings.GridHeight - 1)
-                        return nodes[y][x];
+                    if (y < settings.GridHeight)
+                        return nodes[y, x];
                     return null;
                 }
             }
+
             void CreateNodes()
             {
                 int counter = 0;
                 for (int y = 0; y < settings.GridHeight; y++)
                 {
-                    var row = nodes[y] = new GridNode[settings.GridWidth];
                     for (int x = 0; x < settings.GridWidth; x++)
                     {
-                        row[x] = new GridNode(settings.gridLayout[counter].weight, new(x, y));
+                        nodes[y, x] = new GridNode(settings.gridLayout[counter].weight, new(x, y));
+                        returnValue.Add(nodes[y, x]);
                         counter++;
                     }
                 }
