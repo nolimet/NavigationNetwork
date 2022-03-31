@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace TowerDefence.World.Grid
@@ -7,13 +8,22 @@ namespace TowerDefence.World.Grid
     {
         private const float tileWidth = 1;
         private const float tileLength = 1;
+        private readonly GridWorldSettings worldSettings;
 
         private Mesh[] worldMeshes;
         private Material[,] materials;
         private GameObject[] tiles;
 
-        public void CreateVisuals(IEnumerable<IGridNode> nodes)
+        public GridVisualGenerator(GridWorldSettings worldSettings)
         {
+            this.worldSettings = worldSettings;
+        }
+
+        public async UniTask CreateVisuals(IEnumerable<IGridNode> nodes)
+        {
+            var tileShader = await worldSettings.GetTileShader();
+            var tileTexture = await worldSettings.GetTileTexture();
+
             List<int> tris = new();
             List<Vector3> verts = new();
             List<Vector2> uvs = new();
@@ -92,6 +102,9 @@ namespace TowerDefence.World.Grid
 
                 var r = g.GetComponent<MeshRenderer>();
                 var mf = g.GetComponent<MeshFilter>();
+
+                Material mat = new Material(tileShader);
+                mat.mainTexture = tileTexture;
 
                 mf.mesh = m;
             }
