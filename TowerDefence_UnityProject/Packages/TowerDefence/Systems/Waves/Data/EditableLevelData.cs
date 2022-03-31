@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Enemies;
+using TowerDefence.World.Grid;
 using TowerDefence.World.Path.Data;
 using UnityEngine;
 using FileEnemyGroup = TowerDefence.Systems.Waves.Data.Wave.EnemyGroup;
@@ -18,6 +19,8 @@ namespace TowerDefence.Systems.Waves.Data
 
         [SerializeField]
         private EditablePathData pathdata;
+
+        [SerializeField] private GridSettings gridSettings;
 
         public EditablePathData Pathdata { get => pathdata; set => pathdata = value; }
         public EditableWave[] Waves { get => waves; set => waves = value; }
