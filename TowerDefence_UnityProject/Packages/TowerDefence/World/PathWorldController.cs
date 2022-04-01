@@ -3,12 +3,13 @@ using TowerDefence.World.Path.Data;
 
 namespace TowerDefence.World
 {
-    public class WorldController
+    public class PathWorldController
     {
         private readonly PathBuilderService pathBuilderService;
         public PathWorldData pathWorldData { get; private set; }
 
-        public WorldController(PathBuilderService pathBuilderService)
+
+        internal PathWorldController(PathBuilderService pathBuilderService)
         {
             this.pathBuilderService = pathBuilderService;
         }

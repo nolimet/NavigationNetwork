@@ -18,7 +18,7 @@ namespace TowerDefence.Examples.Paths
         [HideInInspector]
         public PathWorldData ConstructedPath => worldController?.pathWorldData;
 
-        [Inject] private WorldController worldController = null;
+        [Inject] private PathWorldController worldController = null;
         [Inject] private EnemyController enemyController = null;
         [Inject] private EnemyConfigurationData enemyConfiguration = null;
 
