@@ -21,7 +21,7 @@ namespace TowerDefence.World
 
             Container.BindInterfacesAndSelfTo<PathWalkerService>().AsSingle();
             Container.Bind<PathBuilderService>().AsSingle();
-            Container.Bind<WorldController>().AsSingle();
+            Container.Bind<PathWorldController>().AsSingle();
         }
     }
 }

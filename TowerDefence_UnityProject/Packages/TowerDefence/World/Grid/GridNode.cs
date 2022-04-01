@@ -8,7 +8,7 @@ namespace TowerDefence.World.Grid
     {
         private IReadOnlyCollection<IGridNode> connectedNodes;
 
-        public double NodeWeight { get; }
+        public float NodeWeight { get; }
         public bool HasStructure { get; private set; }
         public bool HasVirtualStructure { get; private set; }
 
@@ -24,7 +24,7 @@ namespace TowerDefence.World.Grid
 
         public Vector2Int Position { get; }
 
-        public GridNode(double nodeWeight, Vector2Int position)
+        public GridNode(float nodeWeight, Vector2Int position)
         {
             NodeWeight = nodeWeight;
             Position = position;
@@ -35,5 +35,6 @@ namespace TowerDefence.World.Grid
             this.connectedNodes = connectedNodes;
         }
 
+        public float GetCost(IGridNode goal) => this.NodeWeight;
     }
 }

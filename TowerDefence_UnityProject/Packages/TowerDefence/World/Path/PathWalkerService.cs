@@ -6,9 +6,9 @@ namespace TowerDefence.World.Path
     public class PathWalkerService : ITickable
     {
         private readonly List<WalkerBase> walkers = new List<WalkerBase>();
-        private readonly WorldController worldController;
+        private readonly PathWorldController worldController;
 
-        public PathWalkerService(WorldController worldController)
+        public PathWalkerService(PathWorldController worldController)
         {
             this.worldController = worldController;
         }
