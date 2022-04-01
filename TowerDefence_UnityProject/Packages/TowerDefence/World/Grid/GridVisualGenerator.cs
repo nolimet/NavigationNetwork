@@ -9,50 +9,40 @@ namespace TowerDefence.World.Grid
         private const float tileWidth = 1;
         private const float tileLength = 1;
         private readonly GridWorldSettings worldSettings;
+        private readonly WorldContainer world;
 
-        private Mesh[] worldMeshes;
-        private Material[,] materials;
+        private Mesh tileMesh;
+
         private GameObject[] tiles;
 
-        public GridVisualGenerator(GridWorldSettings worldSettings)
+        public GridVisualGenerator(GridWorldSettings worldSettings, WorldContainer world)
         {
             this.worldSettings = worldSettings;
+            this.world = world;
         }
 
         public async UniTask CreateVisuals(IEnumerable<IGridNode> nodes)
         {
             var tileMaterial = await worldSettings.GetTileMaterial();
-
-            List<int> tris = new();
-            List<Vector3> verts = new();
-            List<Vector2> uvs = new();
-
-            List<Mesh> meshes = new();
-            List<Material> materials = new();
             List<GameObject> objects = new();
 
+            tileMesh = CreateMesh();
 
             foreach (var node in nodes)
             {
-                var m = CreateMeshForNode(node);
-                tris.Clear();
-                verts.Clear();
-                uvs.Clear();
-                CreateRenderer(m, node);
+                CreateRenderer(tileMesh, node);
             }
 
-            worldMeshes = meshes.ToArray();
             tiles = objects.ToArray();
 
-            Mesh CreateMeshForNode(IGridNode node)
+            Mesh CreateMesh()
             {
-                tris.Add(0);
-                tris.Add(1);
-                tris.Add(2);
+                List<int> tris = new();
+                List<Vector3> verts = new();
+                List<Vector2> uvs = new();
 
-                tris.Add(3);
-                tris.Add(2);
-                tris.Add(1);
+                tris.AddRange(new[] { 0, 1, 2 });
+                tris.AddRange(new[] { 3, 2, 1 });
 
                 AddVert(0, 0, 0);
                 AddVert(1, 0, 0);
@@ -71,7 +61,6 @@ namespace TowerDefence.World.Grid
                     uv = uvs.ToArray()
                 };
 
-                meshes.Add(m);
                 m.UploadMeshData(true);
 
                 return m;
@@ -80,9 +69,9 @@ namespace TowerDefence.World.Grid
                 {
                     Vector3 v = new
                     (
-                        x: (x + node.Position.x) * tileWidth,
+                        x: x * tileWidth,
                         y: y,
-                        z: (z + node.Position.y) * tileLength
+                        z: z * tileLength
                     );
 
                     verts.Add(v);
@@ -97,6 +86,14 @@ namespace TowerDefence.World.Grid
             void CreateRenderer(Mesh m, IGridNode node)
             {
                 var g = new GameObject($"Tile -{node.Position}", typeof(MeshFilter), typeof(MeshRenderer));
+                g.transform.SetParent(world.TileContainer);
+                g.transform.position = new Vector3
+                (
+                    x: worldSettings.TileSize.x * node.Position.x,
+                    y: 0,
+                    z: worldSettings.TileSize.y * node.Position.y
+                );
+
                 objects.Add(g);
 
                 var r = g.GetComponent<MeshRenderer>();
