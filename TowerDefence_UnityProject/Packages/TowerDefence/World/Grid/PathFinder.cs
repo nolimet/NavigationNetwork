@@ -1,13 +1,126 @@
-﻿using System;
 using System.Collections.Generic;
 
 namespace TowerDefence.World.Grid
 {
+    // algorithm based on WikiPedia: http://en.wikipedia.org/wiki/A*_search_algorithm
+    //
+    // implements the static GetPath(...) function that will return a IList of IGridNodes that is the shortest path
+    // between the two IGridNodes that are passed as parameters to the function
     internal class PathFinder
     {
-        public IReadOnlyList<IGridNode> GetPath(IGridNode start, IGridNode end)
+        private class OpenSorter : IComparer<IGridNode>
         {
-            throw new NotImplementedException();
+            private Dictionary<IGridNode, float> fScore;
+
+            public OpenSorter(Dictionary<IGridNode, float> f)
+            {
+                fScore = f;
+            }
+
+            public int Compare(IGridNode a, IGridNode b)
+            {
+                if (a != null && b != null)
+                    return fScore[a].CompareTo(fScore[b]);
+                else
+                    return 0;
+            }
+        }
+
+        public bool Working { get; set; }
+
+        private readonly List<IGridNode> closed = new();
+        private readonly List<IGridNode> open = new();
+        private readonly Dictionary<IGridNode, IGridNode> vistedNodes = new();
+        private readonly Dictionary<IGridNode, float> gScore = new();
+        private readonly Dictionary<IGridNode, float> hScore = new();
+        private readonly Dictionary<IGridNode, float> fScore = new();
+
+        // this function is the C# implementation of the algorithm presented on the wikipedia page
+        // start and goal are the nodes in the graph we should find a path for
+        //
+        // returns null if no path is found
+        //
+        // this function is NOT thread-safe (due to using static data for GC optimization)
+        public IList<IGridNode> GetPath(IGridNode start, IGridNode goal)
+        {
+            if (start == null || goal == null)
+            {
+                return null;
+            }
+
+            closed.Clear();
+            open.Clear();
+            open.Add(start);
+
+            vistedNodes.Clear();
+            gScore.Clear();
+            hScore.Clear();
+            fScore.Clear();
+
+            gScore.Add(start, 0f);
+            hScore.Add(start, start.GetCost(goal));
+            fScore.Add(start, hScore[start]);
+
+            OpenSorter sorter = new OpenSorter(fScore);
+            IGridNode current, previousNode = null;
+
+            float tentativeGScore;
+            bool tentativeIsBetter;
+
+            while (open.Count > 0)
+            {
+                current = open[0];
+                if (current == goal)
+                {
+                    return ReconstructPath(new List<IGridNode>(), vistedNodes, goal);
+                }
+
+                open.Remove(current);
+                closed.Add(current);
+
+                if (current != start)
+                {
+                    previousNode = vistedNodes[current];
+                }
+                foreach (IGridNode nextNode in current.ConnectedNodes)
+                {
+                    if (previousNode != nextNode && !closed.Contains(nextNode))
+                    {
+                        tentativeGScore = gScore[current] + current.GetCost(nextNode);
+                        tentativeIsBetter = true;
+
+                        if (!open.Contains(nextNode))
+                        {
+                            open.Add(nextNode);
+                        }
+                        else
+                        if (tentativeGScore >= gScore[nextNode])
+                        {
+                            tentativeIsBetter = false;
+                        }
+
+                        if (tentativeIsBetter)
+                        {
+                            vistedNodes[nextNode] = current;
+                            gScore[nextNode] = tentativeGScore;
+                            hScore[nextNode] = nextNode.GetCost(goal);
+                            fScore[nextNode] = gScore[nextNode] + hScore[nextNode];
+                        }
+                    }
+                }
+                open.Sort(sorter);
+            }
+            return null;
+        }
+
+        private static IList<IGridNode> ReconstructPath(IList<IGridNode> path, Dictionary<IGridNode, IGridNode> visitedNodes, IGridNode currentNode)
+        {
+            if (visitedNodes.ContainsKey(currentNode))
+            {
+                ReconstructPath(path, visitedNodes, visitedNodes[currentNode]);
+            }
+            path.Add(currentNode);
+            return path;
         }
     }
 }

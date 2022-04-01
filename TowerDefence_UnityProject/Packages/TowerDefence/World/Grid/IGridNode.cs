@@ -6,9 +6,11 @@ namespace TowerDefence.World.Grid
     internal interface IGridNode
     {
         Vector2Int Position { get; }
-        double NodeWeight { get; }
+        float NodeWeight { get; }
         bool HasStructure { get; }
         bool HasVirtualStructure { get; }
         IReadOnlyCollection<IGridNode> ConnectedNodes { get; }
+
+        float GetCost(IGridNode goal);
     }
 }
