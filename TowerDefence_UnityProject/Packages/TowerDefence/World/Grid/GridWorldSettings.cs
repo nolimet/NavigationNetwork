@@ -7,30 +7,23 @@ namespace TowerDefence.World.Grid
     [CreateAssetMenu(menuName = "Configuration/Grid World Settings", fileName = "Grid World Settings")]
     public class GridWorldSettings : ScriptableObject
     {
-        [SerializeField] private AssetReferenceT<Shader> tileShader;
-        [SerializeField] private AssetReferenceT<Texture2D> tileTexture;
+        [SerializeField] private AssetReferenceT<Material> tileMaterial;
         [SerializeField] private Vector2 tileSize = Vector2.one;
 
         public Vector2 TileSize => tileSize;
 
-        public async UniTask<Shader> GetTileShader()
+        public async UniTask<Material> GetTileMaterial()
         {
-            if (!tileShader.IsDone)
+            if (!tileMaterial.IsDone)
             {
-                var task = tileShader.LoadAssetAsync();
+                var task = tileMaterial.LoadAssetAsync();
                 await task;
                 return task.Result;
             }
             else
             {
-                return tileShader.Asset as Shader;
+                return tileMaterial.Asset as Material;
             }
-        }
-
-        public async UniTask<Texture2D> GetTileTexture()
-        {
-            await tileTexture.LoadAssetAsync();
-            return tileTexture.Asset as Texture2D;
         }
     }
 }

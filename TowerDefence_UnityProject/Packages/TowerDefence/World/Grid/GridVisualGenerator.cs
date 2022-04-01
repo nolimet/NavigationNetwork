@@ -21,8 +21,7 @@ namespace TowerDefence.World.Grid
 
         public async UniTask CreateVisuals(IEnumerable<IGridNode> nodes)
         {
-            var tileShader = await worldSettings.GetTileShader();
-            var tileTexture = await worldSettings.GetTileTexture();
+            var tileMaterial = await worldSettings.GetTileMaterial();
 
             List<int> tris = new();
             List<Vector3> verts = new();
@@ -103,8 +102,7 @@ namespace TowerDefence.World.Grid
                 var r = g.GetComponent<MeshRenderer>();
                 var mf = g.GetComponent<MeshFilter>();
 
-                Material mat = new Material(tileShader);
-                mat.mainTexture = tileTexture;
+                r.sharedMaterial = tileMaterial;
 
                 mf.mesh = m;
             }
