@@ -24,7 +24,7 @@ namespace TowerDefence.JsonConverters
 
     internal class BoolArrayConverter : JsonConverter
     {
-        private static readonly StringBuilder stringBuilder = new StringBuilder();
+        private static readonly StringBuilder stringBuilder = new();
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             if (value is bool[] arr)
