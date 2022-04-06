@@ -1,4 +1,5 @@
-﻿using TowerDefence.World.Path;
+﻿using TowerDefence.World.Grid;
+using TowerDefence.World.Path;
 using UnityEngine;
 using Zenject;
 
@@ -9,6 +10,8 @@ namespace TowerDefence.World
     {
         [SerializeField]
         private PathLineRenderer lineGenericPrefab;
+        [SerializeField]
+        private GridWorldSettings gridWorldSettings;
 
         public override void InstallBindings()
         {
@@ -22,6 +25,12 @@ namespace TowerDefence.World
             Container.BindInterfacesAndSelfTo<PathWalkerService>().AsSingle();
             Container.Bind<PathBuilderService>().AsSingle();
             Container.Bind<PathWorldController>().AsSingle();
+
+            Container.Bind<GridWorld>().AsSingle();
+            Container.Bind<GridVisualGenerator>().AsSingle();
+            Container.Bind<GridGenerator>().AsSingle();
+
+            Container.BindInstance(gridWorldSettings).AsSingle();
         }
     }
 }
