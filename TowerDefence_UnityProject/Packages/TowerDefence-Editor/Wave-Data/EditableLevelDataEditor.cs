@@ -12,19 +12,19 @@ namespace TowerDefence.Systems.Waves.Data
     {
         private SerializedProperty waves;
         private SerializedProperty pathdata;
+        private SerializedProperty gridSettingData;
 
-        private GUIContent saveToJson = new GUIContent("Save To Json", "For development (indended json)");
-        private GUIContent saveToLvL = new GUIContent("Save To lvl", "For production (single line json)");
+        private readonly GUIContent savePathToJson = new("Save Path To Json", "For development (indended json)");
+        private readonly GUIContent savePathToLvL = new("Save Path To lvl", "For production (single line json)");
+
+        private readonly GUIContent saveGridToJson = new("Save Grid To Json", "For development (indended json)");
+        private readonly GUIContent saveGridToLvL = new("Save Grid To lvl", "For production (single line json)");
 
         public void OnEnable()
         {
             waves = serializedObject.FindProperty("waves");
             pathdata = serializedObject.FindProperty("pathdata").FindPropertyRelative("pathPoints");
-        }
-
-        private void OnDrawWave(Rect rect, int index, bool isActive, bool isFocused)
-        {
-            EditorGUI.LabelField(rect, index.ToString());
+            gridSettingData = serializedObject.FindProperty("gridSettings");
         }
 
         public override void OnInspectorGUI()
@@ -43,14 +43,14 @@ namespace TowerDefence.Systems.Waves.Data
                     }
                 }
 
-                if (GUILayout.Button(saveToJson))
+                if (GUILayout.Button(savePathToJson))
                 {
-                    SaveData("json", Formatting.Indented);
+                    SavePath("json", Formatting.Indented);
                 }
 
-                if (GUILayout.Button(saveToLvL))
+                if (GUILayout.Button(savePathToLvL))
                 {
-                    SaveData("lvl", Formatting.None);
+                    SavePath("lvl", Formatting.None);
                 }
 
                 if (GUILayout.Button("Save File"))
@@ -60,11 +60,28 @@ namespace TowerDefence.Systems.Waves.Data
                 }
                 GUILayout.FlexibleSpace();
             }
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                if (GUILayout.Button(saveGridToJson))
+                {
+                    SaveGrid("json", Formatting.Indented);
+                }
+
+                if (GUILayout.Button(saveGridToLvL))
+                {
+                    SaveGrid("lvl", Formatting.None);
+                }
+
+                GUILayout.FlexibleSpace();
+            }
+
 
             using (var changedScope = new EditorGUI.ChangeCheckScope())
             {
                 DrawPathData();
+
                 EditorGUILayout.PropertyField(waves);
+                DrawGridSettings();
 
                 if (changedScope.changed)
                 {
@@ -141,7 +158,36 @@ namespace TowerDefence.Systems.Waves.Data
                 }
             }
 
-            void SaveData(string extension, Formatting formatting)
+            void DrawGridSettings()
+            {
+                if (gridSettingData.isExpanded = EditorGUILayout.Foldout(gridSettingData.isExpanded, gridSettingData.displayName))
+                {
+                    using (new EditorGUI.IndentLevelScope(1))
+                    {
+                        var width = gridSettingData.FindPropertyRelative("GridWidth");
+                        var height = gridSettingData.FindPropertyRelative("GridHeight");
+                        EditorGUILayout.PropertyField(height);
+                        EditorGUILayout.PropertyField(width);
+
+                        var layout = gridSettingData.FindPropertyRelative("gridLayout");
+                        var nodes = layout.FindPropertyRelative("nodes");
+                        if (nodes.isExpanded = EditorGUILayout.Foldout(nodes.isExpanded, nodes.displayName))
+                        {
+                            using (new EditorGUI.IndentLevelScope(1))
+                            {
+                                nodes.arraySize = height.intValue * width.intValue;
+                                for (int i = 0; i < nodes.arraySize; i++)
+                                {
+                                    var node = nodes.GetArrayElementAtIndex(i);
+                                    EditorGUILayout.PropertyField(node.FindPropertyRelative("weight"));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            void SavePath(string extension, Formatting formatting)
             {
                 string path = EditorUtility.SaveFilePanel("Select Save Location", Application.dataPath, target.name, extension);
                 var file = new FileInfo(path);
@@ -158,6 +204,28 @@ namespace TowerDefence.Systems.Waves.Data
                 using (var stream = File.CreateText(path))
                 {
                     stream.Write(JsonConvert.SerializeObject((target as EditableLevelData).ToLevelData(), formatting));
+                }
+
+                AssetDatabase.Refresh();
+            }
+
+            void SaveGrid(string extension, Formatting formatting)
+            {
+                string path = EditorUtility.SaveFilePanel("Select Save Location", Application.dataPath, target.name, extension);
+                var file = new FileInfo(path);
+                if (!file.Directory.Exists)
+                {
+                    file.Directory.Create();
+                }
+
+                if (file.Exists)
+                {
+                    file.Delete();
+                }
+
+                using (var stream = File.CreateText(path))
+                {
+                    stream.Write(JsonConvert.SerializeObject((target as EditableLevelData).ToGridSettings(), formatting));
                 }
 
                 AssetDatabase.Refresh();
