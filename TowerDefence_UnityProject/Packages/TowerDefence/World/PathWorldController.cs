@@ -6,7 +6,7 @@ namespace TowerDefence.World
     public class PathWorldController
     {
         private readonly PathBuilderService pathBuilderService;
-        public PathWorldData pathWorldData { get; private set; }
+        public PathWorldData PathWorldData { get; private set; }
 
 
         internal PathWorldController(PathBuilderService pathBuilderService)
@@ -16,13 +16,13 @@ namespace TowerDefence.World
 
         public void SetPath(PathData pathData)
         {
-            pathWorldData = pathBuilderService.GeneratePathWorldData(pathData);
+            PathWorldData = pathBuilderService.GeneratePathWorldData(pathData);
         }
 
         public void DestroyCurrentPath()
         {
-            pathWorldData.Destroy();
-            pathWorldData = null;
+            PathWorldData.Destroy();
+            PathWorldData = null;
         }
     }
 }
