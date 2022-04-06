@@ -10,7 +10,7 @@ namespace TowerDefence.World.Grid
     {
         private class OpenSorter : IComparer<IGridNode>
         {
-            private Dictionary<IGridNode, float> fScore;
+            private readonly Dictionary<IGridNode, float> fScore;
 
             public OpenSorter(Dictionary<IGridNode, float> f)
             {

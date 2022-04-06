@@ -57,7 +57,7 @@ namespace TowerDefence.World.Grid
                 {
                     for (int x = 0; x < settings.GridWidth; x++)
                     {
-                        nodes[y, x] = new GridNode(settings.gridLayout[counter].weight, new(x, y));
+                        nodes[y, x] = new GridNode(settings.GridLayout[counter].weight, new(x, y));
                         returnValue.Add(nodes[y, x]);
                         counter++;
                     }
@@ -67,7 +67,7 @@ namespace TowerDefence.World.Grid
             void Validate()
             {
                 int gridCount = settings.GridWidth * settings.GridHeight;
-                if (gridCount != settings.gridLayout.Length) throw new Exception("layout and size do not match!");
+                if (gridCount != settings.GridLayout.Length) throw new Exception("layout and size do not match!");
             }
         }
     }

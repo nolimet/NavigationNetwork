@@ -14,22 +14,23 @@ namespace TowerDefence.Systems.Waves.Data
     [CreateAssetMenu(menuName = "Configuration/Create Level", fileName = "Level 0")]
     public class EditableLevelData : ScriptableObject
     {
-        [SerializeField]
-        private EditableWave[] waves;
+        [SerializeField] private EditableWave[] waves;
+        [SerializeField] private EditablePathData pathdata;
+        [SerializeField] private EditableGridSettings gridSettings;
 
-        [SerializeField]
-        private EditablePathData pathdata;
-
-        [SerializeField] private GridSettings gridSettings;
-
-        public EditablePathData Pathdata { get => pathdata; set => pathdata = value; }
-        public EditableWave[] Waves { get => waves; set => waves = value; }
+        internal EditablePathData Pathdata { get => pathdata; set => pathdata = value; }
+        internal EditableWave[] Waves { get => waves; set => waves = value; }
 
         public LevelData ToLevelData()
         {
             var waves = new Wave[Waves?.Length ?? 0];
 
             return new LevelData(waves, Pathdata);
+        }
+
+        internal GridSettings ToGridSettings()
+        {
+            return gridSettings;
         }
 
         public void FromLevelData(LevelData levelData)
@@ -45,8 +46,13 @@ namespace TowerDefence.Systems.Waves.Data
             Pathdata = levelData.path;
         }
 
+        internal void FromGridSettings(GridSettings gridSettings)
+        {
+            this.gridSettings = gridSettings;
+        }
+
         [Serializable]
-        public class EditableWave
+        internal class EditableWave
         {
             public EnemyGroup[] enemyGroups = new EnemyGroup[0];
 
@@ -116,7 +122,7 @@ namespace TowerDefence.Systems.Waves.Data
         }
 
         [Serializable]
-        public class EditablePathData
+        internal class EditablePathData
         {
             public PathPoint[] pathPoints = new PathPoint[0];
 
@@ -187,6 +193,95 @@ namespace TowerDefence.Systems.Waves.Data
                 {
                     return new PathPoint(point.id.ToString(), point.id, point.position, point.type, point.connections);
                 }
+            }
+        }
+
+        [Serializable]
+        internal class EditableGridSettings
+        {
+            public int GridHeight;
+
+            public int GridWidth;
+
+            /// <summary>
+            /// Grid weights and layout. 255 is not traversable
+            /// </summary>
+            public EditableGridLayout gridLayout;
+
+            public EditableGridSettings(int gridHeight, int gridWidth, GridSettings.Layout gridLayout)
+            {
+                GridHeight = gridHeight;
+                GridWidth = gridWidth;
+                this.gridLayout = gridLayout;
+            }
+
+            [System.Serializable]
+            internal class EditableGridLayout
+            {
+                public EditableLayoutNode[] nodes;
+
+                public int Length => nodes.Length;
+
+                public EditableLayoutNode this[int index]
+                {
+                    get => nodes[index];
+                }
+
+                public EditableGridLayout(EditableLayoutNode[] gridLayout)
+                {
+                    this.nodes = gridLayout;
+                }
+
+                public static implicit operator GridSettings.Layout(EditableGridLayout v)
+                {
+                    var nodes = new GridSettings.Node[v.nodes.Length];
+                    for (int i = 0; i < nodes.Length; i++)
+                    {
+                        nodes[i] = v.nodes[i];
+                    }
+                    return new GridSettings.Layout(nodes);
+                }
+
+                public static implicit operator EditableGridLayout(GridSettings.Layout v)
+                {
+                    var nodes = new EditableLayoutNode[v.nodes.Length];
+                    for (int i = 0; i < nodes.Length; i++)
+                    {
+                        nodes[i] = v.nodes[i];
+                    }
+                    return new EditableGridLayout(nodes);
+                }
+            }
+
+            [System.Serializable]
+            internal class EditableLayoutNode
+            {
+                public byte weight;
+
+                public EditableLayoutNode(byte weight)
+                {
+                    this.weight = weight;
+                }
+
+                public static implicit operator GridSettings.Node(EditableLayoutNode v)
+                {
+                    return new GridSettings.Node(v.weight);
+                }
+
+                public static implicit operator EditableLayoutNode(GridSettings.Node v)
+                {
+                    return new EditableLayoutNode(v.weight);
+                }
+            }
+
+            public static implicit operator GridSettings(EditableGridSettings v)
+            {
+                return new GridSettings(v.GridHeight, v.GridWidth, v.gridLayout);
+            }
+
+            public static implicit operator EditableGridSettings(GridSettings v)
+            {
+                return new EditableGridSettings(v.GridHeight, v.GridWidth, v.GridLayout);
             }
         }
     }
