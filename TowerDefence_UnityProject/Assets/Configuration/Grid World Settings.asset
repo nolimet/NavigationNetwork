@@ -12,13 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8117d456b36f58b439551d3baffb8a80, type: 3}
   m_Name: Grid World Settings
   m_EditorClassIdentifier: 
-  tileShader:
-    m_AssetGUID: 
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  tileTexture:
-    m_AssetGUID: 
+  tileMaterial:
+    m_AssetGUID: 1d46da4a9e5c67a478757d53eeae5cbe
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
