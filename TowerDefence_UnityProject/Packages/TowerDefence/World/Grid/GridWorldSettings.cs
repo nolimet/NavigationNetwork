@@ -14,16 +14,12 @@ namespace TowerDefence.World.Grid
 
         public async UniTask<Material> GetTileMaterial()
         {
-            if (!tileMaterial.IsDone)
+            if (!tileMaterial.Asset)
             {
-                var task = tileMaterial.LoadAssetAsync();
-                await task;
-                return task.Result;
+                await tileMaterial.LoadAssetAsync();
             }
-            else
-            {
-                return tileMaterial.Asset as Material;
-            }
+
+            return tileMaterial.Asset as Material;
         }
     }
 }
