@@ -26,7 +26,7 @@ namespace TowerDefence.Examples.Paths
                         target.GenerateExamplePath();
                     }
 
-                    if (GUILayout.Button("Guid Gridworld"))
+                    if (GUILayout.Button("Build Gridworld"))
                     {
                         target.BuildGridWorld();
                     }
