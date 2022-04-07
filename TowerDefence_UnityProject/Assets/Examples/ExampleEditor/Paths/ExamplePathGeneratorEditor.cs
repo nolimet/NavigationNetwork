@@ -26,6 +26,11 @@ namespace TowerDefence.Examples.Paths
                         target.GenerateExamplePath();
                     }
 
+                    if (GUILayout.Button("Guid Gridworld"))
+                    {
+                        target.BuildGridWorld();
+                    }
+
                     using (var disableScope2 = new EditorGUI.DisabledGroupScope(target.ConstructedPath == null))
                     {
                         if (GUILayout.Button("Create Walker"))
