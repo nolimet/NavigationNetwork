@@ -8,11 +8,11 @@ namespace TowerDefence.World.Grid
     [Serializable]
     internal sealed class GridSettings
     {
-        public GridSettings(int gridHeight, int gridWidth, Layout gridLayout)
+        public GridSettings(int gridHeight, int gridWidth, Node[] nodes)
         {
             GridHeight = gridHeight;
             GridWidth = gridWidth;
-            this.GridLayout = gridLayout;
+            Nodes = nodes;
         }
 
         [JsonProperty] public int GridHeight { get; private set; }
@@ -22,26 +22,9 @@ namespace TowerDefence.World.Grid
         /// <summary>
         /// Grid weights and layout. 255 is not traversable
         /// </summary>
-        [JsonProperty] public Layout GridLayout { get; private set; }
+        [JsonProperty] public readonly Node[] Nodes;
 
-        [System.Serializable]
-        internal readonly struct Layout
-        {
-            public readonly Node[] nodes;
-
-            public int Length => nodes.Length;
-
-            public Node this[int index]
-            {
-                get => nodes[index];
-            }
-
-            public Layout(Node[] gridLayout)
-            {
-                this.nodes = gridLayout;
-            }
-        }
-
+        [Serializable]
         internal readonly struct Node
         {
             public readonly bool isTraversable;
@@ -50,6 +33,13 @@ namespace TowerDefence.World.Grid
             public Node(byte weight)
             {
                 this.isTraversable = weight == 255;
+                this.weight = weight;
+            }
+
+            [JsonConstructor]
+            public Node(bool isTraversable, byte weight)
+            {
+                this.isTraversable = isTraversable;
                 this.weight = weight;
             }
         }
@@ -63,11 +53,11 @@ namespace TowerDefence.World.Grid
             {
                 layoutNodes[i] = new((byte)r.Next(0, 255));
             }
-            var settings = new GridSettings(10, 10, new Layout(layoutNodes));
+            var settings = new GridSettings(10, 10, layoutNodes);
             string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
             Debug.Log(json);
             var val = JsonConvert.DeserializeObject<GridSettings>(json);
-            Debug.Log(string.Join(",", val.GridLayout));
+            Debug.Log(string.Join(",", val.Nodes));
         }
     }
 }
