@@ -4,6 +4,7 @@ using System.IO;
 using TowerDefence.Entities.Enemies;
 using TowerDefence.Systems.Waves.Data;
 using TowerDefence.World;
+using TowerDefence.World.Grid;
 using TowerDefence.World.Path.Data;
 using UnityEngine;
 using Zenject;
@@ -14,13 +15,15 @@ namespace TowerDefence.Examples.Paths
     public class ExamplePathGenerator : MonoBehaviour
     {
         private readonly string filePath = Application.streamingAssetsPath + "/ExampleLevel.json";
+        private readonly string gridWorldPath = Application.streamingAssetsPath + "/ExampleLevel-grid.json";
 
         [HideInInspector]
-        public PathWorldData ConstructedPath => worldController?.pathWorldData;
+        public PathWorldData ConstructedPath => worldController?.PathWorldData;
 
         [Inject] private PathWorldController worldController = null;
         [Inject] private EnemyController enemyController = null;
         [Inject] private EnemyConfigurationData enemyConfiguration = null;
+        [Inject] private GridWorld gridWorld = null;
 
         [ContextMenu("Generate Example Path")]
         public void GenerateExamplePath()
@@ -87,16 +90,23 @@ namespace TowerDefence.Examples.Paths
             worldController.SetPath(levelData.path);
         }
 
+        public async void BuildGridWorld()
+        {
+            string json = File.ReadAllText(gridWorldPath);
+            var levelData = JsonConvert.DeserializeObject<GridSettings>(json);
+            await gridWorld.CreateWorld(levelData);
+        }
+
         public async void CreateWalker()
         {
-            var path = worldController.pathWorldData.GetRandomPath();
+            var path = worldController.PathWorldData.GetRandomPath();
             var result = await enemyController.CreateNewEnemy("Walker", path);
         }
 
         public async void CreateWalkerDelayed(float delay)
         {
             await new WaitForSeconds(delay);
-            var path = worldController.pathWorldData.GetRandomPath();
+            var path = worldController.PathWorldData.GetRandomPath();
             await enemyController.CreateNewEnemy("Walker", path);
         }
     }
