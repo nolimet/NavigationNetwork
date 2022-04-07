@@ -21,7 +21,7 @@ namespace TowerDefence.World.Grid
             this.world = world;
         }
 
-        public async UniTask CreateVisuals(IEnumerable<IGridNode> nodes)
+        public async UniTask CreateVisuals(IEnumerable<IGridNode> nodes, GridSettings gridSettings)
         {
             var tileMaterial = await worldSettings.GetTileMaterial();
             Debug.Log(tileMaterial);
@@ -90,8 +90,8 @@ namespace TowerDefence.World.Grid
                 g.transform.SetParent(world.TileContainer);
                 g.transform.position = new Vector3
                 (
-                    x: worldSettings.TileSize.x * node.Position.x - worldSettings.TileSize.x / 2 * node.Position.x,
-                    y: worldSettings.TileSize.y * node.Position.y - worldSettings.TileSize.y / 2 * node.Position.y,
+                    x: worldSettings.TileSize.x * node.Position.x - worldSettings.TileSize.x / 2 * gridSettings.GridWidth,
+                    y: worldSettings.TileSize.y * node.Position.y - worldSettings.TileSize.y / 2 * gridSettings.GridHeight,
                     z: 0
                 );
 

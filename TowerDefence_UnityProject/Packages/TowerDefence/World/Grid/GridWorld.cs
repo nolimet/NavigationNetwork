@@ -20,7 +20,7 @@ namespace TowerDefence.World.Grid
         public async UniTask CreateWorld(GridSettings settings)
         {
             world = gridGenerator.CreateNodes(settings);
-            await visualGenerator.CreateVisuals(world);
+            await visualGenerator.CreateVisuals(world, settings);
         }
 
         public async UniTask<IEnumerable<IGridNode>> GetPath(IGridNode start, IGridNode end)
