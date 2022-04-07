@@ -24,6 +24,7 @@ namespace TowerDefence.World.Grid
         public async UniTask CreateVisuals(IEnumerable<IGridNode> nodes)
         {
             var tileMaterial = await worldSettings.GetTileMaterial();
+            Debug.Log(tileMaterial);
             List<GameObject> objects = new();
 
             tileMesh = CreateMesh();
@@ -41,13 +42,13 @@ namespace TowerDefence.World.Grid
                 List<Vector3> verts = new();
                 List<Vector2> uvs = new();
 
-                tris.AddRange(new[] { 0, 1, 2 });
-                tris.AddRange(new[] { 3, 2, 1 });
+                tris.AddRange(new[] { 2, 1, 0 });
+                tris.AddRange(new[] { 1, 2, 3 });
 
                 AddVert(0, 0, 0);
                 AddVert(1, 0, 0);
-                AddVert(0, 0, 1);
-                AddVert(1, 0, 1);
+                AddVert(0, 1, 0);
+                AddVert(1, 1, 0);
 
                 AddUv(0, 0);
                 AddUv(1, 0);
@@ -70,8 +71,8 @@ namespace TowerDefence.World.Grid
                     Vector3 v = new
                     (
                         x: x * tileWidth,
-                        y: y,
-                        z: z * tileLength
+                        y: y * tileLength,
+                        z: z
                     );
 
                     verts.Add(v);
@@ -89,9 +90,9 @@ namespace TowerDefence.World.Grid
                 g.transform.SetParent(world.TileContainer);
                 g.transform.position = new Vector3
                 (
-                    x: worldSettings.TileSize.x * node.Position.x,
-                    y: 0,
-                    z: worldSettings.TileSize.y * node.Position.y
+                    x: worldSettings.TileSize.x * node.Position.x - worldSettings.TileSize.x / 2 * node.Position.x,
+                    y: worldSettings.TileSize.y * node.Position.y - worldSettings.TileSize.y / 2 * node.Position.y,
+                    z: 0
                 );
 
                 objects.Add(g);
