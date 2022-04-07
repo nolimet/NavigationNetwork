@@ -208,11 +208,11 @@ namespace TowerDefence.Systems.Waves.Data
             /// </summary>
             public EditableGridLayout gridLayout;
 
-            public EditableGridSettings(int gridHeight, int gridWidth, GridSettings.Layout gridLayout)
+            public EditableGridSettings(int gridHeight, int gridWidth, GridSettings.Node[] nodes)
             {
                 GridHeight = gridHeight;
                 GridWidth = gridWidth;
-                this.gridLayout = gridLayout;
+                this.gridLayout = nodes;
             }
 
             [System.Serializable]
@@ -232,22 +232,22 @@ namespace TowerDefence.Systems.Waves.Data
                     this.nodes = gridLayout;
                 }
 
-                public static implicit operator GridSettings.Layout(EditableGridLayout v)
+                public static implicit operator GridSettings.Node[](EditableGridLayout v)
                 {
                     var nodes = new GridSettings.Node[v.nodes.Length];
                     for (int i = 0; i < nodes.Length; i++)
                     {
                         nodes[i] = v.nodes[i];
                     }
-                    return new GridSettings.Layout(nodes);
+                    return nodes;
                 }
 
-                public static implicit operator EditableGridLayout(GridSettings.Layout v)
+                public static implicit operator EditableGridLayout(GridSettings.Node[] v)
                 {
-                    var nodes = new EditableLayoutNode[v.nodes.Length];
+                    var nodes = new EditableLayoutNode[v.Length];
                     for (int i = 0; i < nodes.Length; i++)
                     {
-                        nodes[i] = v.nodes[i];
+                        nodes[i] = v[i];
                     }
                     return new EditableGridLayout(nodes);
                 }
@@ -276,12 +276,17 @@ namespace TowerDefence.Systems.Waves.Data
 
             public static implicit operator GridSettings(EditableGridSettings v)
             {
-                return new GridSettings(v.GridHeight, v.GridWidth, v.gridLayout);
+                var nodes = new GridSettings.Node[v.gridLayout.Length];
+                for (int i = 0; i < nodes.Length; i++)
+                {
+                    nodes[i] = v.gridLayout.nodes[i];
+                }
+                return new GridSettings(v.GridHeight, v.GridWidth, nodes);
             }
 
             public static implicit operator EditableGridSettings(GridSettings v)
             {
-                return new EditableGridSettings(v.GridHeight, v.GridWidth, v.GridLayout);
+                return new EditableGridSettings(v.GridHeight, v.GridWidth, v.Nodes);
             }
         }
     }
