@@ -1,6 +1,9 @@
 ﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
+using TowerDefence.World.Grid.Data;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace TowerDefence.World.Grid
 {
@@ -13,7 +16,7 @@ namespace TowerDefence.World.Grid
 
         private Mesh tileMesh;
 
-        private GameObject[] tiles;
+        private GameObject[] tiles = Array.Empty<GameObject>();
 
         public GridVisualGenerator(GridWorldSettings worldSettings, WorldContainer world)
         {
@@ -23,6 +26,8 @@ namespace TowerDefence.World.Grid
 
         public async UniTask CreateVisuals(IEnumerable<IGridNode> nodes, GridSettings gridSettings)
         {
+            DestroyTiles();
+
             var tileMaterial = await worldSettings.GetTileMaterial();
             Debug.Log(tileMaterial);
             List<GameObject> objects = new();
@@ -103,7 +108,23 @@ namespace TowerDefence.World.Grid
                 r.sharedMaterial = tileMaterial;
 
                 mf.mesh = m;
+
+                var selectableNode = g.AddComponent<SelectableNode>();
+                selectableNode.GridNode = node;
+
+                var collider = g.AddComponent<BoxCollider2D>();
+                collider.size = worldSettings.TileSize;
+
             }
+        }
+
+        private void DestroyTiles()
+        {
+            foreach (var tile in tiles)
+            {
+                Object.Destroy(tile);
+            }
+            tiles = Array.Empty<GameObject>();
         }
     }
 }
