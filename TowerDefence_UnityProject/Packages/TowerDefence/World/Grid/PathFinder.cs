@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TowerDefence.World.Grid.Data;
 
 namespace TowerDefence.World.Grid
 {

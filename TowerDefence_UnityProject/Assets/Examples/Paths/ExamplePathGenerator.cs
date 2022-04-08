@@ -5,6 +5,7 @@ using TowerDefence.Entities.Enemies;
 using TowerDefence.Systems.Waves.Data;
 using TowerDefence.World;
 using TowerDefence.World.Grid;
+using TowerDefence.World.Grid.Data;
 using TowerDefence.World.Path.Data;
 using UnityEngine;
 using Zenject;

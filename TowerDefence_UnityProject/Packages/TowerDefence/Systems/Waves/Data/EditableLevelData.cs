@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Enemies;
-using TowerDefence.World.Grid;
+using TowerDefence.World.Grid.Data;
 using TowerDefence.World.Path.Data;
 using UnityEngine;
 using FileEnemyGroup = TowerDefence.Systems.Waves.Data.Wave.EnemyGroup;
