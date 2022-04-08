@@ -29,6 +29,7 @@ namespace TowerDefence.World
             Container.Bind<GridWorld>().AsSingle();
             Container.Bind<GridVisualGenerator>().AsSingle();
             Container.Bind<GridGenerator>().AsSingle();
+            Container.Bind<GridNodeSelector>().AsSingle().NonLazy();
 
             Container.BindInstance(gridWorldSettings).AsSingle();
         }
