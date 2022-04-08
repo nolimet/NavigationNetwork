@@ -3,7 +3,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace TowerDefence.World.Grid
+namespace TowerDefence.World.Grid.Data
 {
     [Serializable]
     internal sealed class GridSettings

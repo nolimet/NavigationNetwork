@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace TowerDefence.World.Grid
+namespace TowerDefence.World.Grid.Data
 {
     internal class GridNode : IGridNode
     {
