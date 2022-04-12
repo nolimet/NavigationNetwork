@@ -203,16 +203,21 @@ namespace TowerDefence.Systems.Waves.Data
 
             public int GridWidth;
 
+            public Vector2Int[] EntryPoints;
+
+            public Vector2Int[] EndPoints;
             /// <summary>
             /// Grid weights and layout. 255 is not traversable
             /// </summary>
-            public EditableGridLayout gridLayout;
+            public EditableGridLayout GridLayout;
 
-            public EditableGridSettings(int gridHeight, int gridWidth, GridSettings.Node[] nodes)
+            public EditableGridSettings(int gridHeight, int gridWidth, GridSettings.Cell[] nodes, Vector2Int[] entryPoints, Vector2Int[] endPoints)
             {
                 GridHeight = gridHeight;
                 GridWidth = gridWidth;
-                this.gridLayout = nodes;
+                this.GridLayout = nodes;
+                this.EntryPoints = entryPoints;
+                this.EndPoints = endPoints;
             }
 
             [System.Serializable]
@@ -232,9 +237,9 @@ namespace TowerDefence.Systems.Waves.Data
                     this.nodes = gridLayout;
                 }
 
-                public static implicit operator GridSettings.Node[](EditableGridLayout v)
+                public static implicit operator GridSettings.Cell[](EditableGridLayout v)
                 {
-                    var nodes = new GridSettings.Node[v.nodes.Length];
+                    var nodes = new GridSettings.Cell[v.nodes.Length];
                     for (int i = 0; i < nodes.Length; i++)
                     {
                         nodes[i] = v.nodes[i];
@@ -242,7 +247,7 @@ namespace TowerDefence.Systems.Waves.Data
                     return nodes;
                 }
 
-                public static implicit operator EditableGridLayout(GridSettings.Node[] v)
+                public static implicit operator EditableGridLayout(GridSettings.Cell[] v)
                 {
                     var nodes = new EditableLayoutNode[v.Length];
                     for (int i = 0; i < nodes.Length; i++)
@@ -253,7 +258,7 @@ namespace TowerDefence.Systems.Waves.Data
                 }
             }
 
-            [System.Serializable]
+            [Serializable]
             internal class EditableLayoutNode
             {
                 public byte weight;
@@ -263,12 +268,12 @@ namespace TowerDefence.Systems.Waves.Data
                     this.weight = weight;
                 }
 
-                public static implicit operator GridSettings.Node(EditableLayoutNode v)
+                public static implicit operator GridSettings.Cell(EditableLayoutNode v)
                 {
-                    return new GridSettings.Node(v.weight);
+                    return new GridSettings.Cell(v.weight);
                 }
 
-                public static implicit operator EditableLayoutNode(GridSettings.Node v)
+                public static implicit operator EditableLayoutNode(GridSettings.Cell v)
                 {
                     return new EditableLayoutNode(v.weight);
                 }
@@ -276,17 +281,17 @@ namespace TowerDefence.Systems.Waves.Data
 
             public static implicit operator GridSettings(EditableGridSettings v)
             {
-                var nodes = new GridSettings.Node[v.gridLayout.Length];
+                var nodes = new GridSettings.Cell[v.GridLayout.Length];
                 for (int i = 0; i < nodes.Length; i++)
                 {
-                    nodes[i] = v.gridLayout.nodes[i];
+                    nodes[i] = v.GridLayout.nodes[i];
                 }
-                return new GridSettings(v.GridHeight, v.GridWidth, nodes);
+                return new GridSettings(v.GridHeight, v.GridWidth, nodes, v.EntryPoints, v.EndPoints);
             }
 
             public static implicit operator EditableGridSettings(GridSettings v)
             {
-                return new EditableGridSettings(v.GridHeight, v.GridWidth, v.Nodes);
+                return new EditableGridSettings(v.GridHeight, v.GridWidth, v.Cells, v.EntryPoints, v.EndPoints);
             }
         }
     }

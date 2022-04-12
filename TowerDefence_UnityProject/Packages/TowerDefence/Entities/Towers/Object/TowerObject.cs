@@ -1,10 +1,10 @@
 ﻿using DataBinding;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Interfaces;
 using TowerDefence.Entities.Towers.Models;
+using TowerDefence.World.Grid.Data;
 using UnityEngine;
 
 namespace TowerDefence.Entities.Towers
@@ -21,13 +21,16 @@ namespace TowerDefence.Entities.Towers
 
         public ITowerModel Model { get; private set; }
 
-        public Vector2 GetGridPosition() => throw new NotImplementedException("TODO Implement grid system");
+        internal IGridCell OccupiedCell { get; private set; }
+
+        public Vector2Int GetGridPosition() => OccupiedCell?.Position ?? Vector2Int.zero;
 
         public Vector3 GetWorldPosition() => transform.position;
 
-        public void Setup(ITowerModel model)
+        internal void Setup(ITowerModel model, IGridCell cell)
         {
             this.Model = model;
+            this.OccupiedCell = cell;
 
             bindingContext.Bind(model, m => m.Components, OnComponentsChanged);
         }

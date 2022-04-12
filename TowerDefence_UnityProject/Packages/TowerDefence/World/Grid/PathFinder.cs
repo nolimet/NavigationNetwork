@@ -9,16 +9,16 @@ namespace TowerDefence.World.Grid
     // between the two IGridNodes that are passed as parameters to the function
     internal class PathFinder
     {
-        private class OpenSorter : IComparer<IGridNode>
+        private class OpenSorter : IComparer<IGridCell>
         {
-            private readonly Dictionary<IGridNode, float> fScore;
+            private readonly Dictionary<IGridCell, float> fScore;
 
-            public OpenSorter(Dictionary<IGridNode, float> f)
+            public OpenSorter(Dictionary<IGridCell, float> f)
             {
                 fScore = f;
             }
 
-            public int Compare(IGridNode a, IGridNode b)
+            public int Compare(IGridCell a, IGridCell b)
             {
                 if (a != null && b != null)
                     return fScore[a].CompareTo(fScore[b]);
@@ -29,12 +29,12 @@ namespace TowerDefence.World.Grid
 
         public bool Working { get; set; }
 
-        private readonly List<IGridNode> closed = new();
-        private readonly List<IGridNode> open = new();
-        private readonly Dictionary<IGridNode, IGridNode> vistedNodes = new();
-        private readonly Dictionary<IGridNode, float> gScore = new();
-        private readonly Dictionary<IGridNode, float> hScore = new();
-        private readonly Dictionary<IGridNode, float> fScore = new();
+        private readonly List<IGridCell> closed = new();
+        private readonly List<IGridCell> open = new();
+        private readonly Dictionary<IGridCell, IGridCell> vistedNodes = new();
+        private readonly Dictionary<IGridCell, float> gScore = new();
+        private readonly Dictionary<IGridCell, float> hScore = new();
+        private readonly Dictionary<IGridCell, float> fScore = new();
 
         // this function is the C# implementation of the algorithm presented on the wikipedia page
         // start and goal are the nodes in the graph we should find a path for
@@ -42,7 +42,7 @@ namespace TowerDefence.World.Grid
         // returns null if no path is found
         //
         // this function is NOT thread-safe (due to using static data for GC optimization)
-        public IList<IGridNode> GetPath(IGridNode start, IGridNode goal)
+        public IList<IGridCell> GetPath(IGridCell start, IGridCell goal)
         {
             if (start == null || goal == null)
             {
@@ -63,7 +63,7 @@ namespace TowerDefence.World.Grid
             fScore.Add(start, hScore[start]);
 
             OpenSorter sorter = new OpenSorter(fScore);
-            IGridNode current, previousNode = null;
+            IGridCell current, previousNode = null;
 
             float tentativeGScore;
             bool tentativeIsBetter;
@@ -73,7 +73,7 @@ namespace TowerDefence.World.Grid
                 current = open[0];
                 if (current == goal)
                 {
-                    return ReconstructPath(new List<IGridNode>(), vistedNodes, goal);
+                    return ReconstructPath(new List<IGridCell>(), vistedNodes, goal);
                 }
 
                 open.Remove(current);
@@ -83,7 +83,7 @@ namespace TowerDefence.World.Grid
                 {
                     previousNode = vistedNodes[current];
                 }
-                foreach (IGridNode nextNode in current.ConnectedNodes)
+                foreach (IGridCell nextNode in current.ConnectedCells)
                 {
                     if (previousNode != nextNode && !closed.Contains(nextNode))
                     {
@@ -114,13 +114,13 @@ namespace TowerDefence.World.Grid
             return null;
         }
 
-        private static IList<IGridNode> ReconstructPath(IList<IGridNode> path, Dictionary<IGridNode, IGridNode> visitedNodes, IGridNode currentNode)
+        private static IList<IGridCell> ReconstructPath(IList<IGridCell> path, Dictionary<IGridCell, IGridCell> visitedCells, IGridCell currentCell)
         {
-            if (visitedNodes.ContainsKey(currentNode))
+            if (visitedCells.ContainsKey(currentCell))
             {
-                ReconstructPath(path, visitedNodes, visitedNodes[currentNode]);
+                ReconstructPath(path, visitedCells, visitedCells[currentCell]);
             }
-            path.Add(currentNode);
+            path.Add(currentCell);
             return path;
         }
     }

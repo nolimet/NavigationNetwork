@@ -7,7 +7,7 @@ namespace TowerDefence.World.Grid
 {
     internal class GridWorld
     {
-        private IEnumerable<IGridNode> world;
+        private IEnumerable<IGridCell> world;
         private readonly GridGenerator gridGenerator = new();
         private readonly GridVisualGenerator visualGenerator;
         private readonly List<PathFinder> pathfinderPool = new();
@@ -24,10 +24,10 @@ namespace TowerDefence.World.Grid
             await visualGenerator.CreateVisuals(world, settings);
         }
 
-        public async UniTask<IEnumerable<IGridNode>> GetPath(IGridNode start, IGridNode end)
+        public async UniTask<IEnumerable<IGridCell>> GetPath(IGridCell start, IGridCell end)
         {
             PathFinder pathFinder;
-            IEnumerable<IGridNode> path;
+            IEnumerable<IGridCell> path;
             if (pathfinderPool.Any(x => !x.Working))
             {
                 pathFinder = pathfinderPool.First(x => !x.Working);

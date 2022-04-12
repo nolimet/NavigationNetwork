@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace TowerDefence.World.Grid.Data
 {
-    internal interface IGridNode
+    internal interface IGridCell
     {
         Vector2Int Position { get; }
-        float NodeWeight { get; }
+        float CellWeight { get; }
         bool HasStructure { get; }
         bool HasVirtualStructure { get; }
-        IReadOnlyCollection<IGridNode> ConnectedNodes { get; }
+        IReadOnlyCollection<IGridCell> ConnectedCells { get; }
 
-        float GetCost(IGridNode goal);
+        float GetCost(IGridCell goal);
     }
 }

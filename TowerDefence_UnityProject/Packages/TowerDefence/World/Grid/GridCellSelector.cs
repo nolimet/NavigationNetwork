@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace TowerDefence.World.Grid
 {
-    internal class GridNodeSelector
+    internal class GridCellSelector
     {
         private readonly ISelectionModel selectionModel;
         private readonly BindingContext context = new(true);
 
-        public GridNodeSelector(ISelectionModel selectionModel)
+        public GridCellSelector(ISelectionModel selectionModel)
         {
             this.selectionModel = selectionModel;
 
@@ -21,11 +21,11 @@ namespace TowerDefence.World.Grid
 
         private void OnSelectionChanged(IList<ISelectable> selection)
         {
-            if (selection.Any(x => x is SelectableNode))
+            if (selection.Any(x => x is SelectableCell))
             {
-                var selectedNode = selection.First(x => x is SelectableNode) as SelectableNode;
+                var selectedCell = selection.First(x => x is SelectableCell) as SelectableCell;
 
-                Debug.Log(selectedNode.GridNode.Position);
+                Debug.Log(selectedCell.GridNode.Position);
             }
         }
     }

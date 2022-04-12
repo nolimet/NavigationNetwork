@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TowerDefence.Entities.Components.Data;
@@ -15,7 +16,7 @@ namespace TowerDefence.Entities.Components
             this.diContainer = diContainer;
         }
 
-        public async Task<IEnumerable<IComponent>> GetComponents(IEnumerable<ComponentData> componentDatas, Func<IComponent, Task<IComponent>> InitHandler)
+        public async Task<IEnumerable<IComponent>> GetComponents(IEnumerable<ComponentData> componentDatas, Func<IComponent, UniTask<IComponent>> InitHandler)
         {
             List<IComponent> components = new();
             foreach (var componentData in componentDatas)
@@ -26,13 +27,13 @@ namespace TowerDefence.Entities.Components
                 components.Add(component);
             }
 
-            List<Task> componentTasks = new();
+            List<UniTask> componentTasks = new();
             foreach (var component in components)
             {
                 componentTasks.Add(InitHandler(component));
             }
 
-            await componentTasks.WaitForAll();
+            await UniTask.WhenAll(componentTasks);
 
             return components;
         }

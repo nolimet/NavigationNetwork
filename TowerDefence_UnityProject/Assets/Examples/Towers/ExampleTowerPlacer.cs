@@ -1,4 +1,5 @@
-﻿using TowerDefence.Entities.Towers;
+﻿using Cysharp.Threading.Tasks;
+using TowerDefence.Entities.Towers;
 using UnityEngine;
 using Zenject;
 
@@ -15,7 +16,7 @@ namespace Examples.Towers
                 var cam = Camera.main;
                 var pos = cam.ScreenToWorldPoint(Input.mousePosition);
 
-                towerService.PlaceTower("Example", pos).ExcecuteTask();
+                towerService.PlaceTower("Example", pos, default).Preserve().Forget();
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))

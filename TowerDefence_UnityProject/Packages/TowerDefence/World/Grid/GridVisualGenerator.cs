@@ -24,7 +24,7 @@ namespace TowerDefence.World.Grid
             this.world = world;
         }
 
-        public async UniTask CreateVisuals(IEnumerable<IGridNode> nodes, GridSettings gridSettings)
+        public async UniTask CreateVisuals(IEnumerable<IGridCell> nodes, GridSettings gridSettings)
         {
             DestroyTiles();
 
@@ -89,14 +89,14 @@ namespace TowerDefence.World.Grid
                 }
             }
 
-            void CreateRenderer(Mesh m, IGridNode node)
+            void CreateRenderer(Mesh m, IGridCell cell)
             {
-                var g = new GameObject($"Tile -{node.Position}", typeof(MeshFilter), typeof(MeshRenderer));
+                var g = new GameObject($"Tile -{cell.Position}", typeof(MeshFilter), typeof(MeshRenderer));
                 g.transform.SetParent(world.TileContainer);
                 g.transform.position = new Vector3
                 (
-                    x: worldSettings.TileSize.x * node.Position.x - worldSettings.TileSize.x / 2 * gridSettings.GridWidth,
-                    y: worldSettings.TileSize.y * node.Position.y - worldSettings.TileSize.y / 2 * gridSettings.GridHeight,
+                    x: worldSettings.TileSize.x * cell.Position.x - worldSettings.TileSize.x / 2 * gridSettings.GridWidth,
+                    y: worldSettings.TileSize.y * cell.Position.y - worldSettings.TileSize.y / 2 * gridSettings.GridHeight,
                     z: 0
                 );
 
@@ -107,10 +107,10 @@ namespace TowerDefence.World.Grid
 
                 r.sharedMaterial = tileMaterial;
 
-                mf.mesh = m;
+                mf.sharedMesh = m;
 
-                var selectableNode = g.AddComponent<SelectableNode>();
-                selectableNode.GridNode = node;
+                var selectableNode = g.AddComponent<SelectableCell>();
+                selectableNode.GridNode = cell;
 
                 var collider = g.AddComponent<BoxCollider2D>();
                 collider.size = worldSettings.TileSize;
