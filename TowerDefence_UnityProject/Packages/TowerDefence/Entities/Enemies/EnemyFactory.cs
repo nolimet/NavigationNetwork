@@ -1,4 +1,5 @@
-﻿using DataBinding;
+﻿using Cysharp.Threading.Tasks;
+using DataBinding;
 using System.Linq;
 using System.Threading.Tasks;
 using TowerDefence.Entities.Components;
@@ -47,7 +48,7 @@ namespace TowerDefence.Entities.Enemies
             enemyObject.Setup(enemyModel, outHealthAction);
 
             return enemyObject;
-            async Task<IComponent> InitHandler(IComponent component)
+            async UniTask<IComponent> InitHandler(IComponent component)
             {
                 if (component is IInitializable initializable)
                 {
