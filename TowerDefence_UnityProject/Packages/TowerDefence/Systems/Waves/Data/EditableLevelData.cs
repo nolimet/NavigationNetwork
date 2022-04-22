@@ -21,16 +21,18 @@ namespace TowerDefence.Systems.Waves.Data
         internal EditablePathData Pathdata { get => pathdata; set => pathdata = value; }
         internal EditableWave[] Waves { get => waves; set => waves = value; }
 
-        public LevelData ToLevelData()
+        public LevelData ToLevelDataPath()
         {
             var waves = new Wave[Waves?.Length ?? 0];
 
             return new LevelData(waves, Pathdata);
         }
 
-        internal GridSettings ToGridSettings()
+        internal LevelData ToLevelDataGrid()
         {
-            return gridSettings;
+            var waves = new Wave[Waves?.Length ?? 0];
+
+            return new LevelData(waves, gridSettings);
         }
 
         public void FromLevelData(LevelData levelData)
@@ -209,13 +211,13 @@ namespace TowerDefence.Systems.Waves.Data
             /// <summary>
             /// Grid weights and layout. 255 is not traversable
             /// </summary>
-            public EditableGridLayout GridLayout;
+            public EditableLayoutNode[] nodes;
 
             public EditableGridSettings(int gridHeight, int gridWidth, GridSettings.Cell[] nodes, Vector2Int[] entryPoints, Vector2Int[] endPoints)
             {
                 GridHeight = gridHeight;
                 GridWidth = gridWidth;
-                this.GridLayout = nodes;
+                this.nodes = ((EditableGridLayout)nodes).nodes;
                 this.EntryPoints = entryPoints;
                 this.EndPoints = endPoints;
             }
@@ -223,7 +225,7 @@ namespace TowerDefence.Systems.Waves.Data
             [System.Serializable]
             internal class EditableGridLayout
             {
-                public EditableLayoutNode[] nodes;
+                public EditableLayoutNode[] nodes = new EditableLayoutNode[0];
 
                 public int Length => nodes.Length;
 
@@ -281,10 +283,10 @@ namespace TowerDefence.Systems.Waves.Data
 
             public static implicit operator GridSettings(EditableGridSettings v)
             {
-                var nodes = new GridSettings.Cell[v.GridLayout.Length];
+                var nodes = new GridSettings.Cell[v.nodes.Length];
                 for (int i = 0; i < nodes.Length; i++)
                 {
-                    nodes[i] = v.GridLayout.nodes[i];
+                    nodes[i] = v.nodes[i];
                 }
                 return new GridSettings(v.GridHeight, v.GridWidth, nodes, v.EntryPoints, v.EndPoints);
             }

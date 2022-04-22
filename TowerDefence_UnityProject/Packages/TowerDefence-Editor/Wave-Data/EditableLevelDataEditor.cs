@@ -81,12 +81,22 @@ namespace TowerDefence.Systems.Waves.Data
                 DrawPathData();
 
                 EditorGUILayout.PropertyField(waves);
-                DrawGridSettings();
+                EditorGUILayout.PropertyField(gridSettingData);
+                UpdateGridSettings();
+                //DrawGridSettings();
 
                 if (changedScope.changed)
                 {
                     serializedObject.ApplyModifiedProperties();
                 }
+            }
+
+            void UpdateGridSettings()
+            {
+                var width = gridSettingData.FindPropertyRelative("GridWidth");
+                var height = gridSettingData.FindPropertyRelative("GridHeight");
+                var nodes = gridSettingData.FindPropertyRelative("nodes");
+                nodes.arraySize = height.intValue * width.intValue;
             }
 
             void DrawPathData()
@@ -157,79 +167,50 @@ namespace TowerDefence.Systems.Waves.Data
                     }
                 }
             }
+        }
 
-            void DrawGridSettings()
+        private void SavePath(string extension, Formatting formatting)
+        {
+            string path = EditorUtility.SaveFilePanel("Select Save Location", Application.dataPath, target.name, extension);
+            var file = new FileInfo(path);
+            if (!file.Directory.Exists)
             {
-                if (gridSettingData.isExpanded = EditorGUILayout.Foldout(gridSettingData.isExpanded, gridSettingData.displayName))
-                {
-                    using (new EditorGUI.IndentLevelScope(1))
-                    {
-                        var width = gridSettingData.FindPropertyRelative("GridWidth");
-                        var height = gridSettingData.FindPropertyRelative("GridHeight");
-                        EditorGUILayout.PropertyField(height);
-                        EditorGUILayout.PropertyField(width);
-
-                        var layout = gridSettingData.FindPropertyRelative("gridLayout");
-                        var nodes = layout.FindPropertyRelative("nodes");
-                        if (nodes.isExpanded = EditorGUILayout.Foldout(nodes.isExpanded, nodes.displayName))
-                        {
-                            using (new EditorGUI.IndentLevelScope(1))
-                            {
-                                nodes.arraySize = height.intValue * width.intValue;
-                                for (int i = 0; i < nodes.arraySize; i++)
-                                {
-                                    var node = nodes.GetArrayElementAtIndex(i);
-                                    EditorGUILayout.PropertyField(node.FindPropertyRelative("weight"));
-                                }
-                            }
-                        }
-                    }
-                }
+                file.Directory.Create();
             }
 
-            void SavePath(string extension, Formatting formatting)
+            if (file.Exists)
             {
-                string path = EditorUtility.SaveFilePanel("Select Save Location", Application.dataPath, target.name, extension);
-                var file = new FileInfo(path);
-                if (!file.Directory.Exists)
-                {
-                    file.Directory.Create();
-                }
-
-                if (file.Exists)
-                {
-                    file.Delete();
-                }
-
-                using (var stream = File.CreateText(path))
-                {
-                    stream.Write(JsonConvert.SerializeObject((target as EditableLevelData).ToLevelData(), formatting));
-                }
-
-                AssetDatabase.Refresh();
+                file.Delete();
             }
 
-            void SaveGrid(string extension, Formatting formatting)
+            using (var stream = File.CreateText(path))
             {
-                string path = EditorUtility.SaveFilePanel("Select Save Location", Application.dataPath, target.name, extension);
-                var file = new FileInfo(path);
-                if (!file.Directory.Exists)
-                {
-                    file.Directory.Create();
-                }
-
-                if (file.Exists)
-                {
-                    file.Delete();
-                }
-
-                using (var stream = File.CreateText(path))
-                {
-                    stream.Write(JsonConvert.SerializeObject((target as EditableLevelData).ToGridSettings(), formatting));
-                }
-
-                AssetDatabase.Refresh();
+                stream.Write(JsonConvert.SerializeObject((target as EditableLevelData).ToLevelDataPath(), formatting));
             }
+
+            AssetDatabase.Refresh();
+        }
+
+        private void SaveGrid(string extension, Formatting formatting)
+        {
+            string path = EditorUtility.SaveFilePanel("Select Save Location", Application.dataPath, target.name, extension);
+            var file = new FileInfo(path);
+            if (!file.Directory.Exists)
+            {
+                file.Directory.Create();
+            }
+
+            if (file.Exists)
+            {
+                file.Delete();
+            }
+
+            using (var stream = File.CreateText(path))
+            {
+                stream.Write(JsonConvert.SerializeObject((target as EditableLevelData).ToLevelDataGrid(), formatting));
+            }
+
+            AssetDatabase.Refresh();
         }
     }
 }
