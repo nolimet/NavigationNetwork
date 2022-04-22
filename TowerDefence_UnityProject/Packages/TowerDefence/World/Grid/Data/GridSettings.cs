@@ -6,7 +6,7 @@ using UnityEngine;
 namespace TowerDefence.World.Grid.Data
 {
     [Serializable]
-    internal sealed class GridSettings
+    internal readonly struct GridSettings
     {
         public GridSettings(int gridHeight, int gridWidth, Cell[] cells, Vector2Int[] entryPoints, Vector2Int[] endPoints)
         {
