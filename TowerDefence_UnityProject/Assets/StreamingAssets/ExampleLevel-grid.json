@@ -1,406 +1,423 @@
 {
-  "Nodes": [
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    },
-    {
-      "isTraversable": 0,
-      "weight": 0
-    }
+  "Waves": [
+    {}
   ],
-  "GridHeight": 10,
-  "GridWidth": 10
+  "gridData": {
+    "EntryPoints": [
+      {
+        "x": 0,
+        "y": 0
+      }
+    ],
+    "EndPoints": [
+      {
+        "x": 9,
+        "y": 9
+      }
+    ],
+    "GridHeight": 10,
+    "GridWidth": 10,
+    "Cells": [
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      },
+      {
+        "isTraversable": 0,
+        "weight": 0
+      }
+    ]
+  }
 }
