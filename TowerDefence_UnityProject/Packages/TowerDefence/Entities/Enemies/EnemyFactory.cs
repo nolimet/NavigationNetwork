@@ -1,7 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using DataBinding;
 using System.Linq;
-using System.Threading.Tasks;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
 using TowerDefence.Entities.Enemies.Components.Interfaces;
@@ -35,7 +34,7 @@ namespace TowerDefence.Entities.Enemies
             await tasks.WaitForAll();
         }
 
-        public async Task<IEnemyObject> CreateEnemy(ComponentConfigurationObject componentConfiguration, AssetReferenceT<GameObject> enemyBase, UnityAction<IEnemyObject> outHealthAction)
+        public async UniTask<IEnemyObject> CreateEnemy(ComponentConfigurationObject componentConfiguration, AssetReferenceT<GameObject> enemyBase, UnityAction<IEnemyObject> outHealthAction)
         {
             var enemyGameObject = await enemyBase.InstantiateAsync(worldContainer.EnemyContainer, false) as GameObject;
 

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TowerDefence.Entities.Enemies.Components;
 using TowerDefence.Entities.Enemies.Models;
 using TowerDefence.World;
@@ -29,7 +29,7 @@ namespace TowerDefence.Entities.Enemies
         }
 
         //TODO Simplify workflow and add a enemy Creation service or something similar
-        public async Task<IEnemyObject> CreateNewEnemy(string id, World.Path.Data.PathWorldData.AnimationCurve3D path)
+        public async UniTask<IEnemyObject> CreateNewEnemy(string id, World.Path.Data.PathWorldData.AnimationCurve3D path)
         {
             var components = configurationData.Enemies[id];
             var baseObject = configurationData.EnemyBaseObjects[components.BaseId];

@@ -88,7 +88,7 @@ namespace TowerDefence.Examples.Paths
 
             var levelData = JsonConvert.DeserializeObject<LevelData>(json);
 
-            worldController.SetPath(levelData.path);
+            worldController.SetPath(levelData.path.Value);
         }
 
         public async void BuildGridWorld()
@@ -101,7 +101,7 @@ namespace TowerDefence.Examples.Paths
         public async void CreateWalker()
         {
             var path = worldController.PathWorldData.GetRandomPath();
-            var result = await enemyController.CreateNewEnemy("Walker", path);
+            await enemyController.CreateNewEnemy("Walker", path);
         }
 
         public async void CreateWalkerDelayed(float delay)
