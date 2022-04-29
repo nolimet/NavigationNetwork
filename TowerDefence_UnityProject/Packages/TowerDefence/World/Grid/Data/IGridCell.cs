@@ -6,6 +6,7 @@ namespace TowerDefence.World.Grid.Data
     internal interface IGridCell
     {
         Vector2Int Position { get; }
+        Vector2 WorldPosition { get; }
         float CellWeight { get; }
         bool HasStructure { get; }
         bool HasVirtualStructure { get; }

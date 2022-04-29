@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,10 +24,13 @@ namespace TowerDefence.World.Grid.Data
 
         public Vector2Int Position { get; }
 
-        public GridCell(float cellWeight, Vector2Int position)
+        public Vector2 WorldPosition { get; }
+
+        public GridCell(float cellWeight, Vector2Int position, Vector2 worldPosition)
         {
             CellWeight = cellWeight;
             Position = position;
+            this.WorldPosition = worldPosition;
         }
 
         public void SetConnectedCells(IReadOnlyCollection<IGridCell> connectedCells)
