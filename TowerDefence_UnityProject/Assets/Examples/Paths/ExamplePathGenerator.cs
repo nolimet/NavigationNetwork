@@ -5,7 +5,6 @@ using TowerDefence.Entities.Enemies;
 using TowerDefence.Systems.Waves.Data;
 using TowerDefence.World;
 using TowerDefence.World.Grid;
-using TowerDefence.World.Grid.Data;
 using TowerDefence.World.Path.Data;
 using UnityEngine;
 using Zenject;
@@ -25,6 +24,7 @@ namespace TowerDefence.Examples.Paths
         [Inject] private EnemyController enemyController = null;
         [Inject] private EnemyConfigurationData enemyConfiguration = null;
         [Inject] private GridWorld gridWorld = null;
+        private LevelData levelData;
 
         [ContextMenu("Generate Example Path")]
         public void GenerateExamplePath()
@@ -94,8 +94,11 @@ namespace TowerDefence.Examples.Paths
         public async void BuildGridWorld()
         {
             string json = File.ReadAllText(gridWorldPath);
-            var levelData = JsonConvert.DeserializeObject<GridSettings>(json);
-            await gridWorld.CreateWorld(levelData);
+            levelData = JsonConvert.DeserializeObject<LevelData>(json);
+            if (levelData.gridSettings.HasValue)
+                await gridWorld.CreateWorld(levelData.gridSettings.Value);
+            else
+                Debug.LogError("NO GRIDWORLD");
         }
 
         public async void CreateWalker()
@@ -109,6 +112,14 @@ namespace TowerDefence.Examples.Paths
             await new WaitForSeconds(delay);
             var path = worldController.PathWorldData.GetRandomPath();
             await enemyController.CreateNewEnemy("Walker", path);
+        }
+
+        public async void CreateGridWalker()
+        {
+            var gridSettings = levelData.gridSettings.Value;
+            var start = gridSettings.EntryPoints[UnityEngine.Random.Range(0, gridSettings.EntryPoints.Length)];
+            var end = gridSettings.EndPoints[UnityEngine.Random.Range(0, gridSettings.EndPoints.Length)];
+            await enemyController.CreateNewEnemy("GridWalker", gridWorld.GetCell(start), gridWorld.GetCell(end));
         }
     }
 }

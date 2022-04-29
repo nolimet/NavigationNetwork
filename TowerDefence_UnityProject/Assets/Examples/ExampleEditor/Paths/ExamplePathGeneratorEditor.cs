@@ -46,6 +46,11 @@ namespace TowerDefence.Examples.Paths
                             }
                         }
                     }
+
+                    if (GUILayout.Button("Create grid walker"))
+                    {
+                        target.CreateGridWalker();
+                    }
                     GUILayout.FlexibleSpace();
                 }
                 if (target.ConstructedPath != null && Application.isPlaying)
