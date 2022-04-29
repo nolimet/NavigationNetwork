@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.World.Grid.Data;
@@ -36,6 +36,12 @@ namespace TowerDefence.World.Grid
                         neightbours.Add(GetNode(x - 1, y));
                         neightbours.Add(GetNode(x + 1, y));
 
+                        //Generate diagonals
+                        neightbours.Add(GetNode(x + 1, y + 1));
+                        neightbours.Add(GetNode(x + 1, y - 1));
+                        neightbours.Add(GetNode(x - 1, y + 1));
+                        neightbours.Add(GetNode(x - 1, y - 1));
+
                         cells[x, y].SetConnectedCells(neightbours.Where(x => x != null).ToArray());
                         neightbours.Clear();
                     }
@@ -44,7 +50,7 @@ namespace TowerDefence.World.Grid
                 IGridCell GetNode(int x, int y)
                 {
                     if (x >= 0 && y >= 0 && x < settings.GridWidth && y < settings.GridHeight)
-                        return cells[y, x];
+                        return cells[x, y];
                     return default;
                 }
             }
