@@ -8,13 +8,13 @@ namespace TowerDefence.Systems.Waves.Data
     [Serializable]
     public readonly struct LevelData
     {
-        [JsonProperty("Waves", Required = Required.AllowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("Waves", Required = Required.DisallowNull)]
         public readonly Wave[] waves;
 
-        [JsonProperty("Path", Required = Required.AllowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("Path", NullValueHandling = NullValueHandling.Ignore)]
         public readonly PathData? path;
 
-        [JsonProperty("gridData", Required = Required.AllowNull, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty("gridData", NullValueHandling = NullValueHandling.Ignore)]
         internal readonly GridSettings? gridSettings;
 
         internal LevelData(Wave[] waves, PathData path)
