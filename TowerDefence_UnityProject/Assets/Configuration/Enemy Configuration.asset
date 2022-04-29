@@ -24,3 +24,7 @@ MonoBehaviour:
     baseId: default
     componentConfiguration: {fileID: 11400000, guid: db7783efdf0c0d84c9df4721caf1c902,
       type: 2}
+  - id: GridWalker
+    baseId: default
+    componentConfiguration: {fileID: 11400000, guid: 95ed836dd955c424c8a4278304be3143,
+      type: 2}
