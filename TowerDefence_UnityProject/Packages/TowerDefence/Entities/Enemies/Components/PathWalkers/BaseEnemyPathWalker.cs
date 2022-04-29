@@ -14,7 +14,7 @@ namespace TowerDefence.Entities.Enemies.Components
         [JsonIgnore] public abstract float PathProgress { get; protected set; }
         [JsonIgnore] public short TickPriority => short.MinValue;
 
-        public void PostInit(IEnemyObject enemyObject, IEnemyModel enemyModel)
+        public virtual void PostInit(IEnemyObject enemyObject, IEnemyModel enemyModel)
         {
             self = enemyObject;
             model = enemyModel;

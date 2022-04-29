@@ -4,12 +4,13 @@ using System.Linq;
 using TowerDefence.Entities.Enemies.Components;
 using TowerDefence.Entities.Enemies.Models;
 using TowerDefence.World;
+using TowerDefence.World.Grid.Data;
 using UnityEngine;
 using Zenject;
 
 namespace TowerDefence.Entities.Enemies
 {
-    public class EnemyController : ITickable
+    internal class EnemyController : ITickable
     {
         private readonly IEnemiesModel model;
         private readonly WorldContainer worldContainer;
@@ -31,15 +32,28 @@ namespace TowerDefence.Entities.Enemies
         //TODO Simplify workflow and add a enemy Creation service or something similar
         public async UniTask<IEnemyObject> CreateNewEnemy(string id, World.Path.Data.PathWorldData.AnimationCurve3D path)
         {
-            var components = configurationData.Enemies[id];
-            var baseObject = configurationData.EnemyBaseObjects[components.BaseId];
-            var newEnemy = await enemyFactory.CreateEnemy(components.ComponentConfiguration, baseObject, EnemyDied);
+            var newEnemy = await enemyFactory.CreateEnemy(id, EnemyDied);
 
             if (newEnemy.Model.Components.Any(x => x is StaticPathWalker))
             {
                 var walker = newEnemy.Model.Components.First(x => x is StaticPathWalker) as StaticPathWalker;
                 walker.SetPath(path);
                 walker.ReachedEnd = EnemyDied;
+            }
+
+            model.Enemies.Add(newEnemy);
+            return newEnemy;
+        }
+
+        public async UniTask<IEnemyObject> CreateNewEnemy(string id, IGridCell startCell, IGridCell endCell)
+        {
+            var newEnemy = await enemyFactory.CreateEnemy(id, EnemyDied);
+
+            if (newEnemy.Model.Components.Any(x => x is GridPathWalker))
+            {
+                var pathFinder = newEnemy.Model.Components.First(x => x is GridPathWalker) as GridPathWalker;
+
+                await pathFinder.SetStartEnd(startCell, endCell);
             }
 
             model.Enemies.Add(newEnemy);

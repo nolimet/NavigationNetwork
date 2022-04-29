@@ -2,12 +2,10 @@
 using DataBinding;
 using System.Linq;
 using TowerDefence.Entities.Components;
-using TowerDefence.Entities.Components.Data;
 using TowerDefence.Entities.Enemies.Components.Interfaces;
 using TowerDefence.Entities.Enemies.Models;
 using TowerDefence.World;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 
 namespace TowerDefence.Entities.Enemies
@@ -34,8 +32,12 @@ namespace TowerDefence.Entities.Enemies
             await tasks.WaitForAll();
         }
 
-        public async UniTask<IEnemyObject> CreateEnemy(ComponentConfigurationObject componentConfiguration, AssetReferenceT<GameObject> enemyBase, UnityAction<IEnemyObject> outHealthAction)
+        public async UniTask<IEnemyObject> CreateEnemy(string id, UnityAction<IEnemyObject> outHealthAction)
         {
+            var configurationData = enemyConfiguration.Enemies[id];
+            var enemyBase = enemyConfiguration.EnemyBaseObjects[configurationData.BaseId];
+            var componentConfiguration = configurationData.ComponentConfiguration;
+
             var enemyGameObject = await enemyBase.InstantiateAsync(worldContainer.EnemyContainer, false) as GameObject;
 
             var enemyModel = ModelFactory.Create<IEnemyModel>();
