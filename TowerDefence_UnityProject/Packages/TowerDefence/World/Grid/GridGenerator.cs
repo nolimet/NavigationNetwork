@@ -1,12 +1,19 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.World.Grid.Data;
+using UnityEngine;
 
 namespace TowerDefence.World.Grid
 {
     internal class GridGenerator
     {
+        private readonly GridWorldSettings worldSettings;
+
+        public GridGenerator(GridWorldSettings worldSettings)
+        {
+            this.worldSettings = worldSettings;
+        }
         public IEnumerable<IGridCell> CreateNodes(GridSettings settings)
         {
             Validate();
@@ -44,12 +51,16 @@ namespace TowerDefence.World.Grid
 
             void CreateCells()
             {
+                var offset = worldSettings.TileSize * new Vector2(settings.GridWidth, settings.GridHeight) / 2f - worldSettings.TileSize / 2f;
                 int counter = 0;
                 for (int y = 0; y < settings.GridHeight; y++)
                 {
                     for (int x = 0; x < settings.GridWidth; x++)
                     {
-                        cells[y, x] = new GridCell(settings.Cells[counter].weight, new(x, y));
+                        cells[y, x] = new GridCell(
+                            settings.Cells[counter].weight,
+                            new(x, y),
+                            new Vector2(x * worldSettings.TileSize.x, y * worldSettings.TileSize.y) - offset);
                         returnValue.Add(cells[y, x]);
                         counter++;
                     }
@@ -58,8 +69,9 @@ namespace TowerDefence.World.Grid
 
             void Validate()
             {
+                if (settings.Cells == null) throw new NullReferenceException("No Cells");
                 int gridCount = settings.GridWidth * settings.GridHeight;
-                if (gridCount != settings.Cells.Length) throw new Exception($"layout and size do not match! - {gridCount} vs {settings.Cells.Length}");
+                if (gridCount != settings.Cells.Length) throw new Exception($"layout and size do not match! - {gridCount} vs {settings.Cells?.Length}");
             }
         }
     }

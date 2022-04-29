@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.World.Grid.Data;
+using UnityEngine;
 
 namespace TowerDefence.World.Grid
 {
     internal class GridWorld
     {
         private IEnumerable<IGridCell> world;
-        private readonly GridGenerator gridGenerator = new();
+        private readonly GridGenerator gridGenerator;
         private readonly GridVisualGenerator visualGenerator;
         private readonly List<PathFinder> pathfinderPool = new();
 
@@ -44,6 +45,11 @@ namespace TowerDefence.World.Grid
 
             pathfinderPool.Add(pathFinder);
             return path;
+        }
+
+        public IGridCell GetCell(Vector2Int position)
+        {
+            return world.FirstOrDefault(x => x.Position.Equals(position));
         }
     }
 }
