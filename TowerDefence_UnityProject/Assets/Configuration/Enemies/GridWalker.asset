@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   components:
   - type: TowerDefence.Entities.Enemies.Components.BaseComponents.EnemySettings
-    data: '{"TypeName":"GridWalker","BaseName":"GridWalker","MaxHealth":10.0,"Speed":5.0}'
+    data: '{"TypeName":"GridWalker","BaseName":"GridWalker","MaxHealth":10.0,"Speed":2.0}'
   - type: TowerDefence.Entities.Enemies.Components.GridPathWalker
-    data: '{"moveSpeed":0.5}'
+    data: '{}'
   type: 0
