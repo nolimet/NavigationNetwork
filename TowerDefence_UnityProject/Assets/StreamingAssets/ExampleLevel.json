@@ -1,11 +1,24 @@
 {
   "Waves": [
-    {}
+    {
+      "EnemyGroups": [
+        {
+          "EnemyID": "Walker",
+          "PathID": 0,
+          "SpawnTime": [
+            0.0,
+            0.2,
+            0.3,
+            0.5
+          ]
+        }
+      ]
+    }
   ],
   "Path": {
     "PathPoints": [
       {
-        "Id": "9c35b01b-239c-496f-92d8-f88e8c9655a7",
+        "Id": "b8c5ae74-4c79-4dc6-a9c7-7b8f60fe557a",
         "Position": {
           "x": 0.0,
           "y": 0.0,
@@ -13,13 +26,12 @@
         },
         "Type": "Entrance",
         "Connections": [
-          "1352169c-d3ce-4a09-9f9b-ec74f3074361",
-          "72985b3d-d9af-466d-8924-23755eb27797",
-          "f07de4c6-da89-47c3-a781-2283c4cf1e9d"
+          "62555c2e-8893-45bb-8bac-33e26b9bc40d",
+          "512af808-9ef8-4899-bd97-24000f9f507b"
         ]
       },
       {
-        "Id": "1352169c-d3ce-4a09-9f9b-ec74f3074361",
+        "Id": "62555c2e-8893-45bb-8bac-33e26b9bc40d",
         "Position": {
           "x": 5.0,
           "y": 5.0,
@@ -27,12 +39,11 @@
         },
         "Type": "Point",
         "Connections": [
-          "746bebeb-8336-479a-893e-73ae2a9c1d1c",
-          "f07de4c6-da89-47c3-a781-2283c4cf1e9d"
+          "566c1a2f-ef02-48e1-91e4-edc639a89b3b"
         ]
       },
       {
-        "Id": "72985b3d-d9af-466d-8924-23755eb27797",
+        "Id": "512af808-9ef8-4899-bd97-24000f9f507b",
         "Position": {
           "x": 5.0,
           "y": -5.0,
@@ -40,11 +51,11 @@
         },
         "Type": "Point",
         "Connections": [
-          "af91e27e-bbb8-41eb-858f-1f3698292594"
+          "deb38afd-e251-4db2-9c56-502e8128763b"
         ]
       },
       {
-        "Id": "af91e27e-bbb8-41eb-858f-1f3698292594",
+        "Id": "deb38afd-e251-4db2-9c56-502e8128763b",
         "Position": {
           "x": 10.0,
           "y": -5.0,
@@ -52,11 +63,12 @@
         },
         "Type": "Point",
         "Connections": [
-          "6fc8c61f-a632-4b5a-b64d-d9aaca98eb49"
+          "05648f01-aadd-4236-a6a4-e1c747786c4e",
+          "566c1a2f-ef02-48e1-91e4-edc639a89b3b"
         ]
       },
       {
-        "Id": "746bebeb-8336-479a-893e-73ae2a9c1d1c",
+        "Id": "566c1a2f-ef02-48e1-91e4-edc639a89b3b",
         "Position": {
           "x": 10.0,
           "y": 5.0,
@@ -64,11 +76,11 @@
         },
         "Type": "Point",
         "Connections": [
-          "b24d5f33-292e-43db-88b6-66f63b851741"
+          "e708c52e-6861-4f66-90ef-7fcfd6359a88"
         ]
       },
       {
-        "Id": "6fc8c61f-a632-4b5a-b64d-d9aaca98eb49",
+        "Id": "05648f01-aadd-4236-a6a4-e1c747786c4e",
         "Position": {
           "x": 15.0,
           "y": -5.0,
@@ -76,11 +88,11 @@
         },
         "Type": "Point",
         "Connections": [
-          "f07de4c6-da89-47c3-a781-2283c4cf1e9d"
+          "20819bb7-5df0-4eb1-bc6e-f876955fdef5"
         ]
       },
       {
-        "Id": "b24d5f33-292e-43db-88b6-66f63b851741",
+        "Id": "e708c52e-6861-4f66-90ef-7fcfd6359a88",
         "Position": {
           "x": 15.0,
           "y": 5.0,
@@ -88,11 +100,11 @@
         },
         "Type": "Point",
         "Connections": [
-          "af91e27e-bbb8-41eb-858f-1f3698292594"
+          "20819bb7-5df0-4eb1-bc6e-f876955fdef5"
         ]
       },
       {
-        "Id": "f07de4c6-da89-47c3-a781-2283c4cf1e9d",
+        "Id": "20819bb7-5df0-4eb1-bc6e-f876955fdef5",
         "Position": {
           "x": 20.0,
           "y": 0.0,
