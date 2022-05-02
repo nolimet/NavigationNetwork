@@ -37,6 +37,7 @@ namespace TowerDefence.Entities.Enemies
             if (newEnemy.Model.Components.Any(x => x is StaticPathWalker))
             {
                 var walker = newEnemy.Model.Components.First(x => x is StaticPathWalker) as StaticPathWalker;
+
                 walker.SetPath(path);
                 walker.ReachedEnd = EnemyDied;
             }
@@ -53,6 +54,7 @@ namespace TowerDefence.Entities.Enemies
             {
                 var pathFinder = newEnemy.Model.Components.First(x => x is GridPathWalker) as GridPathWalker;
 
+                pathFinder.ReachedEnd = EnemyDied;
                 await pathFinder.SetStartEnd(startCell, endCell);
             }
 
