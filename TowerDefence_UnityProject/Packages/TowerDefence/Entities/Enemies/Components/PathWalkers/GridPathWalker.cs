@@ -1,7 +1,10 @@
 ﻿using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using NoUtil.Extentsions;
 using System.Collections.Generic;
+using System.Linq;
 using TowerDefence.Entities.Components;
+using TowerDefence.Entities.Enemies.Components.BaseComponents;
 using TowerDefence.World.Grid;
 using TowerDefence.World.Grid.Data;
 using UnityEngine;
@@ -12,6 +15,7 @@ namespace TowerDefence.Entities.Enemies.Components
     [Component(ComponentType.Enemy, typeof(IPathWalkerComponent))]
     internal class GridPathWalker : BaseEnemyPathWalker
     {
+        [JsonIgnore] private EnemySettings enemySettings;
         [JsonIgnore] private IGridCell startCell;
         [JsonIgnore] private IGridCell endCell;
 
@@ -19,8 +23,9 @@ namespace TowerDefence.Entities.Enemies.Components
         [JsonIgnore] private GridWorld gridWorld;
         [JsonIgnore] private int currentCell = 0;
 
-        [JsonProperty] private float moveSpeed = 0.5f;
         [JsonIgnore] private float moveTimer = 0f;
+        private Vector3 target = Vector3.zero;
+        private Vector3 origin = Vector3.zero;
 
         public override float PathProgress { get; protected set; }
 
@@ -30,12 +35,18 @@ namespace TowerDefence.Entities.Enemies.Components
             this.gridWorld = gridWorld;
         }
 
+        protected override void OnComponentsChanged(IList<IComponent> components)
+        {
+            if (components.TryFind(x => x is EnemySettings, out var component) && component is EnemySettings settings)
+            {
+                enemySettings = settings;
+            }
+        }
+
         public override void Tick()
         {
             if (moveTimer >= 1f)
             {
-                moveTimer = 0f;
-
                 currentCell++;
                 if (currentCell >= path.Count)
                 {
@@ -43,22 +54,39 @@ namespace TowerDefence.Entities.Enemies.Components
                 }
                 else
                 {
-                    self.Transform.position = path[currentCell].WorldPosition;
+                    moveTimer = 0f;
+                    origin = target;
+                    target = path[currentCell].WorldPosition;
                 }
             }
 
-            moveTimer += Time.deltaTime / moveSpeed;
+            self.Transform.position = Vector3.Lerp(origin, target, moveTimer);
+            moveTimer += Time.deltaTime * enemySettings.Speed;
         }
 
         public async UniTask SetStartEnd(IGridCell start, IGridCell end)
         {
+            self.Transform.position = Vector3.one * 10000f;
+
             startCell = start;
             endCell = end;
 
-            self.Transform.position = start.WorldPosition;
+            origin = start.WorldPosition;
             var path = await gridWorld.GetPath(startCell, endCell);
+            this.path.Clear();
             this.path.AddRange(path);
-            currentCell = 0;
+            if (this.path.Any())
+            {
+                currentCell = 1;
+                target = this.path[1].WorldPosition;
+                origin = start.WorldPosition;
+                self.Transform.position = start.WorldPosition;
+            }
+            else
+            {
+                model.Health = 0f;
+            }
+
         }
     }
 }
