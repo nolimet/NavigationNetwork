@@ -10,6 +10,6 @@ namespace TowerDefence.Entities.Enemies.Components.BaseComponents
         [JsonProperty] public readonly string BaseName = "";
 
         [JsonProperty] public readonly double MaxHealth = 10;
-        [JsonProperty] public readonly double Speed = 5;
+        [JsonProperty] public readonly float Speed = 5;
     }
 }
