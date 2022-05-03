@@ -20,6 +20,8 @@ namespace TowerDefence.Systems.Waves.Data
         private readonly GUIContent saveGridToJson = new("Save Grid To Json", "For development (indended json)");
         private readonly GUIContent saveGridToLvL = new("Save Grid To lvl", "For production (single line json)");
 
+        private readonly GUIContent LoadGridFromImage = new("Load grid from image", "Converts a image to GridSettings");
+
         public void OnEnable()
         {
             waves = serializedObject.FindProperty("waves");
@@ -70,6 +72,11 @@ namespace TowerDefence.Systems.Waves.Data
                 if (GUILayout.Button(saveGridToLvL))
                 {
                     SaveGrid("lvl", Formatting.None);
+                }
+
+                if (GUILayout.Button(LoadGridFromImage))
+                {
+                    LoadGrid();
                 }
 
                 GUILayout.FlexibleSpace();
@@ -211,6 +218,18 @@ namespace TowerDefence.Systems.Waves.Data
             }
 
             AssetDatabase.Refresh();
+        }
+
+        private void LoadGrid()
+        {
+            string path = EditorUtility.OpenFilePanelWithFilters("Select GridSettings Image", Application.streamingAssetsPath, new[] { "png", "png", "jpg", "jpg" });
+            var settings = GridSettingsImageImporter.Convert(path);
+
+            var target = this.target as EditableLevelData;
+            target.FromGridSettings(settings);
+            EditorUtility.SetDirty(target);
+            AssetDatabase.SaveAssets();
+            serializedObject.Update();
         }
     }
 }
