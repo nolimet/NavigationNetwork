@@ -1,10 +1,10 @@
 ﻿using NoUtil.Math;
-using System.Linq;
 using TowerDefence.Entities.Towers;
 using TowerDefence.Entities.Towers.Components.BaseComponents;
+using TowerDefence.Utility;
 using UnityEngine;
 
-namespace TowerDefence.UI.Tower
+namespace TowerDefence.UI.Tower.Range
 {
     [RequireComponent(typeof(MeshRenderer)), RequireComponent(typeof(MeshFilter))]
     public class TowerRangeDrawer : MonoBehaviour
@@ -53,10 +53,9 @@ namespace TowerDefence.UI.Tower
 
         public void DrawRange(ITowerObject tower)
         {
-            if (tower.Model.Components.Any(x => x is TowerSettings))
+            if (tower.Model.Components.TryGetComponent(out TowerSettings settings))
             {
-                var towerSettings = tower.Model.Components.First(x => x is TowerSettings) as TowerSettings;
-                DrawRange((float)towerSettings.Range);
+                DrawRange((float)settings.Range);
                 transform.position = tower.GetWorldPosition();
             }
         }

@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using TowerDefence.Entities.Towers;
+﻿using TowerDefence.Entities.Towers;
 using TowerDefence.Entities.Towers.Components.BaseComponents;
 using TowerDefence.Entities.Towers.Components.Interfaces;
+using TowerDefence.Utility;
 using UnityEngine;
 
 namespace TowerDefence.UI.Hud
@@ -22,12 +22,12 @@ namespace TowerDefence.UI.Hud
 
         public void SetValues(ITowerObject tower)
         {
-            var towerSettings = tower.Model.Components.FirstOrDefault(x => x is TowerSettings) as TowerSettings;
+            var towerSettings = tower.Model.Components.GetComponent<TowerSettings>();
 
             rangeField.SetValue(towerSettings.Range.ToString());
             towerType.SetValue(towerSettings.Name);
 
-            var damageComponent = tower.Model.Components.FirstOrDefault(x => x is IDamageComponent) as IDamageComponent;
+            var damageComponent = tower.Model.Components.GetComponent<IDamageComponent>();
             var damagePerSecond = damageComponent?.DamagePerSecond ?? 0d;
             damageField.SetValue(damagePerSecond.ToString("0.#"));
         }

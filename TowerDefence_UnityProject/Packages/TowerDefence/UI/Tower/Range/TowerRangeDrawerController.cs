@@ -1,15 +1,17 @@
 ﻿using DataBinding;
+using NoUtil.Extentsions;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TowerDefence.Entities.Towers;
 using TowerDefence.Entities.Towers.Models;
 using TowerDefence.Systems.Selection;
 using TowerDefence.Systems.Selection.Models;
+using TowerDefence.Utility;
+using TowerDefence.World.Grid;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 
-namespace TowerDefence.UI.Tower
+namespace TowerDefence.UI.Tower.Range
 {
     public class TowerRangeDrawerController
     {
@@ -46,8 +48,7 @@ namespace TowerDefence.UI.Tower
 
         private void SelectionChanged(IList<ISelectable> selection)
         {
-            var subSelection = selection.Where(x => x is ITowerObject);
-            if (subSelection.Any() && subSelection.First() is ITowerObject tower)
+            if (TryGetTower(out var tower))
             {
                 rangeDrawer.gameObject.SetActive(true);
                 rangeDrawer.DrawRange(tower);
@@ -55,6 +56,20 @@ namespace TowerDefence.UI.Tower
             else
             {
                 rangeDrawer.gameObject.SetActive(false);
+            }
+
+            bool TryGetTower(out ITowerObject tower)
+            {
+                if (selection.TryFindTower(out tower))
+                {
+                    return true;
+                }
+                else if (selection.TryFindObject<SelectableCell>(out var cell))
+                {
+                    var position = cell.GridNode.Position;
+                    return towerModels.Towers.TryFind(x => x.GetGridPosition() == position, out tower);
+                }
+                return false;
             }
         }
 
