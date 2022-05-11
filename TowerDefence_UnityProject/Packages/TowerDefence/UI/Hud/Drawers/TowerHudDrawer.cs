@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TowerDefence.UI.Hud
 {
-    public class TowerHudDrawer : MonoBehaviour
+    internal class TowerHudDrawer : HudDrawerBase<ITowerObject>
     {
         [SerializeField] private string rangeLabel, damageLabel, towerTypeLabel;
         [SerializeField] private BaseHudValueItem rangeField, damageField, towerType;
