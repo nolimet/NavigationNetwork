@@ -66,7 +66,7 @@ namespace TowerDefence.UI.Tower.Range
                 }
                 else if (selection.TryFindObject<SelectableCell>(out var cell))
                 {
-                    var position = cell.GridNode.Position;
+                    var position = cell.GridCell.Position;
                     return towerModels.Towers.TryFind(x => x.GetGridPosition() == position, out tower);
                 }
                 return false;
