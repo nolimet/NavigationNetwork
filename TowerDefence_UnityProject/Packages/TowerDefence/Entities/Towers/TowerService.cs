@@ -31,6 +31,8 @@ namespace TowerDefence.Entities.Towers
             var newTower = await towerFactory.CreateTower(configuration, position, cell);
             newTower.Transform.position = position;
 
+            towerModel.Towers.Add(newTower);
+
             return newTower;
         }
 
