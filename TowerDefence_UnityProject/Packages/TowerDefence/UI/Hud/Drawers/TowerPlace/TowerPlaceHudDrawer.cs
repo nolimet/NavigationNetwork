@@ -43,8 +43,12 @@ namespace TowerDefence.UI.Hud.PlaceTower
         private void OnButtonClicked(string towerId) => OnTowerButtonClickedCallback(towerId, selectableCell);
         public override void SetValue(ISelectable selectable)
         {
-            if (selectable is not SelectableCell selectableCell || !towerModels.CellHasTower(selectableCell.GridCell))
+            if (selectable is not SelectableCell selectableCell || towerModels.CellHasTower(selectableCell.GridCell))
+            {
+                SetActive(false);
                 return;
+            }
+
             this.selectableCell = selectableCell;
         }
     }
