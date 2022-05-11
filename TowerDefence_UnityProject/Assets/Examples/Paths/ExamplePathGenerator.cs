@@ -26,6 +26,14 @@ namespace TowerDefence.Examples.Paths
         [Inject] private GridWorld gridWorld = null;
         private LevelData levelData;
 
+        private void Update()
+        {
+            if (UnityEngine.Input.GetKeyUp(KeyCode.F1))
+            {
+                BuildGridWorld();
+            }
+        }
+
         [ContextMenu("Generate Example Path")]
         public void GenerateExamplePath()
         {
