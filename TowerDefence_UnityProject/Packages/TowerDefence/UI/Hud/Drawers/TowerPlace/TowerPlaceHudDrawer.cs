@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using TowerDefence.Entities.Towers;
+using TowerDefence.Entities.Towers.Models;
+using TowerDefence.Systems.Selection;
 using TowerDefence.World.Grid;
 using UnityEngine;
 using Zenject;
@@ -11,19 +13,21 @@ namespace TowerDefence.UI.Hud.PlaceTower
         public delegate void TowerSelectedCallback(string towerId, SelectableCell selectedCell);
         public TowerSelectedCallback OnTowerButtonClickedCallback;
 
-        [HideInInspector] public SelectableCell selectedCell;
-
+        private SelectableCell selectableCell;
         private TowerPlaceButton.Factory placeButtonFactory;
         private TowerConfigurationData towerConfiguration;
+        private ITowerModels towerModels;
         private readonly List<TowerPlaceButton> placeButtons = new();
 
         [SerializeField] private Transform buttonContainer;
 
         [Inject]
-        public void Inject(TowerPlaceButton.Factory placeButtonFactory, TowerConfigurationData towerConfiguration)
+        public void Inject(TowerPlaceButton.Factory placeButtonFactory, TowerConfigurationData towerConfiguration, ITowerModels towerModels)
         {
             this.placeButtonFactory = placeButtonFactory;
             this.towerConfiguration = towerConfiguration;
+            this.towerModels = towerModels;
+
             CreateButtons();
         }
 
@@ -36,6 +40,12 @@ namespace TowerDefence.UI.Hud.PlaceTower
             }
         }
 
-        private void OnButtonClicked(string towerId) => OnTowerButtonClickedCallback(towerId, selectedCell);
+        private void OnButtonClicked(string towerId) => OnTowerButtonClickedCallback(towerId, selectableCell);
+        public override void SetValue(ISelectable selectable)
+        {
+            if (selectable is not SelectableCell selectableCell || !towerModels.CellHasTower(selectableCell.GridCell))
+                return;
+            this.selectableCell = selectableCell;
+        }
     }
 }

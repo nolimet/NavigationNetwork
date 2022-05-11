@@ -11,6 +11,8 @@ namespace TowerDefence.UI.Hud
         }
 
         public abstract bool DrawsType(ISelectable selectable);
+
+        public abstract void SetValue(ISelectable selectable);
     }
 
     internal abstract class HudDrawerBase<T> : HudDrawerBase where T : class, ISelectable

@@ -1,6 +1,7 @@
 ﻿using TowerDefence.Entities.Towers;
 using TowerDefence.Entities.Towers.Components.BaseComponents;
 using TowerDefence.Entities.Towers.Components.Interfaces;
+using TowerDefence.Systems.Selection;
 using TowerDefence.Utility;
 using UnityEngine;
 
@@ -18,10 +19,11 @@ namespace TowerDefence.UI.Hud
             towerType.SetLabel(towerTypeLabel);
         }
 
-        public void SetActive(bool isActive) => gameObject.SetActive(isActive);
-
-        public void SetValues(ITowerObject tower)
+        public override void SetValue(ISelectable selectable)
         {
+            if (selectable is not ITowerObject tower)
+                return;
+
             var towerSettings = tower.Model.Components.GetComponent<TowerSettings>();
 
             rangeField.SetValue(towerSettings.Range.ToString());

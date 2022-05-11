@@ -1,12 +1,9 @@
 using DataBinding;
 using System.Collections.Generic;
 using System.Linq;
-using TowerDefence.Entities.Towers;
 using TowerDefence.Entities.Towers.Models;
 using TowerDefence.Systems.Selection;
 using TowerDefence.Systems.Selection.Models;
-using TowerDefence.UI.Hud.PlaceTower;
-using TowerDefence.World.Grid;
 using UnityEngine;
 using Zenject;
 
@@ -43,26 +40,9 @@ namespace TowerDefence.UI.Hud
             {
                 var drawer = hudDrawers[i];
                 bool active = drawer.DrawsType(selected);
-                drawer.SetActive(active);
-                if (active)
-                {
-                    switch (drawer)
-                    {
-                        case TowerHudDrawer towerHud:
-                            if (selected is ITowerObject towerObject)
-                                towerHud.SetValues(towerObject);
-                            else
-                                towerHud.SetActive(false);
-                            break;
 
-                        case TowerPlaceHudDrawer towerPlaceHud:
-                            if (selected is SelectableCell selectableCell && !towerModels.CellHasTower(selectableCell.GridCell))
-                                towerPlaceHud.selectedCell = selectableCell;
-                            else
-                                towerPlaceHud.gameObject.SetActive(false);
-                            break;
-                    }
-                }
+                drawer.SetActive(active);
+                drawer.SetValue(selected);
             }
         }
 
