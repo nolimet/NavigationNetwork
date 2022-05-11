@@ -25,7 +25,7 @@ namespace TowerDefence.World.Grid
             {
                 var selectedCell = selection.First(x => x is SelectableCell) as SelectableCell;
 
-                Debug.Log(selectedCell.GridNode.Position);
+                Debug.Log(selectedCell.GridCell.Position);
             }
         }
     }

@@ -110,7 +110,7 @@ namespace TowerDefence.World.Grid
                 mf.sharedMesh = m;
 
                 var selectableNode = g.AddComponent<SelectableCell>();
-                selectableNode.GridNode = cell;
+                selectableNode.GridCell = cell;
 
                 var collider = g.AddComponent<BoxCollider2D>();
                 collider.size = worldSettings.TileSize;

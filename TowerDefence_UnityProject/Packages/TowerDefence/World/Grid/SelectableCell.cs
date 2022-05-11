@@ -6,12 +6,12 @@ namespace TowerDefence.World.Grid
 {
     internal class SelectableCell : MonoBehaviour, ISelectable
     {
-        public IGridCell GridNode { get; set; }
+        public IGridCell GridCell { get; set; }
 
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
-            foreach (var cell in GridNode.ConnectedCells)
+            foreach (var cell in GridCell.ConnectedCells)
             {
                 Gizmos.DrawSphere(cell.WorldPosition, 0.5f);
             }
