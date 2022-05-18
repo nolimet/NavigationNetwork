@@ -28,6 +28,7 @@ namespace TowerDefence.World.Grid
         {
             DestroyTiles();
 
+            int heightMultShaderProperty = Shader.PropertyToID("_HeightMult");
             var tileMaterial = await worldSettings.GetTileMaterial();
             Debug.Log(tileMaterial);
             List<GameObject> objects = new();
@@ -97,7 +98,7 @@ namespace TowerDefence.World.Grid
                 (
                     x: worldSettings.TileSize.x * cell.Position.x - worldSettings.TileSize.x / 2 * gridSettings.GridWidth,
                     y: worldSettings.TileSize.y * cell.Position.y - worldSettings.TileSize.y / 2 * gridSettings.GridHeight,
-                    z: 0
+                    z: 10
                 );
 
                 objects.Add(g);
@@ -106,7 +107,7 @@ namespace TowerDefence.World.Grid
                 var mf = g.GetComponent<MeshFilter>();
 
                 r.sharedMaterial = tileMaterial;
-
+                r.material.SetFloat(heightMultShaderProperty, 1f / 255 * cell.CellWeight);
                 mf.sharedMesh = m;
 
                 var selectableNode = g.AddComponent<SelectableCell>();
