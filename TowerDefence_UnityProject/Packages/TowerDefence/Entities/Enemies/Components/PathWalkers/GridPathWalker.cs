@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using NoUtil.Extentsions;
+using NoUtil.Math;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Components;
@@ -54,9 +55,11 @@ namespace TowerDefence.Entities.Enemies.Components
                 }
                 else
                 {
-                    moveTimer = 0f;
+                    moveTimer -= 1f;
                     origin = target;
                     target = path[currentCell].WorldPosition;
+
+                    self.Transform.rotation = Quaternion.Euler(0, 0, Math.VectorToAngle(target - self.Transform.position));
                 }
             }
 
@@ -81,6 +84,7 @@ namespace TowerDefence.Entities.Enemies.Components
                 target = this.path[1].WorldPosition;
                 origin = start.WorldPosition;
                 self.Transform.position = start.WorldPosition;
+                self.Transform.rotation = Quaternion.Euler(0, 0, Math.VectorToAngle(target - self.Transform.position));
             }
             else
             {
