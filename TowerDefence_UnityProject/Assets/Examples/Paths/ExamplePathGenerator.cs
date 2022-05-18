@@ -68,7 +68,7 @@ namespace TowerDefence.Examples.Paths
             {
                 new Wave(new[]
                 {
-                    new EnemyGroup("Walker", 0, new[]{0f,0.2f,0.3f,0.5f })
+                    new EnemyGroup("Walker", 0,0,0 ,new[]{0f,0.2f,0.3f,0.5f })
                 })
             };
 

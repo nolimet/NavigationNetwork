@@ -98,27 +98,31 @@ namespace TowerDefence.Systems.Waves.Data
                 public string enemyID = string.Empty;
 
                 public int pathID = 0;
+                public int entranceId = 0;
+                public int exitId = 0;
                 public float[] spawnTime = new float[0];
 
                 public EnemyGroup()
                 {
                 }
 
-                public EnemyGroup(string enemyID, int pathID, float[] spawnTime)
+                public EnemyGroup(string enemyID, int pathID, int entranceId, int exitId, float[] spawnTime)
                 {
                     this.enemyID = enemyID;
                     this.pathID = pathID;
                     this.spawnTime = spawnTime;
+                    this.entranceId = entranceId;
+                    this.exitId = exitId;
                 }
 
                 public static implicit operator FileEnemyGroup(EnemyGroup group)
                 {
-                    return new FileEnemyGroup(group.enemyID, group.pathID, group.spawnTime);
+                    return new FileEnemyGroup(group.enemyID, group.entranceId, group.exitId, group.pathID, group.spawnTime);
                 }
 
                 public static implicit operator EnemyGroup(FileEnemyGroup group)
                 {
-                    return new EnemyGroup(group.enemyID, group.pathID, group.spawnTime);
+                    return new EnemyGroup(group.enemyID, group.entranceId, group.exitId, group.pathID, group.spawnTime);
                 }
             }
         }
