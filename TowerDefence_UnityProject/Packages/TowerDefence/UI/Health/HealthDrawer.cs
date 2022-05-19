@@ -15,7 +15,7 @@ namespace TowerDefence.UI.Health
         private IEnemyObject target;
         private UnityAction<HealthDrawer> destroyedAction;
 
-        private BindingContext bindingContext = new(true);
+        private readonly BindingContext bindingContext = new(true);
 
         private void Start()
         {
