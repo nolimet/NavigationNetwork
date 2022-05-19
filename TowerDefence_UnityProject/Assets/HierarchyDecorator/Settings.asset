@@ -613,16 +613,6 @@ MonoBehaviour:
       shown: 0
     - name: GameViewEventCatcher
       shown: 0
-    - name: MonoBehaviourCallbackHooks
-      shown: 0
-    - name: ComponentSingleton`1
-      shown: 0
-    - name: DelayedActionManager
-      shown: 0
-    - name: DiagnosticEventCollectorSingleton
-      shown: 0
-    - name: DiagnosticEventCollector
-      shown: 0
     - name: PlayerInput
       shown: 0
     - name: PlayerInputManager
@@ -646,6 +636,16 @@ MonoBehaviour:
     - name: OnScreenStick
       shown: 0
     - name: TouchSimulation
+      shown: 0
+    - name: MonoBehaviourCallbackHooks
+      shown: 0
+    - name: ComponentSingleton`1
+      shown: 0
+    - name: DelayedActionManager
+      shown: 0
+    - name: DiagnosticEventCollectorSingleton
+      shown: 0
+    - name: DiagnosticEventCollector
       shown: 0
     - name: Button
       shown: 0
@@ -853,8 +853,6 @@ MonoBehaviour:
       shown: 0
     - name: AsyncCoroutineRunner
       shown: 0
-    - name: ExampleWalker
-      shown: 0
     - name: ExampleTowerPlacer
       shown: 0
     - name: ExamplePathGenerator
@@ -867,17 +865,27 @@ MonoBehaviour:
       shown: 0
     - name: WalkerBase
       shown: 0
+    - name: SelectableCell
+      shown: 0
     - name: UIContainer
       shown: 0
     - name: TowerRangeDrawer
       shown: 0
     - name: BaseHudValueItem
       shown: 0
+    - name: HudDrawerBase
+      shown: 0
+    - name: HudDrawerBase`1
+      shown: 0
     - name: TowerHudDrawer
       shown: 0
     - name: HudController
       shown: 0
     - name: HudInstaller
+      shown: 0
+    - name: TowerPlaceButton
+      shown: 0
+    - name: TowerPlaceHudDrawer
       shown: 0
     - name: HealthDrawer
       shown: 0
@@ -886,12 +894,6 @@ MonoBehaviour:
     - name: TowerObject
       shown: 0
     - name: EnemyObject
-      shown: 0
-    - name: ExampleScript
-      shown: 0
-    - name: ExampleScript2
-      shown: 0
-    - name: ExampleScriptWithIcon
       shown: 0
     - name: AsyncAwakeTrigger
       shown: 0
@@ -1049,6 +1051,30 @@ MonoBehaviour:
       shown: 0
     - name: AsyncUpdateSelectedTrigger
       shown: 0
+    - name: PixelPerfectCamera
+      shown: 0
+    - name: CinemachineUniversalPixelPerfect
+      shown: 0
+    - name: Light2D
+      shown: 0
+    - name: CompositeShadowCaster2D
+      shown: 0
+    - name: ShadowCaster2D
+      shown: 0
+    - name: ShadowCasterGroup2D
+      shown: 0
+    - name: DecalProjector
+      shown: 0
+    - name: UniversalAdditionalCameraData
+      shown: 0
+    - name: UniversalAdditionalLightData
+      shown: 0
+    - name: ExampleScript
+      shown: 0
+    - name: ExampleScript2
+      shown: 0
+    - name: ExampleScriptWithIcon
+      shown: 0
     customComponents: []
-    unityVersion: 2021.2.7f1
+    unityVersion: 2021.3.2f1
     isDirty: 0
