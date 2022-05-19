@@ -18,6 +18,10 @@ namespace TowerDefence.World.Grid
 
             context.Bind(selectionModel, model => model.Selection, OnSelectionChanged);
         }
+        ~GridCellSelector()
+        {
+            context.Dispose();
+        }
 
         private void OnSelectionChanged(IList<ISelectable> selection)
         {

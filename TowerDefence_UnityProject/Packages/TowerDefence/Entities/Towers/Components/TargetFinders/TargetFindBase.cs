@@ -57,5 +57,10 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
             }
             return Array.Empty<IEnemyObject>();
         }
+
+        ~TargetFindBase()
+        {
+            bindingContext.Dispose();
+        }
     }
 }
