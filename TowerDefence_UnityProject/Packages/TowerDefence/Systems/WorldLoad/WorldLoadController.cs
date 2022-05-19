@@ -2,11 +2,11 @@
 using System;
 using System.IO;
 using TowerDefence.Systems.Waves;
-using TowerDefence.Systems.Waves.Data;
+using TowerDefence.Systems.WorldLoader.Data;
 using TowerDefence.World.Grid;
 using UnityEngine;
 
-namespace TowerDefence.Packages.TowerDefence.Systems.WorldLoad
+namespace TowerDefence.Systems.WorldLoad
 {
     internal class WorldLoadController
     {
@@ -30,6 +30,7 @@ namespace TowerDefence.Packages.TowerDefence.Systems.WorldLoad
             var file = new FileInfo(FormatWorldName());
             if (file.Exists)
             {
+
                 string json;
                 using (var reader = file.OpenText())
                 {
@@ -44,6 +45,7 @@ namespace TowerDefence.Packages.TowerDefence.Systems.WorldLoad
 
                 waveController.SetWaves(lvlData.waves);
             }
+
             string FormatWorldName()
             {
                 return Path.Combine(Application.streamingAssetsPath, "Levels", $"{level}.{type}");

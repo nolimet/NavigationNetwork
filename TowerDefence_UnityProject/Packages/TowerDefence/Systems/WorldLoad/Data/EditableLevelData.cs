@@ -3,13 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Enemies;
+using TowerDefence.Systems.Waves.Data;
 using TowerDefence.World.Grid.Data;
 using TowerDefence.World.Path.Data;
 using UnityEngine;
 using FileEnemyGroup = TowerDefence.Systems.Waves.Data.Wave.EnemyGroup;
 using FilePathPoint = TowerDefence.World.Path.Data.PathPoint;
 
-namespace TowerDefence.Systems.Waves.Data
+//TODO move this
+namespace TowerDefence.Systems.WorldLoader.Data
 {
     [CreateAssetMenu(menuName = "Configuration/Create Level", fileName = "Level 0")]
     public class EditableLevelData : ScriptableObject

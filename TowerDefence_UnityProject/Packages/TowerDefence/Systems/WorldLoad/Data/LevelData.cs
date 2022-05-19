@@ -1,10 +1,12 @@
 using Newtonsoft.Json;
 using System;
+using TowerDefence.Systems.Waves.Data;
 using TowerDefence.World.Grid.Data;
 using TowerDefence.World.Path.Data;
 
-namespace TowerDefence.Systems.Waves.Data
+namespace TowerDefence.Systems.WorldLoader.Data
 {
+    //TODO move this
     [Serializable]
     public readonly struct LevelData
     {
