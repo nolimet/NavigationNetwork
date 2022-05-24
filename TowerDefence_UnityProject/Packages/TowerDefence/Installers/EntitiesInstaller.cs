@@ -29,7 +29,6 @@ namespace TowerDefence.Installers
             Container.BindInterfacesAndSelfTo<TowerService>().AsSingle();
             Container.BindInterfacesAndSelfTo<TowerController>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<TowerFactory>().AsSingle();
-            Container.BindTickableExecutionOrder<TowerController>(999);
         }
     }
 }
