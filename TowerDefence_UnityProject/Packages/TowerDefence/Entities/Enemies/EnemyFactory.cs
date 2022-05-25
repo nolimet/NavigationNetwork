@@ -34,6 +34,7 @@ namespace TowerDefence.Entities.Enemies
 
         public async UniTask<IEnemyObject> CreateEnemy(string id, UnityAction<IEnemyObject> outHealthAction)
         {
+            //TODO fix spike when creating an enemy. Do some timing tests to see what costs so much time here
             var configurationData = enemyConfiguration.Enemies[id];
             var enemyBase = enemyConfiguration.EnemyBaseObjects[configurationData.BaseId];
             var componentConfiguration = configurationData.ComponentConfiguration;
