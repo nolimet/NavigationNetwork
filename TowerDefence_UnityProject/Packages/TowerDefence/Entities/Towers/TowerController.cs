@@ -13,10 +13,10 @@ namespace TowerDefence.Entities.Towers
         public TowerController(ITowerModels towerModels)
         {
             this.towerModels = towerModels;
-            TowerUpdateLoop(tokenSource.Token).Forget();
+            TowerUpdateLoop(tokenSource.Token).Preserve().SuppressCancellationThrow().Forget();
         }
 
-        private async UniTaskVoid TowerUpdateLoop(CancellationToken token)
+        private async UniTask TowerUpdateLoop(CancellationToken token)
         {
             await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.LastUpdate))
             {

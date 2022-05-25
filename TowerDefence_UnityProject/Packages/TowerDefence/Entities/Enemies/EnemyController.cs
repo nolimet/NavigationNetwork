@@ -1,32 +1,29 @@
 ﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using TowerDefence.Entities.Enemies.Components;
 using TowerDefence.Entities.Enemies.Models;
-using TowerDefence.World;
 using TowerDefence.World.Grid.Data;
-using UnityEngine;
-using Zenject;
+using Object = UnityEngine.Object;
 
 namespace TowerDefence.Entities.Enemies
 {
-    internal class EnemyController : ITickable
+    internal class EnemyController : IDisposable
     {
         private readonly IEnemiesModel model;
-        private readonly WorldContainer worldContainer;
         private readonly EnemyFactory enemyFactory;
-        private readonly EnemyConfigurationData configurationData;
-        private readonly DiContainer container;
+        private readonly CancellationTokenSource tokenSource = new();
 
         private readonly Queue<IEnemyObject> deadEnemies = new();
 
-        internal EnemyController(DiContainer container, IEnemiesModel model, WorldContainer worldContainer, EnemyFactory enemyFactory, EnemyConfigurationData configurationData)
+        internal EnemyController(IEnemiesModel model, EnemyFactory enemyFactory)
         {
-            this.container = container;
             this.model = model;
-            this.worldContainer = worldContainer;
             this.enemyFactory = enemyFactory;
-            this.configurationData = configurationData;
+            EnemyUpdateLoop(tokenSource.Token).Preserve().SuppressCancellationThrow().Forget();
         }
 
         //TODO Simplify workflow and add a enemy Creation service or something similar
@@ -62,20 +59,30 @@ namespace TowerDefence.Entities.Enemies
             return newEnemy;
         }
 
-        public void Tick()
+        public void Dispose()
         {
-            while (deadEnemies.Any())
-            {
-                DestroyEnemy(deadEnemies.Dequeue());
-            }
+            tokenSource.Cancel();
+            tokenSource.Dispose();
+        }
 
-            foreach (var enemy in this.model.Enemies)
-                enemy.Tick();
-
-            void DestroyEnemy(IEnemyObject enemy)
+        private async UniTask EnemyUpdateLoop(CancellationToken token)
+        {
+            await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.EarlyUpdate))
             {
-                model.Enemies.Remove(enemy);
-                Object.Destroy(enemy.Transform.gameObject);
+                token.ThrowIfCancellationRequested();
+                while (deadEnemies.Any())
+                {
+                    DestroyEnemy(deadEnemies.Dequeue());
+                }
+
+                foreach (var enemy in this.model.Enemies)
+                    enemy.Tick();
+
+                void DestroyEnemy(IEnemyObject enemy)
+                {
+                    model.Enemies.Remove(enemy);
+                    Object.Destroy(enemy.Transform.gameObject);
+                }
             }
         }
 

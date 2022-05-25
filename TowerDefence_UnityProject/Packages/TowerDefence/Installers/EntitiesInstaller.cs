@@ -22,7 +22,6 @@ namespace TowerDefence.Installers
             Container.BindInstance(enemyConfigurationData).AsSingle();
             Container.Bind<EnemyFactory>().ToSelf().AsSingle();
             Container.BindInterfacesAndSelfTo<EnemyController>().AsSingle().NonLazy();
-            Container.BindTickableExecutionOrder<EnemyController>(998);
 
             //Towers
             Container.BindInstance(towerConfigurationData).AsSingle();
