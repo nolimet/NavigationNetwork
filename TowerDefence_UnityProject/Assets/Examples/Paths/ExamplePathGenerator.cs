@@ -2,7 +2,9 @@
 using System;
 using System.IO;
 using TowerDefence.Entities.Enemies;
+using TowerDefence.Systems.Waves;
 using TowerDefence.Systems.Waves.Data;
+using TowerDefence.Systems.WorldLoad;
 using TowerDefence.Systems.WorldLoader.Data;
 using TowerDefence.World;
 using TowerDefence.World.Grid;
@@ -19,12 +21,15 @@ namespace TowerDefence.Examples.Paths
         private readonly string gridWorldPath = Application.streamingAssetsPath + "/ExampleLevel-grid.json";
 
         [HideInInspector]
-        public PathWorldData ConstructedPath => worldController?.PathWorldData;
+        public PathWorldData ConstructedPath => pathWorldController?.PathWorldData;
 
-        [Inject] private PathWorldController worldController = null;
+        [Inject] private PathWorldController pathWorldController = null;
         [Inject] private EnemyController enemyController = null;
         [Inject] private EnemyConfigurationData enemyConfiguration = null;
         [Inject] private GridWorld gridWorld = null;
+        [Inject] private WorldLoadController worldLoadController = null;
+        [Inject] private WaveController waveController = null;
+
         private LevelData levelData;
 
         private void Update()
@@ -32,6 +37,26 @@ namespace TowerDefence.Examples.Paths
             if (UnityEngine.Input.GetKeyUp(KeyCode.F1))
             {
                 BuildGridWorld();
+            }
+
+            if (UnityEngine.Input.GetKeyUp(KeyCode.F2))
+            {
+                CreateGridWalker();
+            }
+
+            if (UnityEngine.Input.GetKeyUp(KeyCode.F3))
+            {
+                worldLoadController.LoadLevel("Level 0", WorldLoadController.LevelType.lvl);
+            }
+
+            if (UnityEngine.Input.GetKeyUp(KeyCode.F4))
+            {
+                waveController.StartWavePlayBack();
+            }
+
+            if (UnityEngine.Input.GetKeyUp(KeyCode.F5))
+            {
+                waveController.StopWavePlayBack();
             }
         }
 
@@ -97,7 +122,7 @@ namespace TowerDefence.Examples.Paths
 
             var levelData = JsonConvert.DeserializeObject<LevelData>(json);
 
-            worldController.SetPath(levelData.path.Value);
+            pathWorldController.SetPath(levelData.path.Value);
         }
 
         public async void BuildGridWorld()
@@ -112,14 +137,14 @@ namespace TowerDefence.Examples.Paths
 
         public async void CreateWalker()
         {
-            var path = worldController.PathWorldData.GetRandomPath();
+            var path = pathWorldController.PathWorldData.GetRandomPath();
             await enemyController.CreateNewEnemy("Walker", path);
         }
 
         public async void CreateWalkerDelayed(float delay)
         {
             await new WaitForSeconds(delay);
-            var path = worldController.PathWorldData.GetRandomPath();
+            var path = pathWorldController.PathWorldData.GetRandomPath();
             await enemyController.CreateNewEnemy("Walker", path);
         }
 

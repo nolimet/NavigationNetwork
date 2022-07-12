@@ -24,9 +24,8 @@ namespace TowerDefence.Entities.Enemies.Components
         [JsonIgnore] private GridWorld gridWorld;
         [JsonIgnore] private int currentCell = 0;
 
-        [JsonIgnore] private float moveTimer = 0f;
+        private const float nearTargetDistance = 0.01f;// 0.1^2;
         private Vector3 target = Vector3.zero;
-        private Vector3 origin = Vector3.zero;
         private Vector3 currentSpeed = Vector3.zero;
 
         public override float PathProgress { get; protected set; }
@@ -47,7 +46,7 @@ namespace TowerDefence.Entities.Enemies.Components
 
         public override void Tick()
         {
-            if (moveTimer >= 1f)
+            if (Vector3.Distance(self.Transform.position, target) < nearTargetDistance)
             {
                 currentCell++;
                 if (currentCell >= path.Count)
@@ -56,17 +55,13 @@ namespace TowerDefence.Entities.Enemies.Components
                 }
                 else
                 {
-                    moveTimer -= 1f;
-                    origin = target;
                     target = path[currentCell].WorldPosition;
-
-                    self.Transform.rotation = Quaternion.Euler(0, 0, Math.VectorToAngle(target - self.Transform.position));
                 }
             }
 
-            self.Transform.position = Vector3.SmoothDamp(self.Transform.position, target, ref currentSpeed, 0.1f);
-            // self.Transform.position = Vector3.Lerp(origin, target, moveTimer);
-            moveTimer += Time.deltaTime * enemySettings.Speed;
+            Vector3 position = self.Transform.position;
+            Vector3 newPosition = Vector3.SmoothDamp(position, target, ref currentSpeed, 0.1f);
+            self.Transform.rotation = Quaternion.Euler(0, 0, Math.VectorToAngle(newPosition - position));
         }
 
         public async UniTask SetStartEnd(IGridCell start, IGridCell end)
@@ -76,7 +71,6 @@ namespace TowerDefence.Entities.Enemies.Components
             startCell = start;
             endCell = end;
 
-            origin = start.WorldPosition;
             var path = await gridWorld.GetPath(startCell, endCell);
             this.path.Clear();
             this.path.AddRange(path);
@@ -84,7 +78,6 @@ namespace TowerDefence.Entities.Enemies.Components
             {
                 currentCell = 1;
                 target = this.path[1].WorldPosition;
-                origin = start.WorldPosition;
                 self.Transform.position = start.WorldPosition;
                 self.Transform.rotation = Quaternion.Euler(0, 0, Math.VectorToAngle(target - self.Transform.position));
             }
@@ -92,7 +85,6 @@ namespace TowerDefence.Entities.Enemies.Components
             {
                 model.Health = 0f;
             }
-
         }
     }
 }

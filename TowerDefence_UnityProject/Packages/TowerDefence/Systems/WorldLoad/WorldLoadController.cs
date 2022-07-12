@@ -19,6 +19,12 @@ namespace TowerDefence.Systems.WorldLoad
         private readonly GridWorld gridWorld;
         private readonly WaveController waveController;
 
+        public WorldLoadController(GridWorld gridWorld, WaveController waveController)
+        {
+            this.gridWorld = gridWorld;
+            this.waveController = waveController;
+        }
+
         public IReadOnlyCollection<string> GetLevels(LevelType type)
         {
             string path = GetLevelFolder();
@@ -38,7 +44,6 @@ namespace TowerDefence.Systems.WorldLoad
             var file = new FileInfo(FormatWorldName());
             if (file.Exists)
             {
-
                 string json;
                 using (var reader = file.OpenText())
                 {
@@ -49,7 +54,7 @@ namespace TowerDefence.Systems.WorldLoad
                 if (lvlData.gridSettings.HasValue)
                     await gridWorld.CreateWorld(lvlData.gridSettings.Value);
                 else
-                    Debug.LogError("There where on grid settings");
+                    Debug.LogError("There where no grid settings");
 
                 waveController.SetWaves(lvlData.waves);
             }

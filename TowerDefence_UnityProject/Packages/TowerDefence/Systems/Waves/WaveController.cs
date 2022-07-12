@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TowerDefence.Systems.Waves
 {
-    public class WaveController : MonoBehaviour
+    public class WaveController
     {
         private Wave[] currentWaves;
         private int activeWave = 0;
@@ -22,9 +22,10 @@ namespace TowerDefence.Systems.Waves
         {
             currentWaves = waves;
 
-            if (!cancelTokenSource.IsCancellationRequested)
+            if (cancelTokenSource != null && !cancelTokenSource.IsCancellationRequested)
                 cancelTokenSource.Cancel();
-            cancelTokenSource.Dispose();
+            cancelTokenSource?.Dispose();
+
             cancelTokenSource = new CancellationTokenSource();
             activeWave = 0;
         }
