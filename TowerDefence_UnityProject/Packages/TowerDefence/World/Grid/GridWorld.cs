@@ -12,6 +12,7 @@ namespace TowerDefence.World.Grid
         private readonly GridGenerator gridGenerator;
         private readonly GridVisualGenerator visualGenerator;
         private readonly List<PathFinder> pathfinderPool = new();
+        private readonly Dictionary<(IGridCell start, IGridCell end), IEnumerable<IGridCell>> pathCache = new();
 
         public GridWorld(GridGenerator gridGenerator, GridVisualGenerator visualGenerator)
         {
