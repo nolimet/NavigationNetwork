@@ -27,6 +27,7 @@ namespace TowerDefence.Entities.Enemies.Components
         [JsonIgnore] private float moveTimer = 0f;
         private Vector3 target = Vector3.zero;
         private Vector3 origin = Vector3.zero;
+        private Vector3 currentSpeed = Vector3.zero;
 
         public override float PathProgress { get; protected set; }
 
@@ -63,7 +64,8 @@ namespace TowerDefence.Entities.Enemies.Components
                 }
             }
 
-            self.Transform.position = Vector3.Lerp(origin, target, moveTimer);
+            self.Transform.position = Vector3.SmoothDamp(self.Transform.position, target, ref currentSpeed, 0.1f);
+            // self.Transform.position = Vector3.Lerp(origin, target, moveTimer);
             moveTimer += Time.deltaTime * enemySettings.Speed;
         }
 
