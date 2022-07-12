@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
+using System.Collections.Generic;
 using System.IO;
 using TowerDefence.Systems.Waves;
 using TowerDefence.Systems.WorldLoader.Data;
@@ -19,10 +19,18 @@ namespace TowerDefence.Systems.WorldLoad
         private readonly GridWorld gridWorld;
         private readonly WaveController waveController;
 
-        public string[] GetLevels()
+        public IReadOnlyCollection<string> GetLevels(LevelType type)
         {
-            //TODO get all levels
-            throw new NotImplementedException("TODO Implement getting all levels");
+            string path = GetLevelFolder();
+            DirectoryInfo dir = new(path);
+            List<string> files = new();
+
+            foreach (var file in dir.EnumerateFiles($".{type}"))
+            {
+                files.Add(file.FullName);
+            }
+
+            return files.ToArray();
         }
 
         public async void LoadLevel(string level, LevelType type)
@@ -48,8 +56,13 @@ namespace TowerDefence.Systems.WorldLoad
 
             string FormatWorldName()
             {
-                return Path.Combine(Application.streamingAssetsPath, "Levels", $"{level}.{type}");
+                return Path.Combine(GetLevelFolder(), $"{level}.{type}");
             }
+        }
+
+        private string GetLevelFolder()
+        {
+            return Path.Combine(Application.streamingAssetsPath, "Levels");
         }
     }
 }
