@@ -24,9 +24,12 @@ namespace TowerDefence.Entities.Enemies.Components
         [JsonIgnore] private GridWorld gridWorld;
         [JsonIgnore] private int currentCell = 0;
 
+        [JsonProperty] private float moveSpeed = 1f;
+
         private const float nearTargetDistance = 0.01f;// 0.1^2;
         private Vector3 target = Vector3.zero;
         private Vector3 currentSpeed = Vector3.zero;
+        private float currentRotationVelocity;
 
         public override float PathProgress { get; protected set; }
 
@@ -46,12 +49,14 @@ namespace TowerDefence.Entities.Enemies.Components
 
         public override void Tick()
         {
-            if (Vector3.Distance(self.Transform.position, target) < nearTargetDistance)
+            float distance = Vector3.Distance(self.Transform.position, target);
+            if (distance < 0.3f)
             {
                 currentCell++;
                 if (currentCell >= path.Count)
                 {
-                    base.ReachedEnd?.Invoke(self);
+                    if (distance < nearTargetDistance)
+                        base.ReachedEnd?.Invoke(self);
                 }
                 else
                 {
@@ -60,8 +65,14 @@ namespace TowerDefence.Entities.Enemies.Components
             }
 
             Vector3 position = self.Transform.position;
-            Vector3 newPosition = Vector3.SmoothDamp(position, target, ref currentSpeed, 0.1f);
-            self.Transform.rotation = Quaternion.Euler(0, 0, Math.VectorToAngle(newPosition - position));
+            Vector3 newPosition = Vector3.SmoothDamp(position, target, ref currentSpeed, 0.1f, moveSpeed);
+
+            float currentAngle = self.Transform.rotation.eulerAngles.z;
+            float targetAngle = Math.VectorToAngle(newPosition - position);
+
+            Quaternion newRotation = Quaternion.Euler(0, 0, Mathf.SmoothDampAngle(currentAngle, targetAngle, ref currentRotationVelocity, 0.1f));
+
+            self.Transform.SetPositionAndRotation(newPosition, newRotation);
         }
 
         public async UniTask SetStartEnd(IGridCell start, IGridCell end)
