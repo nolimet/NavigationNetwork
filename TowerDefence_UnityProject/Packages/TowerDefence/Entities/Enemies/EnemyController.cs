@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using TowerDefence.Entities.Enemies.Components;
 using TowerDefence.Entities.Enemies.Models;
-using TowerDefence.World.Grid.Data;
+using static TowerDefence.Systems.Waves.Data.Wave;
 using Object = UnityEngine.Object;
 
 namespace TowerDefence.Entities.Enemies
@@ -43,16 +43,16 @@ namespace TowerDefence.Entities.Enemies
             return newEnemy;
         }
 
-        public async UniTask<IEnemyObject> CreateNewEnemy(string id, IGridCell startCell, IGridCell endCell)
+        public async UniTask<IEnemyObject> CreateNewEnemy(EnemyGroup group)
         {
-            var newEnemy = await enemyFactory.CreateEnemy(id, EnemyDied);
+            var newEnemy = await enemyFactory.CreateEnemy(group.enemyID, EnemyDied);
 
             if (newEnemy.Model.Components.Any(x => x is GridPathWalker))
             {
                 var pathFinder = newEnemy.Model.Components.First(x => x is GridPathWalker) as GridPathWalker;
 
                 pathFinder.ReachedEnd = EnemyDied;
-                await pathFinder.SetStartEnd(startCell, endCell);
+                await pathFinder.SetStartEnd(group);
             }
 
             model.Enemies.Add(newEnemy);

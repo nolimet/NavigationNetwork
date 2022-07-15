@@ -10,6 +10,7 @@ using TowerDefence.World.Grid;
 using TowerDefence.World.Grid.Data;
 using UnityEngine;
 using Zenject;
+using static TowerDefence.Systems.Waves.Data.Wave;
 
 namespace TowerDefence.Entities.Enemies.Components
 {
@@ -17,8 +18,6 @@ namespace TowerDefence.Entities.Enemies.Components
     internal class GridPathWalker : BaseEnemyPathWalker
     {
         [JsonIgnore] private EnemySettings enemySettings;
-        [JsonIgnore] private IGridCell startCell;
-        [JsonIgnore] private IGridCell endCell;
 
         [JsonIgnore] private readonly List<IGridCell> path = new();
         [JsonIgnore] private GridWorld gridWorld;
@@ -75,25 +74,23 @@ namespace TowerDefence.Entities.Enemies.Components
             self.Transform.SetPositionAndRotation(newPosition, newRotation);
         }
 
-        public async UniTask SetStartEnd(IGridCell start, IGridCell end)
+        public async UniTask SetStartEnd(EnemyGroup group)
         {
             self.Transform.position = Vector3.one * 10000f;
 
-            startCell = start;
-            endCell = end;
-
-            var path = await gridWorld.GetPath(startCell, endCell);
+            var path = await gridWorld.GetPath(group.entranceId, group.exitId);
             this.path.Clear();
             this.path.AddRange(path);
-            if (this.path.Any())
+            if (this.path.Any() && this.path.Count > 2)
             {
                 currentCell = 1;
                 target = this.path[1].WorldPosition;
-                self.Transform.position = start.WorldPosition;
+                self.Transform.position = this.path[0].WorldPosition;
                 self.Transform.rotation = Quaternion.Euler(0, 0, Math.VectorToAngle(target - self.Transform.position));
             }
             else
             {
+                Debug.Log("Pathing failed");
                 model.Health = 0f;
             }
         }

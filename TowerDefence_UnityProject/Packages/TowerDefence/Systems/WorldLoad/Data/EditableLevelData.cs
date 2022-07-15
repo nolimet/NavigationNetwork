@@ -25,16 +25,12 @@ namespace TowerDefence.Systems.WorldLoader.Data
 
         public LevelData ToLevelDataPath()
         {
-            var waves = new Wave[Waves?.Length ?? 0];
-
-            return new LevelData(waves, Pathdata);
+            return new LevelData(Waves.Select(x => (Wave)x).ToArray(), Pathdata);
         }
 
         internal LevelData ToLevelDataGrid()
         {
-            var waves = new Wave[Waves?.Length ?? 0];
-
-            return new LevelData(waves, gridSettings);
+            return new LevelData(Waves.Select(x => (Wave)x).ToArray(), gridSettings);
         }
 
         public void FromLevelData(LevelData levelData)
