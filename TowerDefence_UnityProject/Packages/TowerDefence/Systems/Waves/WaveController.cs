@@ -82,6 +82,8 @@ namespace TowerDefence.Systems.Waves
         {
             Debug.Log("wave started");
             var waveLookup = new (EnemyGroup group, Queue<float> time)[wave.enemyGroups.Length];
+            int enemiesRemaining = 0;
+            var enemyWatchers = new List<UniTask>();
             for (int i = 0; i < waveLookup.Length; i++)
             {
                 var v = (wave.enemyGroups[i], new Queue<float>());
@@ -103,12 +105,25 @@ namespace TowerDefence.Systems.Waves
                     if (enemySet.time.Any() && enemySet.time.Peek() < t)
                     {
                         enemySet.time.Dequeue();
-                        enemyController.CreateNewEnemy(enemySet.group).Forget();
+                        enemyWatchers.Add(EnemyWatcherTask(enemySet.group));
                     }
                 }
                 t += Time.deltaTime;
             }
+
+            await UniTask.WhenAll(enemyWatchers);
+
             Debug.Log("wave ended");
+
+            async UniTask EnemyWatcherTask(EnemyGroup group)
+            {
+                enemiesRemaining++;
+                var enemy = await enemyController.CreateNewEnemy(group);
+                var model = enemy.Model;
+
+                await UniTask.WaitUntil(() => model.Health <= 0);
+                enemiesRemaining--;
+            };
         }
     }
 }
