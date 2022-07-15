@@ -19,6 +19,8 @@ namespace TowerDefence.Entities.Enemies
 
         private readonly Queue<IEnemyObject> deadEnemies = new();
 
+        public event Action EnemyReachedEnd;
+
         internal EnemyController(IEnemiesModel model, EnemyFactory enemyFactory)
         {
             this.model = model;
@@ -51,7 +53,7 @@ namespace TowerDefence.Entities.Enemies
             {
                 var pathFinder = newEnemy.Model.Components.First(x => x is GridPathWalker) as GridPathWalker;
 
-                pathFinder.ReachedEnd = EnemyDied;
+                pathFinder.ReachedEnd = OnEnemyReachedEnd;
                 await pathFinder.SetStartEnd(group);
             }
 
@@ -92,6 +94,12 @@ namespace TowerDefence.Entities.Enemies
             {
                 deadEnemies.Enqueue(enemy);
             }
+        }
+
+        private void OnEnemyReachedEnd(IEnemyObject enemy)
+        {
+            enemy.Model.Health = 0;
+            EnemyReachedEnd?.Invoke();
         }
     }
 }
