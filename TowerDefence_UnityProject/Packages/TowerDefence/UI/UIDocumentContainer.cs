@@ -16,7 +16,7 @@ namespace TowerDefence.UI
         [Inject]
         public void Inject(IUIContainers containers)
         {
-            containers.UIContainers.Add(this);
+            containers.Containers.Add(this);
         }
     }
 }
