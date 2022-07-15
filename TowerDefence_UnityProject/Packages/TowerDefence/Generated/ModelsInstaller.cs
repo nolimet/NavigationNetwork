@@ -12,6 +12,7 @@ namespace DataBinding
 					Container.Bind<TowerDefence.Entities.Enemies.Models.IEnemiesModel>().FromMethod(ctx => ModelFactory.Create<TowerDefence.Entities.Enemies.Models.IEnemiesModel>()).AsSingle();
 					Container.Bind<TowerDefence.Systems.Selection.Models.ISelectionModel>().FromMethod(ctx => ModelFactory.Create<TowerDefence.Systems.Selection.Models.ISelectionModel>()).AsSingle();
 					Container.Bind<TowerDefence.Entities.Towers.Models.ITowerModels>().FromMethod(ctx => ModelFactory.Create<TowerDefence.Entities.Towers.Models.ITowerModels>()).AsSingle();
+					Container.Bind<TowerDefence.UI.Models.IUIContainers>().FromMethod(ctx => ModelFactory.Create<TowerDefence.UI.Models.IUIContainers>()).AsSingle();
 				}
 	}
 }

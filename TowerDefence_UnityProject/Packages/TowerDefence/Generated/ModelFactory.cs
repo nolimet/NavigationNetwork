@@ -12,6 +12,7 @@ namespace DataBinding
 			private static TowerDefence.Systems.Selection.Models.ISelectionModel CreateSelectionModel() { return new TowerDefence.Systems.Selection.Models.SelectionModel(); }
 			private static TowerDefence.Entities.Towers.Models.ITowerModel CreateTowerModel() { return new TowerDefence.Entities.Towers.Models.TowerModel(); }
 			private static TowerDefence.Entities.Towers.Models.ITowerModels CreateTowerModels() { return new TowerDefence.Entities.Towers.Models.TowerModels(); }
+			private static TowerDefence.UI.Models.IUIContainers CreateUIContainers() { return new TowerDefence.UI.Models.UIContainers(); }
 	
 		public static T Create<T>() where T : DataBinding.BaseClasses.IModelBase {
 
@@ -20,6 +21,7 @@ namespace DataBinding
 					if (typeof(T) == typeof(TowerDefence.Systems.Selection.Models.ISelectionModel )) { return (T)(CreateSelectionModel()); }
 					if (typeof(T) == typeof(TowerDefence.Entities.Towers.Models.ITowerModel )) { return (T)(CreateTowerModel()); }
 					if (typeof(T) == typeof(TowerDefence.Entities.Towers.Models.ITowerModels )) { return (T)(CreateTowerModels()); }
+					if (typeof(T) == typeof(TowerDefence.UI.Models.IUIContainers )) { return (T)(CreateUIContainers()); }
 					return default(T);
 		}
 	}

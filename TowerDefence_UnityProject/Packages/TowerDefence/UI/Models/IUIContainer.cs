@@ -1,6 +1,6 @@
 ﻿namespace TowerDefence.UI.Models
 {
-    internal interface IUIContainer
+    public interface IUIContainer
     {
         string Name { get; }
     }
