@@ -201,7 +201,8 @@ namespace TowerDefence.Systems.Waves.Data
 
         private void SaveGrid(string extension, Formatting formatting)
         {
-            string path = EditorUtility.SaveFilePanel("Select Save Location", Application.dataPath, target.name, extension);
+            string basePath = Path.Combine(Application.streamingAssetsPath, "Levels");
+            string path = EditorUtility.SaveFilePanel("Select Save Location", basePath, target.name, extension);
             var file = new FileInfo(path);
             if (!file.Directory.Exists)
             {
