@@ -26,12 +26,23 @@ namespace TowerDefence.World.Grid
 
         public async UniTask CreateWorld(GridSettings settings)
         {
+            ClearPathCache();
+
             entrances = settings.EntryPoints;
             exits = settings.EndPoints;
 
             world = gridGenerator.CreateNodes(settings);
             await visualGenerator.CreateVisuals(world, settings);
         }
+
+        internal void DestroyWorld()
+        {
+            visualGenerator.DestroyTiles();
+            world = Array.Empty<IGridCell>();
+            ClearPathCache();
+        }
+
+        internal void ClearPathCache() => pathCache.Clear();
 
         public async UniTask<IEnumerable<IGridCell>> GetPath(int entraceId, int exitId)
         {

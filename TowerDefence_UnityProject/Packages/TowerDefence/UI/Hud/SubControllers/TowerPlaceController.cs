@@ -11,11 +11,13 @@ namespace TowerDefence.UI.Hud.SubControllers
         private readonly BindingContext bindingContext = new(true);
         private readonly TowerService towerService;
         private readonly ISelectionModel selectionModel;
+        private readonly GridWorld gridWorld;
 
-        public TowerPlaceController(TowerService towerService, TowerPlaceHudDrawer hud, ISelectionModel selectionModel)
+        public TowerPlaceController(TowerService towerService, TowerPlaceHudDrawer hud, ISelectionModel selectionModel, GridWorld gridWorld)
         {
             this.towerService = towerService;
             this.selectionModel = selectionModel;
+            this.gridWorld = gridWorld;
 
             hud.OnTowerButtonClickedCallback = OnHudButtonClicked;
         }
@@ -26,6 +28,7 @@ namespace TowerDefence.UI.Hud.SubControllers
 
             var newTower = await towerService.PlaceTower(towerId, selectedCell.GridCell.WorldPosition, selectedCell.GridCell);
             selectionModel.Selection.Add(newTower);
+            gridWorld.ClearPathCache();
         }
 
         ~TowerPlaceController()
