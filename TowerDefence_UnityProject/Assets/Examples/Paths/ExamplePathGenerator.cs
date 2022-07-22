@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using TowerDefence.Entities.Enemies;
@@ -150,10 +150,16 @@ namespace TowerDefence.Examples.Paths
 
         public async void CreateGridWalker()
         {
+            if (!levelData.gridSettings.HasValue)
+            {
+                string json = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Levels", "Level 0.lvl"));
+                levelData = JsonConvert.DeserializeObject<LevelData>(json);
+            }
+            //TODO clean this up and fix it so it checks if it has a value
             var gridSettings = levelData.gridSettings.Value;
             var start = gridSettings.EntryPoints[UnityEngine.Random.Range(0, gridSettings.EntryPoints.Length)];
             var end = gridSettings.EndPoints[UnityEngine.Random.Range(0, gridSettings.EndPoints.Length)];
-            await enemyController.CreateNewEnemy("GridWalker", gridWorld.GetCell(start), gridWorld.GetCell(end));
+            await enemyController.CreateNewEnemy(levelData.waves[0].enemyGroups[0]);
         }
     }
 }
