@@ -39,5 +39,7 @@ namespace TowerDefence.World.Grid.Data
         }
 
         public float GetCost(IGridCell goal) => this.CellWeight;
+        public void SetStructure(bool hasStructure) => HasStructure = hasStructure;
+        public void SetVirtualStructure(bool hasVirtualStructure) => HasVirtualStructure = hasVirtualStructure;
     }
 }

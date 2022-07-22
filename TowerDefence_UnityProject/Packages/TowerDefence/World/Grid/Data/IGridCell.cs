@@ -10,8 +10,13 @@ namespace TowerDefence.World.Grid.Data
         float CellWeight { get; }
         bool HasStructure { get; }
         bool HasVirtualStructure { get; }
+
         IReadOnlyCollection<IGridCell> ConnectedCells { get; }
 
         float GetCost(IGridCell goal);
+
+        void SetStructure(bool hasStructure);
+
+        void SetVirtualStructure(bool hasVirtualStructure);
     }
 }
