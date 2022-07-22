@@ -9,7 +9,6 @@ namespace TowerDefence.Entities.Towers
     public class TowerService
     {
         private readonly ITowerModels towerModel;
-
         private readonly TowerConfigurationData towerConfiguration;
         private readonly TowerFactory towerFactory;
 
@@ -32,7 +31,6 @@ namespace TowerDefence.Entities.Towers
             newTower.Transform.position = position;
 
             towerModel.Towers.Add(newTower);
-
             return newTower;
         }
 
