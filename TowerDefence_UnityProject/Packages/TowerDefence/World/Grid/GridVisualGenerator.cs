@@ -119,7 +119,7 @@ namespace TowerDefence.World.Grid
             }
         }
 
-        private void DestroyTiles()
+        public void DestroyTiles()
         {
             foreach (var tile in tiles)
             {
