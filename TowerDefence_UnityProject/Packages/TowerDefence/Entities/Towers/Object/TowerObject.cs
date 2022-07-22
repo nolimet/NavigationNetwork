@@ -31,6 +31,7 @@ namespace TowerDefence.Entities.Towers
         {
             this.Model = model;
             this.OccupiedCell = cell;
+            cell.SetStructure(true);
 
             bindingContext.Bind(model, m => m.Components, OnComponentsChanged);
         }
@@ -48,6 +49,7 @@ namespace TowerDefence.Entities.Towers
 
         private void OnDestroy()
         {
+            OccupiedCell.SetStructure(false);
             bindingContext.Dispose();
         }
     }
