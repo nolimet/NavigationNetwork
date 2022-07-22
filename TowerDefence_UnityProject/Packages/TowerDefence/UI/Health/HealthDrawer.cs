@@ -39,7 +39,8 @@ namespace TowerDefence.UI.Health
 
         public void Destroy()
         {
-            Destroy(gameObject);
+            if (gameObject)
+                Destroy(gameObject);
             destroyedAction?.Invoke(this);
         }
 
