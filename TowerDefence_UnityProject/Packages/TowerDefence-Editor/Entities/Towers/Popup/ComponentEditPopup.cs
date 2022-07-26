@@ -11,6 +11,7 @@ namespace TowerDefence.Entities.Towers.Popup
     {
         public readonly DisplayData displayData;
         private readonly FieldInfo[] fields;
+        private Vector2 scrollViewPosition = Vector2.zero;
 
         public ComponentEditPopup(DisplayData displayData)
         {
@@ -24,6 +25,15 @@ namespace TowerDefence.Entities.Towers.Popup
             var allFields = f1.Concat(f2);
 
             fields = allFields.Where(x => x.CustomAttributes.Any(c => c.AttributeType == jsonPropertyType)).ToArray();
+        }
+
+        public override Vector2 GetWindowSize()
+        {
+            Vector2 maxSize = new(300, 600);
+            Vector2 size = new(300, EditorGUIUtility.singleLineHeight * 2 + EditorGUIUtility.standardVerticalSpacing);
+            size.y += EditorGUIUtility.singleLineHeight * fields.Length + EditorGUIUtility.standardVerticalSpacing * fields.Length - 1;
+            size.y = Mathf.Min(size.y, maxSize.y);
+            return size;
         }
 
         public override void OnGUI(Rect rect)
@@ -44,8 +54,12 @@ namespace TowerDefence.Entities.Towers.Popup
                 }
                 GUILayout.FlexibleSpace();
             }
+            EditorGUILayout.Space();
 
+            using var scrollView = new EditorGUILayout.ScrollViewScope(scrollViewPosition);
             DrawField();
+
+            scrollViewPosition = scrollView.scrollPosition;
         }
 
         private void DrawField()
