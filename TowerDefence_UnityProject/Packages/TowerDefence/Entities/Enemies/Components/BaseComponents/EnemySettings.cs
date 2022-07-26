@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
+using System;
 using TowerDefence.Entities.Components;
 
 namespace TowerDefence.Entities.Enemies.Components.BaseComponents
 {
-    [System.Serializable, Component(ComponentType.Enemy, typeof(EnemySettings))]
+    [Serializable, Component(ComponentType.Enemy, typeof(EnemySettings))]
     internal class EnemySettings : IComponent
     {
         [JsonProperty] public readonly string TypeName = "";
