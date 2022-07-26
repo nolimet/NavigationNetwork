@@ -14,6 +14,7 @@ namespace TowerDefence.Entities.Towers.Popup
 
         public ComponentEditPopup(DisplayData displayData)
         {
+            //TODO convert to new UIDocument thingy
             this.displayData = displayData;
 
             var jsonPropertyType = typeof(JsonPropertyAttribute);
