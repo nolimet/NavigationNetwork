@@ -8,6 +8,7 @@ namespace TowerDefence.Entities.Towers.Components.BaseComponents
     internal class TowerSettings : IComponent
     {
         [JsonProperty] public readonly string Name;
+        [JsonProperty] public readonly bool IsSolid;
         [JsonProperty] public readonly double Range;
     }
 }

@@ -1,8 +1,10 @@
 ﻿using DataBinding;
+using NoUtil.Extentsions;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Interfaces;
+using TowerDefence.Entities.Towers.Components.BaseComponents;
 using TowerDefence.Entities.Towers.Models;
 using TowerDefence.World.Grid.Data;
 using UnityEngine;
@@ -40,6 +42,11 @@ namespace TowerDefence.Entities.Towers
         {
             tickableComponents.Clear();
             tickableComponents.AddRange(obj.Where(x => x is ITickableComponent).Cast<ITickableComponent>().OrderBy(x => x.TickPriority));
+
+            if (obj.TryFind(x => x is TowerSettings, out var component) && component is TowerSettings towerSettings)
+            {
+                OccupiedCell.SetStructure(towerSettings.IsSolid);
+            }
         }
 
         public void Tick()

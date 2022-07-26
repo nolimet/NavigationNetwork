@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   components:
   - type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings
-    data: '{"Name":"Wall","Range":0.0}'
+    data: '{"Name":"Wall","IsSolid":1,"Range":0.0}'
   type: 1
