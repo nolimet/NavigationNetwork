@@ -5,7 +5,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace TowerDefence.Entities.Towers.Popup
+namespace TowerDefence.Entities.Components.Popup
 {
     internal class ComponentEditPopup : PopupWindowContent
     {

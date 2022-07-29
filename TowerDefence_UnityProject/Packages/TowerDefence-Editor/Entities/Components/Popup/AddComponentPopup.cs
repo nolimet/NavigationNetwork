@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
 using UnityEditor;
 using UnityEngine;
 
-namespace TowerDefence.Entities.Towers.Popup
+namespace TowerDefence.Entities.Components.Popup
 {
     internal class AddComponentPopup : PopupWindowContent
     {

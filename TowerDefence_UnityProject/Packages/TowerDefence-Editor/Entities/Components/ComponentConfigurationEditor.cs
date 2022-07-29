@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
-using TowerDefence.Entities.Towers.Popup;
+using TowerDefence.Entities.Components.Popup;
 using UnityEditor;
 using UnityEngine;
 
-namespace TowerDefence.Entities.Towers
+namespace TowerDefence.Entities.Components
 {
     [CustomEditor(typeof(ComponentConfigurationObject))]
     internal class ComponentConfigurationEditor : Editor
