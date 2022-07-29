@@ -61,50 +61,51 @@ namespace TowerDefence.Entities.Components.Popup
             EditorGUILayout.Space();
 
             using var scrollView = new EditorGUILayout.ScrollViewScope(scrollViewPosition);
-            DrawField();
+
+            foreach (var field in fields)
+            {
+                DrawField(field);
+            }
 
             scrollViewPosition = scrollView.scrollPosition;
         }
 
-        private void DrawField()
+        private void DrawField(FieldInfo field)
         {
-            foreach (var field in fields)
+            var val = field.GetValue(displayData.component);
+            if (val is null)
             {
-                var val = field.GetValue(displayData.component);
-                if (val is null)
+                var type = field.FieldType;
+                if (type.IsValueType)
                 {
-                    var type = field.FieldType;
-                    if (type.IsValueType)
-                    {
-                        val = Activator.CreateInstance(field.FieldType);
-                    }
-                    else if (type == typeof(string))
-                    {
-                        val = string.Empty;
-                    }
+                    val = Activator.CreateInstance(field.FieldType);
                 }
-
-                //Handling most basic value types
-                val = val switch
+                else if (type == typeof(string))
                 {
-                    bool b => EditorGUILayout.Toggle(field.Name, b),
-                    float f => EditorGUILayout.FloatField(field.Name, f),
-                    double d => EditorGUILayout.DoubleField(field.Name, d),
-                    string s => EditorGUILayout.TextField(field.Name, s),
-                    int i => EditorGUILayout.IntField(field.Name, i),
-                    long l => EditorGUILayout.LongField(field.Name, l),
-                    Color c => EditorGUILayout.ColorField(field.Name, c),
-                    Vector2 v2 => EditorGUILayout.Vector2Field(field.Name, v2),
-                    Vector3 v3 => EditorGUILayout.Vector3Field(field.Name, v3),
-                    Vector4 v4 => EditorGUILayout.Vector4Field(field.Name, v4),
-                    Vector2Int v2i => EditorGUILayout.Vector2IntField(field.Name, v2i),
-                    Vector3Int v3i => EditorGUILayout.Vector3IntField(field.Name, v3i),
-                    Quaternion q => Quaternion.Euler(EditorGUILayout.Vector3Field(field.Name, q.eulerAngles)),
-                    _ => val,
-                };
-
-                field.SetValue(displayData.component, val);
+                    val = string.Empty;
+                }
             }
+
+            //Handling most basic value types
+            val = val switch
+            {
+                bool b => EditorGUILayout.Toggle(field.Name, b),
+                float f => EditorGUILayout.FloatField(field.Name, f),
+                double d => EditorGUILayout.DoubleField(field.Name, d),
+                string s => EditorGUILayout.TextField(field.Name, s),
+                int i => EditorGUILayout.IntField(field.Name, i),
+                long l => EditorGUILayout.LongField(field.Name, l),
+                Color c => EditorGUILayout.ColorField(field.Name, c),
+                Vector2 v2 => EditorGUILayout.Vector2Field(field.Name, v2),
+                Vector3 v3 => EditorGUILayout.Vector3Field(field.Name, v3),
+                Vector4 v4 => EditorGUILayout.Vector4Field(field.Name, v4),
+                Vector2Int v2i => EditorGUILayout.Vector2IntField(field.Name, v2i),
+                Vector3Int v3i => EditorGUILayout.Vector3IntField(field.Name, v3i),
+                Quaternion q => Quaternion.Euler(EditorGUILayout.Vector3Field(field.Name, q.eulerAngles)),
+                _ => val,
+            };
+
+            field.SetValue(displayData.component, val);
         }
     }
 }
