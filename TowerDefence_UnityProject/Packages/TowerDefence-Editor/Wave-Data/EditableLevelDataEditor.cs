@@ -48,12 +48,12 @@ namespace TowerDefence.Systems.Waves.Data
 
                 if (GUILayout.Button(savePathToJson))
                 {
-                    SavePath("json", Formatting.Indented);
+                    SavePathData("json", Formatting.Indented);
                 }
 
                 if (GUILayout.Button(savePathToLvL))
                 {
-                    SavePath("lvl", Formatting.None);
+                    SavePathData("lvl", Formatting.None);
                 }
 
                 if (GUILayout.Button("Save File"))
@@ -67,17 +67,17 @@ namespace TowerDefence.Systems.Waves.Data
             {
                 if (GUILayout.Button(saveGridToJson))
                 {
-                    SaveGrid("json", Formatting.Indented);
+                    SaveGridData("json", Formatting.Indented);
                 }
 
                 if (GUILayout.Button(saveGridToLvL))
                 {
-                    SaveGrid("lvl", Formatting.None);
+                    SaveGridData("lvl", Formatting.None);
                 }
 
                 if (GUILayout.Button(LoadGridFromImage))
                 {
-                    LoadGrid();
+                    LoadGridDataFromImage();
                 }
 
                 GUILayout.FlexibleSpace();
@@ -177,7 +177,7 @@ namespace TowerDefence.Systems.Waves.Data
             }
         }
 
-        private void SavePath(string extension, Formatting formatting)
+        private void SavePathData(string extension, Formatting formatting)
         {
             string path = EditorUtility.SaveFilePanel("Select Save Location", Application.dataPath, target.name, extension);
             var file = new FileInfo(path);
@@ -199,7 +199,7 @@ namespace TowerDefence.Systems.Waves.Data
             AssetDatabase.Refresh();
         }
 
-        private void SaveGrid(string extension, Formatting formatting)
+        private void SaveGridData(string extension, Formatting formatting)
         {
             string basePath = Path.Combine(Application.streamingAssetsPath, "Levels");
             string path = EditorUtility.SaveFilePanel("Select Save Location", basePath, target.name, extension);
@@ -222,7 +222,7 @@ namespace TowerDefence.Systems.Waves.Data
             AssetDatabase.Refresh();
         }
 
-        private void LoadGrid()
+        private void LoadGridDataFromImage()
         {
             string path = EditorUtility.OpenFilePanelWithFilters("Select GridSettings Image", Application.streamingAssetsPath, new[] { "png", "png", "jpg", "jpg" });
             var settings = GridSettingsImageImporter.Convert(path);
