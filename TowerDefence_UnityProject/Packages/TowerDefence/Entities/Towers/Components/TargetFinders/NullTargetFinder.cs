@@ -9,6 +9,8 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
     [Serializable, Component(ComponentType.Tower, typeof(ITargetFindComponent))]
     internal class NullTargetFinder : ITargetFindComponent
     {
+        public static readonly ITargetFindComponent Instance = new NullTargetFinder();
+
         public IEnumerable<IEnemyObject> FoundTargets => Array.Empty<IEnemyObject>();
 
         public void Tick()
