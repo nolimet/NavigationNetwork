@@ -91,7 +91,6 @@ namespace TowerDefence.Systems.Waves.Data
                 EditorGUILayout.PropertyField(waves);
                 EditorGUILayout.PropertyField(gridSettingData);
                 UpdateGridSettings();
-                //DrawGridSettings();
 
                 if (changedScope.changed)
                 {
