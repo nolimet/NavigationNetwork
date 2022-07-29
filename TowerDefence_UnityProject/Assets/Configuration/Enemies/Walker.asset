@@ -16,5 +16,5 @@ MonoBehaviour:
   - type: TowerDefence.Entities.Enemies.Components.StaticPathWalker
     data: '{"speedMult":5.0}'
   - type: TowerDefence.Entities.Enemies.Components.BaseComponents.EnemySettings
-    data: '{"TypeName":"","BaseName":"Walker","MaxHealth":10.0,"Speed":5.0}'
+    data: '{"TypeName":"Walker","BaseName":"Walker","MaxHealth":10.0,"Speed":5.0}'
   type: 0
