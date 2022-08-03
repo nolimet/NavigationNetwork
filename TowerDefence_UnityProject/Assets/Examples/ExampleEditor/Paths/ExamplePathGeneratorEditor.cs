@@ -13,7 +13,7 @@ namespace TowerDefence.Examples.Paths
             if (!target) { return; }
             using (var disableScope = new EditorGUI.DisabledGroupScope(!Application.isPlaying))
             {
-                using (var h1 = new EditorGUILayout.HorizontalScope())
+                using (new EditorGUILayout.HorizontalScope())
                 {
                     GUILayout.FlexibleSpace();
                     if (GUILayout.Button("Build Path"))
@@ -41,32 +41,47 @@ namespace TowerDefence.Examples.Paths
                             }
                         }
                     }
+
                     GUILayout.FlexibleSpace();
                 }
-                if (target.ConstructedPath != null && Application.isPlaying)
-                {
-                    var paths = target.ConstructedPath.paths;
 
-                    foreach (var path in paths)
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Build Gridworld"))
                     {
-                        using (var h1 = new EditorGUILayout.HorizontalScope())
-                        {
-                            GUILayout.FlexibleSpace();
-                            if (GUILayout.Button("DumpCurve Keys"))
-                            {
-                                path.Value.LogCurveValues();
-                            }
-                            GUILayout.FlexibleSpace();
-                        }
-                        EditorGUILayout.LabelField($"path {path.Key}");
-                        using (var indent = new EditorGUI.IndentLevelScope(1))
-                        {
-                            EditorGUILayout.CurveField("X", path.Value.curveX);
-                            EditorGUILayout.CurveField("Y", path.Value.curveY);
-                            EditorGUILayout.CurveField("Z", path.Value.curveZ);
-                        }
-                        EditorGUILayout.Space();
+                        target.BuildGridWorld();
                     }
+
+                    if (GUILayout.Button("Create grid walker"))
+                    {
+                        target.CreateGridWalker();
+                    }
+                    GUILayout.FlexibleSpace();
+                }
+            }
+            if (target.ConstructedPath != null && Application.isPlaying)
+            {
+                var paths = target.ConstructedPath.paths;
+
+                foreach (var path in paths)
+                {
+                    using (var h1 = new EditorGUILayout.HorizontalScope())
+                    {
+                        GUILayout.FlexibleSpace();
+                        if (GUILayout.Button("DumpCurve Keys"))
+                        {
+                            path.Value.LogCurveValues();
+                        }
+                        GUILayout.FlexibleSpace();
+                    }
+                    EditorGUILayout.LabelField($"path {path.Key}");
+                    using (var indent = new EditorGUI.IndentLevelScope(1))
+                    {
+                        EditorGUILayout.CurveField("X", path.Value.curveX);
+                        EditorGUILayout.CurveField("Y", path.Value.curveY);
+                        EditorGUILayout.CurveField("Z", path.Value.curveZ);
+                    }
+                    EditorGUILayout.Space();
                 }
             }
         }

@@ -1,10 +1,13 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Linq;
 using TowerDefence.Entities.Enemies;
+using TowerDefence.Systems.Waves;
 using TowerDefence.Systems.Waves.Data;
+using TowerDefence.Systems.WorldLoad;
+using TowerDefence.Systems.WorldLoader.Data;
 using TowerDefence.World;
+using TowerDefence.World.Grid;
 using TowerDefence.World.Path.Data;
 using UnityEngine;
 using Zenject;
@@ -15,13 +18,47 @@ namespace TowerDefence.Examples.Paths
     public class ExamplePathGenerator : MonoBehaviour
     {
         private readonly string filePath = Application.streamingAssetsPath + "/ExampleLevel.json";
+        private readonly string gridWorldPath = Application.streamingAssetsPath + "/ExampleLevel-grid.json";
 
         [HideInInspector]
-        public PathWorldData ConstructedPath => worldController?.pathWorldData;
+        public PathWorldData ConstructedPath => pathWorldController?.PathWorldData;
 
-        [Inject] private WorldController worldController = null;
+        [Inject] private PathWorldController pathWorldController = null;
         [Inject] private EnemyController enemyController = null;
         [Inject] private EnemyConfigurationData enemyConfiguration = null;
+        [Inject] private GridWorld gridWorld = null;
+        [Inject] private WorldLoadController worldLoadController = null;
+        [Inject] private WaveController waveController = null;
+
+        private LevelData levelData;
+
+        private void Update()
+        {
+            if (UnityEngine.Input.GetKeyUp(KeyCode.F1))
+            {
+                BuildGridWorld();
+            }
+
+            if (UnityEngine.Input.GetKeyUp(KeyCode.F2))
+            {
+                CreateGridWalker();
+            }
+
+            if (UnityEngine.Input.GetKeyUp(KeyCode.F3))
+            {
+                worldLoadController.LoadLevel("Level 0", WorldLoadController.LevelType.lvl);
+            }
+
+            if (UnityEngine.Input.GetKeyUp(KeyCode.F4))
+            {
+                waveController.StartWavePlayBack();
+            }
+
+            if (UnityEngine.Input.GetKeyUp(KeyCode.F5))
+            {
+                waveController.StopWavePlayBack();
+            }
+        }
 
         [ContextMenu("Generate Example Path")]
         public void GenerateExamplePath()
@@ -57,7 +94,7 @@ namespace TowerDefence.Examples.Paths
             {
                 new Wave(new[]
                 {
-                    new EnemyGroup("Walker", 0, new[]{0f,0.2f,0.3f,0.5f })
+                    new EnemyGroup("Walker", 0,0,0 ,new[]{0f,0.2f,0.3f,0.5f })
                 })
             };
 
@@ -85,20 +122,44 @@ namespace TowerDefence.Examples.Paths
 
             var levelData = JsonConvert.DeserializeObject<LevelData>(json);
 
-            worldController.SetPath(levelData.path);
+            pathWorldController.SetPath(levelData.path.Value);
+        }
+
+        public async void BuildGridWorld()
+        {
+            string json = File.ReadAllText(gridWorldPath);
+            levelData = JsonConvert.DeserializeObject<LevelData>(json);
+            if (levelData.gridSettings.HasValue)
+                await gridWorld.CreateWorld(levelData.gridSettings.Value);
+            else
+                Debug.LogError("NO GRIDWORLD");
         }
 
         public async void CreateWalker()
         {
-            var path = worldController.pathWorldData.GetRandomPath();
-            await enemyController.CreateNewEnemy(enemyConfiguration.Enemies.First().Value, path);
+            var path = pathWorldController.PathWorldData.GetRandomPath();
+            await enemyController.CreateNewEnemy("Walker", path);
         }
 
         public async void CreateWalkerDelayed(float delay)
         {
             await new WaitForSeconds(delay);
-            var path = worldController.pathWorldData.GetRandomPath();
-            await enemyController.CreateNewEnemy(enemyConfiguration.Enemies.First().Value, path);
+            var path = pathWorldController.PathWorldData.GetRandomPath();
+            await enemyController.CreateNewEnemy("Walker", path);
+        }
+
+        public async void CreateGridWalker()
+        {
+            if (!levelData.gridSettings.HasValue)
+            {
+                string json = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Levels", "Level 0.lvl"));
+                levelData = JsonConvert.DeserializeObject<LevelData>(json);
+            }
+            //TODO clean this up and fix it so it checks if it has a value
+            var gridSettings = levelData.gridSettings.Value;
+            var start = gridSettings.EntryPoints[UnityEngine.Random.Range(0, gridSettings.EntryPoints.Length)];
+            var end = gridSettings.EndPoints[UnityEngine.Random.Range(0, gridSettings.EndPoints.Length)];
+            await enemyController.CreateNewEnemy(levelData.waves[0].enemyGroups[0]);
         }
     }
 }

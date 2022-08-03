@@ -11,12 +11,13 @@ using TowerDefence.Entities.Towers.Models;
 namespace TowerDefence.Entities.Towers.Components.Damage
 {
     [Serializable]
+    [JsonObject(MemberSerialization.OptIn)]
     public abstract class DamageComponentBase : IDamageComponent, IInitializable
     {
-        [JsonIgnore] protected ITowerModel model { get; private set; }
-        [JsonIgnore] protected ITargetFindComponent targetFindComponent { get; private set; } = NullTargetFinder.Instance;
-        [JsonIgnore] protected BindingContext bindingContext { get; private set; } = new(true);
-        [JsonIgnore] public abstract double DamagePerSecond { get; }
+        protected ITowerModel model { get; private set; }
+        protected ITargetFindComponent targetFindComponent { get; private set; } = NullTargetFinder.Instance;
+        protected BindingContext bindingContext { get; private set; } = new(true);
+        public abstract double DamagePerSecond { get; }
 
         public abstract void Tick();
 

@@ -24,3 +24,9 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+  - id: Wall
+    reference:
+      m_AssetGUID: 9c76240a6cc06a64893135f1cd0a1100
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

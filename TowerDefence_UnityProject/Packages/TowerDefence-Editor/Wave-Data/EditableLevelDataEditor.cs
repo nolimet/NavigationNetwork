@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
 using System.Linq;
+using TowerDefence.Systems.WorldLoader.Data;
 using TowerDefence.World.Path.Data;
 using UnityEditor;
 using UnityEngine;
@@ -12,19 +13,21 @@ namespace TowerDefence.Systems.Waves.Data
     {
         private SerializedProperty waves;
         private SerializedProperty pathdata;
+        private SerializedProperty gridSettingData;
 
-        private GUIContent saveToJson = new GUIContent("Save To Json", "For development (indended json)");
-        private GUIContent saveToLvL = new GUIContent("Save To lvl", "For production (single line json)");
+        private readonly GUIContent savePathToJson = new("Save Path To Json", "For development (indended json)");
+        private readonly GUIContent savePathToLvL = new("Save Path To lvl", "For production (single line json)");
+
+        private readonly GUIContent saveGridToJson = new("Save Grid To Json", "For development (indended json)");
+        private readonly GUIContent saveGridToLvL = new("Save Grid To lvl", "For production (single line json)");
+
+        private readonly GUIContent LoadGridFromImage = new("Load grid from image", "Converts a image to GridSettings");
 
         public void OnEnable()
         {
             waves = serializedObject.FindProperty("waves");
             pathdata = serializedObject.FindProperty("pathdata").FindPropertyRelative("pathPoints");
-        }
-
-        private void OnDrawWave(Rect rect, int index, bool isActive, bool isFocused)
-        {
-            EditorGUI.LabelField(rect, index.ToString());
+            gridSettingData = serializedObject.FindProperty("gridSettings");
         }
 
         public override void OnInspectorGUI()
@@ -43,14 +46,14 @@ namespace TowerDefence.Systems.Waves.Data
                     }
                 }
 
-                if (GUILayout.Button(saveToJson))
+                if (GUILayout.Button(savePathToJson))
                 {
-                    SaveData("json", Formatting.Indented);
+                    SavePathData("json", Formatting.Indented);
                 }
 
-                if (GUILayout.Button(saveToLvL))
+                if (GUILayout.Button(savePathToLvL))
                 {
-                    SaveData("lvl", Formatting.None);
+                    SavePathData("lvl", Formatting.None);
                 }
 
                 if (GUILayout.Button("Save File"))
@@ -60,16 +63,47 @@ namespace TowerDefence.Systems.Waves.Data
                 }
                 GUILayout.FlexibleSpace();
             }
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                if (GUILayout.Button(saveGridToJson))
+                {
+                    SaveGridData("json", Formatting.Indented);
+                }
+
+                if (GUILayout.Button(saveGridToLvL))
+                {
+                    SaveGridData("lvl", Formatting.None);
+                }
+
+                if (GUILayout.Button(LoadGridFromImage))
+                {
+                    LoadGridDataFromImage();
+                }
+
+                GUILayout.FlexibleSpace();
+            }
+
 
             using (var changedScope = new EditorGUI.ChangeCheckScope())
             {
                 DrawPathData();
+
                 EditorGUILayout.PropertyField(waves);
+                EditorGUILayout.PropertyField(gridSettingData);
+                UpdateGridSettings();
 
                 if (changedScope.changed)
                 {
                     serializedObject.ApplyModifiedProperties();
                 }
+            }
+
+            void UpdateGridSettings()
+            {
+                var width = gridSettingData.FindPropertyRelative("GridWidth");
+                var height = gridSettingData.FindPropertyRelative("GridHeight");
+                var nodes = gridSettingData.FindPropertyRelative("nodes");
+                nodes.arraySize = height.intValue * width.intValue;
             }
 
             void DrawPathData()
@@ -140,28 +174,63 @@ namespace TowerDefence.Systems.Waves.Data
                     }
                 }
             }
+        }
 
-            void SaveData(string extension, Formatting formatting)
+        private void SavePathData(string extension, Formatting formatting)
+        {
+            string path = EditorUtility.SaveFilePanel("Select Save Location", Application.dataPath, target.name, extension);
+            var file = new FileInfo(path);
+            if (!file.Directory.Exists)
             {
-                string path = EditorUtility.SaveFilePanel("Select Save Location", Application.dataPath, target.name, extension);
-                var file = new FileInfo(path);
-                if (!file.Directory.Exists)
-                {
-                    file.Directory.Create();
-                }
-
-                if (file.Exists)
-                {
-                    file.Delete();
-                }
-
-                using (var stream = File.CreateText(path))
-                {
-                    stream.Write(JsonConvert.SerializeObject((target as EditableLevelData).ToLevelData(), formatting));
-                }
-
-                AssetDatabase.Refresh();
+                file.Directory.Create();
             }
+
+            if (file.Exists)
+            {
+                file.Delete();
+            }
+
+            using (var stream = File.CreateText(path))
+            {
+                stream.Write(JsonConvert.SerializeObject((target as EditableLevelData).ToLevelDataPath(), formatting));
+            }
+
+            AssetDatabase.Refresh();
+        }
+
+        private void SaveGridData(string extension, Formatting formatting)
+        {
+            string basePath = Path.Combine(Application.streamingAssetsPath, "Levels");
+            string path = EditorUtility.SaveFilePanel("Select Save Location", basePath, target.name, extension);
+            var file = new FileInfo(path);
+            if (!file.Directory.Exists)
+            {
+                file.Directory.Create();
+            }
+
+            if (file.Exists)
+            {
+                file.Delete();
+            }
+
+            using (var stream = File.CreateText(path))
+            {
+                stream.Write(JsonConvert.SerializeObject((target as EditableLevelData).ToLevelDataGrid(), formatting));
+            }
+
+            AssetDatabase.Refresh();
+        }
+
+        private void LoadGridDataFromImage()
+        {
+            string path = EditorUtility.OpenFilePanelWithFilters("Select GridSettings Image", Application.streamingAssetsPath, new[] { "png", "png", "jpg", "jpg" });
+            var settings = GridSettingsImageImporter.Convert(path);
+
+            var target = this.target as EditableLevelData;
+            target.FromGridSettings(settings);
+            EditorUtility.SetDirty(target);
+            AssetDatabase.SaveAssets();
+            serializedObject.Update();
         }
     }
 }

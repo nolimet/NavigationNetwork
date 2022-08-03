@@ -13,17 +13,18 @@ using UnityEngine;
 namespace TowerDefence.Entities.Towers.Components.TargetFinders
 {
     [Serializable]
+    [JsonObject(MemberSerialization.OptIn)]
     public abstract class TargetFindBase : ITargetFindComponent, IInitializable
     {
-        [JsonIgnore] protected List<IEnemyObject> targetList { get; private set; }
-        [JsonIgnore] protected BindingContext bindingContext { get; private set; }
+        protected List<IEnemyObject> targetList { get; private set; }
+        protected BindingContext bindingContext { get; private set; }
 
-        [JsonIgnore] protected ITowerObject towerObject { get; private set; }
-        [JsonIgnore] protected ITowerModel towerModel { get; private set; }
+        protected ITowerObject towerObject { get; private set; }
+        protected ITowerModel towerModel { get; private set; }
 
-        [JsonIgnore] public IEnumerable<IEnemyObject> FoundTargets => targetList;
+        public IEnumerable<IEnemyObject> FoundTargets => targetList;
 
-        [JsonIgnore] public short TickPriority => short.MinValue;
+        public short TickPriority => short.MinValue;
 
         private TowerSettings towerSettings;
 
@@ -56,6 +57,11 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
                 return hits.Select(x => x.collider.GetComponent<IEnemyObject>()).Where(x => x != null);
             }
             return Array.Empty<IEnemyObject>();
+        }
+
+        ~TargetFindBase()
+        {
+            bindingContext.Dispose();
         }
     }
 }

@@ -1,11 +1,12 @@
-﻿using DataBinding;
+﻿using Cysharp.Threading.Tasks;
+using DataBinding;
 using System.Linq;
-using System.Threading.Tasks;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
 using TowerDefence.Entities.Towers.Components.Interfaces;
 using TowerDefence.Entities.Towers.Models;
 using TowerDefence.World;
+using TowerDefence.World.Grid.Data;
 using UnityEngine;
 
 namespace TowerDefence.Entities.Towers.Builder
@@ -30,21 +31,21 @@ namespace TowerDefence.Entities.Towers.Builder
             await towerConfiguration.TowerBase.LoadAssetAsync();
         }
 
-        public async Task<ITowerObject> CreateTower(ComponentConfigurationObject componentConfiguration, Vector2 position)
+        public async UniTask<ITowerObject> CreateTower(ComponentConfigurationObject componentConfiguration, Vector2 position, IGridCell cell)
         {
             var towerGameObject = await towerConfiguration.TowerBase.InstantiateAsync(worldContainer.TowerContainer, false) as GameObject;
 
             var towerObject = towerGameObject.GetComponent<TowerObject>();
             var model = ModelFactory.Create<ITowerModel>();
 
-            towerObject.Setup(model);
+            towerObject.Setup(model, cell);
 
             var components = await componentFactory.GetComponents(componentConfiguration.components, ProcessComponentInit);
             model.Components = components.ToList();
 
             return towerObject;
 
-            async Task<IComponent> ProcessComponentInit(IComponent arg)
+            async UniTask<IComponent> ProcessComponentInit(IComponent arg)
             {
                 if (arg is IInitializable initializable)
                 {

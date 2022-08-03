@@ -2,6 +2,7 @@
 using TowerDefence.Input;
 using TowerDefence.Systems.Selection.Models;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace TowerDefence.Systems.Selection
@@ -49,7 +50,10 @@ namespace TowerDefence.Systems.Selection
 
         private void OnClickPreformed(InputAction.CallbackContext obj)
         {
-            SelectObject(selectionInput.Main.MousePosition.ReadValue<Vector2>());
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                SelectObject(selectionInput.Main.MousePosition.ReadValue<Vector2>());
+            }
         }
 
         private void SelectObject(Vector2 cursorPosition)

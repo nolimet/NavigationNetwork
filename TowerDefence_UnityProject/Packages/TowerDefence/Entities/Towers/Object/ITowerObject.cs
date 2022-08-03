@@ -7,6 +7,6 @@ namespace TowerDefence.Entities.Towers
     {
         ITowerModel Model { get; }
 
-        Vector2 GetGridPosition();
+        Vector2Int GetGridPosition();
     }
 }

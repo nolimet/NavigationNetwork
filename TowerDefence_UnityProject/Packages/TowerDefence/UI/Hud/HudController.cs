@@ -1,7 +1,7 @@
 using DataBinding;
 using System.Collections.Generic;
 using System.Linq;
-using TowerDefence.Entities.Towers;
+using TowerDefence.Entities.Towers.Models;
 using TowerDefence.Systems.Selection;
 using TowerDefence.Systems.Selection.Models;
 using UnityEngine;
@@ -12,12 +12,14 @@ namespace TowerDefence.UI.Hud
     public class HudController : MonoBehaviour
     {
         private readonly BindingContext bindingContext = new();
-        private TowerHudDrawer towerHud;
+        private ITowerModels towerModels;
+
+        [SerializeField] private HudDrawerBase[] hudDrawers;
 
         [Inject]
-        public void Inject(ISelectionModel selectionModel, TowerHudDrawer towerHud)
+        public void Inject(ISelectionModel selectionModel, ITowerModels towerModel)
         {
-            this.towerHud = towerHud;
+            this.towerModels = towerModel;
 
             bindingContext.Bind(selectionModel, m => m.Selection, OnSelectionChanged);
         }
@@ -26,16 +28,21 @@ namespace TowerDefence.UI.Hud
         {
             if (!selection.Any())
             {
-                towerHud.SetActive(false);
+                foreach (var drawer in hudDrawers)
+                {
+                    drawer.SetActive(false);
+                }
                 return;
             }
 
-            var first = selection.First();
-
-            if (first is ITowerObject tower)
+            var selected = selection.First();
+            for (int i = 0; i < hudDrawers.Length; i++)
             {
-                towerHud.SetActive(true);
-                towerHud.SetValues(tower);
+                var drawer = hudDrawers[i];
+                bool active = drawer.DrawsType(selected);
+
+                drawer.SetActive(active);
+                drawer.SetValue(selected);
             }
         }
 

@@ -1,10 +1,12 @@
 ﻿using DataBinding;
-using System;
+using NoUtil.Extentsions;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Interfaces;
+using TowerDefence.Entities.Towers.Components.BaseComponents;
 using TowerDefence.Entities.Towers.Models;
+using TowerDefence.World.Grid.Data;
 using UnityEngine;
 
 namespace TowerDefence.Entities.Towers
@@ -21,13 +23,17 @@ namespace TowerDefence.Entities.Towers
 
         public ITowerModel Model { get; private set; }
 
-        public Vector2 GetGridPosition() => throw new NotImplementedException("TODO Implement grid system");
+        internal IGridCell OccupiedCell { get; private set; }
+
+        public Vector2Int GetGridPosition() => OccupiedCell?.Position ?? Vector2Int.zero;
 
         public Vector3 GetWorldPosition() => transform.position;
 
-        public void Setup(ITowerModel model)
+        internal void Setup(ITowerModel model, IGridCell cell)
         {
             this.Model = model;
+            this.OccupiedCell = cell;
+            cell.SetStructure(true);
 
             bindingContext.Bind(model, m => m.Components, OnComponentsChanged);
         }
@@ -36,6 +42,11 @@ namespace TowerDefence.Entities.Towers
         {
             tickableComponents.Clear();
             tickableComponents.AddRange(obj.Where(x => x is ITickableComponent).Cast<ITickableComponent>().OrderBy(x => x.TickPriority));
+
+            if (obj.TryFind(x => x is TowerSettings, out var component) && component is TowerSettings towerSettings)
+            {
+                OccupiedCell.SetStructure(towerSettings.IsSolid);
+            }
         }
 
         public void Tick()
@@ -45,6 +56,7 @@ namespace TowerDefence.Entities.Towers
 
         private void OnDestroy()
         {
+            OccupiedCell.SetStructure(false);
             bindingContext.Dispose();
         }
     }

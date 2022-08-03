@@ -1,65 +1,90 @@
-﻿using DataBinding;
+﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Threading;
+using TowerDefence.Entities.Enemies.Components;
 using TowerDefence.Entities.Enemies.Models;
-using TowerDefence.World;
-using UnityEngine;
-using UnityEngine.AddressableAssets;
-using Zenject;
-using static TowerDefence.World.Path.Data.PathWorldData;
+using static TowerDefence.Systems.Waves.Data.Wave;
+using Object = UnityEngine.Object;
 
 namespace TowerDefence.Entities.Enemies
 {
-    public class EnemyController : ITickable
+    internal class EnemyController : IDisposable
     {
         private readonly IEnemiesModel model;
-        private readonly WorldContainer worldContainer;
-        private readonly DiContainer container;
+        private readonly EnemyFactory enemyFactory;
+        private readonly CancellationTokenSource tokenSource = new();
 
         private readonly Queue<IEnemyObject> deadEnemies = new();
 
-        public EnemyController(DiContainer container, IEnemiesModel model, WorldContainer worldContainer)
+        public event Action EnemyReachedEnd;
+
+        internal EnemyController(IEnemiesModel model, EnemyFactory enemyFactory)
         {
-            this.container = container;
             this.model = model;
-            this.worldContainer = worldContainer;
+            this.enemyFactory = enemyFactory;
+            EnemyUpdateLoop(tokenSource.Token).Preserve().SuppressCancellationThrow().Forget();
         }
 
-        //TODO Rework completely when adding new system. Current implementation is completely wrong
-        public async Task<IEnemyObject> CreateNewEnemy(AssetReference enemyAssetRefrence, AnimationCurve3D path)
+        //TODO Simplify workflow and add a enemy Creation service or something similar
+        public async UniTask<IEnemyObject> CreateNewEnemy(string id, World.Path.Data.PathWorldData.AnimationCurve3D path)
         {
-            var newEnemyGameObject = (GameObject)await enemyAssetRefrence.InstantiateAsync(worldContainer.EnemyContainer);
-            container.InjectGameObject(newEnemyGameObject);
+            var newEnemy = await enemyFactory.CreateEnemy(id, EnemyDied);
 
-            if (newEnemyGameObject.TryGetComponent<EnemyObject>(out var newEnemy))
+            if (newEnemy.Model.Components.Any(x => x is StaticPathWalker))
             {
-                var model = ModelFactory.Create<IEnemyModel>();
-                model.Components.Add(new Components.StaticPathWalker(path, 5f, newEnemy));
+                var walker = newEnemy.Model.Components.First(x => x is StaticPathWalker) as StaticPathWalker;
 
-                //TODO do enemy Init stuff somewhereElse
-
-                newEnemy.Setup(model, EnemyDied);
-                this.model.Enemies.Add(newEnemy);
-                return newEnemy;
+                walker.SetPath(path);
+                walker.ReachedEnd = EnemyDied;
             }
-            throw new System.Exception("Could not load enemy");
+
+            model.Enemies.Add(newEnemy);
+            return newEnemy;
         }
 
-        public void Tick()
+        public async UniTask<IEnemyObject> CreateNewEnemy(EnemyGroup group)
         {
-            while (deadEnemies.Any())
+            var newEnemy = await enemyFactory.CreateEnemy(group.enemyID, EnemyDied);
+
+            if (newEnemy.Model.Components.Any(x => x is GridPathWalker))
             {
-                DestroyEnemy(deadEnemies.Dequeue());
+                var pathFinder = newEnemy.Model.Components.First(x => x is GridPathWalker) as GridPathWalker;
+
+                pathFinder.ReachedEnd = OnEnemyReachedEnd;
+                await pathFinder.SetStartEnd(group);
             }
 
-            foreach (var enemy in this.model.Enemies)
-                enemy.Tick();
+            model.Enemies.Add(newEnemy);
+            return newEnemy;
+        }
 
-            void DestroyEnemy(IEnemyObject enemy)
+        public void Dispose()
+        {
+            tokenSource.Cancel();
+            tokenSource.Dispose();
+        }
+
+        private async UniTask EnemyUpdateLoop(CancellationToken token)
+        {
+            await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.EarlyUpdate))
             {
-                model.Enemies.Remove(enemy);
-                Object.Destroy(enemy.Transform.gameObject);
+                token.ThrowIfCancellationRequested();
+                while (deadEnemies.Any())
+                {
+                    DestroyEnemy(deadEnemies.Dequeue());
+                }
+
+                foreach (var enemy in this.model.Enemies)
+                    enemy.Tick();
+
+                void DestroyEnemy(IEnemyObject enemy)
+                {
+                    model.Enemies.Remove(enemy);
+                    Object.Destroy(enemy.Transform.gameObject);
+                }
             }
         }
 
@@ -69,6 +94,12 @@ namespace TowerDefence.Entities.Enemies
             {
                 deadEnemies.Enqueue(enemy);
             }
+        }
+
+        private void OnEnemyReachedEnd(IEnemyObject enemy)
+        {
+            enemy.Model.Health = 0;
+            EnemyReachedEnd?.Invoke();
         }
     }
 }

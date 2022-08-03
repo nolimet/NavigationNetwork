@@ -1,45 +1,42 @@
-﻿using NoUtil.Math;
+﻿using Newtonsoft.Json;
+using NoUtil.Math;
+using TowerDefence.Entities.Components;
 using UnityEngine;
 using static TowerDefence.World.Path.Data.PathWorldData;
 
 namespace TowerDefence.Entities.Enemies.Components
 {
+    [Component(ComponentType.Enemy, typeof(IPathWalkerComponent))]
+    [JsonObject(MemberSerialization.OptIn)]
     public class StaticPathWalker : BaseEnemyPathWalker
     {
-        private readonly AnimationCurve3D path;
-        private readonly Transform transform;
-        private readonly float speedMult;
-        private readonly IEnemyObject self;
+        [JsonProperty] private readonly float speedMult;
+
+        private AnimationCurve3D path;
 
         private Vector3 lastPosition;
 
-        public StaticPathWalker(AnimationCurve3D path, float speedMult, IEnemyObject self) : base(self.DeathAction)
+        public void SetPath(AnimationCurve3D path)
         {
             this.path = path;
-            this.transform = self.Transform;
-            this.speedMult = speedMult;
-            this.self = self;
         }
 
         public override float PathProgress { get; protected set; } = 0f;
 
         public override void Tick()
         {
-            if (transform)
+            lastPosition = self.Transform.position;
+            self.Transform.position = path.Evaluate(PathProgress);
+
+            var dir = Math.VectorToAngle(lastPosition - self.Transform.position);
+
+            self.Transform.rotation = Quaternion.Euler(0, 0, dir);
+
+            PathProgress += Time.deltaTime * speedMult;
+
+            if (PathProgress >= path.length)
             {
-                lastPosition = transform.position;
-                transform.position = path.Evaluate(PathProgress);
-
-                var dir = Math.VectorToAngle(lastPosition - transform.position);
-
-                transform.rotation = Quaternion.Euler(0, 0, dir);
-
-                PathProgress += Time.deltaTime * speedMult;
-
-                if (PathProgress >= path.length)
-                {
-                    reachedEnd?.Invoke(self);
-                }
+                ReachedEnd?.Invoke(self);
             }
         }
     }

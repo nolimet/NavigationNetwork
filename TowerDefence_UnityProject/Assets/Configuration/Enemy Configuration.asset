@@ -12,9 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9901396a8716fdf43a99039d96f5e4f2, type: 3}
   m_Name: Enemy Configuration
   m_EditorClassIdentifier: 
-  enemies:
-  - id: Walker
+  enemyBaseObjects:
+  - id: default
     reference:
       m_AssetGUID: 228aa61bd6273fe4ea404ee44ac16a49
       m_SubObjectName: 
       m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  enemies:
+  - id: Walker
+    baseId: default
+    componentConfiguration: {fileID: 11400000, guid: db7783efdf0c0d84c9df4721caf1c902,
+      type: 2}
+  - id: GridWalker
+    baseId: default
+    componentConfiguration: {fileID: 11400000, guid: 95ed836dd955c424c8a4278304be3143,
+      type: 2}

@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lineGenericPrefab: {fileID: 1627210856829272286, guid: ed8a8a5ec16279343a6707a3ffa8de5e,
     type: 3}
+  gridWorldSettings: {fileID: 11400000, guid: d4b2d5b4324d1c94a9eb6ddb62bf4fa6, type: 2}

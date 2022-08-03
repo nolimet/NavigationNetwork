@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   components:
   - type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings
-    data: '{"Name":"Example","Range":4.0}'
+    data: '{"Name":"Example","IsSolid":0,"Range":4.0}'
   - type: TowerDefence.Entities.Towers.Components.TargetFinders.NearestTargetFinder
     data: '{}'
   - type: TowerDefence.Entities.Towers.Components.Damage.DamageAllTargets

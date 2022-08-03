@@ -1,20 +1,38 @@
-﻿using UnityEngine.Events;
+﻿using DataBinding;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using TowerDefence.Entities.Components;
+using TowerDefence.Entities.Enemies.Components.Interfaces;
+using TowerDefence.Entities.Enemies.Models;
+using UnityEngine.Events;
 
 namespace TowerDefence.Entities.Enemies.Components
 {
-    public abstract class BaseEnemyPathWalker : IPathWalkerComponent
+    [JsonObject(MemberSerialization.OptIn)]
+    public abstract class BaseEnemyPathWalker : IPathWalkerComponent, IInitializable
     {
-        protected readonly UnityAction<IEnemyObject> reachedEnd;
+        protected readonly BindingContext context = new(true);
+        public UnityAction<IEnemyObject> ReachedEnd { get; set; }
 
-        protected BaseEnemyPathWalker(UnityAction<IEnemyObject> reachedEnd)
-        {
-            this.reachedEnd = reachedEnd;
-        }
-
+        protected IEnemyObject self { get; private set; }
+        protected IEnemyModel model { get; private set; }
+        public abstract float PathProgress { get; protected set; }
         public short TickPriority => short.MinValue;
 
-        public abstract float PathProgress { get; protected set; }
+        public virtual void PostInit(IEnemyObject enemyObject, IEnemyModel enemyModel)
+        {
+            self = enemyObject;
+            model = enemyModel;
 
+            context.Bind(enemyModel, x => x.Components, OnComponentsChanged);
+        }
+
+        protected virtual void OnComponentsChanged(IList<IComponent> obj) { }
         public abstract void Tick();
+
+        ~BaseEnemyPathWalker()
+        {
+            context.Dispose();
+        }
     }
 }

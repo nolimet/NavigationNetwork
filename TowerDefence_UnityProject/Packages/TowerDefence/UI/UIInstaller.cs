@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using TowerDefence.UI.Health;
-using TowerDefence.UI.Tower;
+using TowerDefence.UI.Tower.Range;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Zenject;
@@ -20,7 +20,6 @@ namespace TowerDefence.UI
         private GameObject screenUIContainerPrefab;
 
         [SerializeField] private AssetReference hudControllerPrefab;
-
         [SerializeField] private AssetReference towerRangeDrawer;
 
         public override void InstallBindings()
@@ -43,8 +42,8 @@ namespace TowerDefence.UI
         private async void InstallAsync()
         {
             await Task.Delay(100);
-            var aaa = await hudControllerPrefab.InstantiateAsync(Container.Resolve<UIContainer>().ScreenUIContainer, false);
-            Container.InjectGameObject(aaa as GameObject);
+            var hudPrefab = await this.hudControllerPrefab.LoadAssetAsync<GameObject>() as GameObject;
+            Container.InstantiatePrefab(hudPrefab, Container.Resolve<UIContainer>().ScreenUIContainer);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using TowerDefence.Entities.Components.Data;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -9,26 +10,44 @@ namespace TowerDefence.Entities.Enemies
     public class EnemyConfigurationData : ScriptableObject
     {
         [SerializeField]
-        private EnemyConfiguration[] enemies;
+        private BaseEnemyConfiguration[] enemyBaseObjects;
 
+        [SerializeField]
+        private EnemyComponentConfiguration[] enemies;
+
+        [SerializeField]
         private void OnEnable()
         {
-            Enemies = enemies.ToDictionary(x => x.Id, x => x.Reference);
+            EnemyBaseObjects = enemyBaseObjects.ToDictionary(x => x.Id, x => x.Reference);
+            Enemies = enemies.ToDictionary(x => x.Id, x => x);
         }
 
-        public IReadOnlyDictionary<string, AssetReference> Enemies { get; private set; }
+        internal IReadOnlyDictionary<string, AssetReferenceT<GameObject>> EnemyBaseObjects { get; private set; }
+        internal Dictionary<string, EnemyComponentConfiguration> Enemies { get; private set; }
 
         [System.Serializable]
-        public class EnemyConfiguration
+        private class BaseEnemyConfiguration
         {
             [SerializeField]
             private string id;
 
             [SerializeField]
-            private AssetReference reference;
+            private AssetReferenceT<GameObject> reference;
 
-            public string Id => id;
-            public AssetReference Reference => reference;
+            internal string Id => id;
+            internal AssetReferenceT<GameObject> Reference => reference;
+        }
+
+        [System.Serializable]
+        internal class EnemyComponentConfiguration
+        {
+            [SerializeField] private string id;
+            [SerializeField] private string baseId;
+            [SerializeField] private ComponentConfigurationObject componentConfiguration;
+
+            internal string Id => id;
+            internal string BaseId => baseId;
+            internal ComponentConfigurationObject ComponentConfiguration => componentConfiguration;
         }
     }
 }
