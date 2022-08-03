@@ -9,6 +9,8 @@ namespace TowerDefence.World.Grid
 {
     internal class GridWorld
     {
+        public Action OnPathCacheCleared;
+
         private IEnumerable<IGridCell> world;
         private readonly GridGenerator gridGenerator;
         private readonly GridVisualGenerator visualGenerator;
@@ -42,7 +44,11 @@ namespace TowerDefence.World.Grid
             ClearPathCache();
         }
 
-        internal void ClearPathCache() => pathCache.Clear();
+        internal void ClearPathCache()
+        {
+            OnPathCacheCleared?.Invoke();
+            pathCache.Clear();
+        }
 
         public async UniTask<IEnumerable<IGridCell>> GetPath(int entraceId, int exitId)
         {

@@ -26,6 +26,7 @@ namespace TowerDefence.Entities.Enemies.Components
         private Vector3 target = Vector3.zero;
         private Vector3 currentSpeed = Vector3.zero;
         private float currentRotationVelocity;
+        private EnemyGroup enemyGroup;
 
         public override float PathProgress { get; protected set; }
 
@@ -33,6 +34,7 @@ namespace TowerDefence.Entities.Enemies.Components
         public void Inject(GridWorld gridWorld)
         {
             this.gridWorld = gridWorld;
+            gridWorld.OnPathCacheCleared += OnPathCacheCleared;
         }
 
         public override void Tick()
@@ -65,6 +67,7 @@ namespace TowerDefence.Entities.Enemies.Components
 
         public async UniTask SetStartEnd(EnemyGroup group)
         {
+            enemyGroup = group;
             self.Transform.position = Vector3.one * 10000f;
 
             var path = await gridWorld.GetPath(group.entranceId, group.exitId);
@@ -82,6 +85,11 @@ namespace TowerDefence.Entities.Enemies.Components
                 Debug.Log("Pathing failed");
                 model.Health = 0f;
             }
+        }
+
+        private void OnPathCacheCleared()
+        {
+            SetStartEnd(enemyGroup).Preserve().Forget();
         }
     }
 }

@@ -9,7 +9,7 @@ namespace TowerDefence.World.Grid
     {
         [SerializeField] private AssetReferenceT<Material> tileMaterial;
         [SerializeField] private AssetReferenceT<GameObject> entracePrefab;
-        [SerializeField] private AssetReferenceT<MeshFilter> exitPrefab;
+        [SerializeField] private AssetReferenceT<GameObject> exitPrefab;
         [SerializeField] private Vector2 tileSize = Vector2.one;
 
         public Vector2 TileSize => tileSize;
