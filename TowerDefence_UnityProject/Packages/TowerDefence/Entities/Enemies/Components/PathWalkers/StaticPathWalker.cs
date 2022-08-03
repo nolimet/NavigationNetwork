@@ -7,6 +7,7 @@ using static TowerDefence.World.Path.Data.PathWorldData;
 namespace TowerDefence.Entities.Enemies.Components
 {
     [Component(ComponentType.Enemy, typeof(IPathWalkerComponent))]
+    [JsonObject(MemberSerialization.OptIn)]
     public class StaticPathWalker : BaseEnemyPathWalker
     {
         [JsonProperty] private readonly float speedMult;

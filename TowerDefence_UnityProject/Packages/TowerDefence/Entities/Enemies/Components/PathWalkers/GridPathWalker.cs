@@ -1,11 +1,9 @@
 ﻿using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
-using NoUtil.Extentsions;
 using NoUtil.Math;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Components;
-using TowerDefence.Entities.Enemies.Components.BaseComponents;
 using TowerDefence.World.Grid;
 using TowerDefence.World.Grid.Data;
 using UnityEngine;
@@ -15,13 +13,12 @@ using static TowerDefence.Systems.Waves.Data.Wave;
 namespace TowerDefence.Entities.Enemies.Components
 {
     [Component(ComponentType.Enemy, typeof(IPathWalkerComponent))]
+    [JsonObject(MemberSerialization.OptIn)]
     internal class GridPathWalker : BaseEnemyPathWalker
     {
-        [JsonIgnore] private EnemySettings enemySettings;
-
-        [JsonIgnore] private readonly List<IGridCell> path = new();
-        [JsonIgnore] private GridWorld gridWorld;
-        [JsonIgnore] private int currentCell = 0;
+        private readonly List<IGridCell> path = new();
+        private GridWorld gridWorld;
+        private int currentCell = 0;
 
         [JsonProperty] private float moveSpeed = 1f;
 
@@ -36,14 +33,6 @@ namespace TowerDefence.Entities.Enemies.Components
         public void Inject(GridWorld gridWorld)
         {
             this.gridWorld = gridWorld;
-        }
-
-        protected override void OnComponentsChanged(IList<IComponent> components)
-        {
-            if (components.TryFind(x => x is EnemySettings, out var component) && component is EnemySettings settings)
-            {
-                enemySettings = settings;
-            }
         }
 
         public override void Tick()

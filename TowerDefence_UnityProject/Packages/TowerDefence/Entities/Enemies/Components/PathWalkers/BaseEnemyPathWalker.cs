@@ -8,15 +8,16 @@ using UnityEngine.Events;
 
 namespace TowerDefence.Entities.Enemies.Components
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public abstract class BaseEnemyPathWalker : IPathWalkerComponent, IInitializable
     {
-        [JsonIgnore] protected readonly BindingContext context = new(true);
-        [JsonIgnore] public UnityAction<IEnemyObject> ReachedEnd { get; set; }
+        protected readonly BindingContext context = new(true);
+        public UnityAction<IEnemyObject> ReachedEnd { get; set; }
 
-        [JsonIgnore] protected IEnemyObject self { get; private set; }
-        [JsonIgnore] protected IEnemyModel model { get; private set; }
-        [JsonIgnore] public abstract float PathProgress { get; protected set; }
-        [JsonIgnore] public short TickPriority => short.MinValue;
+        protected IEnemyObject self { get; private set; }
+        protected IEnemyModel model { get; private set; }
+        public abstract float PathProgress { get; protected set; }
+        public short TickPriority => short.MinValue;
 
         public virtual void PostInit(IEnemyObject enemyObject, IEnemyModel enemyModel)
         {
