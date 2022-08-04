@@ -6,6 +6,7 @@ using TowerDefence.Systems.WorldLoad;
 using TowerDefence.UI.Models;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Button = UnityEngine.UIElements.Button;
 
 namespace TowerDefence.UI.Menu.LevelDisplay
 {
@@ -24,19 +25,36 @@ namespace TowerDefence.UI.Menu.LevelDisplay
 
         private void OnContainersChanged(IList<IUIContainer> obj)
         {
-            if (obj.TryFind(x => x.Name == "Main", out var container) && container is UIDocumentContainer documentContainer)
+            if (obj.TryFind(x => x.Name == "Main", out var container) && container is UIDocumentContainer uiDocumentContainer)
             {
-                this.documentContainer = documentContainer;
+                documentContainer = uiDocumentContainer;
                 UpdateUI();
             }
         }
 
         private void UpdateUI()
         {
+            
             var document = documentContainer.Document.rootVisualElement;
             var levelsContainer = document.Q("Levels")?.Q("unity-content-container");
-
+            if (levelsContainer == null) throw new NullReferenceException();
+            
+            var newButton = new UnityEngine.UIElements.Button();
+            levelsContainer.Add(newButton);
             Debug.Log(levelsContainer);
+
+            VisualElement CreateNewButton(string text)
+            {
+                var buttonElement = new Button();//TODO add callback action
+                var textElement = new TextElement
+                {
+                    text = text
+                };
+
+                buttonElement.Add(textElement);
+
+                return buttonElement;
+            }
         }
 
         public void Dispose() => bindingContext.Dispose();
