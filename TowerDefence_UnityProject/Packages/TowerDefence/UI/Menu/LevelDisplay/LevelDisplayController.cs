@@ -38,9 +38,10 @@ namespace TowerDefence.UI.Menu.LevelDisplay
             var document = documentContainer.Document.rootVisualElement;
             var levelsContainer = document.Q("Levels")?.Q("unity-content-container");
             if (levelsContainer == null) throw new NullReferenceException();
-            
-            var newButton = new UnityEngine.UIElements.Button();
-            levelsContainer.Add(newButton);
+            for (int i = 0; i < 3; i++)
+            {
+                levelsContainer.Add(CreateNewButton($"Test {i}"));
+            }
             Debug.Log(levelsContainer);
 
             VisualElement CreateNewButton(string text)
