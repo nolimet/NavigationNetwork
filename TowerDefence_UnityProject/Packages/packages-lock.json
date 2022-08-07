@@ -211,7 +211,7 @@
       "url": "https://package.openupm.com"
     },
     "nl.jessestam.no-util": {
-      "version": "1.0.17",
+      "version": "1.0.18",
       "depth": 0,
       "source": "registry",
       "dependencies": {
