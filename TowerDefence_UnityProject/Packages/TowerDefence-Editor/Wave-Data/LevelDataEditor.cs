@@ -1,7 +1,7 @@
 using System.IO;
 using UnityEditor;
 
-namespace TowerDefence.Systems.Waves.Data
+namespace TowerDefence.EditorScripts.Systems.Waves.Data
 {
     /// <summary>
     /// Inspector for .lvl assets

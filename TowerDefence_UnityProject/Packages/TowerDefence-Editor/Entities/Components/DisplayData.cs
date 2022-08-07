@@ -1,8 +1,9 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
+using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
 
-namespace TowerDefence.Entities.Components
+namespace TowerDefence.EditorScripts.Entities.Components
 {
     internal class DisplayData
     {

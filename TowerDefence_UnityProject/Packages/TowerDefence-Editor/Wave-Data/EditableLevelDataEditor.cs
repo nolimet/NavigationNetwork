@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using TowerDefence.Systems.WorldLoader.Data;
 using TowerDefence.World.Path.Data;
 using UnityEditor;
 using UnityEngine;
 
-namespace TowerDefence.Systems.Waves.Data
+namespace TowerDefence.EditorScripts.Systems.Waves.Data
 {
     [CustomEditor(typeof(EditableLevelData))]
     public class EditableLevelDataEditor : Editor
@@ -61,8 +61,10 @@ namespace TowerDefence.Systems.Waves.Data
                     EditorUtility.SetDirty(target);
                     AssetDatabase.SaveAssets();
                 }
+
                 GUILayout.FlexibleSpace();
             }
+
             using (new EditorGUILayout.HorizontalScope())
             {
                 if (GUILayout.Button(saveGridToJson))
@@ -146,14 +148,17 @@ namespace TowerDefence.Systems.Waves.Data
                                             {
                                                 connections.arraySize++;
                                             }
+
                                             if (GUILayout.Button("-"))
                                             {
                                                 connections.arraySize--;
                                                 if (connections.arraySize < 0)
                                                     connections.arraySize = 0;
                                             }
+
                                             GUILayout.FlexibleSpace();
                                         }
+
                                         if (pointData.connections != null && pointData.connections.Length > 0)
                                         {
                                             var usableConnections = points.Where(x => x.id != pointData.id).ToList();

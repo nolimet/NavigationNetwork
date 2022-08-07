@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TowerDefence.EditorScripts.Entities.Components.Popup;
+using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
-using TowerDefence.Entities.Components.Popup;
 using UnityEditor;
 using UnityEngine;
 
-namespace TowerDefence.Entities.Components
+namespace TowerDefence.EditorScripts.Entities.Components
 {
     [CustomEditor(typeof(ComponentConfigurationObject))]
     internal class ComponentConfigurationEditor : Editor
@@ -103,6 +104,7 @@ namespace TowerDefence.Entities.Components
             {
                 component.Key.SerializeComponent(component.Value.component);
             }
+
             target.components = componentsCache.Keys.ToList();
         }
 
@@ -141,9 +143,9 @@ namespace TowerDefence.Entities.Components
                 var components = assembly.GetTypes()
                     .Where
                     (type =>
-                        type.IsDefined(typeof(ComponentAttribute)) && //Checking if it the required attribute
-                        !type.IsAbstract &&
-                        type.GetInterfaces().Any(x => x.Equals(typeof(IComponent))) //And that it implements the interface.
+                            type.IsDefined(typeof(ComponentAttribute)) && //Checking if it the required attribute
+                            !type.IsAbstract &&
+                            type.GetInterfaces().Any(x => x.Equals(typeof(IComponent))) //And that it implements the interface.
                     );
 
                 Enum.GetValues(typeof(ComponentType)).Cast<ComponentType>().Distinct().Where(x => !componentTypesMap.ContainsKey(x)).ToList().ForEach(type => componentTypesMap.Add(type, new()));
@@ -164,6 +166,7 @@ namespace TowerDefence.Entities.Components
                     componentAttributesMap.Add(component, att);
                 }
             }
+
             RebuildComponentCache();
         }
 

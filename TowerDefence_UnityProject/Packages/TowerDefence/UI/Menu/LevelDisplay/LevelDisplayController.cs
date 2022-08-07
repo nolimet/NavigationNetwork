@@ -1,12 +1,11 @@
-﻿using DataBinding;
-using NoUtil.Extentsions;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using DataBinding;
+using NoUtil.Extentsions;
 using TowerDefence.Systems.WorldLoad;
+using TowerDefence.Systems.WorldLoader.Data;
 using TowerDefence.UI.Models;
-using UnityEngine;
 using UnityEngine.UIElements;
-using Button = UnityEngine.UIElements.Button;
 
 namespace TowerDefence.UI.Menu.LevelDisplay
 {
@@ -34,28 +33,29 @@ namespace TowerDefence.UI.Menu.LevelDisplay
 
         private void UpdateUI()
         {
-            
+            var levels = LevelMetadata.LoadLevels();
+
             var document = documentContainer.Document.rootVisualElement;
             var levelsContainer = document.Q("Levels")?.Q("unity-content-container");
+
             if (levelsContainer == null) throw new NullReferenceException();
-            for (int i = 0; i < 3; i++)
+            foreach (var level in levels)
             {
-                levelsContainer.Add(CreateNewButton($"Test {i}"));
+                levelsContainer.Add(CreateNewButton(level.DisplayName));
             }
-            Debug.Log(levelsContainer);
 
             VisualElement CreateNewButton(string text)
             {
-                var buttonElement = new Button();//TODO add callback action
-                var textElement = new TextElement
-                {
-                    text = text
-                };
-
-                buttonElement.Add(textElement);
+                var buttonElement = new Button(OnButtonClicked); //TODO add callback action
+                buttonElement.text = text;
 
                 return buttonElement;
             }
+        }
+
+        private void OnButtonClicked()
+        {
+            throw new NotImplementedException();
         }
 
         public void Dispose() => bindingContext.Dispose();

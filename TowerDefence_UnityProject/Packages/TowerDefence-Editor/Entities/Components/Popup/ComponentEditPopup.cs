@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
+using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
-namespace TowerDefence.Entities.Components.Popup
+namespace TowerDefence.EditorScripts.Entities.Components.Popup
 {
     internal class ComponentEditPopup : PopupWindowContent
     {
@@ -56,8 +56,10 @@ namespace TowerDefence.Entities.Components.Popup
                 {
                     editorWindow.Close();
                 }
+
                 GUILayout.FlexibleSpace();
             }
+
             EditorGUILayout.Space();
 
             using var scrollView = new EditorGUILayout.ScrollViewScope(scrollViewPosition);
