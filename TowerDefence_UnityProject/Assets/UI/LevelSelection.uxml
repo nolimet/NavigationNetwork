@@ -3,5 +3,4 @@
     <ui:VisualElement name="LevelSelection" style="align-items: center;">
         <ui:ListView focusable="true" virtualization-method="FixedHeight" name="Levels" header-title="Levels" style="height: auto; width: 450px; max-height: 600px;" />
     </ui:VisualElement>
-    <ui:Button text="Button" display-tooltip-when-elided="true" />
 </ui:UXML>
