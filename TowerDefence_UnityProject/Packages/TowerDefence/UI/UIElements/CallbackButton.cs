@@ -13,12 +13,6 @@ namespace TowerDefence.UI.UIElements
             base.clicked += OnClicked;
         }
 
-        public CallbackButton(string id)
-        {
-            this.id = id;
-            base.clicked += OnClicked;
-        }
-
         private void OnClicked()
         {
             callback?.Invoke(id);

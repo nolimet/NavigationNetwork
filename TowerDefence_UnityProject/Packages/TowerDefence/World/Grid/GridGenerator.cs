@@ -16,9 +16,15 @@ namespace TowerDefence.World.Grid
         }
         public IEnumerable<IGridCell> CreateNodes(GridSettings settings)
         {
+            Debug.Log("Creating world");
             Validate();
             var returnValue = new List<IGridCell>();
-            var cells = new GridCell[settings.GridHeight, settings.GridWidth];
+            var cells = new GridCell[settings.GridHeight][];
+            for (int index = 0; index < settings.GridHeight; index++)
+            {
+                cells[index] = new GridCell[settings.GridWidth];
+            }
+
             CreateCells();
             LinkCells();
 
@@ -42,7 +48,7 @@ namespace TowerDefence.World.Grid
                         neightbours.Add(GetNode(x - 1, y + 1));
                         neightbours.Add(GetNode(x - 1, y - 1));
 
-                        cells[x, y].SetConnectedCells(neightbours.Where(x => x != null).ToArray());
+                        cells[x][y].SetConnectedCells(neightbours.Where(x => x != null).ToArray());
                         neightbours.Clear();
                     }
                 }
@@ -50,7 +56,7 @@ namespace TowerDefence.World.Grid
                 IGridCell GetNode(int x, int y)
                 {
                     if (x >= 0 && y >= 0 && x < settings.GridWidth && y < settings.GridHeight)
-                        return cells[x, y];
+                        return cells[x][y];
                     return default;
                 }
             }
@@ -63,11 +69,11 @@ namespace TowerDefence.World.Grid
                 {
                     for (int x = 0; x < settings.GridWidth; x++)
                     {
-                        cells[y, x] = new GridCell(
+                        cells[y][x] = new GridCell(
                             settings.Cells[counter].weight,
                             new(x, y),
                             new Vector2(x * worldSettings.TileSize.x, y * worldSettings.TileSize.y) - offset);
-                        returnValue.Add(cells[y, x]);
+                        returnValue.Add(cells[y][x]);
                         counter++;
                     }
                 }

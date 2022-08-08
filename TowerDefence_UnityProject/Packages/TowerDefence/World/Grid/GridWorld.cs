@@ -46,6 +46,7 @@ namespace TowerDefence.World.Grid
 
         internal void ClearPathCache()
         {
+            Debug.Log("Cleared Path Cache");
             OnPathCacheCleared?.Invoke();
             pathCache.Clear();
         }

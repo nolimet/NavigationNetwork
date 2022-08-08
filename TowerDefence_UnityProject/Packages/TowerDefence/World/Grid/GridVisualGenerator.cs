@@ -30,7 +30,7 @@ namespace TowerDefence.World.Grid
 
             int heightMultShaderProperty = Shader.PropertyToID("_HeightMult");
             var tileMaterial = await worldSettings.GetTileMaterial();
-            Debug.Log(tileMaterial);
+            
             List<GameObject> objects = new();
 
             tileMesh = CreateMesh();
@@ -121,6 +121,7 @@ namespace TowerDefence.World.Grid
 
         public void DestroyTiles()
         {
+            Debug.Log("Destroyed Tiles");
             foreach (var tile in tiles)
             {
                 Object.Destroy(tile);

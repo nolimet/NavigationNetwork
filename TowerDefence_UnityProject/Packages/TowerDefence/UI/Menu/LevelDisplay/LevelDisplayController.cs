@@ -48,19 +48,21 @@ namespace TowerDefence.UI.Menu.LevelDisplay
 
             VisualElement CreateNewButton(string text, string relativePath)
             {
-                var buttonElement = new CallbackButton(relativePath)
+                var buttonElement = new CallbackButton()
                 {
-                    text = text
+                    text = text,
+                    id = relativePath
                 };
+                
                 buttonElement.callback += OnButtonClicked;
 
                 return buttonElement;
             }
         }
 
-        private void OnButtonClicked(string id)
+        private void OnButtonClicked(string relativePath)
         {
-            Debug.Log(id);
+            worldLoadController.LoadLevel(relativePath, WorldLoadController.LevelType.lvl);
         }
 
         public void Dispose() => bindingContext.Dispose();

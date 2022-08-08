@@ -23,7 +23,7 @@ namespace TowerDefence.EditorScripts
             foreach (var level in levelAssets)
             {
                 var gridData = level.ToLevelDataGrid();
-                string relativePath = $"Levels/{level.name}.lvl";
+                string relativePath = $"{level.name}";
                 metadata.Add(new LevelMetadata(level.name, relativePath));
                 gridData.ToPath(Path.Combine(Application.streamingAssetsPath, relativePath));
             }
