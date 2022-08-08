@@ -16,6 +16,7 @@ namespace TowerDefence.UI.Menu.LevelDisplay
         private readonly WorldLoadController worldLoadController;
         private readonly BindingContext bindingContext = new(true);
         private UIDocumentContainer documentContainer;
+        private VisualElement levelsContainer;
 
         public LevelDisplayController(WorldLoadController worldLoadController, IUIContainers uiContainers)
         {
@@ -38,7 +39,7 @@ namespace TowerDefence.UI.Menu.LevelDisplay
             var levels = LevelMetadata.LoadLevels();
 
             var document = documentContainer.Document.rootVisualElement;
-            var levelsContainer = document.Q("Levels")?.Q("unity-content-container");
+            levelsContainer = document.Q("Levels")?.Q("unity-content-container");
 
             if (levelsContainer == null) throw new NullReferenceException();
             foreach (var level in levels)
@@ -63,6 +64,9 @@ namespace TowerDefence.UI.Menu.LevelDisplay
         private void OnButtonClicked(string relativePath)
         {
             worldLoadController.LoadLevel(relativePath, WorldLoadController.LevelType.lvl);
+
+            levelsContainer.SetEnabled(false);
+            levelsContainer.visible = false;
         }
 
         public void Dispose() => bindingContext.Dispose();
