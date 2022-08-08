@@ -5,6 +5,8 @@ using NoUtil.Extentsions;
 using TowerDefence.Systems.WorldLoad;
 using TowerDefence.Systems.WorldLoader.Data;
 using TowerDefence.UI.Models;
+using TowerDefence.UI.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace TowerDefence.UI.Menu.LevelDisplay
@@ -41,21 +43,24 @@ namespace TowerDefence.UI.Menu.LevelDisplay
             if (levelsContainer == null) throw new NullReferenceException();
             foreach (var level in levels)
             {
-                levelsContainer.Add(CreateNewButton(level.DisplayName));
+                levelsContainer.Add(CreateNewButton(level.DisplayName, level.RelativeLevelPath));
             }
 
-            VisualElement CreateNewButton(string text)
+            VisualElement CreateNewButton(string text, string relativePath)
             {
-                var buttonElement = new Button(OnButtonClicked); //TODO add callback action
-                buttonElement.text = text;
+                var buttonElement = new CallbackButton(relativePath)
+                {
+                    text = text
+                };
+                buttonElement.callback += OnButtonClicked;
 
                 return buttonElement;
             }
         }
 
-        private void OnButtonClicked()
+        private void OnButtonClicked(string id)
         {
-            throw new NotImplementedException();
+            Debug.Log(id);
         }
 
         public void Dispose() => bindingContext.Dispose();
