@@ -71,7 +71,7 @@ namespace TowerDefence.World.Grid
                     {
                         cells[y][x] = new GridCell(
                             settings.Cells[counter].weight,
-                            new(x, y),
+                            new (x, y),
                             new Vector2(x * worldSettings.TileSize.x, y * worldSettings.TileSize.y) - offset);
                         returnValue.Add(cells[y][x]);
                         counter++;
