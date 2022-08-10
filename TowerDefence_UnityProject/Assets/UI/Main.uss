@@ -1,0 +1,9 @@
+.level-selection-button{
+    background-color: #464646;
+    border-color : #212121;
+    color: #c7d3d6;
+}
+
+.level-selection-button:hover{
+    background-color: #212121;
+}
