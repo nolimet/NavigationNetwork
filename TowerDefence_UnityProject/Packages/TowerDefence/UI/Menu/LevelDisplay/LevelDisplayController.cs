@@ -49,14 +49,14 @@ namespace TowerDefence.UI.Menu.LevelDisplay
 
             VisualElement CreateNewButton(string text, string relativePath)
             {
-                var buttonElement = new CallbackButton()
+                var buttonElement = new LevelSelectionButton()
                 {
                     text = text,
-                    id = relativePath
+                    callbackValue = relativePath
                 };
                 
                 buttonElement.callback += OnButtonClicked;
-
+                
                 return buttonElement;
             }
         }
