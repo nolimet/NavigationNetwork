@@ -1,6 +1,8 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Main.uss?fileID=7433441132597879392&amp;guid=6e362fd7b29a4c146a5425299a438372&amp;type=3#Main" />
-    <ui:VisualElement name="LevelSelection" style="align-items: center;">
-        <ui:ListView focusable="true" virtualization-method="FixedHeight" name="Levels" header-title="Levels" style="height: auto; width: 450px; max-height: 600px;" />
+    <ui:VisualElement name="DisplayContainer" style="height: 500px; width: 300px; translate: -50% -50%; left: 50%; top: 50%; background-color: rgb(70, 70, 70);">
+        <ui:VisualElement name="LevelSelection" style="align-items: center; margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;">
+            <ui:ListView focusable="true" virtualization-method="FixedHeight" name="Levels" header-title="Levels" style="max-height: 600px; width: 100%;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
