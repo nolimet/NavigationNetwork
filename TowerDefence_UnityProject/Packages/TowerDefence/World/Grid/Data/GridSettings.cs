@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace TowerDefence.World.Grid.Data
@@ -49,6 +51,7 @@ namespace TowerDefence.World.Grid.Data
             }
         }
 
+        #if UNITY_EDITOR
         [MenuItem("Test/Settings")]
         public static void TestWrite()
         {
@@ -64,5 +67,6 @@ namespace TowerDefence.World.Grid.Data
             var val = JsonConvert.DeserializeObject<GridSettings>(json);
             Debug.Log(string.Join(",", val.Cells));
         }
+        #endif
     }
 }
