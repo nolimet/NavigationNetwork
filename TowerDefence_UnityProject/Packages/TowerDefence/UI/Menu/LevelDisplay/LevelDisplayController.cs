@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using DataBinding;
 using NoUtil.Extentsions;
@@ -72,7 +72,7 @@ namespace TowerDefence.UI.Menu.LevelDisplay
 
         private void OnButtonClicked(string relativePath)
         {
-            worldLoadController.LoadLevel(relativePath, WorldLoadController.LevelType.lvl);
+            worldLoadController.SetLevel(relativePath, WorldLoadController.LevelType.lvl);
 
             levelsContainer.SetEnabled(false);
             levelsContainer.visible = false;

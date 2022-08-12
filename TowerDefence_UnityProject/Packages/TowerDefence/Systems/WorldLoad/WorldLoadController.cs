@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using NoUtil.Debugging;
+using NoUtil.Extensions;
 using TowerDefence.Systems.Waves;
 using TowerDefence.Systems.WorldLoader.Data;
 using TowerDefence.World.Grid;
@@ -18,7 +20,9 @@ namespace TowerDefence.Systems.WorldLoad
 
         private readonly GridWorld gridWorld;
         private readonly WaveController waveController;
-
+        private string relativeLevelPath;
+        private LevelType levelType;
+        
         public WorldLoadController(GridWorld gridWorld, WaveController waveController)
         {
             this.gridWorld = gridWorld;
@@ -39,29 +43,27 @@ namespace TowerDefence.Systems.WorldLoad
             return files.ToArray();
         }
 
-        public async void LoadLevel(string level, LevelType type)
+        public void SetLevel(string level, LevelType type)
         {
-            var file = new FileInfo(FormatWorldName());
-            if (file.Exists)
+            relativeLevelPath = level;
+            levelType = type;
+        }
+        
+        public async void StartLevelLoading()
+        {
+            string filePath = FormatWorldName();
+            if(filePath.FromPath(out LevelData lvlData))
             {
-                string json;
-                using (var reader = file.OpenText())
-                {
-                    json = reader.ReadToEnd();
-                }
-                var lvlData = JsonConvert.DeserializeObject<LevelData>(json);
-
                 if (lvlData.gridSettings.HasValue)
                     await gridWorld.CreateWorld(lvlData.gridSettings.Value);
-                else
-                    Debug.LogError("There where no grid settings");
+                else "There where no grid settings".QuickCLog("World builder", LogType.Error);
 
                 waveController.SetWaves(lvlData.waves);
             }
-
+            
             string FormatWorldName()
             {
-                return Path.Combine(GetLevelFolder(), $"{level}.{type}");
+                return Path.Combine(GetLevelFolder(), $"{relativeLevelPath}.{levelType}");
             }
         }
 
