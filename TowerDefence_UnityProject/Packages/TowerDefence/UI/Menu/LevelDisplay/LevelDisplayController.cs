@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using DataBinding;
 using NoUtil.Extentsions;
@@ -30,15 +30,24 @@ namespace TowerDefence.UI.Menu.LevelDisplay
             if (obj.TryFind(x => x.Name == "Main", out var container) && container is UIDocumentContainer uiDocumentContainer)
             {
                 documentContainer = uiDocumentContainer;
-                UpdateUI();
+                DelayedUIUpdate();
             }
         }
 
+        private async void DelayedUIUpdate()
+        {
+            await new WaitForSeconds(.2f);
+            UpdateUI();
+        }
+        
         private void UpdateUI()
         {
             var levels = LevelMetadata.LoadLevels();
 
             var document = documentContainer.Document.rootVisualElement;
+            Debug.Log(documentContainer);
+            Debug.Log(documentContainer.Document);
+            Debug.Log(document);
             levelsContainer = document.Q("Levels")?.Q("unity-content-container");
 
             if (levelsContainer == null) throw new NullReferenceException();
