@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using DataBinding;
 using NoUtil.Extentsions;
-using TowerDefence.Systems.WorldLoad;
+using TowerDefence.Systems.WorldLoader;
 using TowerDefence.Systems.WorldLoader.Data;
 using TowerDefence.UI.Models;
 using TowerDefence.UI.UIElements;
@@ -18,6 +18,8 @@ namespace TowerDefence.UI.Menu.LevelDisplay
         private UIDocumentContainer documentContainer;
         private VisualElement levelsContainer;
 
+        private List<LevelSelectionButton> levelSelectionButtons = new();
+
         public LevelDisplayController(WorldLoadController worldLoadController, IUIContainers uiContainers)
         {
             this.worldLoadController = worldLoadController;
@@ -27,11 +29,9 @@ namespace TowerDefence.UI.Menu.LevelDisplay
 
         private void OnContainersChanged(IList<IUIContainer> obj)
         {
-            if (obj.TryFind(x => x.Name == "Main", out var container) && container is UIDocumentContainer uiDocumentContainer)
-            {
-                documentContainer = uiDocumentContainer;
-                DelayedUIUpdate();
-            }
+            if (!obj.TryFind(x => x.Name == "Main", out var container) || container is not UIDocumentContainer uiDocumentContainer) return;
+            documentContainer = uiDocumentContainer;
+            DelayedUIUpdate();
         }
 
         private async void DelayedUIUpdate()
@@ -39,7 +39,7 @@ namespace TowerDefence.UI.Menu.LevelDisplay
             await new WaitForSeconds(.2f);
             UpdateUI();
         }
-        
+
         private void UpdateUI()
         {
             var levels = LevelMetadata.LoadLevels();
@@ -58,21 +58,22 @@ namespace TowerDefence.UI.Menu.LevelDisplay
 
             VisualElement CreateNewButton(string text, string relativePath)
             {
-                var buttonElement = new LevelSelectionButton()
+                var buttonElement = new LevelSelectionButton(relativePath)
                 {
-                    text = text,
-                    callbackValue = relativePath
+                    text = text
                 };
-                
+
                 buttonElement.callback += OnButtonClicked;
-                
+
                 return buttonElement;
             }
         }
 
         private void OnButtonClicked(string relativePath)
         {
-            worldLoadController.SetLevel(relativePath, WorldLoadController.LevelType.lvl);
+            worldLoadController.SetLevel(relativePath, LevelType.lvl);
+
+            levelSelectionButtons.ForEach(x => x.SetEnabled(x.callbackValue != relativePath));
 
             levelsContainer.SetEnabled(false);
             levelsContainer.visible = false;
