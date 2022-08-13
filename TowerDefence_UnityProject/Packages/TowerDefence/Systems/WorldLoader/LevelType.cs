@@ -1,6 +1,6 @@
 ﻿namespace TowerDefence.Systems.WorldLoader
 {
-    internal enum LevelType
+    public enum LevelType
     {
         json,
         lvl

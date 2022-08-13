@@ -12,14 +12,14 @@ namespace TowerDefence.Systems.WorldLoader
     internal class WorldLoadController
     {
         private readonly GridWorld gridWorld;
-        private readonly IWorldData worldData;
+        private readonly IWorldDataModel worldDataModel;
         private string relativeLevelPath;
         private LevelType levelType;
 
-        public WorldLoadController(GridWorld gridWorld, IWorldData worldData)
+        public WorldLoadController(GridWorld gridWorld, IWorldDataModel worldDataModel)
         {
             this.gridWorld = gridWorld;
-            this.worldData = worldData;
+            this.worldDataModel = worldDataModel;
         }
 
         public IReadOnlyCollection<string> GetLevels(LevelType type)
@@ -38,7 +38,7 @@ namespace TowerDefence.Systems.WorldLoader
 
         public void SetLevel(string level, LevelType type)
         {
-            worldData.LevelName = level;
+            worldDataModel.LevelName = level;
             levelType = type;
         }
 
@@ -51,7 +51,7 @@ namespace TowerDefence.Systems.WorldLoader
                     await gridWorld.CreateWorld(lvlData.gridSettings.Value);
                 else "There where no grid settings".QuickCLog("World builder", LogType.Error);
 
-                worldData.Waves = lvlData.waves;
+                worldDataModel.Waves = lvlData.waves;
             }
 
             string FormatWorldName()
