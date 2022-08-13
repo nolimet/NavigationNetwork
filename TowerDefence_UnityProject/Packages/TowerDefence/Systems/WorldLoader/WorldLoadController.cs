@@ -1,32 +1,25 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using NoUtil.Debugging;
 using NoUtil.Extensions;
-using TowerDefence.Systems.Waves;
 using TowerDefence.Systems.WorldLoader.Data;
 using TowerDefence.World.Grid;
+using TowerDefence.World.Grid.Models;
 using UnityEngine;
 
 namespace TowerDefence.Systems.WorldLoad
 {
     internal class WorldLoadController
     {
-        public enum LevelType
-        {
-            json,
-            lvl
-        }
-
         private readonly GridWorld gridWorld;
-        private readonly WaveController waveController;
+        private readonly IWorldData worldData;
         private string relativeLevelPath;
         private LevelType levelType;
-        
-        public WorldLoadController(GridWorld gridWorld, WaveController waveController)
+
+        public WorldLoadController(GridWorld gridWorld, IWorldData worldData)
         {
             this.gridWorld = gridWorld;
-            this.waveController = waveController;
+            this.worldData = worldData;
         }
 
         public IReadOnlyCollection<string> GetLevels(LevelType type)
@@ -45,22 +38,22 @@ namespace TowerDefence.Systems.WorldLoad
 
         public void SetLevel(string level, LevelType type)
         {
-            relativeLevelPath = level;
+            worldData.LevelName = level;
             levelType = type;
         }
-        
+
         public async void StartLevelLoading()
         {
             string filePath = FormatWorldName();
-            if(filePath.FromPath(out LevelData lvlData))
+            if (filePath.FromPath(out LevelData lvlData))
             {
                 if (lvlData.gridSettings.HasValue)
                     await gridWorld.CreateWorld(lvlData.gridSettings.Value);
                 else "There where no grid settings".QuickCLog("World builder", LogType.Error);
 
-                waveController.SetWaves(lvlData.waves);
+                worldData.Waves = lvlData.waves;
             }
-            
+
             string FormatWorldName()
             {
                 return Path.Combine(GetLevelFolder(), $"{relativeLevelPath}.{levelType}");
