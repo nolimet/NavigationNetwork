@@ -5,19 +5,16 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Zenject;
 
-namespace TowerDefence.UI
+namespace TowerDefence.UI.Installers
 {
     [CreateAssetMenu(fileName = "UI Installer", menuName = "Installers/UI Installer")]
     public class UIInstaller : ScriptableObjectInstaller
     {
-        [SerializeField]
-        private HealthDrawer healthbarPrefab;
+        [SerializeField] private HealthDrawer healthbarPrefab;
 
-        [SerializeField]
-        private GameObject worldUIContainerPrefab;
+        [SerializeField] private GameObject worldUIContainerPrefab;
 
-        [SerializeField]
-        private GameObject screenUIContainerPrefab;
+        [SerializeField] private GameObject screenUIContainerPrefab;
 
         [SerializeField] private AssetReference hudControllerPrefab;
         [SerializeField] private AssetReference towerRangeDrawer;
@@ -29,6 +26,7 @@ namespace TowerDefence.UI
             var screenUIContainer = Instantiate(screenUIContainerPrefab, uiContainer.transform, false);
 
             uiContainer.Setup(worldUIContainer.transform, screenUIContainer.transform);
+            DontDestroyOnLoad(uiContainer);
 
             Container.BindInstance(uiContainer).AsSingle();
             Container.BindInterfacesAndSelfTo<HealthDrawerController>().AsSingle().NonLazy();
