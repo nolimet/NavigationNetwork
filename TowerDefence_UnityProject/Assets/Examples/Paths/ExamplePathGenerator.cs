@@ -1,10 +1,10 @@
-using Newtonsoft.Json;
 using System;
 using System.IO;
+using Newtonsoft.Json;
 using TowerDefence.Entities.Enemies;
 using TowerDefence.Systems.Waves;
 using TowerDefence.Systems.Waves.Data;
-using TowerDefence.Systems.WorldLoad;
+using TowerDefence.Systems.WorldLoader;
 using TowerDefence.Systems.WorldLoader.Data;
 using TowerDefence.World;
 using TowerDefence.World.Grid;
@@ -20,8 +20,7 @@ namespace TowerDefence.Examples.Paths
         private readonly string filePath = Application.streamingAssetsPath + "/ExampleLevel.json";
         private readonly string gridWorldPath = Application.streamingAssetsPath + "/ExampleLevel-grid.json";
 
-        [HideInInspector]
-        public PathWorldData ConstructedPath => pathWorldController?.PathWorldData;
+        [HideInInspector] public PathWorldData ConstructedPath => pathWorldController?.PathWorldData;
 
         [Inject] private PathWorldController pathWorldController = null;
         [Inject] private EnemyController enemyController = null;
@@ -46,7 +45,7 @@ namespace TowerDefence.Examples.Paths
 
             if (UnityEngine.Input.GetKeyUp(KeyCode.F3))
             {
-                worldLoadController.SetLevel("Level 0", WorldLoadController.LevelType.lvl);
+                worldLoadController.SetLevel("Level 0", LevelType.lvl);
                 worldLoadController.StartLevelLoading();
             }
 
@@ -80,14 +79,14 @@ namespace TowerDefence.Examples.Paths
             (
                 new PathPoint[]
                 {
-                    new PathPoint(id: pathIds[0], new Vector3(0,0,0),  PointType.Entrance, new Guid[]{pathIds[1], pathIds[2]}),
-                    new PathPoint(id: pathIds[1], new Vector3(5,5,0), PointType.Point,    new Guid[]{pathIds[4]}),
-                    new PathPoint(id: pathIds[2], new Vector3(5,-5,0), PointType.Point,    new Guid[]{pathIds[3]}),
-                    new PathPoint(id: pathIds[3], new Vector3(10,-5,0), PointType.Point,    new Guid[]{pathIds[5], pathIds[4]}),
-                    new PathPoint(id: pathIds[4], new Vector3(10,5,0), PointType.Point,    new Guid[]{pathIds[6]}),
-                    new PathPoint(id: pathIds[5], new Vector3(15,-5,0), PointType.Point,    new Guid[]{pathIds[7]}),
-                    new PathPoint(id: pathIds[6], new Vector3(15,5,0), PointType.Point,    new Guid[]{pathIds[7]}),
-                    new PathPoint(id: pathIds[7], new Vector3(20,0,0),  PointType.Exit,     new Guid[0])
+                    new PathPoint(id: pathIds[0], new Vector3(0, 0, 0), PointType.Entrance, new Guid[] { pathIds[1], pathIds[2] }),
+                    new PathPoint(id: pathIds[1], new Vector3(5, 5, 0), PointType.Point, new Guid[] { pathIds[4] }),
+                    new PathPoint(id: pathIds[2], new Vector3(5, -5, 0), PointType.Point, new Guid[] { pathIds[3] }),
+                    new PathPoint(id: pathIds[3], new Vector3(10, -5, 0), PointType.Point, new Guid[] { pathIds[5], pathIds[4] }),
+                    new PathPoint(id: pathIds[4], new Vector3(10, 5, 0), PointType.Point, new Guid[] { pathIds[6] }),
+                    new PathPoint(id: pathIds[5], new Vector3(15, -5, 0), PointType.Point, new Guid[] { pathIds[7] }),
+                    new PathPoint(id: pathIds[6], new Vector3(15, 5, 0), PointType.Point, new Guid[] { pathIds[7] }),
+                    new PathPoint(id: pathIds[7], new Vector3(20, 0, 0), PointType.Exit, new Guid[0])
                 }
             );
 
@@ -95,7 +94,7 @@ namespace TowerDefence.Examples.Paths
             {
                 new Wave(new[]
                 {
-                    new EnemyGroup("Walker", 0,0,0 ,new[]{0f,0.2f,0.3f,0.5f })
+                    new EnemyGroup("Walker", 0, 0, 0, new[] { 0f, 0.2f, 0.3f, 0.5f })
                 })
             };
 
@@ -108,6 +107,7 @@ namespace TowerDefence.Examples.Paths
             {
                 Directory.CreateDirectory(dir);
             }
+
             File.WriteAllText(filePath, json);
         }
 
@@ -119,6 +119,7 @@ namespace TowerDefence.Examples.Paths
                 Debug.LogError("Application should be playing before doing this");
                 return;
             }
+
             string json = File.ReadAllText(filePath);
 
             var levelData = JsonConvert.DeserializeObject<LevelData>(json);
@@ -156,6 +157,7 @@ namespace TowerDefence.Examples.Paths
                 string json = File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Levels", "Level 0.lvl"));
                 levelData = JsonConvert.DeserializeObject<LevelData>(json);
             }
+
             //TODO clean this up and fix it so it checks if it has a value
             var gridSettings = levelData.gridSettings.Value;
             var start = gridSettings.EntryPoints[UnityEngine.Random.Range(0, gridSettings.EntryPoints.Length)];
