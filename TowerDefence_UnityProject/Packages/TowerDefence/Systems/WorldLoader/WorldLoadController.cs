@@ -3,11 +3,11 @@ using System.IO;
 using NoUtil.Debugging;
 using NoUtil.Extensions;
 using TowerDefence.Systems.WorldLoader.Data;
+using TowerDefence.Systems.WorldLoader.Models;
 using TowerDefence.World.Grid;
-using TowerDefence.World.Grid.Models;
 using UnityEngine;
 
-namespace TowerDefence.Systems.WorldLoad
+namespace TowerDefence.Systems.WorldLoader
 {
     internal class WorldLoadController
     {
