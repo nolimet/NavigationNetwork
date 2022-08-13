@@ -7,11 +7,11 @@ namespace TowerDefence.UI.UIElements
     {
         public new readonly string ussClassName = "level-selection-button";
         public event Action<string> callback;
-        public string callbackValue = "";
+        public readonly string callbackValue = "";
 
-        public LevelSelectionButton() : base()
+        public LevelSelectionButton(string callbackValue) : base()
         {
-            base.clicked += OnClicked;
+            clicked += OnClicked;
             AddToClassList(ussClassName);
         }
 
