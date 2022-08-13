@@ -4,6 +4,7 @@ using DataBinding;
 using NoUtil.Extentsions;
 using TowerDefence.Systems.WorldLoader;
 using TowerDefence.Systems.WorldLoader.Data;
+using TowerDefence.Systems.WorldLoader.Models;
 using TowerDefence.UI.Models;
 using TowerDefence.UI.UIElements;
 using UnityEngine;
@@ -13,16 +14,16 @@ namespace TowerDefence.UI.Menu.LevelDisplay
 {
     internal class LevelDisplayController : IDisposable
     {
-        private readonly WorldLoadController worldLoadController;
+        private readonly IWorldDataModel worldDataModel;
         private readonly BindingContext bindingContext = new(true);
         private UIDocumentContainer documentContainer;
         private VisualElement levelsContainer;
 
         private List<LevelSelectionButton> levelSelectionButtons = new();
 
-        public LevelDisplayController(WorldLoadController worldLoadController, IUIContainers uiContainers)
+        public LevelDisplayController(IWorldDataModel worldDataModel, IUIContainers uiContainers)
         {
-            this.worldLoadController = worldLoadController;
+            this.worldDataModel = worldDataModel;
 
             bindingContext.Bind(uiContainers, x => x.Containers, OnContainersChanged);
         }
@@ -71,7 +72,8 @@ namespace TowerDefence.UI.Menu.LevelDisplay
 
         private void OnButtonClicked(string relativePath)
         {
-            worldLoadController.SetLevel(relativePath, LevelType.lvl);
+            worldDataModel.LevelName = relativePath;
+            worldDataModel.LevelType = LevelType.lvl;
 
             levelSelectionButtons.ForEach(x => x.SetEnabled(x.callbackValue != relativePath));
 
