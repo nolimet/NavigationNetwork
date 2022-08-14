@@ -1,8 +1,8 @@
-﻿using DataBinding.BaseClasses;
+﻿using System.Collections.Generic;
+using DataBinding.BaseClasses;
 using DataBinding.Helpers;
-using System.Collections.Generic;
 using TowerDefence.Entities.Components;
-using TowerDefence.UI.Health;
+using TowerDefence.UI.Game.Health;
 using UnityEngine;
 
 namespace TowerDefence.Entities.Enemies.Models
