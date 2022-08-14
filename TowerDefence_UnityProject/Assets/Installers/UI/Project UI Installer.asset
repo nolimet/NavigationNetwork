@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce17dbc215ed47a1b70fe1b0ee7530b3, type: 3}
   m_Name: Project UI Installer
   m_EditorClassIdentifier: 
-  worldUIContainerPrefab: {fileID: 0}
-  screenUIContainerPrefab: {fileID: 0}
+  worldUIContainerPrefab: {fileID: 8405100996508617634, guid: c4e4779aba194b143858fe9c28285ea6,
+    type: 3}
+  screenUIContainerPrefab: {fileID: 8959962442709614013, guid: a8eb013babd75384a9701e29027cd962,
+    type: 3}
