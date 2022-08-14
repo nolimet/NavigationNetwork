@@ -9,14 +9,14 @@ using UnityEngine;
 
 namespace TowerDefence.Systems.WorldLoader
 {
-    internal class WorldLoadController
+    public class WorldLoadController
     {
         private readonly GridWorld gridWorld;
         private readonly IWorldDataModel worldDataModel;
         private string relativeLevelPath;
         private LevelType levelType;
 
-        public WorldLoadController(GridWorld gridWorld, IWorldDataModel worldDataModel)
+        internal WorldLoadController(GridWorld gridWorld, IWorldDataModel worldDataModel)
         {
             this.gridWorld = gridWorld;
             this.worldDataModel = worldDataModel;
