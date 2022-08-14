@@ -1,7 +1,7 @@
-﻿using DataBinding;
-using NoUtil.Extentsions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using DataBinding;
+using NoUtil.Extentsions;
 using TowerDefence.Entities.Towers;
 using TowerDefence.Entities.Towers.Models;
 using TowerDefence.Systems.Selection;
@@ -11,7 +11,7 @@ using TowerDefence.World.Grid;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 
-namespace TowerDefence.UI.Tower.Range
+namespace TowerDefence.UI.Game.Tower.Range
 {
     public class TowerRangeDrawerController
     {
@@ -32,12 +32,14 @@ namespace TowerDefence.UI.Tower.Range
         {
             await AsyncAwaiters.NextFrame;
             this.rangeDrawer = await GetTowerRangeDrawer();
+
             async Task<TowerRangeDrawer> GetTowerRangeDrawer()
             {
                 var task = rangeDrawer.InstantiateAsync();
                 await task;
                 return task.Result.GetComponent<TowerRangeDrawer>();
             }
+
             onComplete?.Invoke();
         }
 
@@ -69,6 +71,7 @@ namespace TowerDefence.UI.Tower.Range
                     var position = cell.GridCell.Position;
                     return towerModels.Towers.TryFind(x => x.GetGridPosition() == position, out tower);
                 }
+
                 return false;
             }
         }

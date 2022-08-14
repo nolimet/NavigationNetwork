@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using TowerDefence.UI.Health;
-using TowerDefence.UI.Tower.Range;
+using TowerDefence.UI.Game.Health;
+using TowerDefence.UI.Game.Tower.Range;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Zenject;

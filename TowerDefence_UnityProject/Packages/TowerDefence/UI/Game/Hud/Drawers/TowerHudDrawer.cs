@@ -5,7 +5,7 @@ using TowerDefence.Systems.Selection;
 using TowerDefence.Utility;
 using UnityEngine;
 
-namespace TowerDefence.UI.Hud
+namespace TowerDefence.UI.Game.Hud
 {
     internal class TowerHudDrawer : HudDrawerBase<ITowerObject>
     {

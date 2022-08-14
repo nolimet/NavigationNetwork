@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-namespace TowerDefence.UI.Hud.PlaceTower
+namespace TowerDefence.UI.Game.Hud.PlaceTower
 {
     internal class TowerPlaceButton : MonoBehaviour
     {

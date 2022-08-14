@@ -1,4 +1,4 @@
-﻿using TowerDefence.UI.Menu.LevelDisplay;
+﻿using TowerDefence.UI.MainMenu.LevelDisplay;
 using UnityEngine;
 using Zenject;
 

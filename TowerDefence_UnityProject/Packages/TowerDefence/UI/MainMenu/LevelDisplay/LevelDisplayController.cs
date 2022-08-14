@@ -5,12 +5,12 @@ using NoUtil.Extentsions;
 using TowerDefence.Systems.WorldLoader;
 using TowerDefence.Systems.WorldLoader.Data;
 using TowerDefence.Systems.WorldLoader.Models;
+using TowerDefence.UI.MainMenu.UIElements;
 using TowerDefence.UI.Models;
-using TowerDefence.UI.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace TowerDefence.UI.Menu.LevelDisplay
+namespace TowerDefence.UI.MainMenu.LevelDisplay
 {
     internal class LevelDisplayController : IDisposable
     {
@@ -19,7 +19,7 @@ namespace TowerDefence.UI.Menu.LevelDisplay
         private UIDocumentContainer documentContainer;
         private VisualElement levelsContainer;
 
-        private List<LevelSelectionButton> levelSelectionButtons = new();
+        private readonly List<LevelSelectionButton> levelSelectionButtons = new();
 
         public LevelDisplayController(IWorldDataModel worldDataModel, IUIContainers uiContainers)
         {
@@ -54,10 +54,12 @@ namespace TowerDefence.UI.Menu.LevelDisplay
             if (levelsContainer == null) throw new NullReferenceException();
             foreach (var level in levels)
             {
-                levelsContainer.Add(CreateNewButton(level.DisplayName, level.RelativeLevelPath));
+                var newButton = CreateNewButton(level.DisplayName, level.RelativeLevelPath);
+                levelSelectionButtons.Add(newButton);
+                levelsContainer.Add(newButton);
             }
 
-            VisualElement CreateNewButton(string text, string relativePath)
+            LevelSelectionButton CreateNewButton(string text, string relativePath)
             {
                 var buttonElement = new LevelSelectionButton(relativePath)
                 {

@@ -6,7 +6,7 @@ using TowerDefence.World.Grid;
 using UnityEngine;
 using Zenject;
 
-namespace TowerDefence.UI.Hud.PlaceTower
+namespace TowerDefence.UI.Game.Hud.PlaceTower
 {
     internal class TowerPlaceHudDrawer : HudDrawerBase<SelectableCell>
     {

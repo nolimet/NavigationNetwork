@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using Zenject;
 
-namespace TowerDefence.UI.Health
+namespace TowerDefence.UI.Game.Health
 {
     public class HealthDrawer : MonoBehaviour
     {

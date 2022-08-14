@@ -4,7 +4,7 @@ using TowerDefence.Entities.Towers.Components.BaseComponents;
 using TowerDefence.Utility;
 using UnityEngine;
 
-namespace TowerDefence.UI.Tower.Range
+namespace TowerDefence.UI.Game.Tower.Range
 {
     [RequireComponent(typeof(MeshRenderer)), RequireComponent(typeof(MeshFilter))]
     public class TowerRangeDrawer : MonoBehaviour

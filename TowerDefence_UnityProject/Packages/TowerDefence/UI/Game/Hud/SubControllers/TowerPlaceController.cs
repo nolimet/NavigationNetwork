@@ -1,10 +1,10 @@
 ﻿using DataBinding;
 using TowerDefence.Entities.Towers;
 using TowerDefence.Systems.Selection.Models;
-using TowerDefence.UI.Hud.PlaceTower;
+using TowerDefence.UI.Game.Hud.PlaceTower;
 using TowerDefence.World.Grid;
 
-namespace TowerDefence.UI.Hud.SubControllers
+namespace TowerDefence.UI.Game.Hud.SubControllers
 {
     internal class TowerPlaceController
     {

@@ -1,15 +1,16 @@
-﻿using TowerDefence.UI.Hud.PlaceTower;
-using TowerDefence.UI.Hud.SubControllers;
+﻿using TowerDefence.UI.Game.Hud.PlaceTower;
+using TowerDefence.UI.Game.Hud.SubControllers;
 using UnityEngine;
 using Zenject;
 
-namespace TowerDefence.UI.Hud
+namespace TowerDefence.UI.Game.Hud
 {
     public class HudInstaller : MonoInstaller
     {
         [SerializeField] private TowerHudDrawer towerHud;
         [SerializeField] private TowerPlaceHudDrawer towerPlaceHud;
         [SerializeField] private TowerPlaceButton towerPlaceButtonPrefab;
+
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<TowerPlaceController>().AsCached().NonLazy();

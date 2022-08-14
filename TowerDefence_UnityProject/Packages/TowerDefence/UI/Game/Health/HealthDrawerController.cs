@@ -6,7 +6,7 @@ using TowerDefence.Entities.Enemies;
 using TowerDefence.Entities.Enemies.Models;
 using Zenject;
 
-namespace TowerDefence.UI.Health
+namespace TowerDefence.UI.Game.Health
 {
     public class HealthDrawerController : ITickable
     {

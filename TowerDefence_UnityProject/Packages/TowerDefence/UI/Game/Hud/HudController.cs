@@ -1,13 +1,13 @@
-using DataBinding;
 using System.Collections.Generic;
 using System.Linq;
+using DataBinding;
 using TowerDefence.Entities.Towers.Models;
 using TowerDefence.Systems.Selection;
 using TowerDefence.Systems.Selection.Models;
 using UnityEngine;
 using Zenject;
 
-namespace TowerDefence.UI.Hud
+namespace TowerDefence.UI.Game.Hud
 {
     public class HudController : MonoBehaviour
     {
@@ -32,6 +32,7 @@ namespace TowerDefence.UI.Hud
                 {
                     drawer.SetActive(false);
                 }
+
                 return;
             }
 

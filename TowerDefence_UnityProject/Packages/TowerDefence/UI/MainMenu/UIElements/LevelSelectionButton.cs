@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine.UIElements;
 
-namespace TowerDefence.UI.UIElements
+namespace TowerDefence.UI.MainMenu.UIElements
 {
     public class LevelSelectionButton : Button
     {
