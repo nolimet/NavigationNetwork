@@ -1,15 +1,14 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Startup : MonoBehaviour
+namespace TowerDefence.Project
 {
-    private async void Start()
+    public class Startup : MonoBehaviour
     {
-        await new WaitForSeconds(0.5f);
-        SceneManager.LoadScene(1);
+        private async void Start()
+        {
+            await new WaitForSeconds(0.5f);
+            SceneManager.LoadScene(1);
+        }
     }
 }
-
