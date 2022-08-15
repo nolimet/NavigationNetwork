@@ -66,7 +66,7 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
                     text = text
                 };
 
-                buttonElement.callback += OnButtonClicked;
+                buttonElement.OnCallback += OnButtonClicked;
 
                 return buttonElement;
             }
@@ -77,10 +77,10 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
             worldDataModel.LevelName = relativePath;
             worldDataModel.LevelType = LevelType.lvl;
 
-            levelSelectionButtons.ForEach(x => x.SetEnabled(x.callbackValue != relativePath));
-
-            levelsContainer.SetEnabled(false);
-            levelsContainer.visible = false;
+            foreach (var x in levelSelectionButtons)
+            {
+                x.SetEnabled(x.CallbackValue != relativePath);
+            }
         }
 
         public void Dispose() => bindingContext.Dispose();
