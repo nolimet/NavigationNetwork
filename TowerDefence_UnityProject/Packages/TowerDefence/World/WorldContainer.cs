@@ -7,7 +7,7 @@ namespace TowerDefence.World
         public Transform PathContainer { get; private set; }
         public Transform TowerContainer { get; private set; }
         public Transform EnemyContainer { get; private set; }
-        public Transform TileContainer { get; internal set; }
+        public Transform TileContainer { get; private set; }
 
         public void DoSetup()
         {

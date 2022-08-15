@@ -60,9 +60,9 @@ namespace TowerDefence.Entities.Enemies.Models
 			}
 		}
 			// HealthBar
-		public event System.Action<TowerDefence.UI.Health.HealthDrawer> OnChangeHealthBar;
-		private TowerDefence.UI.Health.HealthDrawer _HealthBar ; 
-		public TowerDefence.UI.Health.HealthDrawer HealthBar 
+		public event System.Action<TowerDefence.UI.Game.Health.HealthDrawer> OnChangeHealthBar;
+		private TowerDefence.UI.Game.Health.HealthDrawer _HealthBar ; 
+		public TowerDefence.UI.Game.Health.HealthDrawer HealthBar 
 		{
 			get => _HealthBar;
 			set 
