@@ -1,0 +1,34 @@
+{
+    "name": "DebugActions",
+    "maps": [
+        {
+            "name": "Waves",
+            "id": "e2bfb0c6-5377-4fed-b9d3-352c085be677",
+            "actions": [
+                {
+                    "name": "StartWaves",
+                    "type": "Button",
+                    "id": "feb32389-1b27-4f88-8738-715af39689c2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a6006c80-a126-4c66-9cce-972512c946bb",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StartWaves",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
