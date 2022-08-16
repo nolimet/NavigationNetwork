@@ -46,9 +46,6 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
             var levels = LevelMetadata.LoadLevels();
 
             var document = documentContainer.Document.rootVisualElement;
-            Debug.Log(documentContainer);
-            Debug.Log(documentContainer.Document);
-            Debug.Log(document);
             levelsContainer = document.Q("Levels")?.Q("unity-content-container");
 
             if (levelsContainer == null) throw new NullReferenceException();
