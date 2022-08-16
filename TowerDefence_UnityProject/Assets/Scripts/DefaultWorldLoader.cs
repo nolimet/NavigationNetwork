@@ -14,8 +14,11 @@ namespace TowerDefence.Project
 
         void Start()
         {
-            worldDataModel.LevelType = LevelType.lvl;
-            worldDataModel.LevelName = LevelMetadata.LoadLevels().First().RelativeLevelPath;
+            if (string.IsNullOrEmpty(worldDataModel.LevelName))
+            {
+                worldDataModel.LevelType = LevelType.lvl;
+                worldDataModel.LevelName = LevelMetadata.LoadLevels().First().RelativeLevelPath;
+            }
 
             worldLoadController.StartLevelLoading();
         }
