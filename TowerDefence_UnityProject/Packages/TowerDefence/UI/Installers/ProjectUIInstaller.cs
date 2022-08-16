@@ -18,6 +18,8 @@ namespace TowerDefence.UI.Installers
 
             uiContainer.Setup(worldUIContainer.transform, screenUIContainer.transform);
             DontDestroyOnLoad(uiContainer);
+
+            Container.BindInstance(uiContainer).AsSingle();
         }
     }
 }
