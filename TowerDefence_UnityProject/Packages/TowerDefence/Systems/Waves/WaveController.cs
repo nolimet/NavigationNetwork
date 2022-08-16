@@ -1,10 +1,12 @@
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
+using DataBinding;
 using TowerDefence.Entities.Enemies;
 using TowerDefence.Systems.Waves.Data;
+using TowerDefence.Systems.WorldLoader.Models;
 using TowerDefence.World.Grid;
 using UnityEngine;
 using static TowerDefence.Systems.Waves.Data.Wave;
@@ -20,21 +22,18 @@ namespace TowerDefence.Systems.Waves
 
         private readonly EnemyController enemyController;
         private readonly GridWorld gridWorld;
+        private readonly BindingContext bindingContext = new();
 
-        internal WaveController(EnemyController enemyController, GridWorld gridWorld)
+        internal WaveController(EnemyController enemyController, GridWorld gridWorld, IWorldDataModel worldDataModel)
         {
             this.enemyController = enemyController;
             this.gridWorld = gridWorld;
+            bindingContext.Bind(worldDataModel, x => x.Waves, OnWavesChanged);
         }
 
-        public int GetWavesLeft()
+        private void OnWavesChanged(Wave[] obj)
         {
-            return activeWave - currentWaves.Length;
-        }
-
-        public void SetWaves(Wave[] waves)
-        {
-            currentWaves = waves;
+            currentWaves = obj;
 
             if (cancelTokenSource != null && !cancelTokenSource.IsCancellationRequested)
                 cancelTokenSource.Cancel();
@@ -42,6 +41,11 @@ namespace TowerDefence.Systems.Waves
 
             cancelTokenSource = new CancellationTokenSource();
             activeWave = 0;
+        }
+
+        public int GetWavesLeft()
+        {
+            return activeWave - currentWaves.Length;
         }
 
         public async void StartWavePlayBack()
@@ -108,6 +112,7 @@ namespace TowerDefence.Systems.Waves
                         enemyWatchers.Add(EnemyWatcherTask(enemySet.group));
                     }
                 }
+
                 t += Time.deltaTime;
             }
 
@@ -123,7 +128,9 @@ namespace TowerDefence.Systems.Waves
 
                 await UniTask.WaitUntil(() => model.Health <= 0);
                 enemiesRemaining--;
-            };
+            }
+
+            ;
         }
     }
 }
