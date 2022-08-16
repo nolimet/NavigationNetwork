@@ -13,8 +13,6 @@ namespace TowerDefence.Systems.WorldLoader
     {
         private readonly GridWorld gridWorld;
         private readonly IWorldDataModel worldDataModel;
-        private string relativeLevelPath;
-        private LevelType levelType;
 
         internal WorldLoadController(GridWorld gridWorld, IWorldDataModel worldDataModel)
         {
@@ -36,14 +34,9 @@ namespace TowerDefence.Systems.WorldLoader
             return files.ToArray();
         }
 
-        public void SetLevel(string level, LevelType type)
-        {
-            worldDataModel.LevelName = level;
-            levelType = type;
-        }
-
         public async void StartLevelLoading()
         {
+            "Starting world loading".QuickCLog("World Builder");
             string filePath = FormatWorldName();
             if (filePath.FromPath(out LevelData lvlData))
             {
@@ -56,7 +49,7 @@ namespace TowerDefence.Systems.WorldLoader
 
             string FormatWorldName()
             {
-                return Path.Combine(GetLevelFolder(), $"{relativeLevelPath}.{levelType}");
+                return Path.Combine(GetLevelFolder(), $"{worldDataModel.LevelName}.{worldDataModel.LevelType}");
             }
         }
 
