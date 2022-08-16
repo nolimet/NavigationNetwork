@@ -44,7 +44,7 @@ namespace TowerDefence.Examples.Paths
 
             if (UnityEngine.Input.GetKeyUp(KeyCode.F3))
             {
-                worldLoadController.SetLevel("Level 0", LevelType.lvl);
+                // worldLoadController.SetLevel("Level 0", LevelType.lvl);
                 worldLoadController.StartLevelLoading();
             }
 
