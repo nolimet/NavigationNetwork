@@ -1,4 +1,5 @@
-﻿using TowerDefence.UI.MainMenu.LevelDisplay;
+﻿using TowerDefence.UI.MainMenu;
+using TowerDefence.UI.MainMenu.LevelDisplay;
 using UnityEngine;
 using Zenject;
 
@@ -10,6 +11,7 @@ namespace TowerDefence.UI.Installers
         public override void InstallBindings()
         {
             Container.Bind<LevelDisplayController>().AsSingle().NonLazy();
+            Container.Bind<MainMenuController>().AsSingle().NonLazy();
         }
     }
 }
