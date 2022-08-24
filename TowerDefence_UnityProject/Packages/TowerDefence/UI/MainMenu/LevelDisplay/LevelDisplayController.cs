@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DataBinding;
 using NoUtil.Extentsions;
+using TowerDefence.Packages.TowerDefence.SceneLoading;
 using TowerDefence.Systems.WorldLoader;
 using TowerDefence.Systems.WorldLoader.Data;
 using TowerDefence.Systems.WorldLoader.Models;
@@ -20,11 +21,13 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
         private VisualElement levelsContainer;
 
         private readonly List<LevelSelectionButton> levelSelectionButtons = new();
+        private readonly SceneReferences sceneReferences;
+        private Button loadLevelButton;
 
-        public LevelDisplayController(IWorldDataModel worldDataModel, IUIContainers uiContainers)
+        public LevelDisplayController(IWorldDataModel worldDataModel, IUIContainers uiContainers, SceneReferences sceneReferences)
         {
             this.worldDataModel = worldDataModel;
-
+            this.sceneReferences = sceneReferences;
             bindingContext.Bind(uiContainers, x => x.Containers, OnContainersChanged);
         }
 
@@ -56,7 +59,11 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
                 levelsContainer.Add(newButton);
             }
 
-            LevelSelectionButton CreateNewButton(string text, string relativePath)
+            loadLevelButton = document.Q<Button>("LoadLevelButton");
+            loadLevelButton.clicked += OnLoadLevelClicked;
+            loadLevelButton.SetEnabled(false);
+
+                LevelSelectionButton CreateNewButton(string text, string relativePath)
             {
                 var buttonElement = new LevelSelectionButton(relativePath)
                 {
@@ -69,6 +76,12 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
             }
         }
 
+        private async void OnLoadLevelClicked()
+        {
+            levelsContainer.SetEnabled(false);
+            await sceneReferences.GameScene.LoadSceneAsync();
+        }
+
         private void OnButtonClicked(string relativePath)
         {
             worldDataModel.LevelName = relativePath;
@@ -78,6 +91,7 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
             {
                 x.SetEnabled(x.CallbackValue != relativePath);
             }
+            loadLevelButton.SetEnabled(true);
         }
 
         public void Dispose() => bindingContext.Dispose();

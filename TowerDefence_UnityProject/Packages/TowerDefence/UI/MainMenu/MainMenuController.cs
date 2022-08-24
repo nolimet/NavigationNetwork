@@ -29,24 +29,30 @@ namespace TowerDefence.UI.MainMenu
             bindingContext.Dispose();
         }
 
-        private void OnContainerChanged(IList<IUIContainer> obj)
+        private async void OnContainerChanged(IList<IUIContainer> obj)
         {
-            if (obj.TryFind(x => x.Name == "Main", out IUIContainer container) && container is UIDocumentContainer documentContainer)
-            {
-                if (boundDocumentContainer == documentContainer) return;
-                boundDocumentContainer = documentContainer;
-                
-                var root = documentContainer.Document.rootVisualElement;
-                
-                var levelSelectionButton = root.Q<Button>("ToLevelSelectionButton");
-                levelSelectionButton.clicked += OnLevelSelectionButtonClicked;
+            await new WaitForEndOfFrame();
+            
+            if (!obj.TryFind(x => x.Name == "Main", out var container) ||
+                container is not UIDocumentContainer documentContainer) return;
+            
+            if (boundDocumentContainer == documentContainer) return;
+            boundDocumentContainer = documentContainer;
 
-                var exitGameButton = root.Q<Button>("ExitGameButton");
-                exitGameButton.clicked += OnExitButtonClicked;
+            Debug.Log(documentContainer);
+            Debug.Log(documentContainer.Document);
+            Debug.Log(documentContainer.Document.rootVisualElement);
+            
+            var root = documentContainer.Document.rootVisualElement;
+            mainMenuContainer = root.Q("StartUpMenu");
+            levelContainer = root.Q("LevelSelection");
+            
+            var levelSelectionButton = mainMenuContainer.Q<Button>("ToLevelSelectionButton");
+            levelSelectionButton.clicked += OnLevelSelectionButtonClicked;
 
-                 levelContainer = root.Q("LevelSelection");
-                 mainMenuContainer = root.Q("StartUpMenu");
-            }
+            var exitGameButton = mainMenuContainer.Q<Button>("ExitGameButton");
+            exitGameButton.clicked += OnExitButtonClicked;
+
         }
 
         private void OnExitButtonClicked()
