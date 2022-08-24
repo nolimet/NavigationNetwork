@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5151461809558435214}
   - component: {fileID: 7803692241786701748}
+  - component: {fileID: 2012667046903062547}
   m_Layer: 0
   m_Name: ProjectContext
   m_TagString: Untagged
@@ -49,7 +50,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a2da22297f921974b8fe201b9d71729c, type: 2}
   - {fileID: 11400000, guid: 81d50ea5e5652c145aca38ceab8e244f, type: 2}
   - {fileID: 11400000, guid: 08e126ba9f6e4874a9422fb0a46509db, type: 2}
-  _monoInstallers: []
+  _monoInstallers:
+  - {fileID: 2012667046903062547}
   _installerPrefabs: []
   _parentNewObjectsUnderContext: 1
   _editorReflectionBakingCoverageMode: 0
@@ -64,6 +66,19 @@ MonoBehaviour:
       _missingHandlerDefaultResponse: 2
       _requireStrictUnsubscribe: 0
       _defaultAsyncTickPriority: 1
+--- !u!114 &2012667046903062547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284255912373111251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6364ed6ebda4003bf1e06dd84a4f720, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneReferences: {fileID: 11400000, guid: c776922925b1291488d1c24d38a1d1bd, type: 2}
 --- !u!1 &8913006828694744017
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,7 +139,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
