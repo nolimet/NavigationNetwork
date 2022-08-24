@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: Configuration
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: Configuration
   m_Data:
     m_SerializedData: []
-  m_GUID: fea29c7f3265f37419d713dc03d642e3
+  m_GUID: 17d0bc755cfa8684aba2c8676ad02224
   m_SerializeEntries:
-  - m_GUID: 29d452d2e2c15b742a992601e79aa889
-    m_Address: Scenes/MainMenu
+  - m_GUID: 0b5443c468393c549804f7484a3bfd70
+    m_Address: Configuration/Tower Configuration Data.asset
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Scenes
-  - m_GUID: 7bab96cc28415024a99e6e08de1e2f95
-    m_Address: Scenes/GamePlay
+    - Configuration
+  - m_GUID: 506cfa595f406364e962b7bee5369e89
+    m_Address: Configuration/EnemyConfiguration.asset
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Scenes
+    - Configuration
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 30d6280b3b69dcd4d8e5c3d8253748b0, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 71b982979c04d524cb88fa353a23b1cc, type: 2}
-    - {fileID: 11400000, guid: eb7f5e494db34cc49b2d7098676ebe8b, type: 2}
+    - {fileID: 11400000, guid: edf05e5eed3c0d54182dd8e5aeaa7abe, type: 2}
+    - {fileID: 11400000, guid: 63abf9a640c704f4b8c67a6a7846a22f, type: 2}

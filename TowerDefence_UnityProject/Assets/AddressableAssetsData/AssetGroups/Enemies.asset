@@ -10,26 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: Enemies
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: Enemies
   m_Data:
     m_SerializedData: []
-  m_GUID: fea29c7f3265f37419d713dc03d642e3
+  m_GUID: 074e42c82da98204e9557f197ccfa911
   m_SerializeEntries:
-  - m_GUID: 29d452d2e2c15b742a992601e79aa889
-    m_Address: Scenes/MainMenu
+  - m_GUID: 228aa61bd6273fe4ea404ee44ac16a49
+    m_Address: Enemies/WalkerEnemy.prefab
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Scenes
-  - m_GUID: 7bab96cc28415024a99e6e08de1e2f95
-    m_Address: Scenes/GamePlay
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Scenes
+    - Enemies
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 30d6280b3b69dcd4d8e5c3d8253748b0, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 71b982979c04d524cb88fa353a23b1cc, type: 2}
-    - {fileID: 11400000, guid: eb7f5e494db34cc49b2d7098676ebe8b, type: 2}
+    - {fileID: 11400000, guid: ffb7d4e643caf5a4f8ca96458b93d487, type: 2}
+    - {fileID: 11400000, guid: 4247f2a62245e294b89327908d1611e7, type: 2}
