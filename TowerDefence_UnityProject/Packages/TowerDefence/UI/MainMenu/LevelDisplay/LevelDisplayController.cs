@@ -49,21 +49,22 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
             var levels = LevelMetadata.LoadLevels();
 
             var document = documentContainer.Document.rootVisualElement;
-            levelsContainer = document.Q("Levels")?.Q("unity-content-container");
+            levelsContainer = document.Q<ListView>("Levels").Q("unity-content-container");
 
-            if (levelsContainer == null) throw new NullReferenceException();
+            if (levelsContainer is null) throw new NullReferenceException();
             foreach (var level in levels)
             {
                 var newButton = CreateNewButton(level.DisplayName, level.RelativeLevelPath);
                 levelSelectionButtons.Add(newButton);
-                levelsContainer.Add(newButton);
+                levelsContainer.contentContainer.Add(newButton);
             }
+
 
             loadLevelButton = document.Q<Button>("LoadLevelButton");
             loadLevelButton.clicked += OnLoadLevelClicked;
             loadLevelButton.SetEnabled(false);
 
-                LevelSelectionButton CreateNewButton(string text, string relativePath)
+            LevelSelectionButton CreateNewButton(string text, string relativePath)
             {
                 var buttonElement = new LevelSelectionButton(relativePath)
                 {
@@ -89,7 +90,7 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
 
             foreach (var x in levelSelectionButtons)
             {
-                x.SetEnabled(x.CallbackValue != relativePath);
+                x?.SetEnabled(x.CallbackValue != relativePath);
             }
             loadLevelButton.SetEnabled(true);
         }
