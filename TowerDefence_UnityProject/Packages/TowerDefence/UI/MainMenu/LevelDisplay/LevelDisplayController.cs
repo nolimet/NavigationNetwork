@@ -59,7 +59,6 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
                 levelsContainer.contentContainer.Add(newButton);
             }
 
-
             loadLevelButton = document.Q<Button>("LoadLevelButton");
             loadLevelButton.clicked += OnLoadLevelClicked;
             loadLevelButton.SetEnabled(false);
