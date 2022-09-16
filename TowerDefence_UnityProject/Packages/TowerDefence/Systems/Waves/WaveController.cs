@@ -7,7 +7,6 @@ using DataBinding;
 using TowerDefence.Entities.Enemies;
 using TowerDefence.Systems.Waves.Data;
 using TowerDefence.Systems.WorldLoader.Models;
-using TowerDefence.World.Grid;
 using UnityEngine;
 using static TowerDefence.Systems.Waves.Data.Wave;
 
@@ -16,24 +15,22 @@ namespace TowerDefence.Systems.Waves
     public class WaveController
     {
         private Wave[] currentWaves;
-        private int activeWave = 0;
+        private int activeWave;
         private CancellationTokenSource cancelTokenSource;
-        private List<UniTask> activeWaves = new List<UniTask>();
+        private readonly List<UniTask> activeWaves = new();
 
         private readonly EnemyController enemyController;
-        private readonly GridWorld gridWorld;
         private readonly BindingContext bindingContext = new();
 
-        internal WaveController(EnemyController enemyController, GridWorld gridWorld, IWorldDataModel worldDataModel)
+        internal WaveController(EnemyController enemyController, IWorldDataModel worldDataModel)
         {
             this.enemyController = enemyController;
-            this.gridWorld = gridWorld;
             bindingContext.Bind(worldDataModel, x => x.Waves, OnWavesChanged);
         }
 
-        private void OnWavesChanged(Wave[] obj)
+        private void OnWavesChanged(Wave[] waves)
         {
-            currentWaves = obj;
+            currentWaves = waves;
 
             if (cancelTokenSource is { IsCancellationRequested: false })
                 cancelTokenSource.Cancel();
