@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace TowerDefence.Systems.WorldLoader
 {
-    public class WorldLoadController
+    public sealed class WorldLoadController
     {
         private readonly GridWorld gridWorld;
         private readonly IWorldDataModel worldDataModel;
@@ -38,14 +38,13 @@ namespace TowerDefence.Systems.WorldLoader
         {
             "Starting world loading".QuickCLog("World Builder");
             string filePath = FormatWorldName();
-            if (filePath.FromPath(out LevelData lvlData))
-            {
-                if (lvlData.gridSettings.HasValue)
-                    await gridWorld.CreateWorld(lvlData.gridSettings.Value);
-                else "There where no grid settings".QuickCLog("World builder", LogType.Error);
+            if (!filePath.FromPath(out LevelData lvlData)) return;
 
-                worldDataModel.Waves = lvlData.waves;
-            }
+            if (lvlData.gridSettings.HasValue)
+                await gridWorld.CreateWorld(lvlData.gridSettings.Value);
+            else "There where no grid settings".QuickCLog("World builder", LogType.Error);
+
+            worldDataModel.Waves = lvlData.waves;
 
             string FormatWorldName()
             {
@@ -53,9 +52,6 @@ namespace TowerDefence.Systems.WorldLoader
             }
         }
 
-        private string GetLevelFolder()
-        {
-            return Path.Combine(Application.streamingAssetsPath, "Levels");
-        }
+        private static string GetLevelFolder() => Path.Combine(Application.streamingAssetsPath, "Levels");
     }
 }

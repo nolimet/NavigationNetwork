@@ -12,7 +12,7 @@ using static TowerDefence.Systems.Waves.Data.Wave;
 
 namespace TowerDefence.Systems.Waves
 {
-    public class WaveController
+    public sealed class WaveController
     {
         private Wave[] currentWaves;
         private int activeWave;
