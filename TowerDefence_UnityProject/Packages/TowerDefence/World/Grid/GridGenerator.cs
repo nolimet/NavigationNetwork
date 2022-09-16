@@ -16,7 +16,6 @@ namespace TowerDefence.World.Grid
         }
         public IEnumerable<IGridCell> CreateNodes(GridSettings settings)
         {
-            Debug.Log("Creating world");
             Validate();
             var returnValue = new List<IGridCell>();
             var cells = new GridCell[settings.GridHeight][];
