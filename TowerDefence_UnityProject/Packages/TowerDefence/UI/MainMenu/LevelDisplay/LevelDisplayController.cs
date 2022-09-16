@@ -89,7 +89,7 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
 
             foreach (var x in levelSelectionButtons)
             {
-                x?.SetEnabled(x.CallbackValue != relativePath);
+                x.SetEnabled(x.CallbackValue != relativePath);
             }
             loadLevelButton.SetEnabled(true);
         }
