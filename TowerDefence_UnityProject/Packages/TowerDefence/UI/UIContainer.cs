@@ -23,12 +23,12 @@ namespace TowerDefence.UI
         {
             foreach (Transform child in worldUIContainer)
             {
-                Debug.Log(child.name);
+                Destroy(child);
             }
 
             foreach (Transform child in screenUIContainer)
             {
-                Debug.Log(child.name);
+                Destroy(child);
             }
         }
     }
