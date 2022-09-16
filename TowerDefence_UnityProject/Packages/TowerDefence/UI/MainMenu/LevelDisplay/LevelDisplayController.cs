@@ -48,8 +48,8 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
         {
             var levels = LevelMetadata.LoadLevels();
 
-            var document = documentContainer.Document.rootVisualElement;
-            levelsContainer = document.Q<ListView>("Levels").Q("unity-content-container");
+            var visualRoot = documentContainer.Document.rootVisualElement;
+            levelsContainer = visualRoot.Q<ListView>("Levels").Q("unity-content-container");
 
             if (levelsContainer is null) throw new NullReferenceException();
             foreach (var level in levels)
@@ -59,7 +59,7 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
                 levelsContainer.contentContainer.Add(newButton);
             }
 
-            loadLevelButton = document.Q<Button>("LoadLevelButton");
+            loadLevelButton = visualRoot.Q<Button>("LoadLevelButton");
             loadLevelButton.clicked += OnLoadLevelClicked;
             loadLevelButton.SetEnabled(false);
 
