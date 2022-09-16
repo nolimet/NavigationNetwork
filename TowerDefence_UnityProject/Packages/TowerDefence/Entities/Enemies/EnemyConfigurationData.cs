@@ -7,7 +7,7 @@ using UnityEngine.AddressableAssets;
 namespace TowerDefence.Entities.Enemies
 {
     [CreateAssetMenu(fileName = "EnemyConfiguration", menuName = "Configuration/Enemy Configuration")]
-    public class EnemyConfigurationData : ScriptableObject
+    public sealed class EnemyConfigurationData : ScriptableObject
     {
         [SerializeField]
         private BaseEnemyConfiguration[] enemyBaseObjects;

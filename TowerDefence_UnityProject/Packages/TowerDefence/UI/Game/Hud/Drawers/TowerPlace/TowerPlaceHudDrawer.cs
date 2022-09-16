@@ -6,12 +6,12 @@ using TowerDefence.World.Grid;
 using UnityEngine;
 using Zenject;
 
-namespace TowerDefence.UI.Game.Hud.PlaceTower
+namespace TowerDefence.UI.Game.Hud.Drawers.TowerPlace
 {
-    internal class TowerPlaceHudDrawer : HudDrawerBase<SelectableCell>
+    internal sealed class TowerPlaceHudDrawer : HudDrawerBase<SelectableCell>
     {
         public delegate void TowerSelectedCallback(string towerId, SelectableCell selectedCell);
-        public TowerSelectedCallback OnTowerButtonClickedCallback;
+        public TowerSelectedCallback TowerButtonClickedCallback;
 
         private SelectableCell selectableCell;
         private TowerPlaceButton.Factory placeButtonFactory;
@@ -40,7 +40,7 @@ namespace TowerDefence.UI.Game.Hud.PlaceTower
             }
         }
 
-        private void OnButtonClicked(string towerId) => OnTowerButtonClickedCallback(towerId, selectableCell);
+        private void OnButtonClicked(string towerId) => TowerButtonClickedCallback(towerId, selectableCell);
         public override void SetValue(ISelectable selectable)
         {
             if (selectable is not SelectableCell selectableCell || towerModels.CellHasTower(selectableCell.GridCell))

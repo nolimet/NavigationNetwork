@@ -1,11 +1,12 @@
-﻿using TowerDefence.UI.Game.Hud.PlaceTower;
+﻿using TowerDefence.UI.Game.Hud.Drawers;
+using TowerDefence.UI.Game.Hud.Drawers.TowerPlace;
 using TowerDefence.UI.Game.Hud.SubControllers;
 using UnityEngine;
 using Zenject;
 
 namespace TowerDefence.UI.Game.Hud
 {
-    public class HudInstaller : MonoInstaller
+    public sealed class HudInstaller : MonoInstaller
     {
         [SerializeField] private TowerHudDrawer towerHud;
         [SerializeField] private TowerPlaceHudDrawer towerPlaceHud;

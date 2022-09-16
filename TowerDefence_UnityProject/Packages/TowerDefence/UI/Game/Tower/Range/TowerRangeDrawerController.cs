@@ -13,7 +13,7 @@ using UnityEngine.Events;
 
 namespace TowerDefence.UI.Game.Tower.Range
 {
-    public class TowerRangeDrawerController
+    public sealed class TowerRangeDrawerController
     {
         private readonly ISelectionModel selectionModel;
         private readonly ITowerModels towerModels;

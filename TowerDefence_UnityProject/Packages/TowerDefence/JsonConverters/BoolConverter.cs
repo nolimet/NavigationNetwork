@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TowerDefence.JsonConverters
 {
-    internal class BoolConverter : JsonConverter
+    internal sealed class BoolConverter : JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
@@ -22,7 +22,7 @@ namespace TowerDefence.JsonConverters
         }
     }
 
-    internal class BoolArrayConverter : JsonConverter
+    internal sealed class BoolArrayConverter : JsonConverter
     {
         private static readonly StringBuilder stringBuilder = new();
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

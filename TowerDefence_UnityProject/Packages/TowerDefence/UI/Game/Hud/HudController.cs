@@ -4,23 +4,21 @@ using DataBinding;
 using TowerDefence.Entities.Towers.Models;
 using TowerDefence.Systems.Selection;
 using TowerDefence.Systems.Selection.Models;
+using TowerDefence.UI.Game.Hud.Drawers;
 using UnityEngine;
 using Zenject;
 
 namespace TowerDefence.UI.Game.Hud
 {
-    public class HudController : MonoBehaviour
+    public sealed class HudController : MonoBehaviour
     {
         private readonly BindingContext bindingContext = new();
-        private ITowerModels towerModels;
 
         [SerializeField] private HudDrawerBase[] hudDrawers;
 
         [Inject]
         public void Inject(ISelectionModel selectionModel, ITowerModels towerModel)
         {
-            this.towerModels = towerModel;
-
             bindingContext.Bind(selectionModel, m => m.Selection, OnSelectionChanged);
         }
 

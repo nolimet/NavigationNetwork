@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TowerDefence.EditorScripts.Entities.Components.Popup
 {
-    internal class AddComponentPopup : PopupWindowContent
+    internal sealed class AddComponentPopup : PopupWindowContent
     {
         private readonly IReadOnlyDictionary<string, Type> values;
         private readonly ComponentConfigurationObject towerConfigurationObject;

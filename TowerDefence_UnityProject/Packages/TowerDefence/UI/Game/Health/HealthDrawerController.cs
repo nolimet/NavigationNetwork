@@ -8,7 +8,7 @@ using Zenject;
 
 namespace TowerDefence.UI.Game.Health
 {
-    public class HealthDrawerController : ITickable
+    public sealed class HealthDrawerController : ITickable
     {
         private readonly HealthDrawer.Factory healthDrawerFactory;
         private readonly List<HealthDrawer> healthBars = new List<HealthDrawer>();

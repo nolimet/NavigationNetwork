@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TowerDefence.World.Grid
 {
-    internal class GridGenerator
+    internal sealed class GridGenerator
     {
         private readonly GridWorldSettings worldSettings;
 

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TowerDefence.World.Grid
 {
-    internal class GridWorld
+    internal sealed class GridWorld
     {
         public Action OnPathCacheCleared;
 

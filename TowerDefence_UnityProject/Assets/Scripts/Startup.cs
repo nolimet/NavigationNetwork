@@ -1,10 +1,9 @@
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
 
 namespace TowerDefence.Project
 {
-    public class Startup : MonoBehaviour
+    public sealed class Startup : MonoBehaviour
     {
         [SerializeField] private AssetReference nextScene;
         private async void Start()

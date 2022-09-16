@@ -6,7 +6,7 @@ namespace TowerDefence.Entities.Towers.Components.BaseComponents
 {
     [Serializable, Component(ComponentType.Tower)]
     [JsonObject(MemberSerialization.OptIn)]
-    internal class TowerSettings : IComponent
+    internal sealed class TowerSettings : IComponent
     {
         [JsonProperty] public readonly string Name;
         [JsonProperty] public readonly bool IsSolid;

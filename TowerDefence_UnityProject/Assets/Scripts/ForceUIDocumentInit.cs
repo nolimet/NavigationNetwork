@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ForceUIDocumentInit : MonoBehaviour
+public sealed class ForceUIDocumentInit : MonoBehaviour
 {
     // Start is called before the first frame update
     private void Awake()

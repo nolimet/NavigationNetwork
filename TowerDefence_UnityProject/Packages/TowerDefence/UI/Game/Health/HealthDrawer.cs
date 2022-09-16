@@ -7,7 +7,7 @@ using Zenject;
 
 namespace TowerDefence.UI.Game.Health
 {
-    public class HealthDrawer : MonoBehaviour
+    public sealed class HealthDrawer : MonoBehaviour
     {
         [SerializeField]
         private Image healthbarImage;

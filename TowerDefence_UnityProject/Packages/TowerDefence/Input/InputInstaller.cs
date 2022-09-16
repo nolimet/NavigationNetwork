@@ -4,7 +4,7 @@ using Zenject;
 namespace TowerDefence.Input
 {
     [CreateAssetMenu(fileName = "Input Installer", menuName = "Installers/Input Installer")]
-    public class InputInstaller : ScriptableObjectInstaller
+    public sealed class InputInstaller : ScriptableObjectInstaller
     {
         public override void InstallBindings()
         {

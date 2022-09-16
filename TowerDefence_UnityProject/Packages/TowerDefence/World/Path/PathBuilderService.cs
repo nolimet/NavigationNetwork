@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.World.Path.Data;
 using TowerDefence.World.Path.Exceptions;
+using TowerDefence.World.Path.Rendering;
 using UnityEngine;
 using UObject = UnityEngine.Object;
 
 namespace TowerDefence.World.Path
 {
-    public class PathBuilderService
+    public sealed class PathBuilderService
     {
         private readonly PathRendererBase.Factory lineFactory;
 
@@ -65,7 +66,7 @@ namespace TowerDefence.World.Path
                 }
                 if (visitedPoints.Contains(point.id))
                 {
-                    throw new InfitePathException("Path loops around forever " + point.ToString());
+                    throw new InfinitePathException("Path loops around forever " + point.ToString());
                 }
 
                 var points = new List<Guid[]>();
@@ -121,7 +122,7 @@ namespace TowerDefence.World.Path
                 {
                     if (visitedPoints.Contains(currentPoint))
                     {
-                        throw new InfitePathException();
+                        throw new InfinitePathException();
                     }
 
                     //add point to visited points to avoid endless loops
@@ -216,7 +217,7 @@ namespace TowerDefence.World.Path
                 }
                 else
                 {
-                    throw new InfitePathException($"Path has no end! {current}");
+                    throw new InfinitePathException($"Path has no end! {current}");
                 }
             }
         }

@@ -6,7 +6,7 @@ using Zenject;
 namespace TowerDefence.World
 {
     [CreateAssetMenu(fileName = "World Installer", menuName = "Installers/World Installer")]
-    public class WorldInstaller : ScriptableObjectInstaller
+    public sealed class WorldInstaller : ScriptableObjectInstaller
     {
         [SerializeField] private GridWorldSettings gridWorldSettings;
 

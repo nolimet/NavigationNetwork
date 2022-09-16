@@ -8,7 +8,7 @@ using Zenject;
 namespace TowerDefence.Installers
 {
     [CreateAssetMenu(fileName = "Entities Installer", menuName = "Installers/Entities Installer")]
-    public class EntitiesInstaller : ScriptableObjectInstaller
+    public sealed class EntitiesInstaller : ScriptableObjectInstaller
     {
         [SerializeField] private EnemyConfigurationData enemyConfigurationData;
         [SerializeField] private TowerConfigurationData towerConfigurationData;

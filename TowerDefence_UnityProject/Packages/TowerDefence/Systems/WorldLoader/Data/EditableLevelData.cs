@@ -14,7 +14,7 @@ using FilePathPoint = TowerDefence.World.Path.Data.PathPoint;
 namespace TowerDefence.Systems.WorldLoader.Data
 {
     [CreateAssetMenu(menuName = "Configuration/Create Level", fileName = "Level 0")]
-    public class EditableLevelData : ScriptableObject
+    public sealed class EditableLevelData : ScriptableObject
     {
         [SerializeField] private EditableWave[] waves;
         [SerializeField] private EditablePathData pathdata;

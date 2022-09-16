@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DataBinding;
 using NoUtil.Extentsions;
 using TowerDefence.UI.Models;

@@ -7,7 +7,7 @@ namespace TowerDefence.World.Grid
     //
     // implements the static GetPath(...) function that will return a IList of IGridNodes that is the shortest path
     // between the two IGridNodes that are passed as parameters to the function
-    internal class PathFinder
+    internal sealed class PathFinder
     {
         private class OpenSorter : IComparer<IGridCell>
         {

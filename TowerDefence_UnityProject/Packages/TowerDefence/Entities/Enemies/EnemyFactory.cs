@@ -10,7 +10,7 @@ using UnityEngine.Events;
 
 namespace TowerDefence.Entities.Enemies
 {
-    internal class EnemyFactory
+    internal sealed class EnemyFactory
     {
         private readonly WorldContainer worldContainer;
         private readonly ComponentFactory componentFactory;

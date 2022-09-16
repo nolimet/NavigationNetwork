@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 
 namespace TowerDefence.World.Grid
 {
-    internal class GridVisualGenerator
+    internal sealed class GridVisualGenerator
     {
         private const float tileWidth = 1;
         private const float tileLength = 1;

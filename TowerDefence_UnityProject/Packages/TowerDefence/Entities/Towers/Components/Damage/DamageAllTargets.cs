@@ -10,7 +10,7 @@ namespace TowerDefence.Entities.Towers.Components.Damage
 {
     [Serializable, Component(ComponentType.Tower, typeof(IDamageComponent))]
     [JsonObject(MemberSerialization.OptIn)]
-    public class DamageAllTargets : DamageComponentBase
+    public sealed class DamageAllTargets : DamageComponentBase
     {
         [JsonProperty] private readonly double damage = 5;
         [JsonProperty] private readonly float damageInterval = 1;

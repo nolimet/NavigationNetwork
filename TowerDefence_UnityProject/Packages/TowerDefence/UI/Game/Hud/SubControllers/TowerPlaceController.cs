@@ -1,12 +1,12 @@
 ﻿using DataBinding;
 using TowerDefence.Entities.Towers;
 using TowerDefence.Systems.Selection.Models;
-using TowerDefence.UI.Game.Hud.PlaceTower;
+using TowerDefence.UI.Game.Hud.Drawers.TowerPlace;
 using TowerDefence.World.Grid;
 
 namespace TowerDefence.UI.Game.Hud.SubControllers
 {
-    internal class TowerPlaceController
+    internal sealed class TowerPlaceController
     {
         private readonly BindingContext bindingContext = new(true);
         private readonly TowerService towerService;
@@ -19,7 +19,7 @@ namespace TowerDefence.UI.Game.Hud.SubControllers
             this.selectionModel = selectionModel;
             this.gridWorld = gridWorld;
 
-            hud.OnTowerButtonClickedCallback = OnHudButtonClicked;
+            hud.TowerButtonClickedCallback = OnHudButtonClicked;
         }
 
         private async void OnHudButtonClicked(string towerId, SelectableCell selectedCell)

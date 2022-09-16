@@ -8,7 +8,7 @@ using UnityEngine;
 namespace TowerDefence.Entities.Towers.Components.TargetFinders
 {
     [Serializable, Component(ComponentType.Tower, typeof(ITargetFindComponent))]
-    public class NearestTargetFinder : TargetFindBase
+    public sealed class NearestTargetFinder : TargetFindBase
     {
         public NearestTargetFinder()
         {

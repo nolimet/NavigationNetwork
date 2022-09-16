@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace TowerDefence.TestCode
 {
-    public class WaveDebuggerStarter
+    public sealed class WaveDebuggerStarter
     {
         private readonly DebugActions debugActions;
         private readonly WaveController waveController;

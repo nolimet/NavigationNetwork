@@ -5,7 +5,7 @@ using TowerDefence.Entities.Towers.Components.Interfaces;
 namespace TowerDefence.Entities.Towers.Components.TargetFinders
 {
     [Serializable, Component(ComponentType.Tower, typeof(ITargetFindComponent))]
-    internal class AllTargetsFinder : TargetFindBase
+    internal sealed class AllTargetsFinder : TargetFindBase
     {
         public override void Tick()
         {

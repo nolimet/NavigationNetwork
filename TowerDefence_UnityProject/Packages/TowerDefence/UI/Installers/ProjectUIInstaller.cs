@@ -4,7 +4,7 @@ using Zenject;
 namespace TowerDefence.UI.Installers
 {
     [CreateAssetMenu(fileName = "Project UI Installer", menuName = "Installers/UI Installers/Project")]
-    public class ProjectUIInstaller : ScriptableObjectInstaller
+    public sealed class ProjectUIInstaller : ScriptableObjectInstaller
     {
         [SerializeField] private GameObject worldUIContainerPrefab;
 

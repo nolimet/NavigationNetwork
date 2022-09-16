@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace TowerDefence.UI
 {
-    public class UIContainer : MonoBehaviour
+    //TODO migrate this to the new model
+    public sealed class UIContainer : MonoBehaviour
     {
         [SerializeField, ReadOnly] private Transform worldUIContainer;
 

@@ -8,7 +8,7 @@ using Zenject;
 namespace TowerDefence.UI.Installers
 {
     [CreateAssetMenu(fileName = "Game UI Installer", menuName = "Installers/UI Installers/Game")]
-    public class GameUIInstaller : ScriptableObjectInstaller
+    public sealed class GameUIInstaller : ScriptableObjectInstaller
     {
         [SerializeField] private HealthDrawer healthbarPrefab;
 

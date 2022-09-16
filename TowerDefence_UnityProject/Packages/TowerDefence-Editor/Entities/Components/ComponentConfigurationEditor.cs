@@ -11,7 +11,7 @@ using UnityEngine;
 namespace TowerDefence.EditorScripts.Entities.Components
 {
     [CustomEditor(typeof(ComponentConfigurationObject))]
-    internal class ComponentConfigurationEditor : Editor
+    internal sealed class ComponentConfigurationEditor : Editor
     {
         private readonly Dictionary<ComponentType, Dictionary<string, Type>> componentTypesMap = new();
         private readonly Dictionary<ComponentData, DisplayData> componentsCache = new();
@@ -69,7 +69,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
             {
                 using (var h1 = new EditorGUILayout.HorizontalScope())
                 {
-                    kv.Value.isExpanded = EditorGUILayout.Foldout(kv.Value.isExpanded, kv.Value.componentName, true);
+                    kv.Value.IsExpanded = EditorGUILayout.Foldout(kv.Value.IsExpanded, kv.Value.ComponentName, true);
                     GUILayout.FlexibleSpace();
                     if (GUILayout.Button("Edit"))
                     {
@@ -83,13 +83,13 @@ namespace TowerDefence.EditorScripts.Entities.Components
                     }
                 }
 
-                if (kv.Value.isExpanded)
+                if (kv.Value.IsExpanded)
                 {
                     using (var i1 = new EditorGUI.IndentLevelScope(1))
                     {
                         using (var d1 = new EditorGUI.DisabledGroupScope(true))
                         {
-                            EditorGUILayout.TextArea(kv.Value.displayJson);
+                            EditorGUILayout.TextArea(kv.Value.DisplayJson);
                         }
                     }
                 }
@@ -102,7 +102,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
 
             foreach (var component in componentsCache)
             {
-                component.Key.SerializeComponent(component.Value.component);
+                component.Key.SerializeComponent(component.Value.Component);
             }
 
             target.components = componentsCache.Keys.ToList();
@@ -118,12 +118,12 @@ namespace TowerDefence.EditorScripts.Entities.Components
             {
                 var displaydata = new DisplayData
                 {
-                    component = component.DeserializeComponent(),
-                    componentData = component
+                    Component = component.DeserializeComponent(),
+                    ComponentData = component
                 };
 
-                displaydata.componentType = displaydata.component.GetType();
-                displaydata.componentName = componentTypesMap[target.type].First(x => x.Value.Equals(displaydata.componentType)).Key;
+                displaydata.ComponentType = displaydata.Component.GetType();
+                displaydata.ComponentName = componentTypesMap[target.type].First(x => x.Value.Equals(displaydata.ComponentType)).Key;
                 displaydata.ComponentToJson();
 
                 componentsCache.Add(component, displaydata);
@@ -174,7 +174,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
         {
             validationReslts.Clear();
 
-            var usedTypes = componentsCache.Values.Select(x => x.componentType).ToArray();
+            var usedTypes = componentsCache.Values.Select(x => x.ComponentType).ToArray();
 
             bool duplicates = false;
             bool invalidCombinations = false;

@@ -5,7 +5,7 @@ using Zenject;
 
 namespace TowerDefence.UI
 {
-    internal class UIDocumentContainer : MonoBehaviour, IUIContainer
+    internal sealed class UIDocumentContainer : MonoBehaviour, IUIContainer
     {
         [field: SerializeField]
         public UIDocument Document { get; private set; }

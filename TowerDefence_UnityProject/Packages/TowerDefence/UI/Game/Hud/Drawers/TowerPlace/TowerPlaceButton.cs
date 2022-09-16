@@ -2,9 +2,9 @@
 using UnityEngine;
 using Zenject;
 
-namespace TowerDefence.UI.Game.Hud.PlaceTower
+namespace TowerDefence.UI.Game.Hud.Drawers.TowerPlace
 {
-    internal class TowerPlaceButton : MonoBehaviour
+    internal sealed class TowerPlaceButton : MonoBehaviour
     {
         public delegate void CallbackDelegate(string towerId);
         private CallbackDelegate callback;

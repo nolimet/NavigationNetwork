@@ -4,7 +4,7 @@ using Zenject;
 namespace TowerDefence.Systems.Selection
 {
     [CreateAssetMenu(fileName = "Selection Installer", menuName = "Installers/Selection Installer")]
-    public class SelectionInstaller : ScriptableObjectInstaller
+    public sealed class SelectionInstaller : ScriptableObjectInstaller
     {
         public override void InstallBindings()
         {

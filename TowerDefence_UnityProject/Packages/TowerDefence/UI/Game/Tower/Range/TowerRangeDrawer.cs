@@ -7,7 +7,7 @@ using UnityEngine;
 namespace TowerDefence.UI.Game.Tower.Range
 {
     [RequireComponent(typeof(MeshRenderer)), RequireComponent(typeof(MeshFilter))]
-    public class TowerRangeDrawer : MonoBehaviour
+    public sealed class TowerRangeDrawer : MonoBehaviour
     {
         private Mesh mesh;
         [SerializeField] private int segments = 10;

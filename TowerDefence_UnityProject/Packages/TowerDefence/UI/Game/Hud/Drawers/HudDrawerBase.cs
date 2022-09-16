@@ -1,7 +1,7 @@
 ﻿using TowerDefence.Systems.Selection;
 using UnityEngine;
 
-namespace TowerDefence.UI.Game.Hud
+namespace TowerDefence.UI.Game.Hud.Drawers
 {
     internal abstract class HudDrawerBase : MonoBehaviour
     {

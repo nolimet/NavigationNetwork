@@ -2,7 +2,7 @@
 
 namespace TowerDefence.Systems.Waves
 {
-    public class WaveInstaller : MonoInstaller
+    public sealed class WaveInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {

@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TowerDefence.EditorScripts.Entities.Components.Popup
 {
-    internal class ComponentEditPopup : PopupWindowContent
+    internal sealed class ComponentEditPopup : PopupWindowContent
     {
         public readonly DisplayData displayData;
         private readonly FieldInfo[] fields;
@@ -18,7 +18,7 @@ namespace TowerDefence.EditorScripts.Entities.Components.Popup
             this.displayData = displayData;
 
             var jsonPropertyType = typeof(JsonPropertyAttribute);
-            var component = displayData.component.GetType();
+            var component = displayData.Component.GetType();
 
             //Need specific flags as you can't just get the readonly fields
             var publicFields = component.GetFields(BindingFlags.Instance | BindingFlags.Public);
@@ -74,7 +74,7 @@ namespace TowerDefence.EditorScripts.Entities.Components.Popup
 
         private void DrawField(FieldInfo field)
         {
-            var val = field.GetValue(displayData.component);
+            var val = field.GetValue(displayData.Component);
             if (val is null)
             {
                 var type = field.FieldType;
@@ -107,7 +107,7 @@ namespace TowerDefence.EditorScripts.Entities.Components.Popup
                 _ => val,
             };
 
-            field.SetValue(displayData.component, val);
+            field.SetValue(displayData.Component, val);
         }
     }
 }

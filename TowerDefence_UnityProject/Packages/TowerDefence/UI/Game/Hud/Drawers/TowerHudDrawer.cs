@@ -5,9 +5,9 @@ using TowerDefence.Systems.Selection;
 using TowerDefence.Utility;
 using UnityEngine;
 
-namespace TowerDefence.UI.Game.Hud
+namespace TowerDefence.UI.Game.Hud.Drawers
 {
-    internal class TowerHudDrawer : HudDrawerBase<ITowerObject>
+    internal sealed class TowerHudDrawer : HudDrawerBase<ITowerObject>
     {
         [SerializeField] private string rangeLabel, damageLabel, towerTypeLabel;
         [SerializeField] private BaseHudValueItem rangeField, damageField, towerType;

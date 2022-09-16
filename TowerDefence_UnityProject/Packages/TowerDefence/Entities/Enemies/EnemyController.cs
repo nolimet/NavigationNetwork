@@ -11,7 +11,7 @@ using Object = UnityEngine.Object;
 
 namespace TowerDefence.Entities.Enemies
 {
-    internal class EnemyController : IDisposable
+    internal sealed class EnemyController : IDisposable
     {
         private readonly IEnemiesModel model;
         private readonly EnemyFactory enemyFactory;

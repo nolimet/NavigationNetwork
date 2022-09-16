@@ -7,7 +7,7 @@ using Zenject;
 
 namespace TowerDefence.Project
 {
-    public class DefaultWorldLoader : MonoBehaviour
+    public sealed class DefaultWorldLoader : MonoBehaviour
     {
         [Inject] private WorldLoadController worldLoadController;
         [Inject] private IWorldDataModel worldDataModel;

@@ -3,11 +3,11 @@ using UnityEngine.UIElements;
 
 namespace TowerDefence.UI.MainMenu.UIElements
 {
-    public class LevelSelectionButton : Button
+    public sealed class LevelSelectionButton : Button
     {
         public new readonly string ussClassName = "level-selection-button";
         public event Action<string> OnCallback;
-        public readonly string CallbackValue = "";
+        public readonly string CallbackValue;
 
         public LevelSelectionButton(string callbackValue) : base()
         {

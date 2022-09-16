@@ -3,7 +3,7 @@ using Zenject;
 
 namespace TowerDefence.World.Path
 {
-    public class PathWalkerService : ITickable
+    public sealed class PathWalkerService : ITickable
     {
         private readonly List<WalkerBase> walkers = new List<WalkerBase>();
         private readonly PathWorldController worldController;

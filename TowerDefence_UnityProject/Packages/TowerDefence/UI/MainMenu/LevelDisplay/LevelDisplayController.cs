@@ -13,7 +13,7 @@ using UnityEngine.UIElements;
 
 namespace TowerDefence.UI.MainMenu.LevelDisplay
 {
-    internal class LevelDisplayController : IDisposable
+    internal sealed class LevelDisplayController : IDisposable
     {
         private readonly IWorldDataModel worldDataModel;
         private readonly BindingContext bindingContext = new(true);

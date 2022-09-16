@@ -2,7 +2,7 @@
 
 namespace TowerDefence.World
 {
-    public class WorldContainer : MonoBehaviour
+    public sealed class WorldContainer : MonoBehaviour
     {
         public Transform PathContainer { get; private set; }
         public Transform TowerContainer { get; private set; }

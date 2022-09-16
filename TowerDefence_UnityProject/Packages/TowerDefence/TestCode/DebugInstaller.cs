@@ -2,7 +2,7 @@
 
 namespace TowerDefence.TestCode
 {
-    public class DebugInstaller : MonoInstaller
+    public sealed class DebugInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {

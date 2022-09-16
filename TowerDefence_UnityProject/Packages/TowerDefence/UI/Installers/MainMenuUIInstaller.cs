@@ -6,7 +6,7 @@ using Zenject;
 namespace TowerDefence.UI.Installers
 {
     [CreateAssetMenu(fileName = "MainMenu UI Installer", menuName = "Installers/UI Installers/Main Menu")]
-    public class MainMenuUIInstaller : ScriptableObjectInstaller
+    public sealed class MainMenuUIInstaller : ScriptableObjectInstaller
     {
         public override void InstallBindings()
         {
