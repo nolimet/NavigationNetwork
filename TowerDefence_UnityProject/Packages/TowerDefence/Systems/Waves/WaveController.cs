@@ -35,7 +35,7 @@ namespace TowerDefence.Systems.Waves
         {
             currentWaves = obj;
 
-            if (cancelTokenSource != null && !cancelTokenSource.IsCancellationRequested)
+            if (cancelTokenSource is { IsCancellationRequested: false })
                 cancelTokenSource.Cancel();
             cancelTokenSource?.Dispose();
 
@@ -50,31 +50,29 @@ namespace TowerDefence.Systems.Waves
 
         public async void StartWavePlayBack()
         {
-            if (currentWaves != null && currentWaves.Length > 0)
+            if (currentWaves is not { Length: > 0 }) return;
+            
+            while (activeWave < currentWaves.Length)
             {
-                while (activeWave < currentWaves.Length)
+                activeWaves.Add(PlayWave(currentWaves[activeWave], cancelTokenSource.Token));
+                activeWave++;
+                try
                 {
-                    activeWaves.Add(PlayWave(currentWaves[activeWave], cancelTokenSource.Token));
-                    activeWave++;
-                    try
-                    {
-                        await UniTask.WhenAll(activeWaves);
-                    }
-                    catch (System.Exception e)
-                    {
-                        Debug.LogException(e);
-                    }
+                    await UniTask.WhenAll(activeWaves);
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogException(e);
                 }
             }
         }
 
         public void ForceStartNextWave()
         {
-            if (currentWaves != null && currentWaves.Length > 0 && GetWavesLeft() > 0)
-            {
-                activeWaves.Add(PlayWave(currentWaves[activeWave], cancelTokenSource.Token));
-                activeWave++;
-            }
+            if (currentWaves is not { Length: > 0 } || GetWavesLeft() <= 0) return;
+            
+            activeWaves.Add(PlayWave(currentWaves[activeWave], cancelTokenSource.Token));
+            activeWave++;
         }
 
         public void StopWavePlayBack()
@@ -86,15 +84,13 @@ namespace TowerDefence.Systems.Waves
         {
             Debug.Log("wave started");
             var waveLookup = new (EnemyGroup group, Queue<float> time)[wave.enemyGroups.Length];
-            int enemiesRemaining = 0;
             var enemyWatchers = new List<UniTask>();
             for (int i = 0; i < waveLookup.Length; i++)
             {
-                var v = (wave.enemyGroups[i], new Queue<float>());
-                waveLookup[i] = v;
-                for (int j = 0; j < v.Item1.spawnTime.Length; j++)
+                var (newGroup, spawnTimes) = waveLookup[i] = (wave.enemyGroups[i], new Queue<float>());
+                foreach (var spawnTime in newGroup.spawnTime)
                 {
-                    v.Item2.Enqueue(v.Item1.spawnTime[j]);
+                    spawnTimes.Enqueue(spawnTime);
                 }
             }
 
@@ -106,11 +102,10 @@ namespace TowerDefence.Systems.Waves
 
                 foreach (var enemySet in waveLookup)
                 {
-                    if (enemySet.time.Any() && enemySet.time.Peek() < t)
-                    {
-                        enemySet.time.Dequeue();
-                        enemyWatchers.Add(EnemyWatcherTask(enemySet.group));
-                    }
+                    if (!enemySet.time.Any() || enemySet.time.Peek() > t) continue;
+                    
+                    enemySet.time.Dequeue();
+                    enemyWatchers.Add(EnemyWatcherTask(enemySet.group));
                 }
 
                 t += Time.deltaTime;
@@ -122,15 +117,11 @@ namespace TowerDefence.Systems.Waves
 
             async UniTask EnemyWatcherTask(EnemyGroup group)
             {
-                enemiesRemaining++;
                 var enemy = await enemyController.CreateNewEnemy(group);
                 var model = enemy.Model;
 
-                await UniTask.WaitUntil(() => model.Health <= 0);
-                enemiesRemaining--;
+                await UniTask.WaitUntil(() => model.Health <= 0, cancellationToken: token);
             }
-
-            ;
         }
     }
 }
