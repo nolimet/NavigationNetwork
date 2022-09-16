@@ -3,7 +3,7 @@ using System.IO;
 using TowerDefence.World.Grid.Data;
 using UnityEngine;
 
-namespace TowerDefence.Systems.Waves.Data
+namespace TowerDefence.EditorScripts.Systems.Waves
 {
     internal static class GridSettingsImageImporter
     {

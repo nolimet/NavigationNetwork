@@ -6,7 +6,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using DataBinding.BaseClasses;
 
 namespace TowerDefence.Systems.Selection.Models 
 {

@@ -6,7 +6,7 @@ namespace TowerDefence.Entities.Enemies.Components.BaseComponents
 {
     [Serializable, Component(ComponentType.Enemy, typeof(EnemySettings))]
     [JsonObject(MemberSerialization.OptIn)]
-    internal class EnemySettings : IComponent
+    internal sealed class EnemySettings : IComponent
     {
         [JsonProperty] public readonly string TypeName = "";
         [JsonProperty] public readonly string BaseName = "";

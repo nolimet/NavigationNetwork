@@ -1,32 +1,33 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
+using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
 
-namespace TowerDefence.Entities.Components
+namespace TowerDefence.EditorScripts.Entities.Components
 {
-    internal class DisplayData
+    internal sealed class DisplayData
     {
-        public bool isExpanded;
-        public string displayJson;
-        public string componentName;
+        public bool IsExpanded;
+        public string DisplayJson;
+        public string ComponentName;
 
-        public ComponentData componentData;
-        public IComponent component;
-        public Type componentType;
+        public ComponentData ComponentData;
+        public IComponent Component;
+        public Type ComponentType;
 
         public void ComponentToJson()
         {
-            displayJson = JsonConvert.SerializeObject(component, Formatting.Indented);
+            DisplayJson = JsonConvert.SerializeObject(Component, Formatting.Indented);
         }
 
         public void ComponentFromJson()
         {
-            component = JsonConvert.DeserializeObject(displayJson, componentType) as IComponent;
+            Component = JsonConvert.DeserializeObject(DisplayJson, ComponentType) as IComponent;
         }
 
         public void UpdateTowerComponentData()
         {
-            componentData.SerializeComponent(component);
+            ComponentData.SerializeComponent(Component);
         }
     }
 }

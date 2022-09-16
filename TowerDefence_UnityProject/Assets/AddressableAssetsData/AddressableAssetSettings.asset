@@ -43,6 +43,12 @@ MonoBehaviour:
   m_GroupAssets:
   - {fileID: 11400000, guid: bc59f3db89b03e44fab323ac6096df6e, type: 2}
   - {fileID: 11400000, guid: 7346b8d70a3ddd445a70ed33c95495ff, type: 2}
+  - {fileID: 11400000, guid: 8ea69e9313d96454591a311ea3695522, type: 2}
+  - {fileID: 11400000, guid: f1e8f8bc5a4f9f942ab63f24e38c01f1, type: 2}
+  - {fileID: 11400000, guid: c4459e963659ca146902f7a1e07c2fc4, type: 2}
+  - {fileID: 11400000, guid: 0180189133f41f545ac38bf067e29705, type: 2}
+  - {fileID: 11400000, guid: c33d5072d081376408fda72f134a73c1, type: 2}
+  - {fileID: 11400000, guid: 9e2a04c414c729b4e9d12d331f919ac8, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -84,6 +90,12 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
+    - Scenes
+    - Towers
+    - Configuration
+    - Enemies
+    - UI
+    - World
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 8e648432155b04143beb6981a04d0519, type: 2}

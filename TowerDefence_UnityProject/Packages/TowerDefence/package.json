@@ -6,10 +6,10 @@
   "unity": "2021.2",
   "dependencies": {
     "com.unity.textmeshpro": "3.0.4",
-    "com.svermeulen.extenject": "9.2.0-stcf3",
+    "nl.jessestam.extenject": "9.3.1",
     "jillejr.newtonsoft.json-for-unity": "13.0.102",
     "jillejr.newtonsoft.json-for-unity.converters": "1.1.1",
-    "nl.jessestam.no-util": "1.*.*"
+    "nl.jessestam.no-util": "1.0.20"
   },
   "author": {
     "name": "Jesse Stam",

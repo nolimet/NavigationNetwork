@@ -6,7 +6,7 @@ using UnityEngine;
 namespace TowerDefence.Entities.Components.Data
 {
     [CreateAssetMenu(menuName = "Entities/ComponentObject")]
-    internal class ComponentConfigurationObject : ScriptableObject
+    internal sealed class ComponentConfigurationObject : ScriptableObject
     {
         [SerializeField] internal List<ComponentData> components = new();
 

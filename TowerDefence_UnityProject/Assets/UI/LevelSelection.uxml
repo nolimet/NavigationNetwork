@@ -1,5 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/Main.uss?fileID=7433441132597879392&amp;guid=6e362fd7b29a4c146a5425299a438372&amp;type=3#Main" />
-    <ui:ListView focusable="true" virtualization-method="FixedHeight" name="Levels" header-title="Levels" />
-    <ui:Button text="Button" display-tooltip-when-elided="true" />
-</ui:UXML>

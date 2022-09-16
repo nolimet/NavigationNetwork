@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace TowerDefence.Entities.Towers.Builder
 {
-    internal class TowerFactory
+    internal sealed class TowerFactory
     {
         private readonly WorldContainer worldContainer;
         private readonly ComponentFactory componentFactory;

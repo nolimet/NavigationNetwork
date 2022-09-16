@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace TowerDefence.Entities.Towers
 {
-    public class TowerObject : MonoBehaviour, ITowerObject
+    public sealed class TowerObject : MonoBehaviour, ITowerObject
     {
         private readonly BindingContext bindingContext = new(true);
 

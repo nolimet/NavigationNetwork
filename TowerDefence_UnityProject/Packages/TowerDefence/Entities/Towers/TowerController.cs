@@ -6,7 +6,7 @@ using TowerDefence.Entities.Towers.Models;
 
 namespace TowerDefence.Entities.Towers
 {
-    public class TowerController : IDisposable
+    public sealed class TowerController : IDisposable
     {
         private readonly ITowerModels towerModels;
         private readonly CancellationTokenSource tokenSource = new();

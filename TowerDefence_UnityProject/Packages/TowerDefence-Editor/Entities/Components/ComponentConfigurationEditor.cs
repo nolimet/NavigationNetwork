@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TowerDefence.EditorScripts.Entities.Components.Popup;
+using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
-using TowerDefence.Entities.Components.Popup;
 using UnityEditor;
 using UnityEngine;
 
-namespace TowerDefence.Entities.Components
+namespace TowerDefence.EditorScripts.Entities.Components
 {
     [CustomEditor(typeof(ComponentConfigurationObject))]
-    internal class ComponentConfigurationEditor : Editor
+    internal sealed class ComponentConfigurationEditor : Editor
     {
         private readonly Dictionary<ComponentType, Dictionary<string, Type>> componentTypesMap = new();
         private readonly Dictionary<ComponentData, DisplayData> componentsCache = new();
@@ -68,7 +69,7 @@ namespace TowerDefence.Entities.Components
             {
                 using (var h1 = new EditorGUILayout.HorizontalScope())
                 {
-                    kv.Value.isExpanded = EditorGUILayout.Foldout(kv.Value.isExpanded, kv.Value.componentName, true);
+                    kv.Value.IsExpanded = EditorGUILayout.Foldout(kv.Value.IsExpanded, kv.Value.ComponentName, true);
                     GUILayout.FlexibleSpace();
                     if (GUILayout.Button("Edit"))
                     {
@@ -82,13 +83,13 @@ namespace TowerDefence.Entities.Components
                     }
                 }
 
-                if (kv.Value.isExpanded)
+                if (kv.Value.IsExpanded)
                 {
                     using (var i1 = new EditorGUI.IndentLevelScope(1))
                     {
                         using (var d1 = new EditorGUI.DisabledGroupScope(true))
                         {
-                            EditorGUILayout.TextArea(kv.Value.displayJson);
+                            EditorGUILayout.TextArea(kv.Value.DisplayJson);
                         }
                     }
                 }
@@ -101,8 +102,9 @@ namespace TowerDefence.Entities.Components
 
             foreach (var component in componentsCache)
             {
-                component.Key.SerializeComponent(component.Value.component);
+                component.Key.SerializeComponent(component.Value.Component);
             }
+
             target.components = componentsCache.Keys.ToList();
         }
 
@@ -116,12 +118,12 @@ namespace TowerDefence.Entities.Components
             {
                 var displaydata = new DisplayData
                 {
-                    component = component.DeserializeComponent(),
-                    componentData = component
+                    Component = component.DeserializeComponent(),
+                    ComponentData = component
                 };
 
-                displaydata.componentType = displaydata.component.GetType();
-                displaydata.componentName = componentTypesMap[target.type].First(x => x.Value.Equals(displaydata.componentType)).Key;
+                displaydata.ComponentType = displaydata.Component.GetType();
+                displaydata.ComponentName = componentTypesMap[target.type].First(x => x.Value.Equals(displaydata.ComponentType)).Key;
                 displaydata.ComponentToJson();
 
                 componentsCache.Add(component, displaydata);
@@ -141,9 +143,9 @@ namespace TowerDefence.Entities.Components
                 var components = assembly.GetTypes()
                     .Where
                     (type =>
-                        type.IsDefined(typeof(ComponentAttribute)) && //Checking if it the required attribute
-                        !type.IsAbstract &&
-                        type.GetInterfaces().Any(x => x.Equals(typeof(IComponent))) //And that it implements the interface.
+                            type.IsDefined(typeof(ComponentAttribute)) && //Checking if it the required attribute
+                            !type.IsAbstract &&
+                            type.GetInterfaces().Any(x => x.Equals(typeof(IComponent))) //And that it implements the interface.
                     );
 
                 Enum.GetValues(typeof(ComponentType)).Cast<ComponentType>().Distinct().Where(x => !componentTypesMap.ContainsKey(x)).ToList().ForEach(type => componentTypesMap.Add(type, new()));
@@ -164,6 +166,7 @@ namespace TowerDefence.Entities.Components
                     componentAttributesMap.Add(component, att);
                 }
             }
+
             RebuildComponentCache();
         }
 
@@ -171,7 +174,7 @@ namespace TowerDefence.Entities.Components
         {
             validationReslts.Clear();
 
-            var usedTypes = componentsCache.Values.Select(x => x.componentType).ToArray();
+            var usedTypes = componentsCache.Values.Select(x => x.ComponentType).ToArray();
 
             bool duplicates = false;
             bool invalidCombinations = false;

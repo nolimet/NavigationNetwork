@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TowerDefence.World.Path.Rendering;
 using UnityEngine;
 
 namespace TowerDefence.World.Path.Data
 {
     //TODO Fix animation curves. There is a slowdown between keyframes. This should not happen it should be a constant speed
     [System.Serializable]
-    public class PathWorldData
+    public sealed class PathWorldData
     {
         public readonly IReadOnlyDictionary<int, AnimationCurve3D> paths;
 

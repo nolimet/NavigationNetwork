@@ -1,0 +1,343 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a00c739d75271dc4aab473be52da748b, type: 3}
+  m_Name: Level 3
+  m_EditorClassIdentifier: 
+  waves:
+  - enemyGroups:
+    - enemyID: GridWalker
+      pathID: 0
+      entranceId: 0
+      entrancePosition: {x: 0, y: 0}
+      exitId: 0
+      exitPosition: {x: 0, y: 0}
+      spawnTime:
+      - 0
+      - 0.2
+      - 0.3
+      - 0.5
+  pathdata:
+    pathPoints:
+    - name: 01 - Entrance
+      id: 9c35b01b-239c-496f-92d8-f88e8c9655a7
+      position: {x: 0, y: 0, z: 0}
+      type: 0
+      connections:
+      - 1352169c-d3ce-4a09-9f9b-ec74f3074361
+      - 72985b3d-d9af-466d-8924-23755eb27797
+      - f07de4c6-da89-47c3-a781-2283c4cf1e9d
+    - name: 01 - Point
+      id: 1352169c-d3ce-4a09-9f9b-ec74f3074361
+      position: {x: 5, y: 5, z: 0}
+      type: 1
+      connections:
+      - 746bebeb-8336-479a-893e-73ae2a9c1d1c
+      - f07de4c6-da89-47c3-a781-2283c4cf1e9d
+    - name: 02 - Point
+      id: 72985b3d-d9af-466d-8924-23755eb27797
+      position: {x: 5, y: -5, z: 0}
+      type: 1
+      connections:
+      - af91e27e-bbb8-41eb-858f-1f3698292594
+    - name: 03 - Point
+      id: af91e27e-bbb8-41eb-858f-1f3698292594
+      position: {x: 10, y: -5, z: 0}
+      type: 1
+      connections:
+      - 6fc8c61f-a632-4b5a-b64d-d9aaca98eb49
+    - name: 04 - Point
+      id: 746bebeb-8336-479a-893e-73ae2a9c1d1c
+      position: {x: 10, y: 5, z: 0}
+      type: 1
+      connections:
+      - b24d5f33-292e-43db-88b6-66f63b851741
+    - name: 05 - Point
+      id: 6fc8c61f-a632-4b5a-b64d-d9aaca98eb49
+      position: {x: 15, y: -5, z: 0}
+      type: 1
+      connections:
+      - f07de4c6-da89-47c3-a781-2283c4cf1e9d
+    - name: 06 - Point
+      id: b24d5f33-292e-43db-88b6-66f63b851741
+      position: {x: 15, y: 5, z: 0}
+      type: 1
+      connections:
+      - af91e27e-bbb8-41eb-858f-1f3698292594
+    - name: 01 - Exit
+      id: f07de4c6-da89-47c3-a781-2283c4cf1e9d
+      position: {x: 20, y: 0, z: 0}
+      type: 2
+      connections: []
+  gridSettings:
+    GridHeight: 16
+    GridWidth: 16
+    EntryPoints:
+    - {x: 0, y: 0}
+    EndPoints:
+    - {x: 15, y: 15}
+    nodes:
+    - weight: 1
+    - weight: 1
+    - weight: 5
+    - weight: 15
+    - weight: 155
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 0
+    - weight: 0
+    - weight: 2
+    - weight: 27
+    - weight: 183
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 0
+    - weight: 2
+    - weight: 3
+    - weight: 42
+    - weight: 202
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 0
+    - weight: 4
+    - weight: 3
+    - weight: 57
+    - weight: 218
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 0
+    - weight: 2
+    - weight: 3
+    - weight: 80
+    - weight: 236
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 0
+    - weight: 0
+    - weight: 10
+    - weight: 130
+    - weight: 250
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 0
+    - weight: 1
+    - weight: 9
+    - weight: 157
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 0
+    - weight: 0
+    - weight: 3
+    - weight: 149
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 0
+    - weight: 0
+    - weight: 1
+    - weight: 41
+    - weight: 163
+    - weight: 243
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 1
+    - weight: 0
+    - weight: 0
+    - weight: 2
+    - weight: 10
+    - weight: 97
+    - weight: 204
+    - weight: 243
+    - weight: 254
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 1
+    - weight: 0
+    - weight: 4
+    - weight: 3
+    - weight: 0
+    - weight: 4
+    - weight: 50
+    - weight: 128
+    - weight: 189
+    - weight: 234
+    - weight: 253
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 1
+    - weight: 0
+    - weight: 13
+    - weight: 55
+    - weight: 2
+    - weight: 1
+    - weight: 6
+    - weight: 15
+    - weight: 45
+    - weight: 105
+    - weight: 172
+    - weight: 220
+    - weight: 248
+    - weight: 254
+    - weight: 255
+    - weight: 255
+    - weight: 1
+    - weight: 0
+    - weight: 12
+    - weight: 157
+    - weight: 56
+    - weight: 5
+    - weight: 2
+    - weight: 2
+    - weight: 5
+    - weight: 13
+    - weight: 32
+    - weight: 83
+    - weight: 150
+    - weight: 207
+    - weight: 203
+    - weight: 193
+    - weight: 2
+    - weight: 0
+    - weight: 29
+    - weight: 200
+    - weight: 216
+    - weight: 93
+    - weight: 26
+    - weight: 5
+    - weight: 1
+    - weight: 2
+    - weight: 5
+    - weight: 10
+    - weight: 20
+    - weight: 33
+    - weight: 18
+    - weight: 15
+    - weight: 2
+    - weight: 4
+    - weight: 78
+    - weight: 228
+    - weight: 254
+    - weight: 240
+    - weight: 190
+    - weight: 111
+    - weight: 44
+    - weight: 10
+    - weight: 2
+    - weight: 1
+    - weight: 1
+    - weight: 0
+    - weight: 0
+    - weight: 0
+    - weight: 7
+    - weight: 37
+    - weight: 182
+    - weight: 252
+    - weight: 255
+    - weight: 255
+    - weight: 255
+    - weight: 251
+    - weight: 220
+    - weight: 149
+    - weight: 75
+    - weight: 25
+    - weight: 4
+    - weight: 0
+    - weight: 0
+    - weight: 1

@@ -1,15 +1,18 @@
 using UnityEditor;
 using UnityEngine;
 
-public class EditableWaveEditor : PropertyDrawer
+namespace TowerDefence.EditorScripts.Systems.Waves
 {
-    public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+    public class EditableWaveEditor : PropertyDrawer
     {
-        base.OnGUI(position, property, label);
-    }
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            base.OnGUI(position, property, label);
+        }
 
-    public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-    {
-        return base.GetPropertyHeight(property, label);
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            return base.GetPropertyHeight(property, label);
+        }
     }
 }

@@ -3,15 +3,14 @@ using UnityEngine;
 
 namespace TowerDefence.UI
 {
-    public class UIContainer : MonoBehaviour
+    //TODO migrate this to the new model
+    public sealed class UIContainer : MonoBehaviour
     {
-        [SerializeField, ReadOnly]
-        private Transform worldUIContainer;
+        [SerializeField, ReadOnly] private Transform worldUIContainer;
 
         public Transform WorldUIContainer => worldUIContainer;
 
-        [SerializeField, ReadOnly]
-        private Transform screenUIContainer;
+        [SerializeField, ReadOnly] private Transform screenUIContainer;
 
         public Transform ScreenUIContainer => screenUIContainer;
 
@@ -19,6 +18,19 @@ namespace TowerDefence.UI
         {
             this.worldUIContainer = worldUIContainer;
             this.screenUIContainer = screenUIContainer;
+        }
+
+        public void ClearContainers()
+        {
+            foreach (Transform child in worldUIContainer)
+            {
+                Destroy(child);
+            }
+
+            foreach (Transform child in screenUIContainer)
+            {
+                Destroy(child);
+            }
         }
     }
 }

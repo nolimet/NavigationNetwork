@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace TowerDefence.World.Path
+namespace TowerDefence.World.Path.Rendering
 {
-    public class PathLineRenderer : PathRendererBase
+    public sealed class PathLineRenderer : PathRendererBase
     {
         [SerializeField]
         private LineRenderer lineRenderer;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TowerDefence.World.Grid.Data
 {
-    internal class GridCell : IGridCell
+    internal sealed class GridCell : IGridCell
     {
         private IReadOnlyCollection<IGridCell> conntectedCells;
 

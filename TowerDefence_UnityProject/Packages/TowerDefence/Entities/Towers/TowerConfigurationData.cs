@@ -9,7 +9,7 @@ using UnityEngine.AddressableAssets;
 namespace TowerDefence.Entities.Towers
 {
     [CreateAssetMenu(fileName = "Tower Configuration Data", menuName = "Configuration/Tower Configuration")]
-    public class TowerConfigurationData : ScriptableObject
+    public sealed class TowerConfigurationData : ScriptableObject
     {
         [field: SerializeField] internal AssetReferenceT<GameObject> TowerBase { get; private set; }
         [SerializeField] private Tower[] towers = new Tower[0];

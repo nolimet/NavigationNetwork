@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TowerDefence.World.Grid
 {
-    internal class GridCellSelector
+    internal sealed class GridCellSelector
     {
         private readonly ISelectionModel selectionModel;
         private readonly BindingContext context = new(true);

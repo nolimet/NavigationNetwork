@@ -7,7 +7,7 @@ using Zenject;
 
 namespace TowerDefence.Entities.Components
 {
-    internal class ComponentFactory
+    internal sealed class ComponentFactory
     {
         private readonly DiContainer diContainer;
 

@@ -1,42 +1,38 @@
-using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
+using DataBinding;
 using TowerDefence.Entities.Enemies;
 using TowerDefence.Systems.Waves.Data;
-using TowerDefence.World.Grid;
+using TowerDefence.Systems.WorldLoader.Models;
 using UnityEngine;
 using static TowerDefence.Systems.Waves.Data.Wave;
 
 namespace TowerDefence.Systems.Waves
 {
-    public class WaveController
+    public sealed class WaveController
     {
         private Wave[] currentWaves;
-        private int activeWave = 0;
+        private int activeWave;
         private CancellationTokenSource cancelTokenSource;
-        private List<UniTask> activeWaves = new List<UniTask>();
+        private readonly List<UniTask> activeWaves = new();
 
         private readonly EnemyController enemyController;
-        private readonly GridWorld gridWorld;
+        private readonly BindingContext bindingContext = new();
 
-        internal WaveController(EnemyController enemyController, GridWorld gridWorld)
+        internal WaveController(EnemyController enemyController, IWorldDataModel worldDataModel)
         {
             this.enemyController = enemyController;
-            this.gridWorld = gridWorld;
+            bindingContext.Bind(worldDataModel, x => x.Waves, OnWavesChanged);
         }
 
-        public int GetWavesLeft()
-        {
-            return activeWave - currentWaves.Length;
-        }
-
-        public void SetWaves(Wave[] waves)
+        private void OnWavesChanged(Wave[] waves)
         {
             currentWaves = waves;
 
-            if (cancelTokenSource != null && !cancelTokenSource.IsCancellationRequested)
+            if (cancelTokenSource is { IsCancellationRequested: false })
                 cancelTokenSource.Cancel();
             cancelTokenSource?.Dispose();
 
@@ -44,33 +40,36 @@ namespace TowerDefence.Systems.Waves
             activeWave = 0;
         }
 
+        public int GetWavesLeft()
+        {
+            return activeWave - currentWaves.Length;
+        }
+
         public async void StartWavePlayBack()
         {
-            if (currentWaves != null && currentWaves.Length > 0)
+            if (currentWaves is not { Length: > 0 }) return;
+            
+            while (activeWave < currentWaves.Length)
             {
-                while (activeWave < currentWaves.Length)
+                activeWaves.Add(PlayWave(currentWaves[activeWave], cancelTokenSource.Token));
+                activeWave++;
+                try
                 {
-                    activeWaves.Add(PlayWave(currentWaves[activeWave], cancelTokenSource.Token));
-                    activeWave++;
-                    try
-                    {
-                        await UniTask.WhenAll(activeWaves);
-                    }
-                    catch (System.Exception e)
-                    {
-                        Debug.LogException(e);
-                    }
+                    await UniTask.WhenAll(activeWaves);
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogException(e);
                 }
             }
         }
 
         public void ForceStartNextWave()
         {
-            if (currentWaves != null && currentWaves.Length > 0 && GetWavesLeft() > 0)
-            {
-                activeWaves.Add(PlayWave(currentWaves[activeWave], cancelTokenSource.Token));
-                activeWave++;
-            }
+            if (currentWaves is not { Length: > 0 } || GetWavesLeft() <= 0) return;
+            
+            activeWaves.Add(PlayWave(currentWaves[activeWave], cancelTokenSource.Token));
+            activeWave++;
         }
 
         public void StopWavePlayBack()
@@ -82,15 +81,13 @@ namespace TowerDefence.Systems.Waves
         {
             Debug.Log("wave started");
             var waveLookup = new (EnemyGroup group, Queue<float> time)[wave.enemyGroups.Length];
-            int enemiesRemaining = 0;
             var enemyWatchers = new List<UniTask>();
             for (int i = 0; i < waveLookup.Length; i++)
             {
-                var v = (wave.enemyGroups[i], new Queue<float>());
-                waveLookup[i] = v;
-                for (int j = 0; j < v.Item1.spawnTime.Length; j++)
+                var (newGroup, spawnTimes) = waveLookup[i] = (wave.enemyGroups[i], new Queue<float>());
+                foreach (var spawnTime in newGroup.spawnTime)
                 {
-                    v.Item2.Enqueue(v.Item1.spawnTime[j]);
+                    spawnTimes.Enqueue(spawnTime);
                 }
             }
 
@@ -102,12 +99,12 @@ namespace TowerDefence.Systems.Waves
 
                 foreach (var enemySet in waveLookup)
                 {
-                    if (enemySet.time.Any() && enemySet.time.Peek() < t)
-                    {
-                        enemySet.time.Dequeue();
-                        enemyWatchers.Add(EnemyWatcherTask(enemySet.group));
-                    }
+                    if (!enemySet.time.Any() || enemySet.time.Peek() > t) continue;
+                    
+                    enemySet.time.Dequeue();
+                    enemyWatchers.Add(EnemyWatcherTask(enemySet.group));
                 }
+
                 t += Time.deltaTime;
             }
 
@@ -117,13 +114,11 @@ namespace TowerDefence.Systems.Waves
 
             async UniTask EnemyWatcherTask(EnemyGroup group)
             {
-                enemiesRemaining++;
                 var enemy = await enemyController.CreateNewEnemy(group);
                 var model = enemy.Model;
 
-                await UniTask.WaitUntil(() => model.Health <= 0);
-                enemiesRemaining--;
-            };
+                await UniTask.WaitUntil(() => model.Health <= 0, cancellationToken: token);
+            }
         }
     }
 }

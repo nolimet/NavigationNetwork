@@ -6,7 +6,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using DataBinding.BaseClasses;
 
 namespace TowerDefence.Entities.Enemies.Models 
 {
@@ -60,9 +59,9 @@ namespace TowerDefence.Entities.Enemies.Models
 			}
 		}
 			// HealthBar
-		public event System.Action<TowerDefence.UI.Health.HealthDrawer> OnChangeHealthBar;
-		private TowerDefence.UI.Health.HealthDrawer _HealthBar ; 
-		public TowerDefence.UI.Health.HealthDrawer HealthBar 
+		public event System.Action<TowerDefence.UI.Game.Health.HealthDrawer> OnChangeHealthBar;
+		private TowerDefence.UI.Game.Health.HealthDrawer _HealthBar ; 
+		public TowerDefence.UI.Game.Health.HealthDrawer HealthBar 
 		{
 			get => _HealthBar;
 			set 

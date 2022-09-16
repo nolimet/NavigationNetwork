@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace TowerDefence.Entities.Towers
 {
-    public class TowerService
+    public sealed class TowerService
     {
         private readonly ITowerModels towerModel;
         private readonly TowerConfigurationData towerConfiguration;

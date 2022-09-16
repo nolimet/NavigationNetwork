@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
 using UnityEditor;
 using UnityEngine;
 
-namespace TowerDefence.Entities.Components.Popup
+namespace TowerDefence.EditorScripts.Entities.Components.Popup
 {
-    internal class AddComponentPopup : PopupWindowContent
+    internal sealed class AddComponentPopup : PopupWindowContent
     {
         private readonly IReadOnlyDictionary<string, Type> values;
         private readonly ComponentConfigurationObject towerConfigurationObject;
@@ -48,6 +49,7 @@ namespace TowerDefence.Entities.Components.Popup
                     editorWindow.Close();
                 }
             }
+
             using (var scrollRect = new EditorGUILayout.ScrollViewScope(scrollRectPosition))
             {
                 foreach (string value in values.Keys)

@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 
 namespace TowerDefence.Systems.Selection
 {
-    public class SelectionController
+    public sealed class SelectionController
     {
         private readonly ISelectionModel selectionModel;
         private readonly SelectionInputActions selectionInput;

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace TowerDefence.Entities.Components.Data
 {
     [Serializable]
-    internal class ComponentData
+    internal sealed class ComponentData
     {
         [SerializeField] internal string type;
         [SerializeField] internal string data;

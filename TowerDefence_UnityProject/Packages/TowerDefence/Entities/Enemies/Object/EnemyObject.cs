@@ -11,7 +11,7 @@ using UnityEngine.Events;
 
 namespace TowerDefence.Entities.Enemies
 {
-    public class EnemyObject : MonoBehaviour, IEnemyObject
+    public sealed class EnemyObject : MonoBehaviour, IEnemyObject
     {
         public Transform Transform => transform;
         public IEnemyModel Model { get; private set; }

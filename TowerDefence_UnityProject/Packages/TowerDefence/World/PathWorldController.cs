@@ -3,7 +3,7 @@ using TowerDefence.World.Path.Data;
 
 namespace TowerDefence.World
 {
-    public class PathWorldController
+    public sealed class PathWorldController
     {
         private readonly PathBuilderService pathBuilderService;
         public PathWorldData PathWorldData { get; private set; }

@@ -5,7 +5,7 @@ using UnityEngine.AddressableAssets;
 namespace TowerDefence.World.Grid
 {
     [CreateAssetMenu(menuName = "Configuration/Grid World Settings", fileName = "Grid World Settings")]
-    public class GridWorldSettings : ScriptableObject
+    public sealed class GridWorldSettings : ScriptableObject
     {
         [SerializeField] private AssetReferenceT<Material> tileMaterial;
         [SerializeField] private AssetReferenceT<GameObject> entracePrefab;

@@ -16,51 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: fea29c7f3265f37419d713dc03d642e3
-  m_SerializeEntries:
-  - m_GUID: 228aa61bd6273fe4ea404ee44ac16a49
-    m_Address: Enemies/WalkerEnemy.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 506cfa595f406364e962b7bee5369e89
-    m_Address: Configuration/EnemyConfiguration.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 019bb257e0fd37242a5641bf79528ff8
-    m_Address: Towers/ExampleTower.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 0b5443c468393c549804f7484a3bfd70
-    m_Address: Configuration/Tower Configuration Data.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 3516108c6cd76994bae92c06df8619b4
-    m_Address: UI/RangeDrawer.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 46fe94b8612dc6b41b974b8e361ee968
-    m_Address: HudPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 985aaad9bd8f9864cbf58dcc6dd5b8d9
-    m_Address: TowerHudPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 29932a3030c8ff541af32380fa3493f1
-    m_Address: Towers/ExampleTower
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 1d46da4a9e5c67a478757d53eeae5cbe
-    m_Address: Materials/Tile-Default
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: f7f7fa3b6446d804aac2367db137d42e
-    m_Address: UI/HUD/TowerHUD/Elements/TowerPlaceButton
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 9c76240a6cc06a64893135f1cd0a1100
-    m_Address: Towers/WallTower
-    m_ReadOnly: 0
-    m_SerializedLabels: []
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 30d6280b3b69dcd4d8e5c3d8253748b0, type: 2}
   m_SchemaSet:

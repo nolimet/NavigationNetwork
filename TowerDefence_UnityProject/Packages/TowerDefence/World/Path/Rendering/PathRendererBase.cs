@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Zenject;
 
-namespace TowerDefence.World.Path
+namespace TowerDefence.World.Path.Rendering
 {
     public abstract class PathRendererBase : MonoBehaviour
     {

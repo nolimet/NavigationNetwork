@@ -7,7 +7,7 @@ using TowerDefence.Entities.Towers.Components.Interfaces;
 namespace TowerDefence.Entities.Towers.Components.TargetFinders
 {
     [Serializable, Component(ComponentType.Tower, typeof(ITargetFindComponent))]
-    internal class NullTargetFinder : ITargetFindComponent
+    internal sealed class NullTargetFinder : ITargetFindComponent
     {
         public static readonly ITargetFindComponent Instance = new NullTargetFinder();
 

@@ -14,7 +14,7 @@ namespace TowerDefence.Entities.Enemies.Components
 {
     [Component(ComponentType.Enemy, typeof(IPathWalkerComponent))]
     [JsonObject(MemberSerialization.OptIn)]
-    internal class GridPathWalker : BaseEnemyPathWalker
+    internal sealed class GridPathWalker : BaseEnemyPathWalker
     {
         private readonly List<IGridCell> path = new();
         private GridWorld gridWorld;
