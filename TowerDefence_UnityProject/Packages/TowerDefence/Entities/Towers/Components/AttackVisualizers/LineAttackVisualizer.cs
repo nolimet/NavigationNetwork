@@ -36,7 +36,7 @@ namespace TowerDefence.Entities.Towers.Components.AttackVisualizers
                 lineRender.SetPosition(0,startPos);
                 lineRender.SetPosition(1, target.GetWorldPosition());
                 
-                Object.Destroy(newVisual);
+                Object.Destroy(newVisual, decayDuration);
             }
         }
     }
