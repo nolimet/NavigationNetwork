@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
+using UnityEditor;
 
 namespace TowerDefence.EditorScripts.Entities.Components
 {
@@ -14,6 +15,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
         public ComponentData ComponentData;
         public IComponent Component;
         public Type ComponentType;
+        public SerializedProperty serializedProperty;
 
         public void ComponentToJson()
         {

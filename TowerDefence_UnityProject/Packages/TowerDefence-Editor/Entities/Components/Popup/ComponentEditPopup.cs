@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
+using TowerDefence.Entities.Components.Data;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace TowerDefence.EditorScripts.Entities.Components.Popup
 {
@@ -11,6 +13,9 @@ namespace TowerDefence.EditorScripts.Entities.Components.Popup
     {
         public readonly DisplayData displayData;
         private readonly FieldInfo[] fields;
+        private readonly SerializedObject serializedObject;
+        private readonly int fieldCount;
+        
         private Vector2 scrollViewPosition = Vector2.zero;
 
         public ComponentEditPopup(DisplayData displayData)
@@ -18,6 +23,7 @@ namespace TowerDefence.EditorScripts.Entities.Components.Popup
             this.displayData = displayData;
 
             var jsonPropertyType = typeof(JsonPropertyAttribute);
+            var unitySerializableType = typeof(SerializeField);
             var component = displayData.Component.GetType();
 
             //Need specific flags as you can't just get the readonly fields
@@ -26,13 +32,17 @@ namespace TowerDefence.EditorScripts.Entities.Components.Popup
             var allFields = publicFields.Concat(privateFields);
 
             //filtering out fields that don't have the jsonProperty
-            fields = allFields.Where(x => x.CustomAttributes.Any(c => c.AttributeType == jsonPropertyType)).ToArray();
+            var filteredFields = allFields.Where(x => x.CustomAttributes.Any(c => c.AttributeType == jsonPropertyType)).ToArray();
+            fieldCount = filteredFields.Length+3;
+            fields = filteredFields.Where(x=>x.CustomAttributes.All(x=> x.AttributeType != unitySerializableType))
+                .ToArray();
+            Debug.Log(fields.Length);
         }
 
         public override Vector2 GetWindowSize()
         {
             Vector2 maxSize = new(300, 600);
-            Vector2 size = new(300, EditorGUIUtility.singleLineHeight * 2 + EditorGUIUtility.standardVerticalSpacing);
+            Vector2 size = new(300, 600/*EditorGUIUtility.singleLineHeight * 2 + EditorGUIUtility.standardVerticalSpacing*/);
 
             size.y += EditorGUIUtility.singleLineHeight * fields.Length + EditorGUIUtility.standardVerticalSpacing * fields.Length - 1;
             size.y = Mathf.Min(size.y, maxSize.y);
@@ -64,6 +74,20 @@ namespace TowerDefence.EditorScripts.Entities.Components.Popup
 
             using var scrollView = new EditorGUILayout.ScrollViewScope(scrollViewPosition);
 
+            // foreach (SerializedProperty property in displayData.serializedProperty)
+            // {
+            //     EditorGUILayout.PropertyField(property);
+            // } 
+            if (displayData.serializedProperty is not null)
+            {
+                var comp = displayData.serializedProperty.FindPropertyRelative("SerializedComponent");
+                EditorGUILayout.PropertyField(comp,true);
+            }
+            else
+            {
+                EditorGUILayout.HelpBox("Could not find serializedProperty. Save and reselect", MessageType.Error);
+            }
+            
             foreach (var field in fields)
             {
                 DrawField(field);
