@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Components;
+using TowerDefence.Entities.Enemies;
 using TowerDefence.Entities.Towers.Components.Interfaces;
 using TowerDefence.Entities.Towers.Components.TargetFinders;
 using TowerDefence.Entities.Towers.Models;
@@ -14,17 +15,19 @@ namespace TowerDefence.Entities.Towers.Components.Damage
     [JsonObject(MemberSerialization.OptIn)]
     public abstract class DamageComponentBase : IDamageComponent, IInitializable
     {
+        public abstract event Action<IEnumerable<IEnemyObject>> AppliedDamageToTargets;
+        
+        protected readonly BindingContext bindingContext  = new(true);
+        
         protected ITowerModel model { get; private set; }
-        protected ITargetFindComponent targetFindComponent { get; private set; } = NullTargetFinder.Instance;
-        protected BindingContext bindingContext { get; private set; } = new(true);
         public abstract double DamagePerSecond { get; }
+        protected ITargetFindComponent targetFindComponent { get; private set; } = NullTargetFinder.Instance;
 
         public abstract void Tick();
 
         public virtual void PostInit(ITowerObject towerObject, ITowerModel model)
         {
             targetFindComponent ??= NullTargetFinder.Instance;
-            bindingContext ??= new(true);
 
             this.model = model;
 
