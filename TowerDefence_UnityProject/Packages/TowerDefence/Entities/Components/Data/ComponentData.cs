@@ -19,10 +19,12 @@ namespace TowerDefence.Entities.Components.Data
             data = JsonConvert.SerializeObject(component);
         }
 
+#if UNITY_EDITOR
         internal void SetReferenceValue()
         {
             SerializedComponent = DeserializeComponent();
         }
+#endif
 
         internal IComponent DeserializeComponent()
         {
