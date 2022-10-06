@@ -26,8 +26,8 @@ MonoBehaviour:
   m_NonRecursiveBuilding: 1
   m_CCDEnabled: 0
   m_maxConcurrentWebRequests: 500
-  m_ContiguousBundles: 0
-  m_StripUnityVersionFromBundleBuild: 0
+  m_ContiguousBundles: 1
+  m_StripUnityVersionFromBundleBuild: 1
   m_DisableVisibleSubAssetRepresentations: 0
   m_ShaderBundleNaming: 0
   m_ShaderBundleCustomNaming: 
@@ -38,7 +38,7 @@ MonoBehaviour:
   m_RemoteCatalogLoadPath:
     m_Id: 
   m_ContentStateBuildPath: 
-  m_BuildAddressablesWithPlayerBuild: 2
+  m_BuildAddressablesWithPlayerBuild: 1
   m_overridePlayerVersion: 
   m_GroupAssets:
   - {fileID: 11400000, guid: bc59f3db89b03e44fab323ac6096df6e, type: 2}
