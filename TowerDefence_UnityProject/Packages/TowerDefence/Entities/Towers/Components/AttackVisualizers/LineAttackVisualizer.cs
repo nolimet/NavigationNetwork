@@ -17,6 +17,7 @@ namespace TowerDefence.Entities.Towers.Components.AttackVisualizers
     {
         [JsonProperty] [SerializeField] private AssetReferenceT<GameObject> attackVisual;
         [JsonProperty] private float decayDuration;
+        [JsonProperty] private Color attackColor;
 
         public override async Task AsyncPostInit(ITowerObject towerObject, ITowerModel towerModel)
         {
@@ -35,6 +36,7 @@ namespace TowerDefence.Entities.Towers.Components.AttackVisualizers
                 
                 lineRender.SetPosition(0,startPos);
                 lineRender.SetPosition(1, target.GetWorldPosition());
+                lineRender.startColor = lineRender.endColor = attackColor;
                 
                 Object.Destroy(newVisual, decayDuration);
             }
