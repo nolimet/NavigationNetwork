@@ -14,6 +14,7 @@ namespace TowerDefence.Entities.Enemies
     public sealed class EnemyObject : MonoBehaviour, IEnemyObject
     {
         public Transform Transform => transform;
+        public bool ExistsInWorld => this != null;
         public IEnemyModel Model { get; private set; }
         public string Name { get => this.name; set => this.name = value; }
 
