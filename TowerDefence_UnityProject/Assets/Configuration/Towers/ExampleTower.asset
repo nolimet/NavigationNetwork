@@ -16,33 +16,33 @@ MonoBehaviour:
   - type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings
     data: '{"Name":"Example","IsSolid":0,"Range":4.0}'
     SerializedComponent:
-      rid: 4770820099062104584
+      rid: 4770820099062104616
   - type: TowerDefence.Entities.Towers.Components.TargetFinders.NearestTargetFinder
     data: '{}'
     SerializedComponent:
-      rid: 4770820099062104585
+      rid: 4770820099062104620
   - type: TowerDefence.Entities.Towers.Components.Damage.DamageAllTargets
-    data: '{"damage":5.0,"damageInterval":1.0}'
+    data: '{"damage":5.0,"damageInterval":0.15}'
     SerializedComponent:
-      rid: 4770820099062104586
+      rid: 4770820099062104621
   - type: TowerDefence.Entities.Towers.Components.AttackVisualizers.LineAttackVisualizer
-    data: '{"attackVisual":"d88178ac40daaec49a8f8225eabffbb9","decayDuration":1.0,"attackColor":{"r":1.0,"g":0.0,"b":0.0,"a":1.0}}'
+    data: '{"attackVisual":"d88178ac40daaec49a8f8225eabffbb9","decayDuration":0.3,"attackColor":{"r":0.74133,"g":1.0,"b":0.0,"a":1.0}}'
     SerializedComponent:
-      rid: 4770820099062104587
+      rid: 4770820099062104622
   type: 1
   references:
     version: 2
     RefIds:
-    - rid: 4770820099062104584
+    - rid: 4770820099062104616
       type: {class: TowerSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
-    - rid: 4770820099062104585
+    - rid: 4770820099062104620
       type: {class: NearestTargetFinder, ns: TowerDefence.Entities.Towers.Components.TargetFinders,
         asm: TowerDefence}
-    - rid: 4770820099062104586
+    - rid: 4770820099062104621
       type: {class: DamageAllTargets, ns: TowerDefence.Entities.Towers.Components.Damage,
         asm: TowerDefence}
-    - rid: 4770820099062104587
+    - rid: 4770820099062104622
       type: {class: LineAttackVisualizer, ns: TowerDefence.Entities.Towers.Components.AttackVisualizers,
         asm: TowerDefence}
       data:
