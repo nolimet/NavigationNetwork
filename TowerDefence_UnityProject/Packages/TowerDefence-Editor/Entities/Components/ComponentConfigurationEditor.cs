@@ -64,13 +64,10 @@ namespace TowerDefence.EditorScripts.Entities.Components
                     EditorGUILayout.HelpBox(result, MessageType.Error);
                 }
             }
-
-
-            var componentsProperty = serializedObject.FindProperty("components");
-            int i = 0;
+            
             foreach (var (componentData, displayData) in componentsCache)
             {
-                using (var h1 = new EditorGUILayout.HorizontalScope())
+                using (new EditorGUILayout.HorizontalScope())
                 {
                     displayData.IsExpanded = EditorGUILayout.Foldout(displayData.IsExpanded, displayData.ComponentName, true);
                     GUILayout.FlexibleSpace();
@@ -88,9 +85,9 @@ namespace TowerDefence.EditorScripts.Entities.Components
 
                 if (displayData.IsExpanded)
                 {
-                    using (var i1 = new EditorGUI.IndentLevelScope(1))
+                    using (new EditorGUI.IndentLevelScope(1))
                     {
-                        using (var d1 = new EditorGUI.DisabledGroupScope(true))
+                        using (new EditorGUI.DisabledGroupScope(true))
                         {
                             EditorGUILayout.TextArea(displayData.DisplayJson);
                         }
