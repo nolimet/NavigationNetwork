@@ -1,7 +1,7 @@
-﻿using DataBinding;
-using NoUtil.Extentsions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using DataBinding;
+using NoUtil.Extentsions;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Interfaces;
 using TowerDefence.Entities.Enemies.Components.BaseComponents;
@@ -16,12 +16,17 @@ namespace TowerDefence.Entities.Enemies
         public Transform Transform => transform;
         public bool ExistsInWorld => this != null;
         public IEnemyModel Model { get; private set; }
-        public string Name { get => this.name; set => this.name = value; }
+
+        public string Name
+        {
+            get => name;
+            set => name = value;
+        }
 
         public UnityAction<IEnemyObject> DeathAction { get; private set; }
 
         private readonly List<ITickableComponent> tickableComponents = new();
-        private readonly BindingContext bindingContext = new(true);
+        private readonly BindingContext bindingContext = new();
 
         [SerializeField] private Vector2 healthbarOffset = Vector2.zero;
 
@@ -36,9 +41,9 @@ namespace TowerDefence.Entities.Enemies
 
         public void Setup(IEnemyModel enemyModel, UnityAction<IEnemyObject> outOfHealthAction)
         {
-            this.Model = enemyModel;
+            Model = enemyModel;
             Model.HealthOffset = healthbarOffset;
-            this.DeathAction = outOfHealthAction;
+            DeathAction = outOfHealthAction;
 
             if (Model.Components.TryFind(x => x is EnemySettings, out var result) && result is EnemySettings settings)
             {
@@ -53,7 +58,6 @@ namespace TowerDefence.Entities.Enemies
         {
             if (health <= 0)
             {
-                Debug.Log("Splat");
                 DeathAction?.Invoke(this);
             }
         }
@@ -61,7 +65,8 @@ namespace TowerDefence.Entities.Enemies
         private void OnComponentsChanged(IList<IComponent> components)
         {
             tickableComponents.Clear();
-            tickableComponents.AddRange(components.Where(x => x is ITickableComponent).Cast<ITickableComponent>().OrderBy(x => x.TickPriority));
+            tickableComponents.AddRange(components.Where(x => x is ITickableComponent).Cast<ITickableComponent>()
+                .OrderBy(x => x.TickPriority));
         }
 
         public void Tick()
@@ -71,7 +76,7 @@ namespace TowerDefence.Entities.Enemies
 
         private void OnDestroy()
         {
-            Model.HealthBar?.Destroy();
+            Model.HealthBar.Destroy();
             bindingContext.Dispose();
         }
     }
