@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TowerDefence.Entities.Components;
@@ -9,7 +8,6 @@ using TowerDefence.Entities.Enemies;
 using TowerDefence.Entities.Towers.Models;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using Zenject;
 using Object = UnityEngine.Object;
 
 namespace TowerDefence.Entities.Towers.Components.AttackVisualizers
@@ -23,7 +21,7 @@ namespace TowerDefence.Entities.Towers.Components.AttackVisualizers
         [JsonProperty] private Color attackColor;
 
         private readonly List<AttackVisual> attackVisuals = new();
-        
+
         public override async Task AsyncPostInit(ITowerObject towerObject, ITowerModel towerModel)
         {
             await base.AsyncPostInit(towerObject, towerModel);
@@ -38,11 +36,11 @@ namespace TowerDefence.Entities.Towers.Components.AttackVisualizers
             {
                 var newVisual = Object.Instantiate(visualPrefab, Vector3.zero, Quaternion.identity);
                 var lineRender = newVisual.GetComponent<LineRenderer>();
-                
-                lineRender.SetPosition(0,startPos);
+
+                lineRender.SetPosition(0, startPos);
                 lineRender.SetPosition(1, target.GetWorldPosition());
-                
-                attackVisuals.Add(new(decayDuration, target, lineRender, attackColor));
+
+                attackVisuals.Add(new AttackVisual(decayDuration, target, lineRender, attackColor));
             }
         }
 
@@ -72,25 +70,25 @@ namespace TowerDefence.Entities.Towers.Components.AttackVisualizers
 
                 renderer.material.SetColor(colorShaderProperty, color);
             }
-            
+
             public bool Alive = true;
-            
+
             private float timeLeft;
             private readonly float maxTime;
 
             private readonly LineRenderer renderer;
             private readonly IEnemyObject target;
-            
-            private static readonly int alphaShaderProperty = Shader.PropertyToID("alpha");
-            private static readonly int colorShaderProperty = Shader.PropertyToID("color");
+
+            private static readonly int alphaShaderProperty = Shader.PropertyToID("_Alpha");
+            private static readonly int colorShaderProperty = Shader.PropertyToID("_Color");
 
             public void Tick(float delta)
             {
                 timeLeft -= delta;
                 renderer.material.SetFloat(alphaShaderProperty, 1f / maxTime * timeLeft);
-                if(target.ExistsInWorld)
-                renderer.SetPosition(1, target.GetWorldPosition());
-                
+                if (target.ExistsInWorld)
+                    renderer.SetPosition(1, target.GetWorldPosition());
+
                 if (!(timeLeft <= 0)) return;
                 Object.Destroy(renderer.gameObject);
                 Alive = false;
