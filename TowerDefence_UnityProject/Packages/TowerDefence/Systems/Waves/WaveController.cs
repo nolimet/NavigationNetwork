@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -48,16 +49,19 @@ namespace TowerDefence.Systems.Waves
         public async void StartWavePlayBack()
         {
             if (currentWaves is not { Length: > 0 }) return;
-            
+
             while (activeWave < currentWaves.Length)
             {
+                Debug.Log($"Starting wave {activeWave}");
                 activeWaves.Add(PlayWave(currentWaves[activeWave], cancelTokenSource.Token));
                 activeWave++;
+
                 try
                 {
                     await UniTask.WhenAll(activeWaves);
+                    activeWaves.Clear();
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     Debug.LogException(e);
                 }
@@ -67,7 +71,7 @@ namespace TowerDefence.Systems.Waves
         public void ForceStartNextWave()
         {
             if (currentWaves is not { Length: > 0 } || GetWavesLeft() <= 0) return;
-            
+
             activeWaves.Add(PlayWave(currentWaves[activeWave], cancelTokenSource.Token));
             activeWave++;
         }
@@ -100,7 +104,7 @@ namespace TowerDefence.Systems.Waves
                 foreach (var enemySet in waveLookup)
                 {
                     if (!enemySet.time.Any() || enemySet.time.Peek() > t) continue;
-                    
+
                     enemySet.time.Dequeue();
                     enemyWatchers.Add(EnemyWatcherTask(enemySet.group));
                 }
