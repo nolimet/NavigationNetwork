@@ -40,6 +40,60 @@ MonoBehaviour:
       - 1.6
       - 1.7
       - 1.9
+  - enemyGroups:
+    - enemyID: GridWalker
+      pathID: 0
+      entranceId: 0
+      exitId: 0
+      spawnTime:
+      - 0
+      - 0.2
+      - 0.3
+      - 0.5
+      - 0.6
+      - 0.8
+      - 1
+      - 1.2
+      - 1.4
+      - 1.6
+      - 1.7
+      - 1.9
+  - enemyGroups:
+    - enemyID: GridWalker
+      pathID: 0
+      entranceId: 0
+      exitId: 0
+      spawnTime:
+      - 0
+      - 0.2
+      - 0.3
+      - 0.5
+      - 0.6
+      - 0.8
+      - 1
+      - 1.2
+      - 1.4
+      - 1.6
+      - 1.7
+      - 1.9
+  - enemyGroups:
+    - enemyID: GridWalker
+      pathID: 0
+      entranceId: 0
+      exitId: 0
+      spawnTime:
+      - 0
+      - 0.2
+      - 0.3
+      - 0.5
+      - 0.6
+      - 0.8
+      - 1
+      - 1.2
+      - 1.4
+      - 1.6
+      - 1.7
+      - 1.9
   pathdata:
     pathPoints:
     - name: 01 - Entrance
