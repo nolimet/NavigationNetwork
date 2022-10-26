@@ -25,9 +25,11 @@ namespace TowerDefence.Systems.Waves
         private readonly EnemyController enemyController;
         private readonly BindingContext bindingContext = new();
 
-        internal WaveController(EnemyController enemyController, IWorldDataModel worldDataModel)
+        internal WaveController(EnemyController enemyController, IWorldDataModel worldDataModel,
+            IWavePlayStateModel wavePlayStateModel)
         {
             this.enemyController = enemyController;
+            this.wavePlayStateModel = wavePlayStateModel;
             bindingContext.Bind(worldDataModel, x => x.Waves, OnWavesChanged);
         }
 
@@ -40,11 +42,11 @@ namespace TowerDefence.Systems.Waves
             cancelTokenSource?.Dispose();
 
             cancelTokenSource = new CancellationTokenSource();
-            wavePlayStateModel.totalWaves = waves.Length;
+            wavePlayStateModel.totalWaves = waves?.Length ?? 0;
             wavePlayStateModel.activeWave = 0;
         }
 
-        public int GetWavesLeft()
+        private int GetWavesLeft()
         {
             return wavePlayStateModel.activeWave - currentWaves.Length;
         }
