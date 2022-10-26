@@ -55,7 +55,7 @@ namespace TowerDefence.Systems.Waves
         {
             if (currentWaves is not { Length: > 0 }) return;
 
-            while (wavePlayStateModel.activeWave < currentWaves.Length && wavePlayStateModel.autoPlayEnabled)
+            while (wavePlayStateModel.activeWave < currentWaves.Length)
             {
                 Debug.Log($"Starting wave {wavePlayStateModel.activeWave}");
                 activeWaves.Add(PlayWave(currentWaves[wavePlayStateModel.activeWave], cancelTokenSource.Token));
@@ -73,6 +73,9 @@ namespace TowerDefence.Systems.Waves
                 {
                     Debug.LogException(e);
                 }
+
+                if (!wavePlayStateModel.autoPlayEnabled)
+                    break;
             }
 
             wavePlayStateModel.wavesPlaying = wavePlayStateModel.activeWave > 0;
