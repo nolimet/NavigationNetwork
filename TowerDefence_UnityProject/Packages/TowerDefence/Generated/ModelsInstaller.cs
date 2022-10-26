@@ -13,6 +13,7 @@ namespace DataBinding
 					Container.Bind<TowerDefence.Systems.Selection.Models.ISelectionModel>().FromMethod(ctx => ModelFactory.Create<TowerDefence.Systems.Selection.Models.ISelectionModel>()).AsSingle();
 					Container.Bind<TowerDefence.Entities.Towers.Models.ITowerModels>().FromMethod(ctx => ModelFactory.Create<TowerDefence.Entities.Towers.Models.ITowerModels>()).AsSingle();
 					Container.Bind<TowerDefence.UI.Models.IUIContainers>().FromMethod(ctx => ModelFactory.Create<TowerDefence.UI.Models.IUIContainers>()).AsSingle();
+					Container.Bind<TowerDefence.Systems.Waves.Models.IWavePlayStateModel>().FromMethod(ctx => ModelFactory.Create<TowerDefence.Systems.Waves.Models.IWavePlayStateModel>()).AsSingle();
 					Container.Bind<TowerDefence.Systems.WorldLoader.Models.IWorldDataModel>().FromMethod(ctx => ModelFactory.Create<TowerDefence.Systems.WorldLoader.Models.IWorldDataModel>()).AsSingle();
 				}
 	}
