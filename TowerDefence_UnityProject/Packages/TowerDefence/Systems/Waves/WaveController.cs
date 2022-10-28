@@ -48,7 +48,7 @@ namespace TowerDefence.Systems.Waves
 
         private int GetWavesLeft()
         {
-            return wavePlayStateModel.activeWave - currentWaves.Length;
+            return currentWaves.Length - wavePlayStateModel.activeWave;
         }
 
         public async void StartWavePlayBack()
