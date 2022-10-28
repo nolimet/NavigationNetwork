@@ -61,7 +61,7 @@ namespace TowerDefence.Systems.Waves
                 activeWaves.Add(PlayWave(currentWaves[wavePlayStateModel.activeWave], cancelTokenSource.Token));
                 wavePlayStateModel.activeWave++;
 
-                wavePlayStateModel.wavesPlaying = wavePlayStateModel.activeWave > 0;
+                wavePlayStateModel.wavesPlaying = activeWaves.Count > 0;
 
                 try
                 {
@@ -77,7 +77,7 @@ namespace TowerDefence.Systems.Waves
                     break;
             }
 
-            wavePlayStateModel.wavesPlaying = wavePlayStateModel.activeWave > 0;
+            wavePlayStateModel.wavesPlaying = activeWaves.Count > 0;
         }
 
         public void ForceStartNextWave()
