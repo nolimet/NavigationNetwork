@@ -60,7 +60,6 @@ namespace TowerDefence.Systems.Waves
                 Debug.Log($"Starting wave {wavePlayStateModel.activeWave}");
                 activeWaves.Add(PlayWave(currentWaves[wavePlayStateModel.activeWave], cancelTokenSource.Token));
                 wavePlayStateModel.activeWave++;
-                wavePlayStateModel.activeWave++;
 
                 wavePlayStateModel.wavesPlaying = wavePlayStateModel.activeWave > 0;
 
