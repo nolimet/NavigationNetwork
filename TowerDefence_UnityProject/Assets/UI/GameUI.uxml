@@ -1,11 +1,14 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Game.uss?fileID=7433441132597879392&amp;guid=ba430efb674fff649af63bde471c3895&amp;type=3#Game" />
-    <ui:VisualElement name="HUD" class="HUD-Element">
-        <ui:VisualElement name="WaveControls" class="HUD-Element" style="position: absolute; right: 0; width: 200px; height: 90px; top: -90px;">
+    <ui:VisualElement name="HUD" class="HUD-Element" style="flex-direction: row;">
+        <ui:VisualElement name="WaveControls" class="HUD-Element" style="position: absolute; right: 0; width: 200px; height: 120px; top: -120px;">
             <ui:Label text="Wave 3 of 4" display-tooltip-when-elided="true" name="wave_display" class="HUD-Text" style="-unity-text-align: upper-center;" />
-            <ui:Button text="Button" display-tooltip-when-elided="true" name="start_waves" class="HUD-Button HUD-Text" />
-            <ui:Button text="Button" display-tooltip-when-elided="true" name="force_next_wave" class="HUD-Button HUD-Text" />
+            <ui:Toggle label="Auto playback" name="auto_wave_playback" class="HUD-Text" style="margin-left: 10px; margin-right: 10px;" />
+            <ui:Button text="Start Waves" display-tooltip-when-elided="true" name="start_waves" class="HUD-Button HUD-Text" style="margin-left: 10px; margin-right: 10px;" />
+            <ui:Button text="Next Wave" display-tooltip-when-elided="true" name="force_next_wave" class="HUD-Button HUD-Text" style="margin-left: 10px; margin-right: 10px;" />
         </ui:VisualElement>
+        <ui:VisualElement name="places_tower_container" style="height: 100%; width: 100%;" />
+        <ui:VisualElement name="object-stats-display" style="flex-direction: row-reverse; align-items: flex-end; justify-content: center; width: 400px; position: absolute; right: 0; bottom: 0; height: 100%;" />
     </ui:VisualElement>
     <ui:VisualElement name="PopupMenu">
         <ui:VisualElement name="PopupMenu-Container" />
