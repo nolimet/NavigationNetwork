@@ -1,6 +1,7 @@
-﻿using DataBinding.BaseClasses;
+﻿using System.Collections.Generic;
+using DataBinding.BaseClasses;
 using DataBinding.Helpers;
-using System.Collections.Generic;
+using NoUtil.Extentsions;
 
 namespace TowerDefence.UI.Models
 {
@@ -8,5 +9,10 @@ namespace TowerDefence.UI.Models
     public interface IUIContainers : IModelBase
     {
         IList<IUIContainer> Containers { get; }
+
+        public bool TryGetContainerWithId(string id, out IUIContainer uiContainer)
+        {
+            return Containers.TryFind(x => x.Name == id, out uiContainer);
+        }
     }
 }
