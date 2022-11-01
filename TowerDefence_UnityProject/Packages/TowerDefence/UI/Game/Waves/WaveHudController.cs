@@ -1,9 +1,9 @@
 ﻿using DataBinding;
-using TMPro;
 using TowerDefence.Systems.Waves;
 using TowerDefence.Systems.Waves.Models;
+using TowerDefence.UI.Models;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 using Zenject;
 
 namespace TowerDefence.UI.Game.Waves
@@ -12,19 +12,37 @@ namespace TowerDefence.UI.Game.Waves
     {
         private readonly BindingContext bindingContext = new();
 
-        [SerializeField] private Button startWavesButton;
-        [SerializeField] private Button forceNextWaveButton;
-        [SerializeField] private Toggle autoPlayToggle;
-        [SerializeField] private TextMeshProUGUI waveCounter;
+        [SerializeField] private string startWaveButtonId;
+        [SerializeField] private string forceNextWaveButtonId;
+        [SerializeField] private string autoPlayToggleId;
+        [SerializeField] private string waveCounterId;
+        [Space] [SerializeField] private string uiContainerId;
 
         [Inject] private readonly IWavePlayStateModel wavePlayStateModel;
         [Inject] private readonly WaveController waveController;
+        [Inject] private readonly IUIContainers uiContainers;
+
+        private UIDocumentContainer documentContainer;
+        private Button startWavesButton;
+        private Button forceNextWaveButton;
+        private Toggle autoPlayToggle;
+        private TextField waveCounter;
 
         void Awake()
         {
-            startWavesButton.onClick.AddListener(StartWaves);
-            forceNextWaveButton.onClick.AddListener(ForceNextWave);
-            autoPlayToggle.onValueChanged.AddListener(OnAutoPlayToggleChanged);
+            if (uiContainers.TryGetContainerWithId(uiContainerId, out var uiContainer) &&
+                uiContainer is UIDocumentContainer uiDocumentContainer)
+            {
+                documentContainer = uiDocumentContainer;
+                var root = uiDocumentContainer.Document.rootVisualElement;
+                startWavesButton = root.Q<Button>(startWaveButtonId);
+                forceNextWaveButton = root.Q<Button>(forceNextWaveButtonId);
+                autoPlayToggle = root.Q<Toggle>(autoPlayToggleId);
+                waveCounter = root.Q<TextField>(waveCounterId);
+            }
+
+            startWavesButton.clicked += StartWaves;
+            forceNextWaveButton.clicked += ForceNextWave;
 
             bindingContext.Bind(wavePlayStateModel, m => m.wavesPlaying, OnWavesPlayingChanged);
             bindingContext.Bind(wavePlayStateModel, m => m.autoPlayEnabled, OnAutoPlayChanged);
@@ -34,12 +52,13 @@ namespace TowerDefence.UI.Game.Waves
 
         private void OnWaveCountChanged(int _)
         {
-            waveCounter.text = $"Wave {wavePlayStateModel.activeWave} of {wavePlayStateModel.totalWaves}";
+            waveCounter.SetValueWithoutNotify(
+                $"Wave {wavePlayStateModel.activeWave} of {wavePlayStateModel.totalWaves}");
         }
 
         private void OnAutoPlayChanged(bool enabled)
         {
-            autoPlayToggle.SetIsOnWithoutNotify(enabled);
+            autoPlayToggle.value = enabled;
         }
 
         private void OnAutoPlayToggleChanged(bool isOn)
@@ -49,8 +68,8 @@ namespace TowerDefence.UI.Game.Waves
 
         private void OnWavesPlayingChanged(bool playing)
         {
-            startWavesButton.interactable = !playing;
-            forceNextWaveButton.interactable = playing;
+            startWavesButton.SetEnabled(!playing);
+            forceNextWaveButton.SetEnabled(playing);
         }
 
         private void ForceNextWave()
