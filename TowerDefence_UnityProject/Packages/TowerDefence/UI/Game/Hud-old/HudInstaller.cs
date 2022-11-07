@@ -4,7 +4,7 @@ using TowerDefence.UI.Game.Hud.SubControllers;
 using UnityEngine;
 using Zenject;
 
-namespace TowerDefence.UI.Game.Hud
+namespace TowerDefence.UI.Game.Hud_old
 {
     public sealed class HudInstaller : MonoInstaller
     {

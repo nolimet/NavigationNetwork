@@ -1,8 +1,8 @@
-﻿using DataBinding;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DataBinding;
+using Newtonsoft.Json;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Enemies;
 using TowerDefence.Entities.Towers.Components.Interfaces;
@@ -16,9 +16,9 @@ namespace TowerDefence.Entities.Towers.Components.Damage
     public abstract class DamageComponentBase : IDamageComponent, IInitializable
     {
         public abstract event Action<IEnumerable<IEnemyObject>> AppliedDamageToTargets;
-        
-        protected readonly BindingContext bindingContext  = new(true);
-        
+
+        protected readonly BindingContext bindingContext = new();
+
         protected ITowerModel model { get; private set; }
         public abstract double DamagePerSecond { get; }
         protected ITargetFindComponent targetFindComponent { get; private set; } = NullTargetFinder.Instance;

@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace TowerDefence.UI.Game.Hud
+namespace TowerDefence.UI.Game.Hud_old.Base
 {
     public class BaseHudValueItem : MonoBehaviour
     {

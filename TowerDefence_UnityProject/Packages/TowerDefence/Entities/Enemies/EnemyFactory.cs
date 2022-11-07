@@ -1,6 +1,6 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Linq;
+using Cysharp.Threading.Tasks;
 using DataBinding;
-using System.Linq;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Enemies.Components.Interfaces;
 using TowerDefence.Entities.Enemies.Models;
@@ -39,7 +39,7 @@ namespace TowerDefence.Entities.Enemies
             var enemyBase = enemyConfiguration.EnemyBaseObjects[configurationData.BaseId];
             var componentConfiguration = configurationData.ComponentConfiguration;
 
-            var enemyGameObject = await enemyBase.InstantiateAsync(worldContainer.EnemyContainer, false) as GameObject;
+            var enemyGameObject = await enemyBase.InstantiateAsync(worldContainer.EnemyContainer) as GameObject;
 
             var enemyModel = ModelFactory.Create<IEnemyModel>();
             var enemyObject = enemyGameObject.GetComponent<EnemyObject>();
@@ -50,6 +50,7 @@ namespace TowerDefence.Entities.Enemies
             enemyObject.Setup(enemyModel, outHealthAction);
 
             return enemyObject;
+
             async UniTask<IComponent> InitHandler(IComponent component)
             {
                 if (component is IInitializable initializable)
@@ -61,6 +62,7 @@ namespace TowerDefence.Entities.Enemies
                 {
                     await asyncInitializer.AsyncPostInit(enemyObject, enemyModel);
                 }
+
                 return component;
             }
         }

@@ -2,11 +2,12 @@
 using UnityEngine;
 using Zenject;
 
-namespace TowerDefence.UI.Game.Hud.Drawers.TowerPlace
+namespace TowerDefence.UI.Game.Hud_old.Drawers.TowerPlace
 {
     internal sealed class TowerPlaceButton : MonoBehaviour
     {
         public delegate void CallbackDelegate(string towerId);
+
         private CallbackDelegate callback;
         private string towerId;
         [SerializeField] private TextMeshProUGUI label;

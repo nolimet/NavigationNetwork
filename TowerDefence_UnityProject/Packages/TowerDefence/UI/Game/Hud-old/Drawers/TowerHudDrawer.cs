@@ -2,10 +2,11 @@
 using TowerDefence.Entities.Towers.Components.BaseComponents;
 using TowerDefence.Entities.Towers.Components.Interfaces;
 using TowerDefence.Systems.Selection;
+using TowerDefence.UI.Game.Hud_old.Base;
 using TowerDefence.Utility;
 using UnityEngine;
 
-namespace TowerDefence.UI.Game.Hud.Drawers
+namespace TowerDefence.UI.Game.Hud_old.Drawers
 {
     internal sealed class TowerHudDrawer : HudDrawerBase<ITowerObject>
     {

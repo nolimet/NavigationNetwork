@@ -4,11 +4,11 @@ using TowerDefence.Systems.Selection.Models;
 using TowerDefence.UI.Game.Hud.Drawers.TowerPlace;
 using TowerDefence.World.Grid;
 
-namespace TowerDefence.UI.Game.Hud.SubControllers
+namespace TowerDefence.UI.Game.Hud_old.SubControllers
 {
     internal sealed class TowerPlaceController
     {
-        private readonly BindingContext bindingContext = new(true);
+        private readonly BindingContext bindingContext = new();
         private readonly TowerService towerService;
         private readonly ISelectionModel selectionModel;
         private readonly GridWorld gridWorld;

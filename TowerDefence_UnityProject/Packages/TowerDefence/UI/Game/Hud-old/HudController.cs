@@ -8,7 +8,7 @@ using TowerDefence.UI.Game.Hud.Drawers;
 using UnityEngine;
 using Zenject;
 
-namespace TowerDefence.UI.Game.Hud
+namespace TowerDefence.UI.Game.Hud_old
 {
     public sealed class HudController : MonoBehaviour
     {

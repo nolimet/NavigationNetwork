@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Enemies;
 using TowerDefence.Entities.Towers.Components.Interfaces;
@@ -17,7 +17,7 @@ namespace TowerDefence.Entities.Towers.Components.Damage
         [JsonProperty] private readonly double damage = 5;
         [JsonProperty] private readonly float damageInterval = 1;
 
-        private float intervalTimer = 0f;
+        private float intervalTimer;
         public override event Action<IEnumerable<IEnemyObject>> AppliedDamageToTargets;
         public override double DamagePerSecond => damage / damageInterval;
 
@@ -41,6 +41,7 @@ namespace TowerDefence.Entities.Towers.Components.Damage
                 {
                     target.Damage(damage);
                 }
+
                 AppliedDamageToTargets?.Invoke(targetFindComponent.FoundTargets);
             }
         }
