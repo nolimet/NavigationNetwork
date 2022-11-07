@@ -1,4 +1,6 @@
-﻿using Zenject;
+﻿using TowerDefence.UI.Game.Hud.Drawers;
+using TowerDefence.UI.Game.Waves;
+using Zenject;
 
 namespace TowerDefence.UI.Game.Hud
 {
@@ -6,7 +8,8 @@ namespace TowerDefence.UI.Game.Hud
     {
         public override void InstallBindings()
         {
-            base.InstallBindings();
+            Container.Bind<TowerPlaceController>().AsSingle();
+            Container.Bind<WaveHudController>().AsSingle();
         }
     }
 }
