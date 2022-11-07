@@ -1,4 +1,6 @@
-﻿using DataBinding;
+﻿using System.Collections.Generic;
+using DataBinding;
+using NoUtil.Extentsions;
 using TowerDefence.Systems.Waves;
 using TowerDefence.Systems.Waves.Models;
 using TowerDefence.UI.Models;
@@ -22,54 +24,72 @@ namespace TowerDefence.UI.Game.Waves
         [Inject] private readonly WaveController waveController;
         [Inject] private readonly IUIContainers uiContainers;
 
-        private UIDocumentContainer documentContainer;
         private Button startWavesButton;
         private Button forceNextWaveButton;
         private Toggle autoPlayToggle;
-        private TextField waveCounter;
+        private Label waveCounter;
 
-        void Awake()
+        private void Awake()
         {
-            if (uiContainers.TryGetContainerWithId(uiContainerId, out var uiContainer) &&
-                uiContainer is UIDocumentContainer uiDocumentContainer)
-            {
-                documentContainer = uiDocumentContainer;
-                var root = uiDocumentContainer.Document.rootVisualElement;
-                startWavesButton = root.Q<Button>(startWaveButtonId);
-                forceNextWaveButton = root.Q<Button>(forceNextWaveButtonId);
-                autoPlayToggle = root.Q<Toggle>(autoPlayToggleId);
-                waveCounter = root.Q<TextField>(waveCounterId);
-            }
-
-            startWavesButton.clicked += StartWaves;
-            forceNextWaveButton.clicked += ForceNextWave;
-
             bindingContext.Bind(wavePlayStateModel, m => m.wavesPlaying, OnWavesPlayingChanged);
             bindingContext.Bind(wavePlayStateModel, m => m.autoPlayEnabled, OnAutoPlayChanged);
             bindingContext.Bind(wavePlayStateModel, x => x.activeWave, OnWaveCountChanged);
             bindingContext.Bind(wavePlayStateModel, m => m.totalWaves, OnWaveCountChanged);
+
+            bindingContext.Bind(uiContainers, m => m.Containers, OnUIContainersChanged);
+        }
+
+        private void OnUIContainersChanged(IList<IUIContainer> containers)
+        {
+            if (startWavesButton is not null)
+            {
+                startWavesButton.clicked -= StartWaves;
+            }
+
+            if (forceNextWaveButton is not null)
+            {
+                forceNextWaveButton.clicked -= ForceNextWave;
+            }
+
+            autoPlayToggle?.UnregisterValueChangedCallback(OnAutoPlayToggleChanged);
+
+            if (!containers.TryFind(x => x.Name == uiContainerId, out var uiContainer) || uiContainer is not UIDocumentContainer uiDocumentContainer)
+                return;
+
+            var root = uiDocumentContainer.Document.rootVisualElement;
+
+            startWavesButton = root.Q<Button>(startWaveButtonId);
+            forceNextWaveButton = root.Q<Button>(forceNextWaveButtonId);
+            autoPlayToggle = root.Q<Toggle>(autoPlayToggleId);
+            waveCounter = root.Q<Label>(waveCounterId);
+
+            startWavesButton.clicked += StartWaves;
+            forceNextWaveButton.clicked += ForceNextWave;
+            autoPlayToggle.RegisterValueChangedCallback(OnAutoPlayToggleChanged);
+
+            OnWavesPlayingChanged(wavePlayStateModel.wavesPlaying);
         }
 
         private void OnWaveCountChanged(int _)
         {
-            waveCounter.SetValueWithoutNotify(
-                $"Wave {wavePlayStateModel.activeWave} of {wavePlayStateModel.totalWaves}");
+            if (waveCounter is not null)
+                waveCounter.text = ($"Wave {wavePlayStateModel.activeWave} of {wavePlayStateModel.totalWaves}");
         }
 
         private void OnAutoPlayChanged(bool enabled)
         {
-            autoPlayToggle.value = enabled;
+            autoPlayToggle?.SetValueWithoutNotify(enabled);
         }
 
-        private void OnAutoPlayToggleChanged(bool isOn)
+        private void OnAutoPlayToggleChanged(ChangeEvent<bool> evt)
         {
-            wavePlayStateModel.autoPlayEnabled = isOn;
+            wavePlayStateModel.autoPlayEnabled = evt.newValue;
         }
 
         private void OnWavesPlayingChanged(bool playing)
         {
-            startWavesButton.SetEnabled(!playing);
-            forceNextWaveButton.SetEnabled(playing);
+            startWavesButton?.SetEnabled(!playing);
+            forceNextWaveButton?.SetEnabled(playing);
         }
 
         private void ForceNextWave()

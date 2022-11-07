@@ -535,8 +535,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0c8a084d49449bea6e6668d2fd1ec46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startWaveButtonId: 
-  forceNextWaveButtonId: 
-  autoPlayToggleId: 
-  waveCounterId: 
-  uiContainerId: 
+  startWaveButtonId: start_waves
+  forceNextWaveButtonId: force_next_wave
+  autoPlayToggleId: auto_wave_playback
+  waveCounterId: wave_display
+  uiContainerId: game_ui
