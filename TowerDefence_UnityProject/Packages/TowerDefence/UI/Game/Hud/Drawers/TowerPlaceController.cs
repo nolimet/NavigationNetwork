@@ -21,7 +21,7 @@ namespace TowerDefence.UI.Game.Hud.Drawers
         public TowerPlaceController(IUIContainers uiContainers, ISelectionModel selectionModel)
         {
             bindingContext.Bind(uiContainers, x => x.Containers, OnUIContainersChanged);
-            bindingContext.Bind(selectionModel, x => x.Selection, OnSelectionChanged;
+            bindingContext.Bind(selectionModel, x => x.Selection, OnSelectionChanged);
         }
 
         private void OnSelectionChanged(IList<ISelectable> selection)
