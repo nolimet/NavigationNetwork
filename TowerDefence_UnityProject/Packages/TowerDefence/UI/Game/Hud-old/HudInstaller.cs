@@ -1,6 +1,6 @@
-﻿using TowerDefence.UI.Game.Hud.Drawers;
-using TowerDefence.UI.Game.Hud.Drawers.TowerPlace;
-using TowerDefence.UI.Game.Hud.SubControllers;
+﻿using TowerDefence.UI.Game.Hud_old.Drawers;
+using TowerDefence.UI.Game.Hud_old.Drawers.TowerPlace;
+using TowerDefence.UI.Game.Hud_old.SubControllers;
 using UnityEngine;
 using Zenject;
 

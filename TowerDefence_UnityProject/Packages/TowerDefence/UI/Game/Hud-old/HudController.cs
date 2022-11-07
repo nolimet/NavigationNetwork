@@ -4,7 +4,7 @@ using DataBinding;
 using TowerDefence.Entities.Towers.Models;
 using TowerDefence.Systems.Selection;
 using TowerDefence.Systems.Selection.Models;
-using TowerDefence.UI.Game.Hud.Drawers;
+using TowerDefence.UI.Game.Hud_old.Drawers;
 using UnityEngine;
 using Zenject;
 
