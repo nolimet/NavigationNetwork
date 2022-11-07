@@ -14,11 +14,11 @@ namespace TowerDefence.UI.Game.Waves
     {
         private readonly BindingContext bindingContext = new();
 
-        [SerializeField] private string startWaveButtonId;
-        [SerializeField] private string forceNextWaveButtonId;
-        [SerializeField] private string autoPlayToggleId;
-        [SerializeField] private string waveCounterId;
-        [Space] [SerializeField] private string uiContainerId;
+        private const string startWaveButtonId = "start_waves";
+        private const string forceNextWaveButtonId = "force_next_wave";
+        private const string autoPlayToggleId = "auto_wave_playback";
+        private const string waveCounterId = "wave_display";
+        private const string uiContainerId = "game_ui";
 
         [Inject] private readonly IWavePlayStateModel wavePlayStateModel;
         [Inject] private readonly WaveController waveController;
@@ -29,7 +29,7 @@ namespace TowerDefence.UI.Game.Waves
         private Toggle autoPlayToggle;
         private Label waveCounter;
 
-        private void Awake()
+        public WaveHudController()
         {
             bindingContext.Bind(wavePlayStateModel, m => m.wavesPlaying, OnWavesPlayingChanged);
             bindingContext.Bind(wavePlayStateModel, m => m.autoPlayEnabled, OnAutoPlayChanged);
