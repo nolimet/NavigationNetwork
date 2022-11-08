@@ -4,13 +4,11 @@ using NoUtil.Extentsions;
 using TowerDefence.Systems.Waves;
 using TowerDefence.Systems.Waves.Models;
 using TowerDefence.UI.Models;
-using UnityEngine;
 using UnityEngine.UIElements;
-using Zenject;
 
 namespace TowerDefence.UI.Game.Waves
 {
-    public class WaveHudController : MonoBehaviour
+    public class WaveHudController
     {
         private readonly BindingContext bindingContext = new();
 
@@ -20,17 +18,19 @@ namespace TowerDefence.UI.Game.Waves
         private const string waveCounterId = "wave_display";
         private const string uiContainerId = "game_ui";
 
-        [Inject] private readonly IWavePlayStateModel wavePlayStateModel;
-        [Inject] private readonly WaveController waveController;
-        [Inject] private readonly IUIContainers uiContainers;
+        private readonly IWavePlayStateModel wavePlayStateModel;
+        private readonly WaveController waveController;
 
         private Button startWavesButton;
         private Button forceNextWaveButton;
         private Toggle autoPlayToggle;
         private Label waveCounter;
 
-        public WaveHudController()
+        public WaveHudController(IWavePlayStateModel wavePlayStateModel, WaveController waveController, IUIContainers uiContainers)
         {
+            this.wavePlayStateModel = wavePlayStateModel;
+            this.waveController = waveController;
+
             bindingContext.Bind(wavePlayStateModel, m => m.wavesPlaying, OnWavesPlayingChanged);
             bindingContext.Bind(wavePlayStateModel, m => m.autoPlayEnabled, OnAutoPlayChanged);
             bindingContext.Bind(wavePlayStateModel, x => x.activeWave, OnWaveCountChanged);
