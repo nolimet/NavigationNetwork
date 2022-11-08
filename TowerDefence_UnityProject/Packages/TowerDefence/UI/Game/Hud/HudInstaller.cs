@@ -4,12 +4,12 @@ using Zenject;
 
 namespace TowerDefence.UI.Game.Hud
 {
-    public class HudInstaller : MonoInstaller
+    public class HudInstaller : Installer
     {
         public override void InstallBindings()
         {
-            Container.Bind<TowerPlaceController>().AsSingle();
-            Container.Bind<WaveHudController>().AsSingle();
+            Container.Bind<TowerPlaceController>().AsSingle().NonLazy();
+            Container.Bind<WaveHudController>().AsSingle().NonLazy();
         }
     }
 }
