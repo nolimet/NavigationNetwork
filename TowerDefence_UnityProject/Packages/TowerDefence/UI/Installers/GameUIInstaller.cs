@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using TowerDefence.UI.Game.Health;
+﻿using TowerDefence.UI.Game.Health;
+using TowerDefence.UI.Game.Hud;
 using TowerDefence.UI.Game.Tower.Range;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -22,14 +22,7 @@ namespace TowerDefence.UI.Installers
 
             Container.BindInterfacesAndSelfTo<TowerRangeDrawerController>().AsSingle().WithArguments(towerRangeDrawer).NonLazy();
 
-            InstallAsync();
-        }
-
-        private async void InstallAsync()
-        {
-            await Task.Delay(100);
-            var hudPrefab = await this.hudControllerPrefab.LoadAssetAsync<GameObject>() as GameObject;
-            Container.InstantiatePrefab(hudPrefab, Container.Resolve<UIContainer>().ScreenUIContainer);
+            Container.Install<HudInstaller>();
         }
     }
 }
