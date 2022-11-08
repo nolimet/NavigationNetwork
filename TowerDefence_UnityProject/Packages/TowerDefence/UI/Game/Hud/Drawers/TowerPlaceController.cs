@@ -26,6 +26,8 @@ namespace TowerDefence.UI.Game.Hud.Drawers
 
         private void OnSelectionChanged(IList<ISelectable> selection)
         {
+            if (towerPlaceContainer is null) return;
+
             if (selection.Count == 1 && selection.TryFind(x => x is SelectableCell, out var s) && s is SelectableCell cell && !cell.GridCell.HasStructure)
             {
                 towerPlaceContainer.visible = true;
