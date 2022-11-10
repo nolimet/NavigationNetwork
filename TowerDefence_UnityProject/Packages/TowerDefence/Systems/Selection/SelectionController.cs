@@ -11,7 +11,7 @@ namespace TowerDefence.Systems.Selection
     {
         private readonly ISelectionModel selectionModel;
         private readonly SelectionInputActions selectionInput;
-        private readonly List<ISelectable> selectionBuffer = new List<ISelectable>();
+        private readonly List<ISelectable> selectionBuffer = new();
 
         public SelectionController(ISelectionModel selectionModel, SelectionInputActions selectionInput)
         {
