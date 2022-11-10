@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TowerDefence.Input;
 using TowerDefence.Systems.Selection.Models;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace TowerDefence.Systems.Selection
         private readonly ISelectionModel selectionModel;
         private readonly SelectionInputActions selectionInput;
         private readonly List<ISelectable> selectionBuffer = new();
+        private readonly Collider2D[] results = new Collider2D[20];
 
         public SelectionController(ISelectionModel selectionModel, SelectionInputActions selectionInput)
         {
@@ -50,7 +52,14 @@ namespace TowerDefence.Systems.Selection
 
         private void OnClickPreformed(InputAction.CallbackContext obj)
         {
-            if (!EventSystem.current.IsPointerOverGameObject())
+            var pointerData = new PointerEventData(EventSystem.current)
+            {
+                position = selectionInput.Main.MousePosition.ReadValue<Vector2>()
+            };
+
+            var raycastResults = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerData, raycastResults);
+            if (!raycastResults.Any())
             {
                 SelectObject(selectionInput.Main.MousePosition.ReadValue<Vector2>());
             }
@@ -58,18 +67,20 @@ namespace TowerDefence.Systems.Selection
 
         private void SelectObject(Vector2 cursorPosition)
         {
-            var results = Physics2D.OverlapPointAll(Camera.main.ScreenToWorldPoint(cursorPosition));
+            if (Camera.main == null) return;
+
+            var size = Physics2D.OverlapPointNonAlloc(Camera.main.ScreenToWorldPoint(cursorPosition), results);
 
             selectionModel.Selection.Clear();
-            if (results != null && results.Length > 0)
-            {
-                foreach (var result in results)
-                {
-                    result.GetComponentsInChildren(true, selectionBuffer);
+            if (size == 0) return;
 
-                    foreach (var item in selectionBuffer)
-                        selectionModel.Selection.Add(item);
-                }
+            for (int i = 0; i < size; i++)
+            {
+                var result = results[i];
+                result.GetComponentsInChildren(true, selectionBuffer);
+
+                foreach (var item in selectionBuffer)
+                    selectionModel.Selection.Add(item);
             }
         }
 
