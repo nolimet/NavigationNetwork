@@ -61,6 +61,7 @@ namespace TowerDefence.UI.Game.Hud.Controllers
 
             if (uiContainers.TryFind(x => x.Name == ContainerId, out var container) && container is UIDocumentContainer documentContainer)
             {
+                activeContainer = container;
                 var root = documentContainer.Document.rootVisualElement;
                 towerPlaceContainer = root.Q(TowerPlaceContainerId);
 
@@ -79,12 +80,7 @@ namespace TowerDefence.UI.Game.Hud.Controllers
 
             void UnBind()
             {
-                if (towerPlaceContainer is null) return;
-
-                foreach (var child in towerPlaceContainer.Children().Where(x => x is TowerPlaceButton))
-                {
-                    child.RemoveFromHierarchy();
-                }
+                towerPlaceContainer?.Clear();
             }
         }
 
