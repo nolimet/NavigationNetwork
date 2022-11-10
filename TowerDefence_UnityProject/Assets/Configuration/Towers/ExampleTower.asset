@@ -16,33 +16,37 @@ MonoBehaviour:
   - type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings
     data: '{"Name":"Example","IsSolid":0,"Range":4.0}'
     SerializedComponent:
-      rid: 4770820099062104616
+      rid: 2282215849081438273
   - type: TowerDefence.Entities.Towers.Components.TargetFinders.NearestTargetFinder
     data: '{}'
     SerializedComponent:
-      rid: 4770820099062104620
+      rid: 2282215849081438274
   - type: TowerDefence.Entities.Towers.Components.Damage.DamageAllTargets
     data: '{"damage":5.0,"damageInterval":0.15}'
     SerializedComponent:
-      rid: 4770820099062104621
+      rid: 2282215849081438275
   - type: TowerDefence.Entities.Towers.Components.AttackVisualizers.LineAttackVisualizer
     data: '{"attackVisual":"d88178ac40daaec49a8f8225eabffbb9","decayDuration":0.3,"attackColor":{"r":0.74133,"g":1.0,"b":0.0,"a":1.0}}'
     SerializedComponent:
-      rid: 4770820099062104622
+      rid: 2282215849081438276
+  - type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings
+    data: '{"towerSprite":"a8644695a65e3c54c8a39b88ffd1b5e8"}'
+    SerializedComponent:
+      rid: 2282215849081438277
   type: 1
   references:
     version: 2
     RefIds:
-    - rid: 4770820099062104616
+    - rid: 2282215849081438273
       type: {class: TowerSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
-    - rid: 4770820099062104620
+    - rid: 2282215849081438274
       type: {class: NearestTargetFinder, ns: TowerDefence.Entities.Towers.Components.TargetFinders,
         asm: TowerDefence}
-    - rid: 4770820099062104621
+    - rid: 2282215849081438275
       type: {class: DamageAllTargets, ns: TowerDefence.Entities.Towers.Components.Damage,
         asm: TowerDefence}
-    - rid: 4770820099062104622
+    - rid: 2282215849081438276
       type: {class: LineAttackVisualizer, ns: TowerDefence.Entities.Towers.Components.AttackVisualizers,
         asm: TowerDefence}
       data:
@@ -51,3 +55,13 @@ MonoBehaviour:
           m_SubObjectName: 
           m_SubObjectType: 
           m_EditorAssetChanged: 0
+    - rid: 2282215849081438277
+      type: {class: TowerVisualSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
+        asm: TowerDefence}
+      data:
+        towerSprite:
+          m_AssetGUID: a8644695a65e3c54c8a39b88ffd1b5e8
+          m_SubObjectName: ExampleTower
+          m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+          m_EditorAssetChanged: 1
