@@ -16,7 +16,7 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
     internal sealed class LevelDisplayController : IDisposable
     {
         private readonly IWorldDataModel worldDataModel;
-        private readonly BindingContext bindingContext = new(true);
+        private readonly BindingContext bindingContext = new();
         private UIDocumentContainer documentContainer;
         private VisualElement levelsContainer;
 
@@ -49,7 +49,9 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
             var levels = LevelMetadata.LoadLevels();
 
             var visualRoot = documentContainer.Document.rootVisualElement;
-            levelsContainer = visualRoot.Q<ListView>("Levels").Q("unity-content-container");
+            if (visualRoot is null) return;
+
+            levelsContainer = visualRoot.Q<ScrollView>("Levels")?.contentContainer; //.Q("unity-content-container");
 
             if (levelsContainer is null) throw new NullReferenceException();
             foreach (var level in levels)
@@ -91,6 +93,7 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
             {
                 x.SetEnabled(x.CallbackValue != relativePath);
             }
+
             loadLevelButton.SetEnabled(true);
         }
 
