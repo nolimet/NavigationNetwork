@@ -48,6 +48,8 @@ namespace TowerDefence.Systems.Selection
         {
             selectionModel.DragEndPosition = selectionInput.Main.MousePosition.ReadValue<Vector2>();
             selectionModel.Dragging = false;
+
+            SelectObject(selectionModel.DragStartPosition, selectionModel.DragEndPosition);
         }
 
         private void OnClickPreformed(InputAction.CallbackContext obj)
@@ -69,12 +71,12 @@ namespace TowerDefence.Systems.Selection
         {
             if (Camera.main == null) return;
 
-            var size = Physics2D.OverlapPointNonAlloc(Camera.main.ScreenToWorldPoint(cursorPosition), results);
+            var hitCount = Physics2D.OverlapPointNonAlloc(Camera.main.ScreenToWorldPoint(cursorPosition), results);
 
             selectionModel.Selection.Clear();
-            if (size == 0) return;
+            if (hitCount == 0) return;
 
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < hitCount; i++)
             {
                 var result = results[i];
                 result.GetComponentsInChildren(true, selectionBuffer);
@@ -86,6 +88,23 @@ namespace TowerDefence.Systems.Selection
 
         private void SelectObject(Vector2 corner1, Vector2 corner2)
         {
+            var max = Vector2.Max(corner1, corner2);
+            var min = Vector2.Min(corner1, corner2);
+
+            var size = max - min;
+            var center = min + size / 2f;
+
+            var hitCount = Physics2D.OverlapBoxNonAlloc(center, size, 0, results);
+            if (hitCount == 0) return;
+
+            for (int i = 0; i < hitCount; i++)
+            {
+                var result = results[i];
+                result.GetComponentsInChildren(true, selectionBuffer);
+
+                foreach (var item in selectionBuffer)
+                    selectionModel.Selection.Add(item);
+            }
         }
     }
 }
