@@ -64,13 +64,15 @@ namespace TowerDefence.UI.Game.Hud.Drawers
                 var root = documentContainer.Document.rootVisualElement;
                 towerPlaceContainer = root.Q(towerPlaceContainerId);
 
-                var towers = towerConfigurationData.Towers.Keys;
-                foreach (var towerId in towers)
+                var towers = towerConfigurationData.Towers;
+                foreach (var (id, tower) in towers)
                 {
-                    var towerButton = new TowerPlaceButton(towerId);
+                    var towerButton = new TowerPlaceButton(id)
+                    {
+                        text = tower.Id
+                    };
                     towerButton.OnCallback += OnTowerPlaceButtonClicked;
-                    towerButton.AddToClassList("HUD-Button");
-                    towerButton.AddToClassList("HUD-Text");
+                    towerButton.AddToClassList("HUD-TowerButton");
                     towerPlaceContainer.Add(towerButton);
                 }
             }
