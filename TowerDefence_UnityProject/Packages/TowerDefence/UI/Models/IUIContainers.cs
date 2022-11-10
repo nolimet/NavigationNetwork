@@ -14,5 +14,17 @@ namespace TowerDefence.UI.Models
         {
             return Containers.TryFind(x => x.Name == id, out uiContainer);
         }
+
+        public bool TryGetContainer<T>(string id, out T resultContainer) where T : IUIContainer
+        {
+            if (Containers.TryFind(x => x.Name == id, out var uiContainer) && uiContainer is T container)
+            {
+                resultContainer = container;
+                return true;
+            }
+
+            resultContainer = default;
+            return false;
+        }
     }
 }
