@@ -6,17 +6,17 @@ using TowerDefence.Systems.Waves.Models;
 using TowerDefence.UI.Models;
 using UnityEngine.UIElements;
 
-namespace TowerDefence.UI.Game.Waves
+namespace TowerDefence.UI.Game.Hud.Controllers
 {
     public class WaveHudController
     {
         private readonly BindingContext bindingContext = new();
 
-        private const string startWaveButtonId = "start_waves";
-        private const string forceNextWaveButtonId = "force_next_wave";
-        private const string autoPlayToggleId = "auto_wave_playback";
-        private const string waveCounterId = "wave_display";
-        private const string uiContainerId = "game_ui";
+        private const string StartWaveButtonId = "start_waves";
+        private const string ForceNextWaveButtonId = "force_next_wave";
+        private const string AutoPlayToggleId = "auto_wave_playback";
+        private const string WaveCounterId = "wave_display";
+        private const string UIContainerId = "GameUI-HUD";
 
         private readonly IWavePlayStateModel wavePlayStateModel;
         private readonly WaveController waveController;
@@ -53,15 +53,15 @@ namespace TowerDefence.UI.Game.Waves
 
             autoPlayToggle?.UnregisterValueChangedCallback(OnAutoPlayToggleChanged);
 
-            if (!containers.TryFind(x => x.Name == uiContainerId, out var uiContainer) || uiContainer is not UIDocumentContainer uiDocumentContainer)
+            if (!containers.TryFind(x => x.Name == UIContainerId, out var uiContainer) || uiContainer is not UIDocumentContainer uiDocumentContainer)
                 return;
 
             var root = uiDocumentContainer.Document.rootVisualElement;
 
-            startWavesButton = root.Q<Button>(startWaveButtonId);
-            forceNextWaveButton = root.Q<Button>(forceNextWaveButtonId);
-            autoPlayToggle = root.Q<Toggle>(autoPlayToggleId);
-            waveCounter = root.Q<Label>(waveCounterId);
+            startWavesButton = root.Q<Button>(StartWaveButtonId);
+            forceNextWaveButton = root.Q<Button>(ForceNextWaveButtonId);
+            autoPlayToggle = root.Q<Toggle>(AutoPlayToggleId);
+            waveCounter = root.Q<Label>(WaveCounterId);
 
             startWavesButton.clicked += StartWaves;
             forceNextWaveButton.clicked += ForceNextWave;

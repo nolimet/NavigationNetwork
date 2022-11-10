@@ -11,19 +11,19 @@ using TowerDefence.UI.Models;
 using TowerDefence.World.Grid;
 using UnityEngine.UIElements;
 
-namespace TowerDefence.UI.Game.Hud.Drawers
+namespace TowerDefence.UI.Game.Hud.Controllers
 {
     public class TowerPlaceController
     {
-        private const string containerId = "game_ui";
-        private const string towerPlaceContainerId = "places_tower_container";
+        private const string ContainerId = "GameUI-HUD";
+        private const string TowerPlaceContainerId = "places_tower_container";
 
         private readonly BindingContext bindingContext = new();
         private readonly TowerConfigurationData towerConfigurationData;
         private readonly TowerService towerService;
+        private readonly ISelectionModel selectionModel;
 
         private IUIContainer activeContainer;
-        private ISelectionModel selectionModel;
         private VisualElement towerPlaceContainer;
 
         public TowerPlaceController(IUIContainers uiContainers, ISelectionModel selectionModel, TowerService towerService, TowerConfigurationData towerConfigurationData)
@@ -59,10 +59,10 @@ namespace TowerDefence.UI.Game.Hud.Drawers
                 UnBind();
             }
 
-            if (uiContainers.TryFind(x => x.Name == containerId, out var container) && container is UIDocumentContainer documentContainer)
+            if (uiContainers.TryFind(x => x.Name == ContainerId, out var container) && container is UIDocumentContainer documentContainer)
             {
                 var root = documentContainer.Document.rootVisualElement;
-                towerPlaceContainer = root.Q(towerPlaceContainerId);
+                towerPlaceContainer = root.Q(TowerPlaceContainerId);
 
                 var towers = towerConfigurationData.Towers;
                 foreach (var (id, tower) in towers)
