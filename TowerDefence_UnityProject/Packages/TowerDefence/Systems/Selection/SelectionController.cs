@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Input;
 using TowerDefence.Systems.Selection.Models;
@@ -88,6 +88,12 @@ namespace TowerDefence.Systems.Selection
 
         private void SelectObject(Vector2 corner1, Vector2 corner2)
         {
+            if (Camera.main == null) return;
+            var camera = Camera.main;
+
+            corner1 = camera.ScreenToWorldPoint(corner1);
+            corner2 = camera.ScreenToWorldPoint(corner2);
+
             var max = Vector2.Max(corner1, corner2);
             var min = Vector2.Min(corner1, corner2);
 
