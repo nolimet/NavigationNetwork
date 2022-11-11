@@ -98,9 +98,6 @@ namespace TowerDefence.Systems.Selection
             var max = Vector2.Max(corner1, corner2);
             var min = Vector2.Min(corner1, corner2);
 
-            var size = max - min;
-            var center = min + size / 2f;
-
             var hitCount = Physics2D.OverlapAreaNonAlloc(min, max, results);
 
             if (hitCount == 0) return;
