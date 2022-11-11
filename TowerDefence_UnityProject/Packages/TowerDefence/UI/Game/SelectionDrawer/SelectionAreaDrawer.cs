@@ -60,8 +60,6 @@ namespace TowerDefence.UI.Game.SelectionDrawer
 
                 selectionArea.style.height = 1;
                 selectionArea.style.width = 1;
-
-                Debug.Log(selectionArea.style);
             }
         }
 
