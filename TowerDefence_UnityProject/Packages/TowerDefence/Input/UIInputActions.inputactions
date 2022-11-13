@@ -1,0 +1,34 @@
+{
+    "name": "UIInputActions",
+    "maps": [
+        {
+            "name": "Main",
+            "id": "a88c65eb-7c6c-4ec7-8bd1-48e448b8f677",
+            "actions": [
+                {
+                    "name": "OpenPauseMenu",
+                    "type": "Button",
+                    "id": "81235f51-3d75-4fdf-8985-9a1ee817b450",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2438a24d-e7ee-40a5-b766-7e71c84528ff",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenPauseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

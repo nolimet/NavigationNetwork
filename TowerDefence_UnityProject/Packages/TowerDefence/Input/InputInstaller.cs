@@ -10,6 +10,7 @@ namespace TowerDefence.Input
         {
             Container.Bind<SelectionInputActions>().AsSingle();
             Container.Bind<DebugActions>().AsSingle();
+            Container.Bind<UIInputActions>().AsSingle();
         }
     }
 }
