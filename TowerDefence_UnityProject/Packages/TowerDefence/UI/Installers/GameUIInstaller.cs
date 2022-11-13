@@ -1,5 +1,6 @@
 ﻿using TowerDefence.UI.Game.Health;
 using TowerDefence.UI.Game.Hud;
+using TowerDefence.UI.Game.PauseMenu;
 using TowerDefence.UI.Game.Tower.Range;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -12,7 +13,6 @@ namespace TowerDefence.UI.Installers
     {
         [SerializeField] private HealthDrawer healthbarPrefab;
 
-        [SerializeField] private AssetReference hudControllerPrefab;
         [SerializeField] private AssetReference towerRangeDrawer;
 
         public override void InstallBindings()
@@ -21,6 +21,8 @@ namespace TowerDefence.UI.Installers
             Container.BindFactory<HealthDrawer, HealthDrawer.Factory>().FromComponentInNewPrefab(healthbarPrefab);
 
             Container.BindInterfacesAndSelfTo<TowerRangeDrawerController>().AsSingle().WithArguments(towerRangeDrawer).NonLazy();
+
+            Container.BindInterfacesAndSelfTo<PauseMenuController>().AsSingle().NonLazy();
 
             Container.Install<HudInstaller>();
         }
