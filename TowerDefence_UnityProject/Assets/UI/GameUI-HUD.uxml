@@ -10,7 +10,7 @@
         <ui:VisualElement name="places_tower_container" style="height: 100%; width: 100%;" />
         <ui:VisualElement name="object-stats-display" style="flex-direction: row-reverse; align-items: flex-end; justify-content: center; width: 400px; position: absolute; right: 0; bottom: 0; height: 100%;" />
     </ui:VisualElement>
-    <ui:VisualElement name="PopupMenu">
-        <ui:VisualElement name="PopupMenu-Container" />
+    <ui:VisualElement name="PopupMenu" style="display: flex; visibility: visible;">
+        <ui:VisualElement name="PopupMenu-Container" class="HUD-Element" style="visibility: visible; background-color: rgba(63, 63, 63, 255);" />
     </ui:VisualElement>
 </ui:UXML>
