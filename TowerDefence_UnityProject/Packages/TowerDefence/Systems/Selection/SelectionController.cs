@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using Sirenix.Utilities;
 using TowerDefence.Input;
 using TowerDefence.Systems.Selection.Models;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace TowerDefence.Systems.Selection
         private readonly ISelectionModel selectionModel;
         private readonly SelectionInputActions selectionInput;
         private readonly List<ISelectable> selectionBuffer = new();
-        private readonly Collider2D[] results = new Collider2D[20];
+        private readonly Collider2D[] results = new Collider2D[256];
 
         public SelectionController(ISelectionModel selectionModel, SelectionInputActions selectionInput)
         {
@@ -88,23 +89,31 @@ namespace TowerDefence.Systems.Selection
 
         private void SelectObject(Vector2 corner1, Vector2 corner2)
         {
+            if (Camera.main == null) return;
+            var camera = Camera.main;
+
+            corner1 = camera.ScreenToWorldPoint(corner1);
+            corner2 = camera.ScreenToWorldPoint(corner2);
+
             var max = Vector2.Max(corner1, corner2);
             var min = Vector2.Min(corner1, corner2);
 
-            var size = max - min;
-            var center = min + size / 2f;
+            var hitCount = Physics2D.OverlapAreaNonAlloc(min, max, results);
 
-            var hitCount = Physics2D.OverlapBoxNonAlloc(center, size, 0, results);
             if (hitCount == 0) return;
+
+            selectionModel.Selection.Clear();
+            var newSelection = new List<ISelectable>();
 
             for (int i = 0; i < hitCount; i++)
             {
                 var result = results[i];
                 result.GetComponentsInChildren(true, selectionBuffer);
 
-                foreach (var item in selectionBuffer)
-                    selectionModel.Selection.Add(item);
+                newSelection.AddRange(selectionBuffer);
             }
+
+            selectionModel.Selection.AddRange(newSelection);
         }
     }
 }

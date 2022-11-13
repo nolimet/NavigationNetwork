@@ -1,16 +1,14 @@
-﻿using DataBinding;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using DataBinding;
 using TowerDefence.Systems.Selection;
 using TowerDefence.Systems.Selection.Models;
-using UnityEngine;
 
 namespace TowerDefence.World.Grid
 {
     internal sealed class GridCellSelector
     {
         private readonly ISelectionModel selectionModel;
-        private readonly BindingContext context = new(true);
+        private readonly BindingContext context = new();
 
         public GridCellSelector(ISelectionModel selectionModel)
         {
@@ -18,6 +16,7 @@ namespace TowerDefence.World.Grid
 
             context.Bind(selectionModel, model => model.Selection, OnSelectionChanged);
         }
+
         ~GridCellSelector()
         {
             context.Dispose();
@@ -25,12 +24,12 @@ namespace TowerDefence.World.Grid
 
         private void OnSelectionChanged(IList<ISelectable> selection)
         {
-            if (selection.Any(x => x is SelectableCell))
-            {
-                var selectedCell = selection.First(x => x is SelectableCell) as SelectableCell;
-
-                Debug.Log(selectedCell.GridCell.Position);
-            }
+            // if (selection.Any(x => x is SelectableCell))
+            // {
+            //     var selectedCell = selection.First(x => x is SelectableCell) as SelectableCell;
+            //
+            //     Debug.Log(selectedCell.GridCell.Position);
+            // }
         }
     }
 }

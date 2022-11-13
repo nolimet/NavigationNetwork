@@ -21,7 +21,7 @@ namespace TowerDefence.UI.Game.SelectionDrawer
         private readonly SelectionInputActions selectionInput;
 
         private readonly BindingContext bindingContext = new();
-        private readonly CancellationTokenSource ctx;
+        private readonly CancellationTokenSource ctx = new();
         private readonly IUIContainers uiContainers;
 
         private VisualElement selectionArea;
@@ -44,7 +44,7 @@ namespace TowerDefence.UI.Game.SelectionDrawer
 
             if (isDragging)
             {
-                DragUpdateTask().Preserve().SuppressCancellationThrow();
+                DragUpdateTask().Preserve().Forget();
             }
         }
 
@@ -58,16 +58,17 @@ namespace TowerDefence.UI.Game.SelectionDrawer
                 selectionArea.visible = false;
                 selectionArea.SetEnabled(false);
 
-                Debug.Log(selectionArea.style);
+                selectionArea.style.height = 1;
+                selectionArea.style.width = 1;
             }
         }
 
         async UniTask DragUpdateTask()
         {
             var token = ctx.Token;
-            await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate().WithCancellation(token))
+            await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate())
             {
-                if (!selectionModel.Dragging || selectionArea is null)
+                if (!selectionModel?.Dragging ?? false || selectionArea is null || token.IsCancellationRequested)
                     break;
 
                 var mousePosition = selectionInput.Main.MousePosition.ReadValue<Vector2>();
@@ -75,13 +76,12 @@ namespace TowerDefence.UI.Game.SelectionDrawer
                 var max = Vector2.Max(selectionModel.DragStartPosition, mousePosition);
 
                 var size = max - min;
-                var center = min + size / 2f;
+                var position = min + size / 2f;
 
-                selectionArea.style.height = size.y;
-                selectionArea.style.width = size.x;
-                selectionArea.transform.position = center;
+                position.y = -position.y;
 
-                Debug.Log(center);
+                selectionArea.transform.position = position;
+                selectionArea.transform.scale = size;
             }
         }
 

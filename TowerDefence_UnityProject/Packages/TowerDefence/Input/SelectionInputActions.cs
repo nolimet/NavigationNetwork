@@ -81,8 +81,8 @@ namespace TowerDefence.Input
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""One Modifier"",
-                    ""id"": ""37938023-7cd1-4ef7-b4bb-0c60f02fbd45"",
+                    ""name"": ""Ctrl+LMB"",
+                    ""id"": ""7151e802-a711-4f05-b8cd-4a8e169f6b30"",
                     ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -93,7 +93,7 @@ namespace TowerDefence.Input
                 },
                 {
                     ""name"": ""modifier"",
-                    ""id"": ""27e908a1-d0eb-4954-92cd-b79ee054a901"",
+                    ""id"": ""66b5246b-1443-4104-a013-5feba8b337cf"",
                     ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -104,7 +104,7 @@ namespace TowerDefence.Input
                 },
                 {
                     ""name"": ""binding"",
-                    ""id"": ""44e34eca-46ca-4be0-b110-5aef1a8a2f75"",
+                    ""id"": ""56672909-e4c4-4843-9a2f-2d62b1518e1c"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
