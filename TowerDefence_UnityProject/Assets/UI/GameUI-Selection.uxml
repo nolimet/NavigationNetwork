@@ -1,3 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="SelectionArea" picking-mode="Ignore" style="position: absolute; right: auto; bottom: 0; left: 0; width: 147px; height: 128px; background-color: rgba(0, 229, 243, 0.46); display: flex; visibility: visible; translate: 0 0;" />
+    <Style src="project://database/Assets/UI/Game.uss?fileID=7433441132597879392&amp;guid=ba430efb674fff649af63bde471c3895&amp;type=3#Game" />
+    <ui:VisualElement name="SelectionArea" picking-mode="Ignore" />
 </ui:UXML>
