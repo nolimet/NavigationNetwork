@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DataBinding;
 using NoUtil.Extentsions;
 using TowerDefence.Systems.Waves;
@@ -8,7 +9,7 @@ using UnityEngine.UIElements;
 
 namespace TowerDefence.UI.Game.Hud.Controllers
 {
-    public class WaveHudController
+    public class WaveHudController : IDisposable
     {
         private readonly BindingContext bindingContext = new();
 
@@ -100,6 +101,11 @@ namespace TowerDefence.UI.Game.Hud.Controllers
         private void StartWaves()
         {
             waveController.StartWavePlayBack();
+        }
+
+        public void Dispose()
+        {
+            bindingContext?.Dispose();
         }
     }
 }

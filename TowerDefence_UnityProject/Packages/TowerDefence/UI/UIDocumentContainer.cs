@@ -7,16 +7,22 @@ namespace TowerDefence.UI
 {
     internal sealed class UIDocumentContainer : MonoBehaviour, IUIContainer
     {
-        [field: SerializeField]
-        public UIDocument Document { get; private set; }
+        private IUIContainers containers;
 
-        [field: SerializeField]
-        public string Name { get; private set; }
+        [field: SerializeField] public UIDocument Document { get; private set; }
+
+        [field: SerializeField] public string Name { get; private set; }
 
         [Inject]
         public void Inject(IUIContainers containers)
         {
+            this.containers = containers;
             containers.Containers.Add(this);
+        }
+
+        private void OnDestroy()
+        {
+            containers.Containers.Remove(this);
         }
     }
 }

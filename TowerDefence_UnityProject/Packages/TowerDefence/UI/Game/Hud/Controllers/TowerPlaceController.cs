@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using DataBinding;
@@ -13,7 +14,7 @@ using UnityEngine.UIElements;
 
 namespace TowerDefence.UI.Game.Hud.Controllers
 {
-    public class TowerPlaceController
+    public class TowerPlaceController : IDisposable
     {
         private const string ContainerId = "GameUI-HUD";
         private const string TowerPlaceContainerId = "places_tower_container";
@@ -91,6 +92,11 @@ namespace TowerDefence.UI.Game.Hud.Controllers
                 var cell = selectionModel.Selection.First(x => x is SelectableCell) as SelectableCell;
                 towerService.PlaceTower(towerId, cell!.GridCell.WorldPosition, cell.GridCell).Forget();
             }
+        }
+
+        public void Dispose()
+        {
+            bindingContext?.Dispose();
         }
     }
 }
