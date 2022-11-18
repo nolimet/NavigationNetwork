@@ -50,17 +50,19 @@ namespace TowerDefence.UI.Game.SelectionDrawer
 
         private void OnUIContainersChanged(IList<IUIContainer> _)
         {
-            if (uiContainers.TryGetContainer(UIContainerId, out UIDocumentContainer documentContainer))
-            {
-                var root = documentContainer.Document.rootVisualElement;
+            if (!uiContainers.TryGetContainer(UIContainerId, out UIDocumentContainer documentContainer)) return;
+            var root = documentContainer.Document.rootVisualElement;
 
-                selectionArea = root.Q(SelectionAreaId);
-                selectionArea.visible = false;
-                selectionArea.SetEnabled(false);
+            if (root is null) return;
 
-                selectionArea.style.height = 1;
-                selectionArea.style.width = 1;
-            }
+            selectionArea = root.Q(SelectionAreaId);
+            if (selectionArea is null) return;
+
+            selectionArea.visible = false;
+            selectionArea.SetEnabled(false);
+
+            selectionArea.style.height = 1;
+            selectionArea.style.width = 1;
         }
 
         async UniTask DragUpdateTask()
@@ -68,7 +70,7 @@ namespace TowerDefence.UI.Game.SelectionDrawer
             var token = ctx.Token;
             await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate())
             {
-                if (!selectionModel?.Dragging ?? false || selectionArea is null || token.IsCancellationRequested)
+                if (selectionModel is not { Dragging: true } || selectionArea is null || token.IsCancellationRequested)
                     break;
 
                 var mousePosition = selectionInput.Main.MousePosition.ReadValue<Vector2>();
@@ -90,6 +92,8 @@ namespace TowerDefence.UI.Game.SelectionDrawer
             bindingContext?.Dispose();
             ctx.Cancel();
             ctx.Dispose();
+
+            selectionArea = null;
         }
     }
 }
