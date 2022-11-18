@@ -5,6 +5,7 @@ using TowerDefence.Input;
 using TowerDefence.Packages.TowerDefence.SceneLoading;
 using TowerDefence.UI.Models;
 using TowerDefence.World.Grid;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
@@ -63,19 +64,22 @@ namespace TowerDefence.UI.Game.PauseMenu
 
                 pauseMenu = root.Q(PauseMenuId);
                 returnToMenuButton = root.Q<Button>(BackToMenuId);
-                returnToMenuButton.clicked += OnReturnToMenuClicked;
+                if (returnToMenuButton is not null)
+                {
+                    returnToMenuButton.clicked += OnReturnToMenuPressed;
+                }
             }
 
             void UnBind()
             {
                 if (returnToMenuButton is not null)
                 {
-                    returnToMenuButton.clicked -= OnReturnToMenuClicked;
+                    returnToMenuButton.clicked -= OnReturnToMenuPressed;
                 }
             }
         }
 
-        private async void OnReturnToMenuClicked()
+        private async void OnReturnToMenuPressed()
         {
             returnToMenuButton.SetEnabled(false);
             uiInputActions.Main.OpenPauseMenu.Disable();
@@ -88,6 +92,15 @@ namespace TowerDefence.UI.Game.PauseMenu
         public void Dispose()
         {
             bindingContext?.Dispose();
+            uiInputActions.Main.OpenPauseMenu.performed -= OnOpenPauseMenuPressed;
+            if (returnToMenuButton is not null)
+            {
+                returnToMenuButton.clicked -= OnReturnToMenuPressed;
+                returnToMenuButton.SetEnabled(true);
+                returnToMenuButton = null;
+            }
+
+            Debug.Log($"Disposed of {GetType()}");
         }
     }
 }
