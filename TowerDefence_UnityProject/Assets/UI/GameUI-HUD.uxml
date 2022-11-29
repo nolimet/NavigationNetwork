@@ -10,9 +10,4 @@
         <ui:VisualElement name="places_tower_container" style="height: 100%; width: 100%;" />
         <ui:VisualElement name="object-stats-display" style="flex-direction: row-reverse; align-items: flex-end; justify-content: center; width: 400px; position: absolute; right: 0; bottom: 0; height: 100%;" />
     </ui:VisualElement>
-    <ui:VisualElement name="PopupMenu" style="display: flex; visibility: visible;">
-        <ui:VisualElement name="PopupMenu-Container" class="HUD-Element" style="visibility: visible; background-color: rgb(63, 63, 63); justify-content: space-between;">
-            <ui:Button text="Return To Menu" display-tooltip-when-elided="true" name="BackToMenu" class="HUD-Button HUD-Text" style="margin-top: 40px; margin-right: 10px; margin-left: 10px;" />
-        </ui:VisualElement>
-    </ui:VisualElement>
 </ui:UXML>
