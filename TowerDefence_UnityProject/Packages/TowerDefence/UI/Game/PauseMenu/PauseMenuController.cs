@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DataBinding;
 using TowerDefence.Input;
 using TowerDefence.Packages.TowerDefence.SceneLoading;
+using TowerDefence.UI.Containers;
 using TowerDefence.UI.Models;
 using TowerDefence.World.Grid;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace TowerDefence.UI.Game.PauseMenu
 {
     public sealed class PauseMenuController : IDisposable
     {
-        private const string GameHUDContainerId = "GameUI-HUD";
+        private const string GameHUDContainerId = "GameUI-PauseMenu";
         private const string PauseMenuId = "PopupMenu";
         private const string BackToMenuId = "BackToMenu";
 
@@ -43,6 +44,11 @@ namespace TowerDefence.UI.Game.PauseMenu
 
         private void OnOpenPauseMenuPressed(InputAction.CallbackContext obj)
         {
+            if (pauseMenu is null)
+            {
+                Debug.LogError("No pause-menu");
+            }
+
             pauseMenu.style.display = pauseMenu.style.display.value switch
             {
                 DisplayStyle.Flex => DisplayStyle.None,
@@ -60,9 +66,13 @@ namespace TowerDefence.UI.Game.PauseMenu
             {
                 if (!uiContainers.TryGetContainer(GameHUDContainerId, out UIDocumentContainer uiDocumentContainer)) return;
 
-                var root = uiDocumentContainer.Document.rootVisualElement;
+                var root = uiDocumentContainer.VisualRoot;
+                if (root is null) return;
 
                 pauseMenu = root.Q(PauseMenuId);
+
+                pauseMenu.style.display = DisplayStyle.None;
+
                 returnToMenuButton = root.Q<Button>(BackToMenuId);
                 if (returnToMenuButton is not null)
                 {
@@ -97,7 +107,6 @@ namespace TowerDefence.UI.Game.PauseMenu
             {
                 returnToMenuButton.clicked -= OnReturnToMenuPressed;
                 returnToMenuButton.SetEnabled(true);
-                returnToMenuButton = null;
             }
 
             Debug.Log($"Disposed of {GetType()}");
