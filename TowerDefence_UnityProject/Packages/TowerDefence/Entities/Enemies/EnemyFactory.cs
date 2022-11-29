@@ -7,6 +7,7 @@ using TowerDefence.Entities.Enemies.Models;
 using TowerDefence.World;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace TowerDefence.Entities.Enemies
 {
@@ -27,8 +28,12 @@ namespace TowerDefence.Entities.Enemies
 
         private async void WarmupPrefabs()
         {
-            var handles = enemyConfiguration.EnemyBaseObjects.Select(x => x.Value.LoadAssetAsync()).ToList();
-            var tasks = handles.Select(x => x.Task);
+            var unloaded = enemyConfiguration.EnemyBaseObjects.Where(x => !x.Value.IsValid());
+            var handles = unloaded.Select(x => x.Value.LoadAssetAsync());
+            var asyncOperationHandles = handles as AsyncOperationHandle<GameObject>[] ?? handles.ToArray();
+            if (!asyncOperationHandles.Any()) return;
+
+            var tasks = asyncOperationHandles.Select(x => x.Task);
             await tasks.WaitForAll();
         }
 

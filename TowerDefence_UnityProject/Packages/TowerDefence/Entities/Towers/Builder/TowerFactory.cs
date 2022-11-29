@@ -1,6 +1,6 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Linq;
+using Cysharp.Threading.Tasks;
 using DataBinding;
-using System.Linq;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
 using TowerDefence.Entities.Towers.Components.Interfaces;
@@ -28,12 +28,13 @@ namespace TowerDefence.Entities.Towers.Builder
 
         private async void WarmPrefabs()
         {
-            await towerConfiguration.TowerBase.LoadAssetAsync();
+            if (!towerConfiguration.TowerBase.IsValid())
+                await towerConfiguration.TowerBase.LoadAssetAsync();
         }
 
         public async UniTask<ITowerObject> CreateTower(ComponentConfigurationObject componentConfiguration, Vector2 position, IGridCell cell)
         {
-            var towerGameObject = await towerConfiguration.TowerBase.InstantiateAsync(worldContainer.TowerContainer, false) as GameObject;
+            var towerGameObject = await towerConfiguration.TowerBase.InstantiateAsync(worldContainer.TowerContainer) as GameObject;
 
             var towerObject = towerGameObject.GetComponent<TowerObject>();
             var model = ModelFactory.Create<ITowerModel>();
