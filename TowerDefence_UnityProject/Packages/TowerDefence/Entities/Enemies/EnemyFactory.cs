@@ -58,11 +58,13 @@ namespace TowerDefence.Entities.Enemies
 
             async UniTask<IComponent> InitHandler(IComponent component)
             {
+                //Cannot be a switch
                 if (component is IInitializable initializable)
                 {
                     initializable.PostInit(enemyObject, enemyModel);
                 }
 
+                // ReSharper disable once SuspiciousTypeConversion.Global
                 if (component is IAsyncInitializer asyncInitializer)
                 {
                     await asyncInitializer.AsyncPostInit(enemyObject, enemyModel);
