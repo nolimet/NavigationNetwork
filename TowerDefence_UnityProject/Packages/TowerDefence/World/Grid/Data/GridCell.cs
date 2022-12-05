@@ -9,8 +9,10 @@ namespace TowerDefence.World.Grid.Data
         private IReadOnlyCollection<IGridCell> conntectedCells;
 
         public float CellWeight { get; }
+        public bool SupportsTower { get; }
         public bool HasStructure { get; private set; }
         public bool HasVirtualStructure { get; private set; }
+
 
         public IReadOnlyCollection<IGridCell> ConnectedCells
         {
@@ -26,19 +28,20 @@ namespace TowerDefence.World.Grid.Data
 
         public Vector2 WorldPosition { get; }
 
-        public GridCell(float cellWeight, Vector2Int position, Vector2 worldPosition)
+        public GridCell(float cellWeight, Vector2Int position, Vector2 worldPosition, bool supportsTower)
         {
             CellWeight = cellWeight;
             Position = position;
-            this.WorldPosition = worldPosition;
+            WorldPosition = worldPosition;
+            SupportsTower = supportsTower;
         }
 
         public void SetConnectedCells(IReadOnlyCollection<IGridCell> connectedCells)
         {
-            this.conntectedCells = connectedCells;
+            conntectedCells = connectedCells;
         }
 
-        public float GetCost(IGridCell goal) => this.CellWeight;
+        public float GetCost(IGridCell goal) => CellWeight;
         public void SetStructure(bool hasStructure) => HasStructure = hasStructure;
         public void SetVirtualStructure(bool hasVirtualStructure) => HasVirtualStructure = hasVirtualStructure;
     }
