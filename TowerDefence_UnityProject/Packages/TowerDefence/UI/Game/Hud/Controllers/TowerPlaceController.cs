@@ -28,6 +28,8 @@ namespace TowerDefence.UI.Game.Hud.Controllers
         private IUIContainer activeContainer;
         private VisualElement towerPlaceContainer;
 
+        private readonly List<TowerPlaceButton> towerPlaceButtons = new();
+
         public TowerPlaceController(IUIContainers uiContainers, ISelectionModel selectionModel, TowerService towerService, TowerConfigurationData towerConfigurationData)
         {
             this.towerService = towerService;
@@ -42,16 +44,13 @@ namespace TowerDefence.UI.Game.Hud.Controllers
         {
             if (towerPlaceContainer is null) return;
 
-            if (selection.Count == 1 && selection.TryFind(x => x is SelectableCell, out var s) && s is SelectableCell cell && !cell.GridCell.HasStructure)
-            {
-                towerPlaceContainer.visible = true;
-                towerPlaceContainer.SetEnabled(true);
-            }
-            else
-            {
-                towerPlaceContainer.visible = false;
-                towerPlaceContainer.SetEnabled(false);
-            }
+            bool selectionValid = selection.Count == 1 &&
+                                  selection.TryFind(x => x is SelectableCell, out var s) &&
+                                  s is SelectableCell cell && !cell.GridCell.HasStructure;
+
+            towerPlaceContainer.visible = selectionValid;
+            towerPlaceContainer.SetEnabled(selectionValid);
+            towerPlaceButtons.ForEach(x => x.SetEnabled(selectionValid));
         }
 
         private void OnUIContainersChanged(IList<IUIContainer> uiContainers)
@@ -77,12 +76,14 @@ namespace TowerDefence.UI.Game.Hud.Controllers
                     towerButton.OnCallback += OnTowerPlaceButtonClicked;
                     towerButton.AddToClassList("HUD-TowerButton");
                     towerPlaceContainer.Add(towerButton);
+                    towerPlaceButtons.Add(towerButton);
                 }
             }
 
             void UnBind()
             {
                 towerPlaceContainer?.Clear();
+                towerPlaceButtons.Clear();
             }
         }
 
