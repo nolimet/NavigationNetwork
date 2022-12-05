@@ -1,6 +1,6 @@
-﻿using Cysharp.Threading.Tasks;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using TowerDefence.World.Grid.Data;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -29,8 +29,10 @@ namespace TowerDefence.World.Grid
             DestroyTiles();
 
             int heightMultShaderProperty = Shader.PropertyToID("_HeightMult");
+            int supportsTowerShaderProperty = Shader.PropertyToID("_SupportsTower");
+
             var tileMaterial = await worldSettings.GetTileMaterial();
-            
+
             List<GameObject> objects = new();
 
             tileMesh = CreateMesh();
@@ -61,7 +63,7 @@ namespace TowerDefence.World.Grid
                 AddUv(0, 1);
                 AddUv(1, 1);
 
-                var m = new Mesh()
+                var m = new Mesh
                 {
                     vertices = verts.ToArray(),
                     triangles = tris.ToArray(),
@@ -108,6 +110,7 @@ namespace TowerDefence.World.Grid
 
                 r.sharedMaterial = tileMaterial;
                 r.material.SetFloat(heightMultShaderProperty, 1f / 255 * cell.CellWeight);
+                r.material.SetInt(supportsTowerShaderProperty, cell.SupportsTower ? 1 : 0);
                 mf.sharedMesh = m;
 
                 var selectableNode = g.AddComponent<SelectableCell>();
@@ -115,7 +118,6 @@ namespace TowerDefence.World.Grid
 
                 var collider = g.AddComponent<BoxCollider2D>();
                 collider.size = worldSettings.TileSize;
-
             }
         }
 
@@ -126,6 +128,7 @@ namespace TowerDefence.World.Grid
             {
                 Object.Destroy(tile);
             }
+
             tiles = Array.Empty<GameObject>();
         }
     }
