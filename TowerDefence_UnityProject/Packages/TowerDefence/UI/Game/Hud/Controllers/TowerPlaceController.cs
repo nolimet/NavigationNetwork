@@ -44,13 +44,23 @@ namespace TowerDefence.UI.Game.Hud.Controllers
         {
             if (towerPlaceContainer is null) return;
 
-            bool selectionValid = selection.Count == 1 &&
-                                  selection.TryFind(x => x is SelectableCell, out var s) &&
-                                  s is SelectableCell cell && !cell.GridCell.HasStructure;
 
-            towerPlaceContainer.visible = selectionValid;
-            towerPlaceContainer.SetEnabled(selectionValid);
-            towerPlaceButtons.ForEach(x => x.SetEnabled(selectionValid));
+            if (selection.Count == 1 && selection.TryFind(x => x is SelectableCell, out var s) &&
+                s is SelectableCell cell && !cell.GridCell.HasStructure)
+            {
+                towerPlaceButtons.ForEach(x => x.SetEnabled(cell.GridCell.SupportsTower));
+                Update(true);
+            }
+            else
+            {
+                Update(false);
+            }
+
+            void Update(bool selectionValid)
+            {
+                towerPlaceContainer.visible = selectionValid;
+                towerPlaceContainer.SetEnabled(selectionValid);
+            }
         }
 
         private void OnUIContainersChanged(IList<IUIContainer> uiContainers)
