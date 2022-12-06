@@ -22,21 +22,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - UI
-  - m_GUID: f7f7fa3b6446d804aac2367db137d42e
-    m_Address: UI/HUD/TowerHUD/Elements/TowerPlaceButton
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - UI
-  - m_GUID: 985aaad9bd8f9864cbf58dcc6dd5b8d9
-    m_Address: TowerHudPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - UI
-  - m_GUID: 46fe94b8612dc6b41b974b8e361ee968
-    m_Address: HudPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - UI
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 30d6280b3b69dcd4d8e5c3d8253748b0, type: 2}
   m_SchemaSet:
