@@ -52,7 +52,7 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
             var visualRoot = documentContainer.Document.rootVisualElement;
             if (visualRoot is null) return;
 
-            levelsContainer = visualRoot.Q<ScrollView>("Levels")?.contentContainer; //.Q("unity-content-container");
+            levelsContainer = visualRoot.Q<ScrollView>("Levels")?.contentContainer;
 
             if (levelsContainer is null) throw new NullReferenceException();
             foreach (var level in levels)
