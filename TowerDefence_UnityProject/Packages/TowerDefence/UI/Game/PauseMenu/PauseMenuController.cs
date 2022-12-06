@@ -18,7 +18,6 @@ namespace TowerDefence.UI.Game.PauseMenu
         private const string PauseMenuId = "PopupMenu";
         private const string BackToMenuId = "BackToMenu";
 
-
         private readonly IUIContainers uiContainers;
         private readonly BindingContext bindingContext = new();
         private readonly UIInputActions uiInputActions;
@@ -47,6 +46,7 @@ namespace TowerDefence.UI.Game.PauseMenu
             if (pauseMenu is null)
             {
                 Debug.LogError("No pause-menu");
+                return;
             }
 
             pauseMenu.style.display = pauseMenu.style.display.value switch
