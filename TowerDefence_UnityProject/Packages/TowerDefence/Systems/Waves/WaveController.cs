@@ -25,8 +25,7 @@ namespace TowerDefence.Systems.Waves
         private readonly EnemyController enemyController;
         private readonly BindingContext bindingContext = new();
 
-        internal WaveController(EnemyController enemyController, IWorldDataModel worldDataModel,
-            IWavePlayStateModel wavePlayStateModel)
+        internal WaveController(EnemyController enemyController, IWorldDataModel worldDataModel, IWavePlayStateModel wavePlayStateModel)
         {
             this.enemyController = enemyController;
             this.wavePlayStateModel = wavePlayStateModel;
