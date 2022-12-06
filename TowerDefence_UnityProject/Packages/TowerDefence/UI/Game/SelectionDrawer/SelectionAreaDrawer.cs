@@ -66,7 +66,7 @@ namespace TowerDefence.UI.Game.SelectionDrawer
             selectionArea.style.width = 1;
         }
 
-        async UniTask DragUpdateTask()
+        private async UniTask DragUpdateTask()
         {
             var token = ctx.Token;
             await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate())
