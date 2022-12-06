@@ -55,6 +55,10 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
             levelsContainer = visualRoot.Q<ScrollView>("Levels")?.contentContainer;
 
             if (levelsContainer is null) throw new NullReferenceException();
+
+            levelsContainer.contentContainer.Clear();
+            levelSelectionButtons.Clear();
+
             foreach (var level in levels)
             {
                 var newButton = CreateNewButton(level.DisplayName, level.RelativeLevelPath);

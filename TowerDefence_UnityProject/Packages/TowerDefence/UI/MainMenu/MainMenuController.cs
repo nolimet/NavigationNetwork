@@ -29,10 +29,8 @@ namespace TowerDefence.UI.MainMenu
             bindingContext.Dispose();
         }
 
-        private async void OnContainerChanged(IList<IUIContainer> obj)
+        private void OnContainerChanged(IList<IUIContainer> obj)
         {
-            await new WaitForEndOfFrame();
-
             if (!obj.TryFind(x => x.Name == "Main", out var container) ||
                 container is not UIDocumentContainer documentContainer) return;
 
