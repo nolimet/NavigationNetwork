@@ -1,5 +1,5 @@
-using Newtonsoft.Json;
 using System;
+using Newtonsoft.Json;
 
 namespace TowerDefence.Systems.Waves.Data
 {
@@ -15,23 +15,25 @@ namespace TowerDefence.Systems.Waves.Data
             this.enemyGroups = enemyGroups;
         }
 
-        [Serializable]
+        [Serializable, JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
         public readonly struct EnemyGroup
         {
             [JsonProperty("EnemyID", Required = Required.Always)]
             public readonly string enemyID;
 
-            [JsonProperty("PathID")]
-            public readonly int pathID;
-
-            [JsonProperty("EntranceId")]
+            [JsonProperty("EntranceId", Required = Required.Always)]
             public readonly int entranceId;
 
-            [JsonProperty("ExitId")]
+            [JsonProperty("ExitId", Required = Required.Always)]
             public readonly int exitId;
 
-            [JsonProperty("SpawnTime", Required = Required.Always)]
-            public readonly float[] spawnTime;
+            [JsonProperty("PathID")] public readonly int pathID;
+
+            [JsonProperty("SpawnTime")] public readonly float[] spawnTime;
+
+            [JsonProperty("EnemyGroupSize")] public readonly long? enemyGroupSize;
+            [JsonProperty("spawnInterval")] public readonly double? spawnInterval;
+            [JsonProperty("spawnDelay")] public readonly double? spawnDelay;
 
             [JsonConstructor]
             public EnemyGroup(string enemyID, int pathID, int entranceId, int exitId, float[] spawnTime)
