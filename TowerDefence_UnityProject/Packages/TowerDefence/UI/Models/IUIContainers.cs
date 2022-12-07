@@ -17,7 +17,7 @@ namespace TowerDefence.UI.Models
 
         public bool TryGetContainer<T>(string id, out T resultContainer) where T : IUIContainer
         {
-            if (Containers.TryFind(x => x.Name == id, out var uiContainer) && uiContainer is T container)
+            if (TryGetContainerWithId(id, out var uiContainer) && uiContainer is T container)
             {
                 resultContainer = container;
                 return true;
