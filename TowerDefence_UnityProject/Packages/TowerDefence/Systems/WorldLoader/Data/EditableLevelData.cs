@@ -1,7 +1,7 @@
-using NoUtil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NoUtil;
 using TowerDefence.Entities.Enemies;
 using TowerDefence.Systems.Waves.Data;
 using TowerDefence.World.Grid.Data;
@@ -20,8 +20,17 @@ namespace TowerDefence.Systems.WorldLoader.Data
         [SerializeField] private EditablePathData pathdata;
         [SerializeField] private EditableGridSettings gridSettings;
 
-        internal EditablePathData Pathdata { get => pathdata; set => pathdata = value; }
-        internal EditableWave[] Waves { get => waves; set => waves = value; }
+        internal EditablePathData Pathdata
+        {
+            get => pathdata;
+            set => pathdata = value;
+        }
+
+        internal EditableWave[] Waves
+        {
+            get => waves;
+            set => waves = value;
+        }
 
         public LevelData ToLevelDataPath()
         {
@@ -42,6 +51,7 @@ namespace TowerDefence.Systems.WorldLoader.Data
             {
                 waves[i] = levelData.waves[i];
             }
+
             Waves = waves;
             Pathdata = levelData.path;
         }
@@ -72,6 +82,7 @@ namespace TowerDefence.Systems.WorldLoader.Data
                 {
                     enemygroups[i] = wave.enemyGroups[i];
                 }
+
                 return new Wave(enemygroups);
             }
 
@@ -95,9 +106,9 @@ namespace TowerDefence.Systems.WorldLoader.Data
                 [StringDropdown("enemies.id", typeof(EnemyConfigurationData))]
                 public string enemyID = string.Empty;
 
-                public int pathID = 0;
-                public int entranceId = 0;
-                public int exitId = 0;
+                public int pathID;
+                public int entranceId;
+                public int exitId;
                 public float[] spawnTime = new float[0];
 
                 public EnemyGroup()
@@ -163,6 +174,7 @@ namespace TowerDefence.Systems.WorldLoader.Data
                 {
                     pathPoints[i] = pathData.pathPoints[i];
                 }
+
                 return new PathData(pathPoints);
             }
 
@@ -210,6 +222,7 @@ namespace TowerDefence.Systems.WorldLoader.Data
             public Vector2Int[] EntryPoints;
 
             public Vector2Int[] EndPoints;
+
             /// <summary>
             /// Grid weights and layout. 255 is not traversable
             /// </summary>
@@ -220,25 +233,22 @@ namespace TowerDefence.Systems.WorldLoader.Data
                 GridHeight = gridHeight;
                 GridWidth = gridWidth;
                 this.nodes = ((EditableGridLayout)nodes).nodes;
-                this.EntryPoints = entryPoints;
-                this.EndPoints = endPoints;
+                EntryPoints = entryPoints;
+                EndPoints = endPoints;
             }
 
-            [System.Serializable]
+            [Serializable]
             internal class EditableGridLayout
             {
                 public EditableLayoutNode[] nodes = new EditableLayoutNode[0];
 
                 public int Length => nodes.Length;
 
-                public EditableLayoutNode this[int index]
-                {
-                    get => nodes[index];
-                }
+                public EditableLayoutNode this[int index] => nodes[index];
 
                 public EditableGridLayout(EditableLayoutNode[] gridLayout)
                 {
-                    this.nodes = gridLayout;
+                    nodes = gridLayout;
                 }
 
                 public static implicit operator GridSettings.Cell[](EditableGridLayout v)
@@ -248,6 +258,7 @@ namespace TowerDefence.Systems.WorldLoader.Data
                     {
                         nodes[i] = v.nodes[i];
                     }
+
                     return nodes;
                 }
 
@@ -258,6 +269,7 @@ namespace TowerDefence.Systems.WorldLoader.Data
                     {
                         nodes[i] = v[i];
                     }
+
                     return new EditableGridLayout(nodes);
                 }
             }
@@ -266,20 +278,21 @@ namespace TowerDefence.Systems.WorldLoader.Data
             internal class EditableLayoutNode
             {
                 public byte weight;
+                public bool supportsTower = true;
 
-                public EditableLayoutNode(byte weight)
+                public EditableLayoutNode(byte weight, bool supportsTower)
                 {
                     this.weight = weight;
                 }
 
                 public static implicit operator GridSettings.Cell(EditableLayoutNode v)
                 {
-                    return new GridSettings.Cell(v.weight);
+                    return new GridSettings.Cell(v.weight, v.supportsTower);
                 }
 
                 public static implicit operator EditableLayoutNode(GridSettings.Cell v)
                 {
-                    return new EditableLayoutNode(v.weight);
+                    return new EditableLayoutNode(v.weight, v.supportsTower);
                 }
             }
 
@@ -290,6 +303,7 @@ namespace TowerDefence.Systems.WorldLoader.Data
                 {
                     nodes[i] = v.nodes[i];
                 }
+
                 return new GridSettings(v.GridHeight, v.GridWidth, nodes, v.EntryPoints, v.EndPoints);
             }
 

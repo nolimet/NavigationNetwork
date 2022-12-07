@@ -26,7 +26,7 @@ namespace TowerDefence.EditorScripts.Systems.Waves
 
             for (int i = 0; i < colors.Length; i++)
             {
-                cells[i] = new GridSettings.Cell(colors[i].r);
+                cells[i] = new GridSettings.Cell(colors[i].r, true);
             }
 
             return new GridSettings(h, w, cells, Array.Empty<Vector2Int>(), Array.Empty<Vector2Int>());

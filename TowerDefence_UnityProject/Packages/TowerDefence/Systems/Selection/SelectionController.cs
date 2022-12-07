@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Linq;
+using Sirenix.Utilities;
 using TowerDefence.Input;
 using TowerDefence.Systems.Selection.Models;
 using UnityEngine;
@@ -11,7 +13,8 @@ namespace TowerDefence.Systems.Selection
     {
         private readonly ISelectionModel selectionModel;
         private readonly SelectionInputActions selectionInput;
-        private readonly List<ISelectable> selectionBuffer = new List<ISelectable>();
+        private readonly List<ISelectable> selectionBuffer = new();
+        private readonly Collider2D[] results = new Collider2D[256];
 
         public SelectionController(ISelectionModel selectionModel, SelectionInputActions selectionInput)
         {
@@ -46,11 +49,20 @@ namespace TowerDefence.Systems.Selection
         {
             selectionModel.DragEndPosition = selectionInput.Main.MousePosition.ReadValue<Vector2>();
             selectionModel.Dragging = false;
+
+            SelectObject(selectionModel.DragStartPosition, selectionModel.DragEndPosition);
         }
 
         private void OnClickPreformed(InputAction.CallbackContext obj)
         {
-            if (!EventSystem.current.IsPointerOverGameObject())
+            var pointerData = new PointerEventData(EventSystem.current)
+            {
+                position = selectionInput.Main.MousePosition.ReadValue<Vector2>()
+            };
+
+            var raycastResults = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerData, raycastResults);
+            if (!raycastResults.Any())
             {
                 SelectObject(selectionInput.Main.MousePosition.ReadValue<Vector2>());
             }
@@ -58,23 +70,50 @@ namespace TowerDefence.Systems.Selection
 
         private void SelectObject(Vector2 cursorPosition)
         {
-            var results = Physics2D.OverlapPointAll(Camera.main.ScreenToWorldPoint(cursorPosition));
+            if (Camera.main == null) return;
+
+            var hitCount = Physics2D.OverlapPointNonAlloc(Camera.main.ScreenToWorldPoint(cursorPosition), results);
 
             selectionModel.Selection.Clear();
-            if (results != null && results.Length > 0)
-            {
-                foreach (var result in results)
-                {
-                    result.GetComponentsInChildren(true, selectionBuffer);
+            if (hitCount == 0) return;
 
-                    foreach (var item in selectionBuffer)
-                        selectionModel.Selection.Add(item);
-                }
+            for (int i = 0; i < hitCount; i++)
+            {
+                var result = results[i];
+                result.GetComponentsInChildren(true, selectionBuffer);
+
+                foreach (var item in selectionBuffer)
+                    selectionModel.Selection.Add(item);
             }
         }
 
         private void SelectObject(Vector2 corner1, Vector2 corner2)
         {
+            if (Camera.main == null) return;
+            var camera = Camera.main;
+
+            corner1 = camera.ScreenToWorldPoint(corner1);
+            corner2 = camera.ScreenToWorldPoint(corner2);
+
+            var max = Vector2.Max(corner1, corner2);
+            var min = Vector2.Min(corner1, corner2);
+
+            var hitCount = Physics2D.OverlapAreaNonAlloc(min, max, results);
+
+            if (hitCount == 0) return;
+
+            selectionModel.Selection.Clear();
+            var newSelection = new List<ISelectable>();
+
+            for (int i = 0; i < hitCount; i++)
+            {
+                var result = results[i];
+                result.GetComponentsInChildren(true, selectionBuffer);
+
+                newSelection.AddRange(selectionBuffer);
+            }
+
+            selectionModel.Selection.AddRange(newSelection);
         }
     }
 }

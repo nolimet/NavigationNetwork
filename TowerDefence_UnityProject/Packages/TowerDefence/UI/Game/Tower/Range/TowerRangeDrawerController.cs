@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DataBinding;
 using NoUtil.Extentsions;
@@ -10,14 +11,16 @@ using TowerDefence.Utility;
 using TowerDefence.World.Grid;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
+using Object = UnityEngine.Object;
 
 namespace TowerDefence.UI.Game.Tower.Range
 {
-    public sealed class TowerRangeDrawerController
+    public sealed class TowerRangeDrawerController : IDisposable
+
     {
         private readonly ISelectionModel selectionModel;
         private readonly ITowerModels towerModels;
-        private readonly BindingContext bindingContext = new(true);
+        private readonly BindingContext bindingContext = new();
         private TowerRangeDrawer rangeDrawer;
 
         public TowerRangeDrawerController(ISelectionModel selectionModel, ITowerModels towerModels, AssetReference rangeDrawer)
@@ -66,7 +69,8 @@ namespace TowerDefence.UI.Game.Tower.Range
                 {
                     return true;
                 }
-                else if (selection.TryFindObject<SelectableCell>(out var cell))
+
+                if (selection.TryFindObject<SelectableCell>(out var cell))
                 {
                     var position = cell.GridCell.Position;
                     return towerModels.Towers.TryFind(x => x.GetGridPosition() == position, out tower);
@@ -78,7 +82,27 @@ namespace TowerDefence.UI.Game.Tower.Range
 
         ~TowerRangeDrawerController()
         {
-            bindingContext.Dispose();
+            Dispose(false);
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            Object.Destroy(rangeDrawer);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            ReleaseUnmanagedResources();
+            if (disposing)
+            {
+                bindingContext?.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

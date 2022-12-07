@@ -4,11 +4,11 @@
     color: rgb(199, 211, 214);
 }
 
-.level-selection-button:hover{
+.level-selection-button:hover {
     background-color: rgb(33, 33, 33);
 }
 
-.unity-button{
+.unity-button {
     background-color: rgb(70, 70, 70);
     border-color: rgb(33, 33, 33);
     color: rgb(199, 211, 214);
@@ -16,4 +16,8 @@
 
 .unity-button:hover {
     background-color: rgb(33, 33, 33);
+}
+
+.Levels {
+    width: 100%;
 }

@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace TowerDefence.JsonConverters
 {
@@ -13,7 +13,7 @@ namespace TowerDefence.JsonConverters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return reader.Value.ToString() == "1";
+            return reader.Value?.ToString() == "1";
         }
 
         public override bool CanConvert(Type objectType)
@@ -25,6 +25,7 @@ namespace TowerDefence.JsonConverters
     internal sealed class BoolArrayConverter : JsonConverter
     {
         private static readonly StringBuilder stringBuilder = new();
+
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             if (value is bool[] arr)
@@ -34,6 +35,7 @@ namespace TowerDefence.JsonConverters
                 {
                     stringBuilder.Append(b ? 1 : 0);
                 }
+
                 writer.WriteValue(stringBuilder.ToString());
             }
         }
@@ -47,8 +49,10 @@ namespace TowerDefence.JsonConverters
                 {
                     arr[i] = str[i] == '1';
                 }
+
                 return arr;
             }
+
             return null;
         }
 

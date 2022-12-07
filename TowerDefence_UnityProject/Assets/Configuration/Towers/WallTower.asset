@@ -15,4 +15,25 @@ MonoBehaviour:
   components:
   - type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings
     data: '{"Name":"Wall","IsSolid":1,"Range":0.0}'
+    SerializedComponent:
+      rid: 2282215849081438278
+  - type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings
+    data: '{"towerSprite":"0a40b3828285d9a4ab767d5ad119a1d2"}'
+    SerializedComponent:
+      rid: 2282215849081438279
   type: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 2282215849081438278
+      type: {class: TowerSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
+        asm: TowerDefence}
+    - rid: 2282215849081438279
+      type: {class: TowerVisualSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
+        asm: TowerDefence}
+      data:
+        towerSprite:
+          m_AssetGUID: 0a40b3828285d9a4ab767d5ad119a1d2
+          m_SubObjectName: 
+          m_SubObjectType: 
+          m_EditorAssetChanged: 0

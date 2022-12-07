@@ -1,9 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
+using UnityEngine;
+using Random = System.Random;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using UnityEngine;
 
 namespace TowerDefence.World.Grid.Data
 {
@@ -36,37 +37,33 @@ namespace TowerDefence.World.Grid.Data
         {
             public readonly bool isTraversable;
             public readonly byte weight;
+            public readonly bool supportsTower;
 
-            public Cell(byte weight)
+            public Cell(byte weight, bool supportsTower)
             {
-                this.isTraversable = weight == 255;
+                isTraversable = weight < 255;
                 this.weight = weight;
-            }
-
-            [JsonConstructor]
-            public Cell(bool isTraversable, byte weight)
-            {
-                this.isTraversable = isTraversable;
-                this.weight = weight;
+                this.supportsTower = supportsTower;
             }
         }
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         [MenuItem("Test/Settings")]
         public static void TestWrite()
         {
             var layoutCells = new Cell[100];
-            var r = new System.Random();
+            var r = new Random();
             for (int i = 0; i < layoutCells.Length; i++)
             {
-                layoutCells[i] = new((byte)r.Next(0, 255));
+                layoutCells[i] = new Cell((byte)r.Next(0, 255), true);
             }
+
             var settings = new GridSettings(10, 10, layoutCells, new[] { new Vector2Int(5, 0) }, new[] { new Vector2Int(5, 10) });
             string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
             Debug.Log(json);
             var val = JsonConvert.DeserializeObject<GridSettings>(json);
             Debug.Log(string.Join(",", val.Cells));
         }
-        #endif
+#endif
     }
 }

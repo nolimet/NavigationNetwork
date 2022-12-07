@@ -14,6 +14,7 @@ namespace TowerDefence.World.Grid
         {
             this.worldSettings = worldSettings;
         }
+
         public IEnumerable<IGridCell> CreateNodes(GridSettings settings)
         {
             Validate();
@@ -68,10 +69,13 @@ namespace TowerDefence.World.Grid
                 {
                     for (int x = 0; x < settings.GridWidth; x++)
                     {
-                        cells[y][x] = new GridCell(
-                            settings.Cells[counter].weight,
-                            new (x, y),
-                            new Vector2(x * worldSettings.TileSize.x, y * worldSettings.TileSize.y) - offset);
+                        cells[y][x] = new GridCell
+                        (
+                            cellWeight: settings.Cells[counter].weight,
+                            position: new Vector2Int(x, y),
+                            worldPosition: new Vector2(x * worldSettings.TileSize.x, y * worldSettings.TileSize.y) - offset,
+                            supportsTower: settings.Cells[counter].supportsTower
+                        );
                         returnValue.Add(cells[y][x]);
                         counter++;
                     }

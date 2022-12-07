@@ -18,6 +18,7 @@ namespace TowerDefence.Entities.Towers
         private readonly List<ITickableComponent> tickableComponents = new();
 
         public Transform Transform => transform;
+        public bool ExistsInWorld => gameObject;
 
         public string Name { get => this.name; set => this.name = value; }
 

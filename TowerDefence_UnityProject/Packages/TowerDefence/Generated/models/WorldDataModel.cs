@@ -4,6 +4,9 @@
 // !! DO NOT EDIT THIS SCRIPT, AUTO GENERATED !!
 // ========================================================================
 using System;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using DataBinding.BaseClasses;
 
 namespace TowerDefence.Systems.WorldLoader.Models 
 {

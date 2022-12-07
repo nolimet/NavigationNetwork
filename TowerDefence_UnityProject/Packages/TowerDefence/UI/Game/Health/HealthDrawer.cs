@@ -9,13 +9,12 @@ namespace TowerDefence.UI.Game.Health
 {
     public sealed class HealthDrawer : MonoBehaviour
     {
-        [SerializeField]
-        private Image healthbarImage;
+        [SerializeField] private Image healthbarImage;
 
         private IEnemyObject target;
         private UnityAction<HealthDrawer> destroyedAction;
 
-        private readonly BindingContext bindingContext = new(true);
+        private readonly BindingContext bindingContext = new();
 
         private void Start()
         {
@@ -46,8 +45,7 @@ namespace TowerDefence.UI.Game.Health
 
         public class Factory : PlaceholderFactory<HealthDrawer>
         {
-            [Inject]
-            private UIContainer uiContainer;
+            [Inject] private UIContainer uiContainer;
 
             public HealthDrawer Create(IEnemyObject target, UnityAction<HealthDrawer> destroyedAction)
             {

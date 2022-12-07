@@ -10,10 +10,6 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
     [Serializable, Component(ComponentType.Tower, typeof(ITargetFindComponent))]
     public sealed class NearestTargetFinder : TargetFindBase
     {
-        public NearestTargetFinder()
-        {
-        }
-
         public override void Tick()
         {
             targetList.Clear();

@@ -1,24 +1,17 @@
-﻿using TowerDefence.UI.Game.Hud.Drawers;
-using TowerDefence.UI.Game.Hud.Drawers.TowerPlace;
-using TowerDefence.UI.Game.Hud.SubControllers;
-using UnityEngine;
+﻿using TowerDefence.UI.Game.Hud.Controllers;
+using TowerDefence.UI.Game.SelectionDrawer;
 using Zenject;
 
 namespace TowerDefence.UI.Game.Hud
 {
-    public sealed class HudInstaller : MonoInstaller
+    public class HudInstaller : Installer
     {
-        [SerializeField] private TowerHudDrawer towerHud;
-        [SerializeField] private TowerPlaceHudDrawer towerPlaceHud;
-        [SerializeField] private TowerPlaceButton towerPlaceButtonPrefab;
-
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<TowerPlaceController>().AsCached().NonLazy();
-            Container.BindFactory<TowerPlaceButton, TowerPlaceButton.Factory>().FromComponentInNewPrefab(towerPlaceButtonPrefab);
+            Container.BindInterfacesAndSelfTo<TowerPlaceController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<WaveHudController>().AsSingle().NonLazy();
 
-            Container.BindInstance(towerPlaceHud).AsCached();
-            Container.BindInstance(towerHud).AsCached();
+            Container.BindInterfacesAndSelfTo<SelectionAreaDrawer>().AsSingle().NonLazy();
         }
     }
 }

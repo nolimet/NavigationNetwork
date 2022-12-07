@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -6,6 +7,7 @@ using Cysharp.Threading.Tasks.Linq;
 using DataBinding;
 using TowerDefence.Entities.Enemies;
 using TowerDefence.Systems.Waves.Data;
+using TowerDefence.Systems.Waves.Models;
 using TowerDefence.Systems.WorldLoader.Models;
 using UnityEngine;
 using static TowerDefence.Systems.Waves.Data.Wave;
@@ -14,17 +16,19 @@ namespace TowerDefence.Systems.Waves
 {
     public sealed class WaveController
     {
+        private IWavePlayStateModel wavePlayStateModel;
+
         private Wave[] currentWaves;
-        private int activeWave;
         private CancellationTokenSource cancelTokenSource;
         private readonly List<UniTask> activeWaves = new();
 
         private readonly EnemyController enemyController;
         private readonly BindingContext bindingContext = new();
 
-        internal WaveController(EnemyController enemyController, IWorldDataModel worldDataModel)
+        internal WaveController(EnemyController enemyController, IWorldDataModel worldDataModel, IWavePlayStateModel wavePlayStateModel)
         {
             this.enemyController = enemyController;
+            this.wavePlayStateModel = wavePlayStateModel;
             bindingContext.Bind(worldDataModel, x => x.Waves, OnWavesChanged);
         }
 
@@ -37,39 +41,50 @@ namespace TowerDefence.Systems.Waves
             cancelTokenSource?.Dispose();
 
             cancelTokenSource = new CancellationTokenSource();
-            activeWave = 0;
+            wavePlayStateModel.totalWaves = waves?.Length ?? 0;
+            wavePlayStateModel.activeWave = 0;
         }
 
-        public int GetWavesLeft()
+        private int GetWavesLeft()
         {
-            return activeWave - currentWaves.Length;
+            return currentWaves.Length - wavePlayStateModel.activeWave;
         }
 
         public async void StartWavePlayBack()
         {
             if (currentWaves is not { Length: > 0 }) return;
-            
-            while (activeWave < currentWaves.Length)
+
+            while (wavePlayStateModel.activeWave < currentWaves.Length)
             {
-                activeWaves.Add(PlayWave(currentWaves[activeWave], cancelTokenSource.Token));
-                activeWave++;
+                Debug.Log($"Starting wave {wavePlayStateModel.activeWave}");
+                activeWaves.Add(PlayWave(currentWaves[wavePlayStateModel.activeWave], cancelTokenSource.Token));
+                wavePlayStateModel.activeWave++;
+
+                wavePlayStateModel.wavesPlaying = activeWaves.Count > 0;
+
                 try
                 {
                     await UniTask.WhenAll(activeWaves);
+                    activeWaves.Clear();
                 }
-                catch (System.Exception e)
+                catch (Exception e)
                 {
                     Debug.LogException(e);
                 }
+
+                if (!wavePlayStateModel.autoPlayEnabled)
+                    break;
             }
+
+            wavePlayStateModel.wavesPlaying = activeWaves.Count > 0;
         }
 
         public void ForceStartNextWave()
         {
             if (currentWaves is not { Length: > 0 } || GetWavesLeft() <= 0) return;
-            
-            activeWaves.Add(PlayWave(currentWaves[activeWave], cancelTokenSource.Token));
-            activeWave++;
+
+            activeWaves.Add(PlayWave(currentWaves[wavePlayStateModel.activeWave], cancelTokenSource.Token));
+            wavePlayStateModel.activeWave++;
         }
 
         public void StopWavePlayBack()
@@ -100,7 +115,7 @@ namespace TowerDefence.Systems.Waves
                 foreach (var enemySet in waveLookup)
                 {
                     if (!enemySet.time.Any() || enemySet.time.Peek() > t) continue;
-                    
+
                     enemySet.time.Dequeue();
                     enemyWatchers.Add(EnemyWatcherTask(enemySet.group));
                 }

@@ -9,16 +9,30 @@ namespace TowerDefence.Entities.Components.Data
     {
         [SerializeField] internal string type;
         [SerializeField] internal string data;
-
+#if UNITY_EDITOR
+        [SerializeReference] internal IComponent SerializedComponent;
+#endif
+        
         internal void SerializeComponent(IComponent component)
         {
             type = component.GetType().FullName;
             data = JsonConvert.SerializeObject(component);
         }
 
+#if UNITY_EDITOR
+        internal void SetReferenceValue()
+        {
+            SerializedComponent = DeserializeComponent();
+        }
+#endif
+
         internal IComponent DeserializeComponent()
         {
-            return JsonConvert.DeserializeObject(data, Type.GetType(type)) as IComponent;
+            if (string.IsNullOrWhiteSpace(this.type)) return default;
+            var type = Type.GetType(this.type);
+            
+            if (type is null) return default;
+            return JsonConvert.DeserializeObject(data, type) as IComponent;
         }
     }
 }

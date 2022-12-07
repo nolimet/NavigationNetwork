@@ -1,6 +1,6 @@
-﻿using DataBinding;
+﻿using System.Collections.Generic;
+using DataBinding;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Enemies.Components.Interfaces;
 using TowerDefence.Entities.Enemies.Models;
@@ -11,7 +11,7 @@ namespace TowerDefence.Entities.Enemies.Components
     [JsonObject(MemberSerialization.OptIn)]
     public abstract class BaseEnemyPathWalker : IPathWalkerComponent, IInitializable
     {
-        protected readonly BindingContext context = new(true);
+        protected readonly BindingContext context = new();
         public UnityAction<IEnemyObject> ReachedEnd { get; set; }
 
         protected IEnemyObject self { get; private set; }
@@ -27,7 +27,10 @@ namespace TowerDefence.Entities.Enemies.Components
             context.Bind(enemyModel, x => x.Components, OnComponentsChanged);
         }
 
-        protected virtual void OnComponentsChanged(IList<IComponent> obj) { }
+        protected virtual void OnComponentsChanged(IList<IComponent> obj)
+        {
+        }
+
         public abstract void Tick();
 
         ~BaseEnemyPathWalker()

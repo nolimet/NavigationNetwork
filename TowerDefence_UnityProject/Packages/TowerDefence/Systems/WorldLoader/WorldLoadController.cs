@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using ModestTree;
 using NoUtil.Debugging;
 using NoUtil.Extensions;
 using TowerDefence.Systems.WorldLoader.Data;
@@ -38,7 +39,11 @@ namespace TowerDefence.Systems.WorldLoader
         {
             "Starting world loading".QuickCLog("World Builder");
             string filePath = FormatWorldName();
-            if (!filePath.FromPath(out LevelData lvlData)) return;
+            if (!filePath.FromPath(out LevelData lvlData))
+            {
+                $"No level {filePath}".QuickCLog("World Builder", LogType.Error);
+                return;
+            }
 
             if (lvlData.gridSettings.HasValue)
                 await gridWorld.CreateWorld(lvlData.gridSettings.Value);

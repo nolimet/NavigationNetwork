@@ -1,0 +1,59 @@
+.HUD-Element {
+    background-color: rgb(63, 63, 63);
+}
+
+.HUD-Text {
+    -unity-font: url('project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans');
+    color: rgb(255, 255, 255);
+}
+
+.HUD-Button {
+    height: 20px;
+    background-color: rgb(51, 51, 51);
+}
+
+.HUD-TowerButton {
+    width: 100px;
+    height: 20px;
+    background-color: rgb(51, 51, 51);
+    -unity-font: url('project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans');
+    color: rgb(255, 255, 255);
+}
+
+#HUD {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+}
+
+#PopupMenu {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(51, 51, 51, 0.2);
+    justify-content: center;
+    align-items: center;
+    display: none;
+    visibility: hidden;
+}
+
+#PopupMenu-Container {
+    width: 300px;
+    height: 400px;
+    position: relative;
+    justify-content: center;
+    background-color: rgb(47, 59, 62);
+}
+
+#SelectionArea {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0, 229, 243, 0.46);
+    display: flex;
+    visibility: visible;
+}

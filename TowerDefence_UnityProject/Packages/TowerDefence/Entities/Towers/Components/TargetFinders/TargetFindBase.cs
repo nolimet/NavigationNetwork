@@ -1,8 +1,8 @@
-﻿using DataBinding;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DataBinding;
+using Newtonsoft.Json;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Enemies;
 using TowerDefence.Entities.Towers.Components.BaseComponents;
@@ -32,11 +32,11 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
 
         public virtual void PostInit(ITowerObject towerObject, ITowerModel model)
         {
-            targetList ??= new();
-            bindingContext ??= new(true);
+            targetList ??= new List<IEnemyObject>();
+            bindingContext ??= new BindingContext();
 
             this.towerObject = towerObject;
-            this.towerModel = model;
+            towerModel = model;
 
             bindingContext.Bind(model, m => m.Components, OnComponentsChanged);
         }
@@ -56,6 +56,7 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
             {
                 return hits.Select(x => x.collider.GetComponent<IEnemyObject>()).Where(x => x != null);
             }
+
             return Array.Empty<IEnemyObject>();
         }
 

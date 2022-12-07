@@ -7,6 +7,7 @@ namespace TowerDefence.Entities
     {
         public string Name { get; set; }
         public Transform Transform { get; }
+        public bool ExistsInWorld { get; }
 
         public Vector3 GetWorldPosition();
 

@@ -15,7 +15,6 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
 
         public void Tick()
         {
-
         }
     }
 }

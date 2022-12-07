@@ -1,7 +1,7 @@
-﻿using DataBinding;
-using NoUtil.Debugging;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using DataBinding;
+using NoUtil.Debugging;
 using TowerDefence.Entities.Enemies;
 using TowerDefence.Entities.Enemies.Models;
 using Zenject;
@@ -11,8 +11,8 @@ namespace TowerDefence.UI.Game.Health
     public sealed class HealthDrawerController : ITickable
     {
         private readonly HealthDrawer.Factory healthDrawerFactory;
-        private readonly List<HealthDrawer> healthBars = new List<HealthDrawer>();
-        private readonly BindingContext bindingContext = new(true);
+        private readonly List<HealthDrawer> healthBars = new();
+        private readonly BindingContext bindingContext = new();
 
         public HealthDrawerController(HealthDrawer.Factory healthDrawerFactory, IEnemiesModel enemiesModel)
         {

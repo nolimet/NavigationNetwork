@@ -64,32 +64,32 @@ namespace TowerDefence.EditorScripts.Entities.Components
                     EditorGUILayout.HelpBox(result, MessageType.Error);
                 }
             }
-
-            foreach (var kv in componentsCache)
+            
+            foreach (var (componentData, displayData) in componentsCache)
             {
-                using (var h1 = new EditorGUILayout.HorizontalScope())
+                using (new EditorGUILayout.HorizontalScope())
                 {
-                    kv.Value.IsExpanded = EditorGUILayout.Foldout(kv.Value.IsExpanded, kv.Value.ComponentName, true);
+                    displayData.IsExpanded = EditorGUILayout.Foldout(displayData.IsExpanded, displayData.ComponentName, true);
                     GUILayout.FlexibleSpace();
                     if (GUILayout.Button("Edit"))
                     {
-                        var popup = new ComponentEditPopup(kv.Value);
+                        var popup = new ComponentEditPopup(displayData);
                         PopupWindow.Show(GUILayoutUtility.GetLastRect(), popup);
                     }
 
                     if (GUILayout.Button("Remove"))
                     {
-                        target.components.Remove(kv.Key);
+                        target.components.Remove(componentData);
                     }
                 }
 
-                if (kv.Value.IsExpanded)
+                if (displayData.IsExpanded)
                 {
-                    using (var i1 = new EditorGUI.IndentLevelScope(1))
+                    using (new EditorGUI.IndentLevelScope(1))
                     {
-                        using (var d1 = new EditorGUI.DisabledGroupScope(true))
+                        using (new EditorGUI.DisabledGroupScope(true))
                         {
-                            EditorGUILayout.TextArea(kv.Value.DisplayJson);
+                            EditorGUILayout.TextArea(displayData.DisplayJson);
                         }
                     }
                 }
@@ -105,7 +105,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
                 component.Key.SerializeComponent(component.Value.Component);
             }
 
-            target.components = componentsCache.Keys.ToList();
+            target!.components = componentsCache.Keys.ToList();
         }
 
         private void RebuildComponentCache()
@@ -114,19 +114,23 @@ namespace TowerDefence.EditorScripts.Entities.Components
 
             var target = this.target as ComponentConfigurationObject;
 
-            foreach (var component in target.components)
+            for (var i = 0; i < target!.components.Count; i++)
             {
-                var displaydata = new DisplayData
+                var component = target!.components[i];
+                var displayData = new DisplayData
                 {
                     Component = component.DeserializeComponent(),
                     ComponentData = component
                 };
 
-                displaydata.ComponentType = displaydata.Component.GetType();
-                displaydata.ComponentName = componentTypesMap[target.type].First(x => x.Value.Equals(displaydata.ComponentType)).Key;
-                displaydata.ComponentToJson();
+                displayData.ComponentType = displayData.Component.GetType();
+                displayData.ComponentName = componentTypesMap[target.type]
+                    .First(x => x.Value == displayData.ComponentType).Key;
+                displayData.ComponentToJson();
+                displayData.ComponentData.SerializedComponent = displayData.Component;
+                displayData.serializedProperty = serializedObject.FindProperty("components").GetArrayElementAtIndex(i);
 
-                componentsCache.Add(component, displaydata);
+                componentsCache.Add(component, displayData);
             }
         }
 
@@ -137,18 +141,21 @@ namespace TowerDefence.EditorScripts.Entities.Components
             componentAttributesMap.Clear();
 
             //Get all the marked components
-            AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(x => x.FullName.ToLower().Contains("towerdefence")))
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies.Where(x => x.FullName.ToLower().Contains("towerdefence")))
             {
                 var components = assembly.GetTypes()
                     .Where
                     (type =>
                             type.IsDefined(typeof(ComponentAttribute)) && //Checking if it the required attribute
                             !type.IsAbstract &&
-                            type.GetInterfaces().Any(x => x.Equals(typeof(IComponent))) //And that it implements the interface.
+                            type.GetInterfaces().Any(x => x == typeof(IComponent)) //And that it implements the interface.
                     );
 
-                Enum.GetValues(typeof(ComponentType)).Cast<ComponentType>().Distinct().Where(x => !componentTypesMap.ContainsKey(x)).ToList().ForEach(type => componentTypesMap.Add(type, new()));
+                Enum.GetValues(typeof(ComponentType)).Cast<ComponentType>().Distinct()
+                    .Where(x => !componentTypesMap.ContainsKey(x))
+                    .ToList()
+                    .ForEach(type => componentTypesMap.Add(type, new()));
 
                 foreach (var component in components)
                 {
