@@ -24,12 +24,7 @@ namespace TowerDefence.World.Grid
 
         private void OnSelectionChanged(IList<ISelectable> selection)
         {
-            // if (selection.Any(x => x is SelectableCell))
-            // {
-            //     var selectedCell = selection.First(x => x is SelectableCell) as SelectableCell;
-            //
-            //     Debug.Log(selectedCell.GridCell.Position);
-            // }
+            //TODO update some display to display the weight of the terrain and show if it supports a tower.
         }
     }
 }
