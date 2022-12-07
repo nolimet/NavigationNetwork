@@ -96,7 +96,7 @@ namespace TowerDefence.UI.Game.PauseMenu
 
             gridWorld.DestroyWorld();
 
-            await sceneReferences.MainMenuScene.LoadSceneAsync();
+            await sceneReferences.LoadMainMenuScene();
         }
 
         public void Dispose()

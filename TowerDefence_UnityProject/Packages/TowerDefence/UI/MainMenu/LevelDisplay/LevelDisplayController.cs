@@ -86,7 +86,7 @@ namespace TowerDefence.UI.MainMenu.LevelDisplay
         private async void OnLoadLevelClicked()
         {
             levelsContainer.SetEnabled(false);
-            await sceneReferences.GameScene.LoadSceneAsync();
+            await sceneReferences.LoadGameScene();
         }
 
         private void OnButtonClicked(string relativePath)
