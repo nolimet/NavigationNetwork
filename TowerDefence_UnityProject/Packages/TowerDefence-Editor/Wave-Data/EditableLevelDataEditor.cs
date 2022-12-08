@@ -26,7 +26,7 @@ namespace TowerDefence.EditorScripts.Systems.Waves.Data
         public void OnEnable()
         {
             waves = serializedObject.FindProperty("waves");
-            pathdata = serializedObject.FindProperty("pathdata").FindPropertyRelative("pathPoints");
+            pathdata = serializedObject.FindProperty("pathData").FindPropertyRelative("pathPoints");
             gridSettingData = serializedObject.FindProperty("gridSettings");
         }
 
@@ -110,7 +110,7 @@ namespace TowerDefence.EditorScripts.Systems.Waves.Data
 
             void DrawPathData()
             {
-                var pathPoints = (target as EditableLevelData).Pathdata.pathPoints;
+                var pathPoints = (target as EditableLevelData).PathData.pathPoints;
                 var points = pathPoints.Where(x => x.type != PointType.Entrance);
                 for (int i = 0; i < pathdata.arraySize; i++)
                 {

@@ -23,6 +23,9 @@ MonoBehaviour:
       - 0.2
       - 0.3
       - 0.5
+      spawnInterval: 0.2
+      spawnDelay: 0
+      groupSize: 20
     - enemyID: GridWalker
       pathID: 0
       entranceId: 0
@@ -40,6 +43,29 @@ MonoBehaviour:
       - 1.6
       - 1.7
       - 1.9
+      spawnInterval: 0.1
+      spawnDelay: 5
+      groupSize: 20
+    - enemyID: GridWalker
+      pathID: 0
+      entranceId: 0
+      exitId: 0
+      spawnTime:
+      - 0
+      - 0.2
+      - 0.3
+      - 0.5
+      - 0.6
+      - 0.8
+      - 1
+      - 1.2
+      - 1.4
+      - 1.6
+      - 1.7
+      - 1.9
+      spawnInterval: 0.05
+      spawnDelay: 7
+      groupSize: 500
   - enemyGroups:
     - enemyID: GridWalker
       pathID: 0
@@ -58,6 +84,9 @@ MonoBehaviour:
       - 1.6
       - 1.7
       - 1.9
+      spawnInterval: 0.3
+      spawnDelay: 0
+      groupSize: 10
   - enemyGroups:
     - enemyID: GridWalker
       pathID: 0
@@ -76,6 +105,9 @@ MonoBehaviour:
       - 1.6
       - 1.7
       - 1.9
+      spawnInterval: 0.2
+      spawnDelay: 0
+      groupSize: 100
   - enemyGroups:
     - enemyID: GridWalker
       pathID: 0
@@ -94,7 +126,10 @@ MonoBehaviour:
       - 1.6
       - 1.7
       - 1.9
-  pathdata:
+      spawnInterval: 0.3
+      spawnDelay: 0
+      groupSize: 40
+  pathData:
     pathPoints:
     - name: 01 - Entrance
       id: 9c35b01b-239c-496f-92d8-f88e8c9655a7

@@ -7,6 +7,7 @@ using TowerDefence.Systems.Waves.Data;
 using TowerDefence.World.Grid.Data;
 using TowerDefence.World.Path.Data;
 using UnityEngine;
+using UnityEngine.Serialization;
 using FileEnemyGroup = TowerDefence.Systems.Waves.Data.Wave.EnemyGroup;
 using FilePathPoint = TowerDefence.World.Path.Data.PathPoint;
 
@@ -17,16 +18,20 @@ namespace TowerDefence.Systems.WorldLoader.Data
     public sealed class EditableLevelData : ScriptableObject
     {
         [SerializeField] private EditableWave[] waves;
-        [SerializeField] private EditablePathData pathdata;
+
+        // ReSharper disable once StringLiteralTypo
+        [FormerlySerializedAs("pathdata")] [SerializeField]
+        private EditablePathData pathData;
+
         [SerializeField] private EditableGridSettings gridSettings;
 
-        internal EditablePathData Pathdata
+        internal EditablePathData PathData
         {
-            get => pathdata;
-            set => pathdata = value;
+            get => pathData;
+            private set => pathData = value;
         }
 
-        internal EditableWave[] Waves
+        private EditableWave[] Waves
         {
             get => waves;
             set => waves = value;
@@ -34,7 +39,7 @@ namespace TowerDefence.Systems.WorldLoader.Data
 
         public LevelData ToLevelDataPath()
         {
-            return new LevelData(Waves.Select(x => (Wave)x).ToArray(), Pathdata);
+            return new LevelData(Waves.Select(x => (Wave)x).ToArray(), PathData);
         }
 
         internal LevelData ToLevelDataGrid()
@@ -47,13 +52,14 @@ namespace TowerDefence.Systems.WorldLoader.Data
             var waveCount = levelData.waves?.Length ?? 0;
             var waves = new EditableWave[waveCount];
 
-            for (int i = 0; i < waveCount; i++)
-            {
-                waves[i] = levelData.waves[i];
-            }
+            if (levelData.waves is not null)
+                for (int i = 0; i < waveCount; i++)
+                {
+                    waves[i] = levelData.waves[i];
+                }
 
             Waves = waves;
-            Pathdata = levelData.path;
+            PathData = levelData.path;
         }
 
         internal void FromGridSettings(GridSettings gridSettings)
@@ -64,7 +70,7 @@ namespace TowerDefence.Systems.WorldLoader.Data
         [Serializable]
         internal class EditableWave
         {
-            public EnemyGroup[] enemyGroups = new EnemyGroup[0];
+            public EnemyGroup[] enemyGroups;
 
             public EditableWave()
             {
@@ -77,61 +83,74 @@ namespace TowerDefence.Systems.WorldLoader.Data
 
             public static implicit operator Wave(EditableWave wave)
             {
-                var enemygroups = new FileEnemyGroup[wave.enemyGroups.Length];
+                var enemyGroups = new FileEnemyGroup[wave.enemyGroups.Length];
                 for (int i = 0; i < wave.enemyGroups.Length; i++)
                 {
-                    enemygroups[i] = wave.enemyGroups[i];
+                    enemyGroups[i] = wave.enemyGroups[i];
                 }
 
-                return new Wave(enemygroups);
+                return new Wave(enemyGroups);
             }
 
             public static implicit operator EditableWave(Wave wave)
             {
-                var enemygroups = new EnemyGroup[wave.enemyGroups?.Length ?? 0];
-                if (enemygroups.Length > 0)
+                var enemyGroups = new EnemyGroup[wave.enemyGroups?.Length ?? 0];
+                if (wave.enemyGroups is not { Length: > 0 }) return new EditableWave(enemyGroups);
+                for (int i = 0; i < wave.enemyGroups.Length; i++)
                 {
-                    for (int i = 0; i < wave.enemyGroups.Length; i++)
-                    {
-                        enemygroups[i] = wave.enemyGroups[i];
-                    }
+                    enemyGroups[i] = wave.enemyGroups[i];
                 }
 
-                return new EditableWave(enemygroups);
+                return new EditableWave(enemyGroups);
             }
 
             [Serializable]
             public class EnemyGroup
             {
                 [StringDropdown("enemies.id", typeof(EnemyConfigurationData))]
-                public string enemyID = string.Empty;
+                public string enemyID;
 
                 public int pathID;
                 public int entranceId;
                 public int exitId;
-                public float[] spawnTime = new float[0];
+                public double[] spawnTime;
+                public double spawnInterval, spawnDelay;
+                public ulong groupSize;
 
                 public EnemyGroup()
                 {
                 }
 
-                public EnemyGroup(string enemyID, int pathID, int entranceId, int exitId, float[] spawnTime)
+                public EnemyGroup(string enemyID, int pathID, int entranceId, int exitId, double[] spawnTime, double? spawnInterval, double? spawnDelay, ulong? groupSize)
                 {
                     this.enemyID = enemyID;
                     this.pathID = pathID;
-                    this.spawnTime = spawnTime;
                     this.entranceId = entranceId;
                     this.exitId = exitId;
+                    this.spawnTime = spawnTime;
+                    this.spawnInterval = spawnInterval ?? 0;
+                    this.spawnDelay = spawnDelay ?? 0;
+                    this.groupSize = groupSize ?? 0;
                 }
 
                 public static implicit operator FileEnemyGroup(EnemyGroup group)
                 {
-                    return new FileEnemyGroup(group.enemyID, group.entranceId, group.exitId, group.pathID, group.spawnTime);
+                    return new FileEnemyGroup
+                    (
+                        enemyID: group.enemyID,
+                        entranceId: group.entranceId,
+                        exitId: group.exitId,
+                        pathID: group.pathID,
+                        spawnTime: group.spawnTime,
+                        groupSize: group.groupSize,
+                        spawnInterval: group.spawnInterval,
+                        spawnDelay: group.spawnDelay
+                    );
                 }
 
                 public static implicit operator EnemyGroup(FileEnemyGroup group)
                 {
-                    return new EnemyGroup(group.enemyID, group.entranceId, group.exitId, group.pathID, group.spawnTime);
+                    return new EnemyGroup(group.enemyID, group.entranceId, group.exitId, group.pathID, group.spawnTime, group.spawnInterval, group.spawnDelay, group.groupSize);
                 }
             }
         }
@@ -139,7 +158,7 @@ namespace TowerDefence.Systems.WorldLoader.Data
         [Serializable]
         internal class EditablePathData
         {
-            public PathPoint[] pathPoints = new PathPoint[0];
+            public PathPoint[] pathPoints;
 
             public EditablePathData()
             {
@@ -240,7 +259,7 @@ namespace TowerDefence.Systems.WorldLoader.Data
             [Serializable]
             internal class EditableGridLayout
             {
-                public EditableLayoutNode[] nodes = new EditableLayoutNode[0];
+                public EditableLayoutNode[] nodes;
 
                 public int Length => nodes.Length;
 
@@ -278,11 +297,12 @@ namespace TowerDefence.Systems.WorldLoader.Data
             internal class EditableLayoutNode
             {
                 public byte weight;
-                public bool supportsTower = true;
+                public bool supportsTower;
 
                 public EditableLayoutNode(byte weight, bool supportsTower)
                 {
                     this.weight = weight;
+                    this.supportsTower = supportsTower;
                 }
 
                 public static implicit operator GridSettings.Cell(EditableLayoutNode v)

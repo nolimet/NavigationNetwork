@@ -29,20 +29,35 @@ namespace TowerDefence.Systems.Waves.Data
 
             [JsonProperty("PathID")] public readonly int pathID;
 
-            [JsonProperty("SpawnTime")] public readonly float[] spawnTime;
+            [JsonProperty("SpawnTime")] public readonly double[] spawnTime;
 
-            [JsonProperty("EnemyGroupSize")] public readonly long? enemyGroupSize;
+            [JsonProperty("EnemyGroupSize")] public readonly ulong? groupSize;
             [JsonProperty("spawnInterval")] public readonly double? spawnInterval;
             [JsonProperty("spawnDelay")] public readonly double? spawnDelay;
 
+
             [JsonConstructor]
-            public EnemyGroup(string enemyID, int pathID, int entranceId, int exitId, float[] spawnTime)
+            public EnemyGroup(string enemyID, int entranceId, int exitId, int pathID, double[] spawnTime, ulong? groupSize, double? spawnInterval, double? spawnDelay)
             {
                 this.enemyID = enemyID;
-                this.pathID = pathID;
                 this.entranceId = entranceId;
                 this.exitId = exitId;
-                this.spawnTime = spawnTime;
+                this.pathID = pathID;
+
+                if (spawnTime is { Length: > 1 } && groupSize == 0)
+                {
+                    this.spawnTime = spawnTime;
+                    this.groupSize = null;
+                    this.spawnInterval = null;
+                    this.spawnDelay = null;
+                }
+                else
+                {
+                    this.spawnTime = null;
+                    this.groupSize = groupSize;
+                    this.spawnInterval = spawnInterval;
+                    this.spawnDelay = spawnDelay;
+                }
             }
         }
     }

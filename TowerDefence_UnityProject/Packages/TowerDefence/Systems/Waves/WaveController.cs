@@ -95,14 +95,28 @@ namespace TowerDefence.Systems.Waves
         private async UniTask PlayWave(Wave wave, CancellationToken token)
         {
             Debug.Log("wave started");
-            var waveLookup = new (EnemyGroup group, Queue<float> time)[wave.enemyGroups.Length];
+            var waveLookup = new (EnemyGroup group, Queue<double> time)[wave.enemyGroups.Length];
             var enemyWatchers = new List<UniTask>();
             for (int i = 0; i < waveLookup.Length; i++)
             {
-                var (newGroup, spawnTimes) = waveLookup[i] = (wave.enemyGroups[i], new Queue<float>());
-                foreach (var spawnTime in newGroup.spawnTime)
+                var (newGroup, spawnTimes) = waveLookup[i] = (wave.enemyGroups[i], new Queue<double>());
+                if (newGroup is { spawnInterval: { }, spawnDelay: { }, groupSize: > 0 })
                 {
-                    spawnTimes.Enqueue(spawnTime);
+                    double currentTime = newGroup.spawnDelay.Value;
+                    double interval = newGroup.spawnInterval.Value;
+                    ulong groupSize = newGroup.groupSize.Value;
+                    for (ulong j = 0; j < groupSize; j++)
+                    {
+                        spawnTimes.Enqueue(currentTime);
+                        currentTime += interval;
+                    }
+                }
+                else
+                {
+                    foreach (var spawnTime in newGroup.spawnTime)
+                    {
+                        spawnTimes.Enqueue(spawnTime);
+                    }
                 }
             }
 
