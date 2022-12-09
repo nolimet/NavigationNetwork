@@ -19,7 +19,7 @@ namespace DataBinding
 			private static TowerDefence.Systems.Waves.Models.IWavePlayStateModel CreateWavePlayStateModel() { return new TowerDefence.Systems.Waves.Models.WavePlayStateModel(); }
 			private static TowerDefence.Systems.LevelEditor.Models.IWavesModel CreateWavesModel() { return new TowerDefence.Systems.LevelEditor.Models.WavesModel(); }
 			private static TowerDefence.Systems.WorldLoader.Models.IWorldDataModel CreateWorldDataModel() { return new TowerDefence.Systems.WorldLoader.Models.WorldDataModel(); }
-			private static TowerDefence.Systems.LevelEditor.Models.IWorldLayout CreateWorldLayout() { return new TowerDefence.Systems.LevelEditor.Models.WorldLayout(); }
+			private static TowerDefence.Systems.LevelEditor.Models.IWorldLayoutModel CreateWorldLayoutModel() { return new TowerDefence.Systems.LevelEditor.Models.WorldLayoutModel(); }
 	
 		public static T Create<T>() where T : DataBinding.BaseClasses.IModelBase {
 
@@ -35,7 +35,7 @@ namespace DataBinding
 					if (typeof(T) == typeof(TowerDefence.Systems.Waves.Models.IWavePlayStateModel )) { return (T)(CreateWavePlayStateModel()); }
 					if (typeof(T) == typeof(TowerDefence.Systems.LevelEditor.Models.IWavesModel )) { return (T)(CreateWavesModel()); }
 					if (typeof(T) == typeof(TowerDefence.Systems.WorldLoader.Models.IWorldDataModel )) { return (T)(CreateWorldDataModel()); }
-					if (typeof(T) == typeof(TowerDefence.Systems.LevelEditor.Models.IWorldLayout )) { return (T)(CreateWorldLayout()); }
+					if (typeof(T) == typeof(TowerDefence.Systems.LevelEditor.Models.IWorldLayoutModel )) { return (T)(CreateWorldLayoutModel()); }
 					return default(T);
 		}
 	}

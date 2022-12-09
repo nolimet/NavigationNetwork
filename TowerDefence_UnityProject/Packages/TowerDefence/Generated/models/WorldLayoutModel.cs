@@ -10,7 +10,7 @@ using DataBinding.BaseClasses;
 
 namespace TowerDefence.Systems.LevelEditor.Models 
 {
-	public class WorldLayout : TowerDefence.Systems.LevelEditor.Models.IWorldLayout 
+	public class WorldLayoutModel : TowerDefence.Systems.LevelEditor.Models.IWorldLayoutModel 
 	{
 		public event Action OnChange;
 			// Cells
@@ -46,7 +46,7 @@ namespace TowerDefence.Systems.LevelEditor.Models
 			}
 		}
 	
-		public WorldLayout() { 
+		public WorldLayoutModel() { 
 				Cells = new System.Collections.ObjectModel.ObservableCollection<TowerDefence.Systems.LevelEditor.Models.Cell>();
 			}
 

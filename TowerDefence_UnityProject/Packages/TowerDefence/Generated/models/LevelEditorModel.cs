@@ -13,6 +13,20 @@ namespace TowerDefence.Systems.LevelEditor.Models
 	public class LevelEditorModel : TowerDefence.Systems.LevelEditor.Models.ILevelEditorModel 
 	{
 		public event Action OnChange;
+			// levelName
+		public event System.Action<System.String> OnChangelevelName;
+		private System.String _levelName ; 
+		public System.String levelName 
+		{
+			get => _levelName;
+			set 
+			{
+								_levelName = value; 
+
+				OnChangelevelName?.Invoke(value);
+				OnChange?.Invoke();
+			}
+		}
 			// waves
 		public event System.Action<IModelBase> OnChangewaves;
 		private TowerDefence.Systems.LevelEditor.Models.IWavesModel _waves ; 
@@ -29,8 +43,8 @@ namespace TowerDefence.Systems.LevelEditor.Models
 		}
 			// world
 		public event System.Action<IModelBase> OnChangeworld;
-		private TowerDefence.Systems.LevelEditor.Models.IWorldLayout _world ; 
-		public TowerDefence.Systems.LevelEditor.Models.IWorldLayout world 
+		private TowerDefence.Systems.LevelEditor.Models.IWorldLayoutModel _world ; 
+		public TowerDefence.Systems.LevelEditor.Models.IWorldLayoutModel world 
 		{
 			get => _world;
 			set 

@@ -6,7 +6,8 @@ namespace TowerDefence.Systems.LevelEditor.Models
     [DataModel(AddToZenject = true, Shared = true)]
     public interface ILevelEditorModel : IModelBase
     {
+        string levelName { get; set; }
         IWavesModel waves { get; set; }
-        IWorldLayout world { get; set; }
+        IWorldLayoutModel world { get; set; }
     }
 }

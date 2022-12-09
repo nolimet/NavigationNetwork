@@ -1,4 +1,5 @@
-﻿using TowerDefence.Systems.LevelEditor.Models;
+﻿using DataBinding;
+using TowerDefence.Systems.LevelEditor.Models;
 
 namespace TowerDefence.Systems.LevelEditor
 {
@@ -9,6 +10,12 @@ namespace TowerDefence.Systems.LevelEditor
         internal LevelEditorController(ILevelEditorModel levelEditorModel)
         {
             this.levelEditorModel = levelEditorModel;
+        }
+
+        public void ResetLevelEditor()
+        {
+            levelEditorModel.waves = ModelFactory.Create<IWavesModel>();
+            levelEditorModel.world = ModelFactory.Create<IWorldLayoutModel>();
         }
     }
 }
