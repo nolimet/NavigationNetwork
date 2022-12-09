@@ -1,7 +1,7 @@
-﻿using Cysharp.Threading.Tasks;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using TowerDefence.World.Grid.Data;
 using UnityEngine;
 
@@ -11,11 +11,11 @@ namespace TowerDefence.World.Grid
     {
         public Action OnPathCacheCleared;
 
-        private IEnumerable<IGridCell> world;
+        private IReadOnlyCollection<IGridCell> world;
         private readonly GridGenerator gridGenerator;
         private readonly GridVisualGenerator visualGenerator;
         private readonly List<PathFinder> pathfinderPool = new();
-        private readonly Dictionary<(IGridCell start, IGridCell end), IEnumerable<IGridCell>> pathCache = new();
+        private readonly Dictionary<(IGridCell start, IGridCell end), IReadOnlyCollection<IGridCell>> pathCache = new();
 
         private Vector2Int[] entrances = Array.Empty<Vector2Int>();
         private Vector2Int[] exits = Array.Empty<Vector2Int>();
@@ -51,28 +51,27 @@ namespace TowerDefence.World.Grid
             pathCache.Clear();
         }
 
-        public async UniTask<IEnumerable<IGridCell>> GetPath(int entraceId, int exitId)
+        public async UniTask<IEnumerable<IGridCell>> GetPath(int entranceId, int exitId)
         {
-            var entrace = entraceId < entrances.Length ? GetCell(entrances[entraceId]) : null;
+            var entrance = entranceId < entrances.Length ? GetCell(entrances[entranceId]) : null;
             var exit = exitId < exits.Length ? GetCell(exits[exitId]) : null;
 
-            if (entrace != null && exit != null)
+            if (entrance != null && exit != null)
             {
-                return await GetPath(entrace, exit);
+                return await GetPath(entrance, exit);
             }
 
             return Array.Empty<IGridCell>();
         }
 
-        public async UniTask<IEnumerable<IGridCell>> GetPath(IGridCell start, IGridCell end)
+        public async UniTask<IReadOnlyCollection<IGridCell>> GetPath(IGridCell start, IGridCell end)
         {
-            PathFinder pathFinder;
-            IEnumerable<IGridCell> path;
-            if (pathCache.TryGetValue((start, end), out path))
+            if (pathCache.TryGetValue((start, end), out var path))
             {
                 return path;
             }
 
+            PathFinder pathFinder;
             if (pathfinderPool.Any(x => !x.Working))
             {
                 pathFinder = pathfinderPool.First(x => !x.Working);
@@ -91,6 +90,7 @@ namespace TowerDefence.World.Grid
             {
                 pathCache.Add((start, end), path);
             }
+
             pathfinderPool.Add(pathFinder);
             return path;
         }

@@ -15,7 +15,7 @@ namespace TowerDefence.World.Grid
             this.worldSettings = worldSettings;
         }
 
-        public IEnumerable<IGridCell> CreateNodes(GridSettings settings)
+        public IReadOnlyCollection<IGridCell> CreateNodes(GridSettings settings)
         {
             Validate();
             var returnValue = new List<IGridCell>();

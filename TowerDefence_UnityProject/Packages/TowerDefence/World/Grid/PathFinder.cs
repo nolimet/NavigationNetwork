@@ -22,8 +22,7 @@ namespace TowerDefence.World.Grid
             {
                 if (a != null && b != null)
                     return fScore[a].CompareTo(fScore[b]);
-                else
-                    return 0;
+                return 0;
             }
         }
 
@@ -42,8 +41,9 @@ namespace TowerDefence.World.Grid
         // returns null if no path is found
         //
         // this function is NOT thread-safe (due to using static data for GC optimization)
-        public IList<IGridCell> GetPath(IGridCell start, IGridCell goal)
+        public IReadOnlyCollection<IGridCell> GetPath(IGridCell start, IGridCell goal)
         {
+            Working = true;
             if (start == null || goal == null)
             {
                 return null;
@@ -62,17 +62,15 @@ namespace TowerDefence.World.Grid
             hScore.Add(start, start.GetCost(goal));
             fScore.Add(start, hScore[start]);
 
-            OpenSorter sorter = new OpenSorter(fScore);
-            IGridCell current, previousNode = null;
-
-            float tentativeGScore;
-            bool tentativeIsBetter;
+            var sorter = new OpenSorter(fScore);
+            IGridCell previousNode = null;
 
             while (open.Count > 0)
             {
-                current = open[0];
+                var current = open[0];
                 if (current == goal)
                 {
+                    Working = false;
                     return ReconstructPath(new List<IGridCell>(), vistedNodes, goal);
                 }
 
@@ -83,43 +81,44 @@ namespace TowerDefence.World.Grid
                 {
                     previousNode = vistedNodes[current];
                 }
-                foreach (IGridCell nextNode in current.ConnectedCells)
+
+                foreach (var nextNode in current.ConnectedCells)
                 {
-                    if (previousNode != nextNode && !closed.Contains(nextNode))
+                    if (previousNode == nextNode || closed.Contains(nextNode)) continue;
+
+                    var tentativeGScore = gScore[current] + current.GetCost(nextNode);
+                    var tentativeIsBetter = true;
+
+                    if (!open.Contains(nextNode))
                     {
-                        tentativeGScore = gScore[current] + current.GetCost(nextNode);
-                        tentativeIsBetter = true;
-
-                        if (!open.Contains(nextNode))
-                        {
-                            open.Add(nextNode);
-                        }
-                        else
-                        if (tentativeGScore >= gScore[nextNode])
-                        {
-                            tentativeIsBetter = false;
-                        }
-
-                        if (tentativeIsBetter)
-                        {
-                            vistedNodes[nextNode] = current;
-                            gScore[nextNode] = tentativeGScore;
-                            hScore[nextNode] = nextNode.GetCost(goal);
-                            fScore[nextNode] = gScore[nextNode] + hScore[nextNode];
-                        }
+                        open.Add(nextNode);
                     }
+                    else if (tentativeGScore >= gScore[nextNode])
+                    {
+                        tentativeIsBetter = false;
+                    }
+
+                    if (!tentativeIsBetter) continue;
+                    vistedNodes[nextNode] = current;
+                    gScore[nextNode] = tentativeGScore;
+                    hScore[nextNode] = nextNode.GetCost(goal);
+                    fScore[nextNode] = gScore[nextNode] + hScore[nextNode];
                 }
+
                 open.Sort(sorter);
             }
+
+            Working = false;
             return null;
         }
 
-        private static IList<IGridCell> ReconstructPath(IList<IGridCell> path, Dictionary<IGridCell, IGridCell> visitedCells, IGridCell currentCell)
+        private static IReadOnlyCollection<IGridCell> ReconstructPath(List<IGridCell> path, Dictionary<IGridCell, IGridCell> visitedCells, IGridCell currentCell)
         {
             if (visitedCells.ContainsKey(currentCell))
             {
                 ReconstructPath(path, visitedCells, visitedCells[currentCell]);
             }
+
             path.Add(currentCell);
             return path;
         }
