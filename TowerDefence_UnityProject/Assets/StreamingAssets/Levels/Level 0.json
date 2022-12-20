@@ -1,0 +1,82 @@
+{
+  "Waves": [
+    {
+      "EnemyGroups": [
+        {
+          "EnemyID": "GridWalker",
+          "EntranceId": 0,
+          "ExitId": 0,
+          "PathID": 0,
+          "EnemyGroupSize": 20,
+          "spawnInterval": 0.2,
+          "spawnDelay": 0.0
+        },
+        {
+          "EnemyID": "GridWalker",
+          "EntranceId": 0,
+          "ExitId": 0,
+          "PathID": 0,
+          "EnemyGroupSize": 20,
+          "spawnInterval": 0.1,
+          "spawnDelay": 5.0
+        }
+      ]
+    },
+    {
+      "EnemyGroups": [
+        {
+          "EnemyID": "GridWalker",
+          "EntranceId": 0,
+          "ExitId": 0,
+          "PathID": 0,
+          "EnemyGroupSize": 10,
+          "spawnInterval": 0.3,
+          "spawnDelay": 0.0
+        }
+      ]
+    },
+    {
+      "EnemyGroups": [
+        {
+          "EnemyID": "GridWalker",
+          "EntranceId": 0,
+          "ExitId": 0,
+          "PathID": 0,
+          "EnemyGroupSize": 100,
+          "spawnInterval": 0.2,
+          "spawnDelay": 0.0
+        }
+      ]
+    },
+    {
+      "EnemyGroups": [
+        {
+          "EnemyID": "GridWalker",
+          "EntranceId": 0,
+          "ExitId": 0,
+          "PathID": 0,
+          "EnemyGroupSize": 40,
+          "spawnInterval": 0.3,
+          "spawnDelay": 0.0
+        }
+      ]
+    }
+  ],
+  "gridData": {
+    "EntryPoints": [
+      {
+        "x": 0,
+        "y": 0
+      }
+    ],
+    "EndPoints": [
+      {
+        "x": 15,
+        "y": 15
+      }
+    ],
+    "GridHeight": 16,
+    "GridWidth": 16,
+    "Cells": "AQEFD5v//////////////wAAAhu3//////////////8AAgMqyv//////////////AAQDOdr//////////////wACA1Ds//////////////8AAAqC+v//////////////AAEJnf///////////////wAAA5X///////////////8AAAEpo/P/////////////AQAAAgphzPP+/////////wEABAMABDKAver9//////8BAA03AgEGDy1prNz4/v//AQAMnTgFAgIFDSBTls/LwQIAHcjYXRoFAQIFChQhEg8CBE7k/vC+bywKAgEBAAAAByW2/P////vclUsZBAAAAQ==|0111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111110111011111011110011111"
+  }
+}
