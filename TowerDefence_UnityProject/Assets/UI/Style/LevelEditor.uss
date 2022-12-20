@@ -1,0 +1,8 @@
+#SideBar {
+    background-color: #2a2a2a;
+}
+
+.unity-label {
+    color: #c7d3d6;
+    -unity-text-align: middle-center;
+}
