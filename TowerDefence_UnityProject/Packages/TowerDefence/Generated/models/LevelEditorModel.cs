@@ -13,45 +13,59 @@ namespace TowerDefence.Systems.LevelEditor.Models
 	public class LevelEditorModel : TowerDefence.Systems.LevelEditor.Models.ILevelEditorModel 
 	{
 		public event Action OnChange;
-			// levelName
-		public event System.Action<System.String> OnChangelevelName;
-		private System.String _levelName ; 
-		public System.String levelName 
+			// LevelName
+		public event System.Action<System.String> OnChangeLevelName;
+		private System.String _LevelName ; 
+		public System.String LevelName 
 		{
-			get => _levelName;
+			get => _LevelName;
 			set 
 			{
-								_levelName = value; 
+								_LevelName = value; 
 
-				OnChangelevelName?.Invoke(value);
+				OnChangeLevelName?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
-			// waves
-		public event System.Action<IModelBase> OnChangewaves;
-		private TowerDefence.Systems.LevelEditor.Models.IWavesModel _waves ; 
-		public TowerDefence.Systems.LevelEditor.Models.IWavesModel waves 
+			// RebuildingWorld
+		public event System.Action<System.Boolean> OnChangeRebuildingWorld;
+		private System.Boolean _RebuildingWorld ; 
+		public System.Boolean RebuildingWorld 
 		{
-			get => _waves;
+			get => _RebuildingWorld;
 			set 
 			{
-								_waves = value; 
+								_RebuildingWorld = value; 
 
-				OnChangewaves?.Invoke(value);
+				OnChangeRebuildingWorld?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
-			// world
-		public event System.Action<IModelBase> OnChangeworld;
-		private TowerDefence.Systems.LevelEditor.Models.IWorldLayoutModel _world ; 
-		public TowerDefence.Systems.LevelEditor.Models.IWorldLayoutModel world 
+			// Waves
+		public event System.Action<IModelBase> OnChangeWaves;
+		private TowerDefence.Systems.LevelEditor.Models.IWavesModel _Waves ; 
+		public TowerDefence.Systems.LevelEditor.Models.IWavesModel Waves 
 		{
-			get => _world;
+			get => _Waves;
 			set 
 			{
-								_world = value; 
+								_Waves = value; 
 
-				OnChangeworld?.Invoke(value);
+				OnChangeWaves?.Invoke(value);
+				OnChange?.Invoke();
+			}
+		}
+			// World
+		public event System.Action<IModelBase> OnChangeWorld;
+		private TowerDefence.Systems.LevelEditor.Models.IWorldLayoutModel _World ; 
+		public TowerDefence.Systems.LevelEditor.Models.IWorldLayoutModel World 
+		{
+			get => _World;
+			set 
+			{
+								_World = value; 
+
+				OnChangeWorld?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
