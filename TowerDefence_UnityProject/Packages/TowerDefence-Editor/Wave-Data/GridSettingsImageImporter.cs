@@ -19,10 +19,10 @@ namespace TowerDefence.EditorScripts.Systems.Waves
             tex.LoadImage(bytes);
 
             bytes = null;
-            int h = tex.height;
-            int w = tex.width;
-            Color32[] colors = tex.GetPixels32();
-            GridSettings.Cell[] cells = new GridSettings.Cell[colors.Length];
+            uint h = (uint)tex.height;
+            uint w = (uint)tex.width;
+            var colors = tex.GetPixels32();
+            var cells = new GridSettings.Cell[colors.Length];
 
             for (int i = 0; i < colors.Length; i++)
             {

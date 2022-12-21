@@ -30,11 +30,11 @@ namespace TowerDefence.Systems.LevelEditor.Managers
             gridBindingContext.Bind(world, x => x.Width, OnwWorldSizeChanged);
         }
 
-        private void OnwWorldSizeChanged(int _)
+        private void OnwWorldSizeChanged(uint _)
         {
             if (levelEditorModel.World is null) return;
             var world = levelEditorModel.World;
-            int size = world.Height * world.Width;
+            var size = world.Height * world.Width;
 
 
             while (world.Cells.Count < size)

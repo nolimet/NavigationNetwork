@@ -110,9 +110,9 @@ namespace TowerDefence.Systems.LevelEditor.Models
 			}
 		}
 			// Height
-		public event System.Action<System.Int32> OnChangeHeight;
-		private System.Int32 _Height ; 
-		public System.Int32 Height 
+		public event System.Action<System.UInt32> OnChangeHeight;
+		private System.UInt32 _Height ; 
+		public System.UInt32 Height 
 		{
 			get => _Height;
 			set 
@@ -124,9 +124,9 @@ namespace TowerDefence.Systems.LevelEditor.Models
 			}
 		}
 			// Width
-		public event System.Action<System.Int32> OnChangeWidth;
-		private System.Int32 _Width ; 
-		public System.Int32 Width 
+		public event System.Action<System.UInt32> OnChangeWidth;
+		private System.UInt32 _Width ; 
+		public System.UInt32 Width 
 		{
 			get => _Width;
 			set 

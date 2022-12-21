@@ -11,7 +11,7 @@ namespace TowerDefence.World.Grid.Data
     [Serializable]
     internal readonly struct GridSettings
     {
-        public GridSettings(int gridHeight, int gridWidth, Cell[] cells, Vector2Int[] entryPoints, Vector2Int[] endPoints)
+        public GridSettings(uint gridHeight, uint gridWidth, Cell[] cells, Vector2Int[] entryPoints, Vector2Int[] endPoints)
         {
             GridHeight = gridHeight;
             GridWidth = gridWidth;
@@ -23,9 +23,9 @@ namespace TowerDefence.World.Grid.Data
         [JsonProperty] public readonly Vector2Int[] EntryPoints;
         [JsonProperty] public readonly Vector2Int[] EndPoints;
 
-        [JsonProperty] public readonly int GridHeight;
+        [JsonProperty] public readonly uint GridHeight;
 
-        [JsonProperty] public readonly int GridWidth;
+        [JsonProperty] public readonly uint GridWidth;
 
         /// <summary>
         /// Grid weights and layout. 255 is not traversable

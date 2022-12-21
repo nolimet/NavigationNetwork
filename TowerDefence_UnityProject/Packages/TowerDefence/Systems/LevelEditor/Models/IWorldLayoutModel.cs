@@ -10,8 +10,8 @@ namespace TowerDefence.Systems.LevelEditor.Models
     [DataModel(AddToZenject = false, Shared = false)]
     public interface IWorldLayoutModel : IModelBase
     {
-        int Height { get; set; }
-        int Width { get; set; }
+        uint Height { get; set; }
+        uint Width { get; set; }
 
         IList<ICellModel> Cells { get; }
         IList<Vector2Int> EntryPoints { get; }

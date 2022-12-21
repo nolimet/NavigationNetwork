@@ -85,7 +85,7 @@ namespace TowerDefence.World.Grid
             void Validate()
             {
                 if (settings.Cells == null) throw new NullReferenceException("No Cells");
-                int gridCount = settings.GridWidth * settings.GridHeight;
+                uint gridCount = settings.GridWidth * settings.GridHeight;
                 if (gridCount != settings.Cells.Length) throw new Exception($"layout and size do not match! - {gridCount} vs {settings.Cells?.Length}");
             }
         }

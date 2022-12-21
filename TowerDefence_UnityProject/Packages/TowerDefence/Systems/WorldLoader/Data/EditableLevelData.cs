@@ -234,9 +234,9 @@ namespace TowerDefence.Systems.WorldLoader.Data
         [Serializable]
         internal class EditableGridSettings
         {
-            public int GridHeight;
+            public uint GridHeight;
 
-            public int GridWidth;
+            public uint GridWidth;
 
             public Vector2Int[] EntryPoints;
 
@@ -247,7 +247,7 @@ namespace TowerDefence.Systems.WorldLoader.Data
             /// </summary>
             public EditableLayoutNode[] nodes;
 
-            public EditableGridSettings(int gridHeight, int gridWidth, GridSettings.Cell[] nodes, Vector2Int[] entryPoints, Vector2Int[] endPoints)
+            public EditableGridSettings(uint gridHeight, uint gridWidth, GridSettings.Cell[] nodes, Vector2Int[] entryPoints, Vector2Int[] endPoints)
             {
                 GridHeight = gridHeight;
                 GridWidth = gridWidth;
