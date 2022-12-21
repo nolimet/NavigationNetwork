@@ -66,7 +66,7 @@ namespace TowerDefence.Systems.LevelEditor.UI
 
         private void OnWidthInputChanged(ChangeEvent<string> evt)
         {
-            uint value = uint.TryParse(evt.newValue, out value) ? value : 1;
+            uint value = uint.TryParse(evt.newValue, out value) && value > 0 ? value : 1;
             levelEditorModel.World.Width = value;
         }
 
