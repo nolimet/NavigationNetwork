@@ -37,11 +37,15 @@ namespace TowerDefence.Systems.LevelEditor.UI
             worldBindingContext?.Dispose();
             worldBindingContext = new BindingContext();
             if (world is null) return;
-            worldBindingContext.Bind(world, x => x.Cells, OnGridCellsChanged);
+            worldBindingContext.Bind(world, x => x.Width, OnWorldSizeChanged);
+            worldBindingContext.Bind(world, x => x.Height, OnWorldSizeChanged);
         }
 
-        private void OnGridCellsChanged(IList<ICellModel> cells)
+        private void OnWorldSizeChanged(uint _)
         {
+            var world = levelEditorModel.World;
+            heightInput.SetValueWithoutNotify(world.Height.ToString());
+            widthInput.SetValueWithoutNotify(world.Width.ToString());
         }
 
         private void OnUIContainerChanged(IList<IUIContainer> _)
@@ -52,7 +56,24 @@ namespace TowerDefence.Systems.LevelEditor.UI
             gridWorldRoot = root.Q(gridWorldRootId);
             gridWorldRoot.Clear();
 
-            var widthInput = root.Q<TextField>("Width");
+            var gridSize = root.Q("GridSize");
+            widthInput = gridSize.Q<TextField>("Width");
+            heightInput = gridSize.Q<TextField>("Height");
+
+            heightInput.RegisterValueChangedCallback(OnHeightInputChanged);
+            widthInput.RegisterValueChangedCallback(OnWidthInputChanged);
+        }
+
+        private void OnWidthInputChanged(ChangeEvent<string> evt)
+        {
+            uint value = uint.TryParse(evt.newValue, out value) ? value : 1;
+            levelEditorModel.World.Width = value;
+        }
+
+        private void OnHeightInputChanged(ChangeEvent<string> evt)
+        {
+            uint value = uint.TryParse(evt.newValue, out value) && value > 0 ? value : 1;
+            levelEditorModel.World.Height = value;
         }
     }
 }
