@@ -9,8 +9,7 @@ namespace TowerDefence.Systems.LevelEditor.UI
 {
     public class WorldEditorUIManager
     {
-        private const string UIDocumentId = "";
-        private const string gridWorldRootId = "";
+        private const string UIDocumentId = "LevelEdiitorUI";
 
         private readonly BindingContext bindingContext = new();
         private BindingContext worldBindingContext = new();
@@ -20,8 +19,6 @@ namespace TowerDefence.Systems.LevelEditor.UI
 
         private TextField widthInput;
         private TextField heightInput;
-
-        private VisualElement gridWorldRoot;
 
         public WorldEditorUIManager(IUIContainers uiContainers, ILevelEditorModel levelEditorModel)
         {
@@ -44,8 +41,8 @@ namespace TowerDefence.Systems.LevelEditor.UI
         private void OnWorldSizeChanged(uint _)
         {
             var world = levelEditorModel.World;
-            heightInput.SetValueWithoutNotify(world.Height.ToString());
-            widthInput.SetValueWithoutNotify(world.Width.ToString());
+            heightInput?.SetValueWithoutNotify(world.Height.ToString());
+            widthInput?.SetValueWithoutNotify(world.Width.ToString());
         }
 
         private void OnUIContainerChanged(IList<IUIContainer> _)
@@ -53,12 +50,17 @@ namespace TowerDefence.Systems.LevelEditor.UI
             if (!uiContainers.TryGetContainer(UIDocumentId, out AddressableUIDocumentContainer document)) return;
 
             var root = document.VisualRoot;
-            gridWorldRoot = root.Q(gridWorldRootId);
-            gridWorldRoot.Clear();
 
             var gridSize = root.Q("GridSize");
             widthInput = gridSize.Q<TextField>("Width");
             heightInput = gridSize.Q<TextField>("Height");
+
+            if (levelEditorModel.World is not null)
+            {
+                var world = levelEditorModel.World;
+                heightInput.value = world.Height.ToString();
+                widthInput.value = world.Width.ToString();
+            }
 
             heightInput.RegisterValueChangedCallback(OnHeightInputChanged);
             widthInput.RegisterValueChangedCallback(OnWidthInputChanged);

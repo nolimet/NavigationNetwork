@@ -14,9 +14,11 @@ namespace TowerDefence.Systems.LevelEditor.Managers
 
         private BindingContext gridBindingContext;
 
-        public WorldEditorManager(ILevelEditorModel levelEditorModel)
+        internal WorldEditorManager(ILevelEditorModel levelEditorModel, GridWorld gridWorld)
         {
             this.levelEditorModel = levelEditorModel;
+            this.gridWorld = gridWorld;
+
             levelEditorBindingContext.Bind(levelEditorModel, x => x.World, OnWorldChanged);
         }
 
@@ -25,12 +27,9 @@ namespace TowerDefence.Systems.LevelEditor.Managers
             gridBindingContext?.Dispose();
             gridBindingContext = new BindingContext();
             if (world is null) return;
-
-            gridBindingContext.Bind(world, x => x.Height, OnwWorldSizeChanged);
-            gridBindingContext.Bind(world, x => x.Width, OnwWorldSizeChanged);
         }
 
-        private void OnwWorldSizeChanged(uint _)
+        public void RebuildWorld()
         {
             if (levelEditorModel.World is null) return;
             var world = levelEditorModel.World;

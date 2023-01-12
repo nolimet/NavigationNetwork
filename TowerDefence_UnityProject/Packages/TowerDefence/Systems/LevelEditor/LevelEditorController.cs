@@ -16,6 +16,8 @@ namespace TowerDefence.Systems.LevelEditor
         {
             levelEditorModel.Waves = ModelFactory.Create<IWavesModel>();
             levelEditorModel.World = ModelFactory.Create<IWorldLayoutModel>();
+            levelEditorModel.World.Height = 1;
+            levelEditorModel.World.Width = 1;
         }
     }
 }
