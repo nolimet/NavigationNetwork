@@ -8,6 +8,6 @@
                 <ui:TextField picking-mode="Ignore" value="100" text="filler text" name="Height" style="flex-direction: column; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; width: 75px;" />
             </ui:VisualElement>
         </ui:ScrollView>
-        <ui:Button text="Update World" display-tooltip-when-elided="true" name="RebuildUI" tooltip="Update the world with the data stored in the panel" />
+        <ui:Button text="Update World" display-tooltip-when-elided="true" name="RebuildGrid" tooltip="Update the world with the data stored in the panel" />
     </ui:VisualElement>
 </ui:UXML>

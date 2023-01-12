@@ -29,9 +29,9 @@ namespace TowerDefence.Systems.LevelEditor.Managers
             if (world is null) return;
         }
 
-        public void RebuildWorld()
+        public UniTask RebuildWorld()
         {
-            if (levelEditorModel.World is null) return;
+            if (levelEditorModel.World is null) return UniTask.CompletedTask;
             var world = levelEditorModel.World;
             var size = world.Height * world.Width;
 
@@ -46,12 +46,10 @@ namespace TowerDefence.Systems.LevelEditor.Managers
                 world.Cells.Remove(world.Cells[^1]);
             }
 
-            if (levelEditorModel.RebuildingWorld) return;
+            if (levelEditorModel.RebuildingWorld) return UniTask.CompletedTask;
             levelEditorModel.RebuildingWorld = true;
-            gridWorld.CreateWorld(world.ToGridSettings())
-                .ContinueWith(() => levelEditorModel.RebuildingWorld = false)
-                .Preserve()
-                .Forget();
+            return gridWorld.CreateWorld(world.ToGridSettings())
+                .ContinueWith(() => levelEditorModel.RebuildingWorld = false);
         }
 
         public void Dispose()
