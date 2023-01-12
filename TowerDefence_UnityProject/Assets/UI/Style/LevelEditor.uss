@@ -1,8 +1,15 @@
 #SideBar {
-    background-color: #2a2a2a;
+    background-color: rgb(42, 42, 42);
 }
 
 .unity-label {
-    color: #c7d3d6;
+    color: rgb(199, 211, 214);
     -unity-text-align: middle-center;
+}
+
+.unity-button {
+    font-size: 10px;
+    padding: 3px;
+    border-radius: 4px;
+    height: 20px;
 }

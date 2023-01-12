@@ -1,10 +1,13 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Style/LevelEditor.uss?fileID=7433441132597879392&amp;guid=079e9f2b466fa30468ab1761778fed5f&amp;type=3#LevelEditor" />
     <ui:VisualElement name="SideBar" style="height: 100%; width: auto; position: absolute; right: 0;">
-        <ui:Label text="GridSize" display-tooltip-when-elided="true" />
-        <ui:VisualElement name="GridSize" style="flex-direction: row;">
-            <ui:TextField picking-mode="Ignore" value="100" text="filler text" tabindex="0" name="Width" style="flex-direction: column; width: 75px;" />
-            <ui:TextField picking-mode="Ignore" value="100" text="filler text" name="Height" style="flex-direction: column; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; width: 75px;" />
-        </ui:VisualElement>
+        <ui:ScrollView name="ScrollView" style="height: 100%; padding-bottom: 20px; margin-left: 2px; margin-right: 5px;">
+            <ui:Label text="GridSize" display-tooltip-when-elided="true" />
+            <ui:VisualElement name="GridSize" style="flex-direction: row;">
+                <ui:TextField picking-mode="Ignore" value="100" text="filler text" tabindex="0" name="Width" style="flex-direction: column; width: 75px;" />
+                <ui:TextField picking-mode="Ignore" value="100" text="filler text" name="Height" style="flex-direction: column; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; width: 75px;" />
+            </ui:VisualElement>
+        </ui:ScrollView>
+        <ui:Button text="Update World" display-tooltip-when-elided="true" name="RebuildUI" tooltip="Update the world with the data stored in the panel" />
     </ui:VisualElement>
 </ui:UXML>
