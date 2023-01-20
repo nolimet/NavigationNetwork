@@ -9,6 +9,7 @@ namespace DataBinding
 	public class ModelsInstaller : Zenject.ScriptableObjectInstaller {
 		public override void InstallBindings() {
 
+					Container.Bind<TowerDefence.Systems.CameraManager.ICameraContainer>().FromMethod(ctx => ModelFactory.Create<TowerDefence.Systems.CameraManager.ICameraContainer>()).AsSingle();
 					Container.Bind<TowerDefence.Entities.Enemies.Models.IEnemiesModel>().FromMethod(ctx => ModelFactory.Create<TowerDefence.Entities.Enemies.Models.IEnemiesModel>()).AsSingle();
 					Container.Bind<TowerDefence.Systems.LevelEditor.Models.ILevelEditorModel>().FromMethod(ctx => ModelFactory.Create<TowerDefence.Systems.LevelEditor.Models.ILevelEditorModel>()).AsSingle();
 					Container.Bind<TowerDefence.Systems.Selection.Models.ISelectionModel>().FromMethod(ctx => ModelFactory.Create<TowerDefence.Systems.Selection.Models.ISelectionModel>()).AsSingle();

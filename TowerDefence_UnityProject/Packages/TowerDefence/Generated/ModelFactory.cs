@@ -7,7 +7,8 @@ namespace DataBinding
 	public static class ModelFactory 
 	{
 
-		private static TowerDefence.Systems.LevelEditor.Models.ICellModel CreateCellModel() { return new TowerDefence.Systems.LevelEditor.Models.CellModel(); }
+		private static TowerDefence.Systems.CameraManager.ICameraContainer CreateCameraContainer() { return new TowerDefence.Systems.CameraManager.CameraContainer(); }
+			private static TowerDefence.Systems.LevelEditor.Models.ICellModel CreateCellModel() { return new TowerDefence.Systems.LevelEditor.Models.CellModel(); }
 			private static TowerDefence.Entities.Enemies.Models.IEnemiesModel CreateEnemiesModel() { return new TowerDefence.Entities.Enemies.Models.EnemiesModel(); }
 			private static TowerDefence.Entities.Enemies.Models.IEnemyModel CreateEnemyModel() { return new TowerDefence.Entities.Enemies.Models.EnemyModel(); }
 			private static TowerDefence.Systems.LevelEditor.Models.ILevelEditorModel CreateLevelEditorModel() { return new TowerDefence.Systems.LevelEditor.Models.LevelEditorModel(); }
@@ -24,7 +25,8 @@ namespace DataBinding
 	
 		public static T Create<T>() where T : DataBinding.BaseClasses.IModelBase {
 
-						if (typeof(T) == typeof(TowerDefence.Systems.LevelEditor.Models.ICellModel )) { return (T)(CreateCellModel()); }
+						if (typeof(T) == typeof(TowerDefence.Systems.CameraManager.ICameraContainer )) { return (T)(CreateCameraContainer()); }
+					if (typeof(T) == typeof(TowerDefence.Systems.LevelEditor.Models.ICellModel )) { return (T)(CreateCellModel()); }
 					if (typeof(T) == typeof(TowerDefence.Entities.Enemies.Models.IEnemiesModel )) { return (T)(CreateEnemiesModel()); }
 					if (typeof(T) == typeof(TowerDefence.Entities.Enemies.Models.IEnemyModel )) { return (T)(CreateEnemyModel()); }
 					if (typeof(T) == typeof(TowerDefence.Systems.LevelEditor.Models.ILevelEditorModel )) { return (T)(CreateLevelEditorModel()); }
