@@ -19,10 +19,10 @@ namespace TowerDefence.World.Grid
         {
             Validate();
             var returnValue = new List<IGridCell>();
-            var cells = new GridCell[settings.GridHeight][];
-            for (int index = 0; index < settings.GridHeight; index++)
+            var cells = new GridCell[settings.GridWidth][];
+            for (int index = 0; index < settings.GridWidth; index++)
             {
-                cells[index] = new GridCell[settings.GridWidth];
+                cells[index] = new GridCell[settings.GridHeight];
             }
 
             CreateCells();
@@ -33,9 +33,9 @@ namespace TowerDefence.World.Grid
             void LinkCells()
             {
                 List<IGridCell> neightbours = new();
-                for (int y = 0; y < settings.GridHeight; y++)
+                for (int x = 0; x < settings.GridWidth; x++)
                 {
-                    for (int x = 0; x < settings.GridWidth; x++)
+                    for (int y = 0; y < settings.GridHeight; y++)
                     {
                         neightbours.Add(GetNode(x, y - 1));
                         neightbours.Add(GetNode(x, y + 1));
@@ -48,7 +48,7 @@ namespace TowerDefence.World.Grid
                         neightbours.Add(GetNode(x - 1, y + 1));
                         neightbours.Add(GetNode(x - 1, y - 1));
 
-                        cells[x][y].SetConnectedCells(neightbours.Where(x => x != null).ToArray());
+                        cells[x][y].SetConnectedCells(neightbours.Where(c => c != null).ToArray());
                         neightbours.Clear();
                     }
                 }
@@ -65,18 +65,18 @@ namespace TowerDefence.World.Grid
             {
                 var offset = worldSettings.TileSize * new Vector2(settings.GridWidth, settings.GridHeight) / 2f - worldSettings.TileSize / 2f;
                 int counter = 0;
-                for (int y = 0; y < settings.GridHeight; y++)
+                for (int x = 0; x < settings.GridWidth; x++)
                 {
-                    for (int x = 0; x < settings.GridWidth; x++)
+                    for (int y = 0; y < settings.GridHeight; y++)
                     {
-                        cells[y][x] = new GridCell
+                        cells[x][y] = new GridCell
                         (
                             cellWeight: settings.Cells[counter].weight,
                             position: new Vector2Int(x, y),
                             worldPosition: new Vector2(x * worldSettings.TileSize.x, y * worldSettings.TileSize.y) - offset,
                             supportsTower: settings.Cells[counter].supportsTower
                         );
-                        returnValue.Add(cells[y][x]);
+                        returnValue.Add(cells[x][y]);
                         counter++;
                     }
                 }
