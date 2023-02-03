@@ -95,6 +95,12 @@ namespace TowerDefence.World.Grid
 
             void CreateRenderer(Mesh m, IGridCell cell)
             {
+                //TODO: Convert grid into a single mesh. Use a shader to draw the visuals to lower the load on memory with the many gameobjects.
+                //TODO: Make sure objects are still selectable. Could use some simple hit value calculations. Would require sorted IGridCell's
+                //Convert grid into a single mesh. 
+                //Using a shader trick to draw the mesh..
+                //This is gone be fun -_-
+                //This should work though :P
                 var g = new GameObject($"Tile -{cell.Position}", typeof(MeshFilter), typeof(MeshRenderer));
                 g.transform.SetParent(world.TileContainer);
                 g.transform.position = new Vector3
