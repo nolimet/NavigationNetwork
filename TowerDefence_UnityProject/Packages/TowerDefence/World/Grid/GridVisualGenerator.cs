@@ -7,12 +7,13 @@ using Object = UnityEngine.Object;
 
 namespace TowerDefence.World.Grid
 {
-    internal sealed class GridVisualGenerator
+    internal sealed class GridVisualGenerator : IDisposable
     {
         private const float tileWidth = 1;
         private const float tileLength = 1;
         private readonly GridWorldSettings worldSettings;
         private readonly WorldContainer world;
+        private readonly Dictionary<(bool buildable, byte height), Material> materialCache = new();
 
         private Mesh tileMesh;
 
@@ -108,9 +109,15 @@ namespace TowerDefence.World.Grid
                 var r = g.GetComponent<MeshRenderer>();
                 var mf = g.GetComponent<MeshFilter>();
 
-                r.sharedMaterial = tileMaterial;
-                r.material.SetFloat(heightMultShaderProperty, 1f / 255 * cell.CellWeight);
-                r.material.SetInt(supportsTowerShaderProperty, cell.SupportsTower ? 1 : 0);
+                if (!materialCache.TryGetValue((cell.SupportsTower, cell.CellWeight), out var material))
+                {
+                    material = new Material(tileMaterial);
+                    material.SetFloat(heightMultShaderProperty, 1f / 255 * cell.CellWeight);
+                    material.SetInt(supportsTowerShaderProperty, cell.SupportsTower ? 1 : 0);
+                    materialCache.Add((cell.SupportsTower, cell.CellWeight), material);
+                }
+
+                r.sharedMaterial = material;
                 mf.sharedMesh = m;
 
                 var selectableNode = g.AddComponent<SelectableCell>();
@@ -130,6 +137,14 @@ namespace TowerDefence.World.Grid
             }
 
             tiles = Array.Empty<GameObject>();
+        }
+
+        public void Dispose()
+        {
+            foreach (var (_, value) in materialCache)
+            {
+                Object.Destroy(value);
+            }
         }
     }
 }
