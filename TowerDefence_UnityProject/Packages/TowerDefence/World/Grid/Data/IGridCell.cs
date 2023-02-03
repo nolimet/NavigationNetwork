@@ -7,14 +7,14 @@ namespace TowerDefence.World.Grid.Data
     {
         Vector2Int Position { get; }
         Vector2 WorldPosition { get; }
-        float CellWeight { get; }
+        byte CellWeight { get; }
         bool HasStructure { get; }
         bool HasVirtualStructure { get; }
         bool SupportsTower { get; }
 
         IReadOnlyCollection<IGridCell> ConnectedCells { get; }
 
-        float GetCost(IGridCell goal);
+        byte GetCost(IGridCell goal);
 
         void SetStructure(bool hasStructure);
 

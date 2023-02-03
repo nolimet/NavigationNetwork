@@ -6,9 +6,9 @@ namespace TowerDefence.World.Grid.Data
 {
     internal sealed class GridCell : IGridCell
     {
-        private IReadOnlyCollection<IGridCell> conntectedCells;
+        private IReadOnlyCollection<IGridCell> connectedCells;
 
-        public float CellWeight { get; }
+        public byte CellWeight { get; }
         public bool SupportsTower { get; }
         public bool HasStructure { get; private set; }
         public bool HasVirtualStructure { get; private set; }
@@ -19,7 +19,7 @@ namespace TowerDefence.World.Grid.Data
             get
             {
                 if (!HasStructure && !HasVirtualStructure)
-                    return conntectedCells;
+                    return connectedCells;
                 return Array.Empty<IGridCell>();
             }
         }
@@ -28,7 +28,7 @@ namespace TowerDefence.World.Grid.Data
 
         public Vector2 WorldPosition { get; }
 
-        public GridCell(float cellWeight, Vector2Int position, Vector2 worldPosition, bool supportsTower)
+        public GridCell(byte cellWeight, Vector2Int position, Vector2 worldPosition, bool supportsTower)
         {
             CellWeight = cellWeight;
             Position = position;
@@ -38,10 +38,10 @@ namespace TowerDefence.World.Grid.Data
 
         public void SetConnectedCells(IReadOnlyCollection<IGridCell> connectedCells)
         {
-            conntectedCells = connectedCells;
+            this.connectedCells = connectedCells;
         }
 
-        public float GetCost(IGridCell goal) => CellWeight;
+        public byte GetCost(IGridCell goal) => CellWeight;
         public void SetStructure(bool hasStructure) => HasStructure = hasStructure;
         public void SetVirtualStructure(bool hasVirtualStructure) => HasVirtualStructure = hasVirtualStructure;
     }
