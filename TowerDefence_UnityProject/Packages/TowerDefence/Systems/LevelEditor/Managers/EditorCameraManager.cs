@@ -41,7 +41,7 @@ namespace TowerDefence.Systems.LevelEditor.Managers
         {
             cameraContainer.TryGetCameraById(cameraID, out cameraReference);
 
-            OnWorldSizeChanged(0);
+            OnWorldSizeChanged();
         }
 
         private void OnWorldChanged(IWorldLayoutModel world)
@@ -49,13 +49,11 @@ namespace TowerDefence.Systems.LevelEditor.Managers
             levelEditorBindingContext?.Dispose();
             levelEditorBindingContext = new BindingContext();
 
-            if (world is not null)
-            {
-                levelEditorBindingContext.Bind(world, x => x.Height, OnWorldSizeChanged);
-                levelEditorBindingContext.Bind(world, x => x.Width, OnWorldSizeChanged);
+            if (world is null) return;
+            levelEditorBindingContext.Bind(world, x => x.Height, OnWorldSizeChanged);
+            levelEditorBindingContext.Bind(world, x => x.Width, OnWorldSizeChanged);
 
-                OnWorldSizeChanged(0);
-            }
+            OnWorldSizeChanged();
         }
 
         private void OnUIContainersChanged(IList<IUIContainer> _)
@@ -66,10 +64,10 @@ namespace TowerDefence.Systems.LevelEditor.Managers
                 sideElement = visualRoot.Q("SideBar");
             }
 
-            OnWorldSizeChanged(0);
+            OnWorldSizeChanged();
         }
 
-        private void OnWorldSizeChanged(uint _)
+        private void OnWorldSizeChanged(uint _ = 0)
         {
             //TODO handle tall screens
             if (cameraReference == null || visualRoot == null || sideElement == null)
