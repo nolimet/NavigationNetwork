@@ -88,7 +88,7 @@ namespace TowerDefence.Systems.LevelEditor.Managers
 
             Vector2 cameraBottomLeft = c.ViewportToWorldPoint(new Vector3(0, 0, 0));
             Vector2 cameraTopRight = c.ViewportToWorldPoint(new Vector3(1, 1, 0));
-            Rect cameraRect = new Rect
+            var cameraRect = new Rect
             {
                 xMin = cameraBottomLeft.x,
                 yMin = cameraBottomLeft.y,
