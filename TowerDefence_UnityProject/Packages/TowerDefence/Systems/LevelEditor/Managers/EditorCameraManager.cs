@@ -25,6 +25,7 @@ namespace TowerDefence.Systems.LevelEditor.Managers
 
         private VisualElement sideElement;
         private VisualElement visualRoot;
+        private Button rebuildButton;
 
         public EditorCameraManager(ICameraContainer cameraContainer, ILevelEditorModel levelEditorModel, IUIContainers uiContainers)
         {
@@ -41,7 +42,7 @@ namespace TowerDefence.Systems.LevelEditor.Managers
         {
             cameraContainer.TryGetCameraById(cameraID, out cameraReference);
 
-            OnWorldSizeChanged();
+            OnWorldRebuildClicked();
         }
 
         private void OnWorldChanged(IWorldLayoutModel world)
@@ -50,24 +51,31 @@ namespace TowerDefence.Systems.LevelEditor.Managers
             levelEditorBindingContext = new BindingContext();
 
             if (world is null) return;
-            levelEditorBindingContext.Bind(world, x => x.Height, OnWorldSizeChanged);
-            levelEditorBindingContext.Bind(world, x => x.Width, OnWorldSizeChanged);
 
-            OnWorldSizeChanged();
+            OnWorldRebuildClicked();
         }
 
         private void OnUIContainersChanged(IList<IUIContainer> _)
         {
+            if (rebuildButton is not null)
+            {
+                rebuildButton.clicked -= OnWorldRebuildClicked;
+            }
+
+
             if (uiContainers.TryGetContainer(containerID, out uiContainer))
             {
                 visualRoot = uiContainer.VisualRoot;
                 sideElement = visualRoot.Q("SideBar");
+
+                rebuildButton = visualRoot.Q<Button>("RebuildGrid");
+                rebuildButton.clicked += OnWorldRebuildClicked;
             }
 
-            OnWorldSizeChanged();
+            OnWorldRebuildClicked();
         }
 
-        private void OnWorldSizeChanged(uint _ = 0)
+        private void OnWorldRebuildClicked()
         {
             //TODO handle tall screens
             if (cameraReference == null || visualRoot == null || sideElement == null)
