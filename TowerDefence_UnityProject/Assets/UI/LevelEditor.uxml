@@ -7,6 +7,10 @@
                 <ui:TextField picking-mode="Ignore" value="100" text="filler text" tabindex="0" name="Width" style="flex-direction: column; width: 75px;" />
                 <ui:TextField picking-mode="Ignore" value="100" text="filler text" name="Height" style="flex-direction: column; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; width: 75px;" />
             </ui:VisualElement>
+            <ui:Label text="Cell Settings" display-tooltip-when-elided="true" />
+            <ui:VisualElement name="CellSettings">
+                <ui:TextField picking-mode="Ignore" label="Weight" value="filler text" text="filler text" name="CellWeight" style="align-items: stretch; justify-content: flex-start; flex-direction: row;" />
+            </ui:VisualElement>
         </ui:ScrollView>
         <ui:Button text="Update World" display-tooltip-when-elided="true" name="RebuildGrid" tooltip="Update the world with the data stored in the panel" />
     </ui:VisualElement>
