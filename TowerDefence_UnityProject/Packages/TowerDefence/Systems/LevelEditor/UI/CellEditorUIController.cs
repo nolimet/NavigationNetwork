@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DataBinding;
+using TowerDefence.Systems.LevelEditor.Managers;
 using TowerDefence.UI.Containers;
 using TowerDefence.UI.Models;
 using UnityEngine.UIElements;
@@ -9,13 +10,15 @@ namespace TowerDefence.Systems.LevelEditor.UI
     public class CellEditorUIController
     {
         private readonly IUIContainers _uiContainers;
+        private readonly CellEditor _cellEditor;
         private readonly BindingContext _bindingContext = new();
 
         private TextField cellWeightTextField;
 
-        public CellEditorUIController(IUIContainers uiContainers)
+        public CellEditorUIController(IUIContainers uiContainers, CellEditor cellEditor)
         {
             _uiContainers = uiContainers;
+            _cellEditor = cellEditor;
 
             _bindingContext.Bind(_uiContainers, x => x.Containers, OnUIContainersChanged);
         }
@@ -37,8 +40,7 @@ namespace TowerDefence.Systems.LevelEditor.UI
         {
             if (byte.TryParse(changeEvent.newValue, out var value))
             {
-                //TODO write value to current selection of cells.
-                //TODO write someting to keep track of the current selection
+                _cellEditor.ChangeCellsForSelection(value, true);
             }
             else if (changeEvent.newValue != string.Empty)
             {
