@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using DataBinding;
 using Sirenix.Utilities;
 using TowerDefence.Input;
+using TowerDefence.Systems.CameraManager;
 using TowerDefence.Systems.Selection.Models;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,17 +12,24 @@ using UnityEngine.InputSystem;
 
 namespace TowerDefence.Systems.Selection
 {
-    public sealed class SelectionController
+    public sealed class SelectionController : IDisposable
     {
         private readonly ISelectionModel selectionModel;
+        private readonly ICameraContainer cameraContainer;
+
         private readonly SelectionInputActions selectionInput;
         private readonly List<ISelectable> selectionBuffer = new();
         private readonly Collider2D[] results = new Collider2D[256];
 
-        public SelectionController(ISelectionModel selectionModel, SelectionInputActions selectionInput)
+        private readonly BindingContext bindingContext = new();
+
+        private Camera mainCamera;
+
+        public SelectionController(ICameraContainer cameraContainer, ISelectionModel selectionModel, SelectionInputActions selectionInput)
         {
             this.selectionModel = selectionModel;
             this.selectionInput = selectionInput;
+            this.cameraContainer = cameraContainer;
 
             selectionInput.Enable();
             selectionInput.Main.Enable();
@@ -29,14 +39,14 @@ namespace TowerDefence.Systems.Selection
             selectionInput.Main.Click.performed += OnClickPreformed;
             selectionInput.Main.Drag.performed += OnDragStarted;
             selectionInput.Main.Drag.canceled += OnDragEnded;
+
+            bindingContext.Bind(cameraContainer, x => x.Cameras, OnCamerasChanged);
         }
 
-        ~SelectionController()
+        private void OnCamerasChanged(IList<CameraReference> obj)
         {
-            selectionBuffer.Clear();
-            selectionInput.Main.Click.performed -= OnClickPreformed;
-            selectionInput.Main.Drag.performed -= OnDragStarted;
-            selectionInput.Main.Drag.canceled -= OnDragEnded;
+            if (cameraContainer.TryGetCameraById("MainCamera", out var cameraReference))
+                mainCamera = cameraReference.Camera;
         }
 
         private void OnDragStarted(InputAction.CallbackContext obj)
@@ -70,9 +80,9 @@ namespace TowerDefence.Systems.Selection
 
         private void SelectObject(Vector2 cursorPosition)
         {
-            if (Camera.main == null) return;
+            if (mainCamera == null) return;
 
-            var hitCount = Physics2D.OverlapPointNonAlloc(Camera.main.ScreenToWorldPoint(cursorPosition), results);
+            var hitCount = Physics2D.OverlapPointNonAlloc(mainCamera.ScreenToWorldPoint(cursorPosition), results);
 
             selectionModel.Selection.Clear();
             if (hitCount == 0) return;
@@ -114,6 +124,34 @@ namespace TowerDefence.Systems.Selection
             }
 
             selectionModel.Selection.AddRange(newSelection);
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            selectionBuffer.Clear();
+            selectionInput.Main.Click.performed -= OnClickPreformed;
+            selectionInput.Main.Drag.performed -= OnDragStarted;
+            selectionInput.Main.Drag.canceled -= OnDragEnded;
+        }
+
+        private void Dispose(bool disposing)
+        {
+            ReleaseUnmanagedResources();
+            if (disposing)
+            {
+                bindingContext?.Dispose();
+            }
+        }
+
+        ~SelectionController()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
