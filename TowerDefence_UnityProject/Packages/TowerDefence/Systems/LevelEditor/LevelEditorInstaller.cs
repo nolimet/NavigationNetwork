@@ -15,6 +15,9 @@ namespace TowerDefence.Systems.LevelEditor
             Container.BindInterfacesAndSelfTo<WorldEditorUIManager>().AsSingle().NonLazy();
 
             Container.BindInterfacesAndSelfTo<EditorCameraManager>().AsSingle().NonLazy();
+
+            Container.BindInterfacesAndSelfTo<CellEditorUIController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<CellEditor>().AsSingle().NonLazy();
         }
     }
 }
