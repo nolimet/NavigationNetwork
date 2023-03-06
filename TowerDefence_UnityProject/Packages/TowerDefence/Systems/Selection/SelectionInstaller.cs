@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TowerDefence.Input;
+using UnityEngine;
 using Zenject;
 
 namespace TowerDefence.Systems.Selection
@@ -8,7 +9,7 @@ namespace TowerDefence.Systems.Selection
     {
         public override void InstallBindings()
         {
-            if (!Container.HasBinding<Input.SelectionInputActions>())
+            if (!Container.HasBinding<InputActions>())
             {
                 Debug.LogError("Make sure this context can reach in input Installer");
             }

@@ -17,7 +17,7 @@ namespace TowerDefence.Systems.Selection
         private readonly ISelectionModel selectionModel;
         private readonly ICameraContainer cameraContainer;
 
-        private readonly SelectionInputActions selectionInput;
+        private readonly InputActions inputActions;
         private readonly List<ISelectable> selectionBuffer = new();
         private readonly Collider2D[] results = new Collider2D[256];
 
@@ -25,20 +25,20 @@ namespace TowerDefence.Systems.Selection
 
         private Camera mainCamera;
 
-        public SelectionController(ICameraContainer cameraContainer, ISelectionModel selectionModel, SelectionInputActions selectionInput)
+        public SelectionController(ICameraContainer cameraContainer, ISelectionModel selectionModel, InputActions inputActions)
         {
             this.selectionModel = selectionModel;
-            this.selectionInput = selectionInput;
+            this.inputActions = inputActions;
             this.cameraContainer = cameraContainer;
 
-            selectionInput.Enable();
-            selectionInput.Main.Enable();
-            selectionInput.Main.Click.Enable();
-            selectionInput.Main.Drag.Enable();
+            inputActions.Enable();
+            inputActions.Main.Enable();
+            inputActions.Main.LeftClick.Enable();
+            inputActions.Main.Drag.Enable();
 
-            selectionInput.Main.Click.performed += OnClickPreformed;
-            selectionInput.Main.Drag.performed += OnDragStarted;
-            selectionInput.Main.Drag.canceled += OnDragEnded;
+            inputActions.Main.LeftClick.performed += OnClickPreformed;
+            inputActions.Main.Drag.performed += OnDragStarted;
+            inputActions.Main.Drag.canceled += OnDragEnded;
 
             bindingContext.Bind(cameraContainer, x => x.Cameras, OnCamerasChanged);
         }
@@ -51,13 +51,13 @@ namespace TowerDefence.Systems.Selection
 
         private void OnDragStarted(InputAction.CallbackContext obj)
         {
-            selectionModel.DragStartPosition = selectionInput.Main.MousePosition.ReadValue<Vector2>();
+            selectionModel.DragStartPosition = inputActions.Main.MousePosition.ReadValue<Vector2>();
             selectionModel.Dragging = true;
         }
 
         private void OnDragEnded(InputAction.CallbackContext obj)
         {
-            selectionModel.DragEndPosition = selectionInput.Main.MousePosition.ReadValue<Vector2>();
+            selectionModel.DragEndPosition = inputActions.Main.MousePosition.ReadValue<Vector2>();
             selectionModel.Dragging = false;
 
             SelectObject(selectionModel.DragStartPosition, selectionModel.DragEndPosition);
@@ -67,14 +67,14 @@ namespace TowerDefence.Systems.Selection
         {
             var pointerData = new PointerEventData(EventSystem.current)
             {
-                position = selectionInput.Main.MousePosition.ReadValue<Vector2>()
+                position = inputActions.Main.MousePosition.ReadValue<Vector2>()
             };
 
             var raycastResults = new List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerData, raycastResults);
             if (!raycastResults.Any())
             {
-                SelectObject(selectionInput.Main.MousePosition.ReadValue<Vector2>());
+                SelectObject(inputActions.Main.MousePosition.ReadValue<Vector2>());
             }
         }
 
@@ -129,9 +129,9 @@ namespace TowerDefence.Systems.Selection
         private void ReleaseUnmanagedResources()
         {
             selectionBuffer.Clear();
-            selectionInput.Main.Click.performed -= OnClickPreformed;
-            selectionInput.Main.Drag.performed -= OnDragStarted;
-            selectionInput.Main.Drag.canceled -= OnDragEnded;
+            inputActions.Main.LeftClick.performed -= OnClickPreformed;
+            inputActions.Main.Drag.performed -= OnDragStarted;
+            inputActions.Main.Drag.canceled -= OnDragEnded;
         }
 
         private void Dispose(bool disposing)

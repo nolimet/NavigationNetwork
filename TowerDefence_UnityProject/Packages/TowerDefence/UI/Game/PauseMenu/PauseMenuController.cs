@@ -20,25 +20,25 @@ namespace TowerDefence.UI.Game.PauseMenu
 
         private readonly IUIContainers uiContainers;
         private readonly BindingContext bindingContext = new();
-        private readonly UIInputActions uiInputActions;
+        private readonly InputActions _inputActions;
         private readonly SceneReferences sceneReferences;
         private readonly GridWorld gridWorld;
 
         private VisualElement pauseMenu;
         private Button returnToMenuButton;
 
-        internal PauseMenuController(IUIContainers uiContainers, UIInputActions uiInputActions, SceneReferences sceneReferences, GridWorld gridWorld)
+        internal PauseMenuController(IUIContainers uiContainers, InputActions inputActions, SceneReferences sceneReferences, GridWorld gridWorld)
         {
             this.uiContainers = uiContainers;
-            this.uiInputActions = uiInputActions;
+            _inputActions = inputActions;
             this.sceneReferences = sceneReferences;
             this.gridWorld = gridWorld;
 
             bindingContext.Bind(uiContainers, x => x.Containers, OnUIContainerChanged);
 
-            uiInputActions.Main.Enable();
-            uiInputActions.Main.OpenPauseMenu.Enable();
-            uiInputActions.Main.OpenPauseMenu.performed += OnOpenPauseMenuPressed;
+            inputActions.UI.Enable();
+            inputActions.UI.OpenPauseMenu.Enable();
+            inputActions.UI.OpenPauseMenu.performed += OnOpenPauseMenuPressed;
         }
 
         private void OnOpenPauseMenuPressed(InputAction.CallbackContext obj)
@@ -92,7 +92,7 @@ namespace TowerDefence.UI.Game.PauseMenu
         private async void OnReturnToMenuPressed()
         {
             returnToMenuButton.SetEnabled(false);
-            uiInputActions.Main.OpenPauseMenu.Disable();
+            _inputActions.UI.OpenPauseMenu.Disable();
 
             gridWorld.DestroyWorld();
 
@@ -102,7 +102,7 @@ namespace TowerDefence.UI.Game.PauseMenu
         public void Dispose()
         {
             bindingContext?.Dispose();
-            uiInputActions.Main.OpenPauseMenu.performed -= OnOpenPauseMenuPressed;
+            _inputActions.UI.OpenPauseMenu.performed -= OnOpenPauseMenuPressed;
             if (returnToMenuButton is not null)
             {
                 returnToMenuButton.clicked -= OnReturnToMenuPressed;

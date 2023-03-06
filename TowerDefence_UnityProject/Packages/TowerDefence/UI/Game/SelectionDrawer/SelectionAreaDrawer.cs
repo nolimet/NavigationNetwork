@@ -19,7 +19,7 @@ namespace TowerDefence.UI.Game.SelectionDrawer
         private const string SelectionAreaId = "SelectionArea";
 
         private readonly ISelectionModel selectionModel;
-        private readonly SelectionInputActions selectionInput;
+        private readonly InputActions selectionInput;
 
         private readonly BindingContext bindingContext = new();
         private readonly CancellationTokenSource ctx = new();
@@ -27,7 +27,7 @@ namespace TowerDefence.UI.Game.SelectionDrawer
 
         private VisualElement selectionArea;
 
-        public SelectionAreaDrawer(ISelectionModel selectionModel, IUIContainers uiContainers, SelectionInputActions selectionInput)
+        public SelectionAreaDrawer(ISelectionModel selectionModel, IUIContainers uiContainers, InputActions selectionInput)
         {
             this.selectionModel = selectionModel;
             this.selectionInput = selectionInput;
