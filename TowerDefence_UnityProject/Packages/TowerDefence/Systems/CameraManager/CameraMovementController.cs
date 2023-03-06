@@ -48,11 +48,11 @@ namespace TowerDefence.Systems.CameraManager
         {
             if (!targetCamera) return;
 
-            Vector3 newPos;
+            Vector3 newPos = targetCamera.transform.position;
             if (_rightClickAction.IsPressed())
             {
                 var cameraDelta = (Vector3)_mouseDeltaAction.ReadValue<Vector2>();
-                newPos = targetCamera.transform.position - cameraDelta / Screen.dpi / (targetCamera.orthographicSize * _settings.PanRation);
+                newPos -= cameraDelta / Screen.dpi / (targetCamera.orthographicSize * _settings.PanRation);
             }
             // else
             // {
