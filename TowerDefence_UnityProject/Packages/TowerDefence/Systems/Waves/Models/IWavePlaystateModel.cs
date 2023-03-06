@@ -6,11 +6,11 @@ namespace TowerDefence.Systems.Waves.Models
     [DataModel(Shared = true, AddToZenject = true)]
     public interface IWavePlayStateModel : IModelBase
     {
-        bool wavesPlaying { get; set; }
-        bool autoPlayEnabled { get; set; }
+        bool WavesPlaying { get; set; }
+        bool AutoPlayEnabled { get; set; }
 
-        int wavesLeft { get; set; }
-        int totalWaves { get; set; }
-        int activeWave { get; set; }
+        int WavesLeft { get; set; }
+        int TotalWaves { get; set; }
+        int ActiveWave { get; set; }
     }
 }

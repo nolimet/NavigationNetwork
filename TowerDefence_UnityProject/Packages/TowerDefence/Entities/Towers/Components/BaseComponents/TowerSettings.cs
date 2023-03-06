@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
 using TowerDefence.Entities.Components;
 
 namespace TowerDefence.Entities.Towers.Components.BaseComponents

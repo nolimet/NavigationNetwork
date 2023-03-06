@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace TowerDefence.Entities.Components
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     internal sealed class ComponentAttribute : Attribute
     {
         public readonly ComponentType ComponentType;
@@ -12,31 +12,25 @@ namespace TowerDefence.Entities.Components
 
         public ComponentAttribute(ComponentType componentType, params Type[] restirctions)
         {
-            this.ComponentType = componentType;
-            this.Restirctions = restirctions;
+            ComponentType = componentType;
+            Restirctions = restirctions;
         }
 
         internal bool AnyRestrictionsMatch(Type self, Type other)
         {
             if (!AllowMultiple && other == self)
-            {
                 return true;
-            }
 
             foreach (var restriction in Restirctions)
             {
                 if (restriction == other && restriction != self)
-                {
                     return true;
-                }
-                if (restriction.IsInterface)
-                {
-                    var interfaces = other.GetInterfaces();
-                    if (interfaces.Any() && interfaces.Contains(restriction))
-                    {
-                        return true;
-                    }
-                }
+
+                if (!restriction.IsInterface) continue;
+
+                var interfaces = other.GetInterfaces();
+                if (interfaces.Any() && interfaces.Contains(restriction))
+                    return true;
             }
 
             return false;

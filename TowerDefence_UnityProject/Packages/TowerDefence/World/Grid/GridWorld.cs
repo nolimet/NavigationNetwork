@@ -20,7 +20,7 @@ namespace TowerDefence.World.Grid
         private Vector2Int[] entrances = Array.Empty<Vector2Int>();
         private Vector2Int[] exits = Array.Empty<Vector2Int>();
 
-        private Bounds _gridBounds;
+        private Bounds gridBounds;
 
         public GridWorld(GridGenerator gridGenerator, GridVisualGenerator visualGenerator)
         {
@@ -36,7 +36,7 @@ namespace TowerDefence.World.Grid
             exits = settings.EndPoints;
 
             world = gridGenerator.CreateNodes(settings);
-            _gridBounds = await visualGenerator.CreateVisuals(world, settings);
+            gridBounds = await visualGenerator.CreateVisuals(world, settings);
         }
 
         internal void DestroyWorld()
@@ -55,7 +55,7 @@ namespace TowerDefence.World.Grid
 
         public Bounds GetGridBounds()
         {
-            return _gridBounds;
+            return gridBounds;
         }
 
         public async UniTask<IEnumerable<IGridCell>> GetPath(int entranceId, int exitId)

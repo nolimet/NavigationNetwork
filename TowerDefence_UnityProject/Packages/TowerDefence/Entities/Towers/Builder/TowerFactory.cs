@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using DataBinding;
 using TowerDefence.Entities.Components;
@@ -36,12 +37,14 @@ namespace TowerDefence.Entities.Towers.Builder
         {
             var towerGameObject = await towerConfiguration.TowerBase.InstantiateAsync(worldContainer.TowerContainer) as GameObject;
 
+            if (!towerGameObject) throw new NullReferenceException($"Could not create tower base for configuration {towerConfiguration.TowerBase}");
+
             var towerObject = towerGameObject.GetComponent<TowerObject>();
             var model = ModelFactory.Create<ITowerModel>();
 
             towerObject.Setup(model, cell);
 
-            var components = await componentFactory.GetComponents(componentConfiguration.components, ProcessComponentInit);
+            var components = await componentFactory.GetComponents(componentConfiguration.Components, ProcessComponentInit);
             model.Components = components.ToList();
 
             return towerObject;

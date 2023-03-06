@@ -8,12 +8,11 @@ namespace TowerDefence.World.Path
     {
         private AnimationCurve3D path;
         private Vector3 lastPosition;
-        protected float position { get; private set; }
+        protected float Position { get; private set; }
 
-        [SerializeField]
-        private float speedMult = 1;
+        [SerializeField] private float speedMult = 1;
 
-        public bool AtEndOfPath => path.PathCompleted(position);
+        public bool AtEndOfPath => path.PathCompleted(Position);
 
         public abstract void ReachedEnd();
 
@@ -24,17 +23,16 @@ namespace TowerDefence.World.Path
 
         public void WalkPath()
         {
-            if (transform)
-            {
-                lastPosition = transform.position;
-                transform.position = path.Evaluate(position);
+            if (!transform) return;
 
-                var dir = Math.VectorToAngle(lastPosition - transform.position);
+            lastPosition = transform.position;
+            transform.position = path.Evaluate(Position);
 
-                transform.rotation = Quaternion.Euler(0, 0, dir);
+            var dir = Math.VectorToAngle(lastPosition - transform.position);
 
-                position += Time.deltaTime * speedMult;
-            }
+            transform.rotation = Quaternion.Euler(0, 0, dir);
+
+            Position += Time.deltaTime * speedMult;
         }
     }
 }

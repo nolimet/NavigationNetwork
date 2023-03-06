@@ -7,7 +7,7 @@ namespace TowerDefence.UI.Containers
 {
     internal class UIDocumentContainer : MonoBehaviour, IUIContainer
     {
-        protected IUIContainers containers;
+        protected IUIContainers Containers;
 
         [field: SerializeField] public UIDocument Document { get; protected set; }
 
@@ -18,17 +18,17 @@ namespace TowerDefence.UI.Containers
         [Inject]
         public void Inject(IUIContainers containers)
         {
-            this.containers = containers;
+            Containers = containers;
         }
 
         protected virtual void Start()
         {
-            containers.Containers.Add(this);
+            Containers.Containers.Add(this);
         }
 
         protected virtual void OnDestroy()
         {
-            containers.Containers.Remove(this);
+            Containers.Containers.Remove(this);
         }
     }
 }

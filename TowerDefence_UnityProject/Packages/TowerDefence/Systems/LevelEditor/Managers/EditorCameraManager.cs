@@ -11,8 +11,8 @@ namespace TowerDefence.Systems.LevelEditor.Managers
 {
     public class EditorCameraManager
     {
-        private const string cameraID = "MainCamera";
-        private const string containerID = "LevelEdiitorUI";
+        private const string CameraID = "MainCamera";
+        private const string ContainerID = "LevelEdiitorUI";
         private readonly ICameraContainer cameraContainer;
         private readonly ILevelEditorModel levelEditorModel;
         private readonly IUIContainers uiContainers;
@@ -40,7 +40,7 @@ namespace TowerDefence.Systems.LevelEditor.Managers
 
         private void OnCamerasChanged(IList<CameraReference> _)
         {
-            cameraContainer.TryGetCameraById(cameraID, out cameraReference);
+            cameraContainer.TryGetCameraById(CameraID, out cameraReference);
 
             OnWorldRebuildClicked();
         }
@@ -63,7 +63,7 @@ namespace TowerDefence.Systems.LevelEditor.Managers
             }
 
 
-            if (uiContainers.TryGetContainer(containerID, out uiContainer))
+            if (uiContainers.TryGetContainer(ContainerID, out uiContainer))
             {
                 visualRoot = uiContainer.VisualRoot;
                 sideElement = visualRoot.Q("SideBar");

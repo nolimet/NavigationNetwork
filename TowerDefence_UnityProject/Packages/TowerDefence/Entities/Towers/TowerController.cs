@@ -1,7 +1,7 @@
-﻿using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
-using System;
+﻿using System;
 using System.Threading;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
 using TowerDefence.Entities.Towers.Models;
 
 namespace TowerDefence.Entities.Towers
@@ -10,6 +10,7 @@ namespace TowerDefence.Entities.Towers
     {
         private readonly ITowerModels towerModels;
         private readonly CancellationTokenSource tokenSource = new();
+
         public TowerController(ITowerModels towerModels)
         {
             this.towerModels = towerModels;

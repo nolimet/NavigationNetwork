@@ -35,15 +35,15 @@ namespace TowerDefence.World.Grid.Data
         [Serializable]
         internal readonly struct Cell
         {
-            public readonly bool isTraversable;
-            public readonly byte weight;
-            public readonly bool supportsTower;
+            public readonly bool IsTraversable;
+            public readonly byte Weight;
+            public readonly bool SupportsTower;
 
             public Cell(byte weight, bool supportsTower)
             {
-                isTraversable = weight < 255;
-                this.weight = weight;
-                this.supportsTower = supportsTower;
+                IsTraversable = weight < 255;
+                Weight = weight;
+                SupportsTower = supportsTower;
             }
         }
 

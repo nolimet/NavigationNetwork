@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using DataBinding;
 using TowerDefence.Entities.Components;
@@ -46,10 +47,13 @@ namespace TowerDefence.Entities.Enemies
 
             var enemyGameObject = await enemyBase.InstantiateAsync(worldContainer.EnemyContainer) as GameObject;
 
+            if (enemyGameObject == null)
+                throw new NullReferenceException($"got null enemy gameObject for id: {id}");
+
             var enemyModel = ModelFactory.Create<IEnemyModel>();
             var enemyObject = enemyGameObject.GetComponent<EnemyObject>();
 
-            var components = await componentFactory.GetComponents(componentConfiguration.components, InitHandler);
+            var components = await componentFactory.GetComponents(componentConfiguration.Components, InitHandler);
             enemyModel.Components = components.ToList();
 
             enemyObject.Setup(enemyModel, outHealthAction);

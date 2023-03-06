@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Zenject;
 
 namespace TowerDefence.World.Path
@@ -17,12 +18,12 @@ namespace TowerDefence.World.Path
         {
             if (walker == null || !walker)
             {
-                throw new System.NullReferenceException("Walker is not set! Walker was not set or Destroyed");
+                throw new NullReferenceException("Walker is not set! Walker was not set or Destroyed");
             }
 
             if (worldController.PathWorldData == null)
             {
-                throw new System.NullReferenceException("WorldController.PathWorldData is not set! Path was not set or Destroyed");
+                throw new NullReferenceException("WorldController.PathWorldData is not set! Path was not set or Destroyed");
             }
 
             walkers.Add(walker);

@@ -20,7 +20,7 @@ namespace TowerDefence.UI.Game.PauseMenu
 
         private readonly IUIContainers uiContainers;
         private readonly BindingContext bindingContext = new();
-        private readonly InputActions _inputActions;
+        private readonly InputActions inputActions;
         private readonly SceneReferences sceneReferences;
         private readonly GridWorld gridWorld;
 
@@ -30,7 +30,7 @@ namespace TowerDefence.UI.Game.PauseMenu
         internal PauseMenuController(IUIContainers uiContainers, InputActions inputActions, SceneReferences sceneReferences, GridWorld gridWorld)
         {
             this.uiContainers = uiContainers;
-            _inputActions = inputActions;
+            this.inputActions = inputActions;
             this.sceneReferences = sceneReferences;
             this.gridWorld = gridWorld;
 
@@ -92,7 +92,7 @@ namespace TowerDefence.UI.Game.PauseMenu
         private async void OnReturnToMenuPressed()
         {
             returnToMenuButton.SetEnabled(false);
-            _inputActions.UI.OpenPauseMenu.Disable();
+            inputActions.UI.OpenPauseMenu.Disable();
 
             gridWorld.DestroyWorld();
 
@@ -102,7 +102,7 @@ namespace TowerDefence.UI.Game.PauseMenu
         public void Dispose()
         {
             bindingContext?.Dispose();
-            _inputActions.UI.OpenPauseMenu.performed -= OnOpenPauseMenuPressed;
+            inputActions.UI.OpenPauseMenu.performed -= OnOpenPauseMenuPressed;
             if (returnToMenuButton is not null)
             {
                 returnToMenuButton.clicked -= OnReturnToMenuPressed;

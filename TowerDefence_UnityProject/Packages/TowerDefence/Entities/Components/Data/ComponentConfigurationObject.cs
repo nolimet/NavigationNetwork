@@ -1,24 +1,28 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TowerDefence.Entities.Towers.Components.Damage;
 using TowerDefence.Entities.Towers.Components.TargetFinders;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace TowerDefence.Entities.Components.Data
 {
     [CreateAssetMenu(menuName = "Entities/ComponentObject")]
     internal sealed class ComponentConfigurationObject : ScriptableObject
     {
-        [SerializeField] internal List<ComponentData> components = new();
+        [FormerlySerializedAs("components")] [SerializeField]
+        internal List<ComponentData> Components = new();
 
-        [SerializeField] internal ComponentType type;
+        [FormerlySerializedAs("type")] [SerializeField]
+        internal ComponentType Type;
 
         [ContextMenu("Test-Write")]
         private void TestWrite()
         {
             List<IComponent> components = new();
-            if (this.components == null)
+            if (Components == null)
             {
-                this.components = new();
+                Components = new();
             }
 
             components.Add(new NearestTargetFinder());
@@ -28,29 +32,23 @@ namespace TowerDefence.Entities.Components.Data
             {
                 var componentData = new ComponentData();
                 componentData.SerializeComponent(component);
-                this.components.Add(componentData);
+                Components.Add(componentData);
             }
         }
 
         [ContextMenu("Test-Read")]
         private void TestRead()
         {
-            List<IComponent> components = new();
+            if (Components == null) return;
 
-            if (this.components != null)
+            var components = Components.Select(component => component.DeserializeComponent()).ToList();
+
+            foreach (var component in components)
             {
-                foreach (var component in this.components)
-                {
-                    components.Add(component.DeserializeComponent());
-                }
-
-                foreach (var component in components)
-                {
-                    if (component != null)
-                        Debug.Log(component.GetType());
-                    else
-                        Debug.Log(component);
-                }
+                if (component is not null)
+                    Debug.Log(component.GetType());
+                else
+                    Debug.LogError("missing component!");
             }
         }
     }

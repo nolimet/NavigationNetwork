@@ -13,46 +13,46 @@ namespace TowerDefence.Systems.LevelEditor.Models
 	public class WavesModel : TowerDefence.Systems.LevelEditor.Models.IWavesModel 
 	{
 		public event Action OnChange;
-			// spawnGroups
-		public event System.Action<System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.IWaveModel>> OnChangespawnGroups;
-		private System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.IWaveModel> _spawnGroups ; 
-		public System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.IWaveModel> spawnGroups 
+			// SpawnGroups
+		public event System.Action<System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.IWaveModel>> OnChangeSpawnGroups;
+		private System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.IWaveModel> _SpawnGroups ; 
+		public System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.IWaveModel> SpawnGroups 
 		{
-			get => _spawnGroups;
+			get => _SpawnGroups;
 			set 
 			{
 						
-				if (_spawnGroups != null)
+				if (_SpawnGroups != null)
 				{
-					((ObservableCollection<TowerDefence.Systems.LevelEditor.Models.IWaveModel>)_spawnGroups).CollectionChanged -= new NotifyCollectionChangedEventHandler(TriggerspawnGroupsEvents);
+					((ObservableCollection<TowerDefence.Systems.LevelEditor.Models.IWaveModel>)_SpawnGroups).CollectionChanged -= new NotifyCollectionChangedEventHandler(TriggerSpawnGroupsEvents);
 				}
 
 				if (value != null && (value as ObservableCollection<TowerDefence.Systems.LevelEditor.Models.IWaveModel>) == null) 
 				{
-					_spawnGroups = new ObservableCollection<TowerDefence.Systems.LevelEditor.Models.IWaveModel>(value);
+					_SpawnGroups = new ObservableCollection<TowerDefence.Systems.LevelEditor.Models.IWaveModel>(value);
 				}
 				else
 				{
-					_spawnGroups = value;
+					_SpawnGroups = value;
 				}
 
-				if (_spawnGroups != null)
+				if (_SpawnGroups != null)
 				{
-					((ObservableCollection<TowerDefence.Systems.LevelEditor.Models.IWaveModel>)_spawnGroups).CollectionChanged += new NotifyCollectionChangedEventHandler(TriggerspawnGroupsEvents);
+					((ObservableCollection<TowerDefence.Systems.LevelEditor.Models.IWaveModel>)_SpawnGroups).CollectionChanged += new NotifyCollectionChangedEventHandler(TriggerSpawnGroupsEvents);
 				}
 
-				OnChangespawnGroups?.Invoke(value);
+				OnChangeSpawnGroups?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
 	
 		public WavesModel() { 
-				spawnGroups = new System.Collections.ObjectModel.ObservableCollection<TowerDefence.Systems.LevelEditor.Models.IWaveModel>();
+				SpawnGroups = new System.Collections.ObjectModel.ObservableCollection<TowerDefence.Systems.LevelEditor.Models.IWaveModel>();
 			}
 
-		private void TriggerspawnGroupsEvents(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		private void TriggerSpawnGroupsEvents(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
-			OnChangespawnGroups?.Invoke(spawnGroups);
+			OnChangeSpawnGroups?.Invoke(SpawnGroups);
 			OnChange?.Invoke();
 		}
 

@@ -17,8 +17,8 @@ namespace TowerDefence.JsonConverters
             for (int i = 0; i < value.Length; i++)
             {
                 var cell = value[i];
-                weights[i] = cell.weight;
-                supportsTower.Append(cell.supportsTower ? '1' : '0');
+                weights[i] = cell.Weight;
+                supportsTower.Append(cell.SupportsTower ? '1' : '0');
             }
 
             writer.WriteValue($"{Convert.ToBase64String(weights)}|{supportsTower}");

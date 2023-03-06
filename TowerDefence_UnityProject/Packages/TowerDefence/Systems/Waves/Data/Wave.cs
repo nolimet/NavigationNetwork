@@ -7,56 +7,56 @@ namespace TowerDefence.Systems.Waves.Data
     public readonly struct Wave
     {
         [JsonProperty("EnemyGroups", Required = Required.Always)]
-        public readonly EnemyGroup[] enemyGroups;
+        public readonly EnemyGroup[] EnemyGroups;
 
         [JsonConstructor]
         public Wave(EnemyGroup[] enemyGroups)
         {
-            this.enemyGroups = enemyGroups;
+            EnemyGroups = enemyGroups;
         }
 
         [Serializable, JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
         public readonly struct EnemyGroup
         {
             [JsonProperty("EnemyID", Required = Required.Always)]
-            public readonly string enemyID;
+            public readonly string EnemyID;
 
             [JsonProperty("EntranceId", Required = Required.Always)]
-            public readonly int entranceId;
+            public readonly int EntranceId;
 
             [JsonProperty("ExitId", Required = Required.Always)]
-            public readonly int exitId;
+            public readonly int ExitId;
 
-            [JsonProperty("PathID")] public readonly int pathID;
+            [JsonProperty("PathID")] public readonly int PathID;
 
-            [JsonProperty("SpawnTime")] public readonly double[] spawnTime;
+            [JsonProperty("SpawnTime")] public readonly double[] SpawnTime;
 
-            [JsonProperty("EnemyGroupSize")] public readonly ulong? groupSize;
-            [JsonProperty("spawnInterval")] public readonly double? spawnInterval;
-            [JsonProperty("spawnDelay")] public readonly double? spawnDelay;
+            [JsonProperty("EnemyGroupSize")] public readonly ulong? GroupSize;
+            [JsonProperty("spawnInterval")] public readonly double? SpawnInterval;
+            [JsonProperty("spawnDelay")] public readonly double? SpawnDelay;
 
 
             [JsonConstructor]
             public EnemyGroup(string enemyID, int entranceId, int exitId, int pathID, double[] spawnTime, ulong? groupSize, double? spawnInterval, double? spawnDelay)
             {
-                this.enemyID = enemyID;
-                this.entranceId = entranceId;
-                this.exitId = exitId;
-                this.pathID = pathID;
+                EnemyID = enemyID;
+                EntranceId = entranceId;
+                ExitId = exitId;
+                PathID = pathID;
 
                 if (spawnTime is { Length: > 1 } && groupSize == 0)
                 {
-                    this.spawnTime = spawnTime;
-                    this.groupSize = null;
-                    this.spawnInterval = null;
-                    this.spawnDelay = null;
+                    SpawnTime = spawnTime;
+                    GroupSize = null;
+                    SpawnInterval = null;
+                    SpawnDelay = null;
                 }
                 else
                 {
-                    this.spawnTime = null;
-                    this.groupSize = groupSize;
-                    this.spawnInterval = spawnInterval;
-                    this.spawnDelay = spawnDelay;
+                    SpawnTime = null;
+                    GroupSize = groupSize;
+                    SpawnInterval = spawnInterval;
+                    SpawnDelay = spawnDelay;
                 }
             }
         }

@@ -5,15 +5,15 @@ namespace TowerDefence.UI.MainMenu.UIElements
 {
     public sealed class LevelSelectionButton : Button
     {
-        public new readonly string ussClassName = "level-selection-button";
+        public readonly string USSClassName = "level-selection-button";
         public event Action<string> OnCallback;
         public readonly string CallbackValue;
 
-        public LevelSelectionButton(string callbackValue) : base()
+        public LevelSelectionButton(string callbackValue)
         {
-            this.CallbackValue = callbackValue;
+            CallbackValue = callbackValue;
             clicked += OnClicked;
-            AddToClassList(ussClassName);
+            AddToClassList(USSClassName);
         }
 
         private void OnClicked()

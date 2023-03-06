@@ -1,7 +1,7 @@
-﻿using DataBinding;
-using NoUtil.Extentsions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using DataBinding;
+using NoUtil.Extentsions;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Interfaces;
 using TowerDefence.Entities.Towers.Components.BaseComponents;
@@ -13,14 +13,18 @@ namespace TowerDefence.Entities.Towers
 {
     public sealed class TowerObject : MonoBehaviour, ITowerObject
     {
-        private readonly BindingContext bindingContext = new(true);
+        private readonly BindingContext bindingContext = new();
 
         private readonly List<ITickableComponent> tickableComponents = new();
 
         public Transform Transform => transform;
         public bool ExistsInWorld => gameObject;
 
-        public string Name { get => this.name; set => this.name = value; }
+        public string Name
+        {
+            get => name;
+            set => name = value;
+        }
 
         public ITowerModel Model { get; private set; }
 
@@ -32,8 +36,8 @@ namespace TowerDefence.Entities.Towers
 
         internal void Setup(ITowerModel model, IGridCell cell)
         {
-            this.Model = model;
-            this.OccupiedCell = cell;
+            Model = model;
+            OccupiedCell = cell;
             cell.SetStructure(true);
 
             bindingContext.Bind(model, m => m.Components, OnComponentsChanged);

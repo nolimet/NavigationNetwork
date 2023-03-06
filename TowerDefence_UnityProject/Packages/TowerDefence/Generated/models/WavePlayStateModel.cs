@@ -13,73 +13,73 @@ namespace TowerDefence.Systems.Waves.Models
 	public class WavePlayStateModel : TowerDefence.Systems.Waves.Models.IWavePlayStateModel 
 	{
 		public event Action OnChange;
-			// activeWave
-		public event System.Action<System.Int32> OnChangeactiveWave;
-		private System.Int32 _activeWave ; 
-		public System.Int32 activeWave 
+			// ActiveWave
+		public event System.Action<System.Int32> OnChangeActiveWave;
+		private System.Int32 _ActiveWave ; 
+		public System.Int32 ActiveWave 
 		{
-			get => _activeWave;
+			get => _ActiveWave;
 			set 
 			{
-								_activeWave = value; 
+								_ActiveWave = value; 
 
-				OnChangeactiveWave?.Invoke(value);
+				OnChangeActiveWave?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
-			// autoPlayEnabled
-		public event System.Action<System.Boolean> OnChangeautoPlayEnabled;
-		private System.Boolean _autoPlayEnabled ; 
-		public System.Boolean autoPlayEnabled 
+			// AutoPlayEnabled
+		public event System.Action<System.Boolean> OnChangeAutoPlayEnabled;
+		private System.Boolean _AutoPlayEnabled ; 
+		public System.Boolean AutoPlayEnabled 
 		{
-			get => _autoPlayEnabled;
+			get => _AutoPlayEnabled;
 			set 
 			{
-								_autoPlayEnabled = value; 
+								_AutoPlayEnabled = value; 
 
-				OnChangeautoPlayEnabled?.Invoke(value);
+				OnChangeAutoPlayEnabled?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
-			// totalWaves
-		public event System.Action<System.Int32> OnChangetotalWaves;
-		private System.Int32 _totalWaves ; 
-		public System.Int32 totalWaves 
+			// TotalWaves
+		public event System.Action<System.Int32> OnChangeTotalWaves;
+		private System.Int32 _TotalWaves ; 
+		public System.Int32 TotalWaves 
 		{
-			get => _totalWaves;
+			get => _TotalWaves;
 			set 
 			{
-								_totalWaves = value; 
+								_TotalWaves = value; 
 
-				OnChangetotalWaves?.Invoke(value);
+				OnChangeTotalWaves?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
-			// wavesLeft
-		public event System.Action<System.Int32> OnChangewavesLeft;
-		private System.Int32 _wavesLeft ; 
-		public System.Int32 wavesLeft 
+			// WavesLeft
+		public event System.Action<System.Int32> OnChangeWavesLeft;
+		private System.Int32 _WavesLeft ; 
+		public System.Int32 WavesLeft 
 		{
-			get => _wavesLeft;
+			get => _WavesLeft;
 			set 
 			{
-								_wavesLeft = value; 
+								_WavesLeft = value; 
 
-				OnChangewavesLeft?.Invoke(value);
+				OnChangeWavesLeft?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
-			// wavesPlaying
-		public event System.Action<System.Boolean> OnChangewavesPlaying;
-		private System.Boolean _wavesPlaying ; 
-		public System.Boolean wavesPlaying 
+			// WavesPlaying
+		public event System.Action<System.Boolean> OnChangeWavesPlaying;
+		private System.Boolean _WavesPlaying ; 
+		public System.Boolean WavesPlaying 
 		{
-			get => _wavesPlaying;
+			get => _WavesPlaying;
 			set 
 			{
-								_wavesPlaying = value; 
+								_WavesPlaying = value; 
 
-				OnChangewavesPlaying?.Invoke(value);
+				OnChangeWavesPlaying?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}

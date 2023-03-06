@@ -34,10 +34,10 @@ namespace TowerDefence.Entities.Towers.Components.Damage
         public override void Tick()
         {
             intervalTimer -= Time.deltaTime;
-            if (!(intervalTimer <= 0) || !targetFindComponent.FoundTargets.Any()) return;
+            if (intervalTimer > 0 || !TargetFindComponent.FoundTargets.Any()) return;
             intervalTimer = damageInterval;
 
-            var target = targetFindComponent.FoundTargets.First();
+            var target = TargetFindComponent.FoundTargets.First();
             target.Damage(damage);
             AppliedDamageToTargets?.Invoke(new[] { target });
         }

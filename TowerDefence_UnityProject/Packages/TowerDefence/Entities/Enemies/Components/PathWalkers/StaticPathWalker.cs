@@ -21,22 +21,22 @@ namespace TowerDefence.Entities.Enemies.Components
             this.path = path;
         }
 
-        public override float PathProgress { get; protected set; } = 0f;
+        public override float PathProgress { get; protected set; }
 
         public override void Tick()
         {
-            lastPosition = self.Transform.position;
-            self.Transform.position = path.Evaluate(PathProgress);
+            lastPosition = Self.Transform.position;
+            Self.Transform.position = path.Evaluate(PathProgress);
 
-            var dir = Math.VectorToAngle(lastPosition - self.Transform.position);
+            var dir = Math.VectorToAngle(lastPosition - Self.Transform.position);
 
-            self.Transform.rotation = Quaternion.Euler(0, 0, dir);
+            Self.Transform.rotation = Quaternion.Euler(0, 0, dir);
 
             PathProgress += Time.deltaTime * speedMult;
 
-            if (PathProgress >= path.length)
+            if (PathProgress >= path.Length)
             {
-                ReachedEnd?.Invoke(self);
+                ReachedEnd?.Invoke(Self);
             }
         }
     }

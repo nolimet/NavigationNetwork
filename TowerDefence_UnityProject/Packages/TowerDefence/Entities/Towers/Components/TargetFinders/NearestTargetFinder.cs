@@ -12,24 +12,24 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
     {
         public override void Tick()
         {
-            targetList.Clear();
+            TargetList.Clear();
 
-            var positionTower = towerObject.GetWorldPosition();
+            var positionTower = TowerObject.GetWorldPosition();
             var rawTargets = GetEnemyObjectsInRange();
-            var orderedTargets = rawTargets.Select(x => new TargetFindHelper(Vector3.Distance(x.GetWorldPosition(), positionTower), x)).OrderBy(x => x.distance);
+            var orderedTargets = rawTargets.Select(x => new TargetFindHelper(Vector3.Distance(x.GetWorldPosition(), positionTower), x)).OrderBy(x => x.Distance).ToArray();
             if (orderedTargets.Any())
-                targetList.Add(orderedTargets.First().enemy);
+                TargetList.Add(orderedTargets.First().Enemy);
         }
 
-        private struct TargetFindHelper
+        private readonly struct TargetFindHelper
         {
-            public float distance;
-            public IEnemyObject enemy;
+            public readonly float Distance;
+            public readonly IEnemyObject Enemy;
 
             public TargetFindHelper(float distance, IEnemyObject enemy)
             {
-                this.distance = distance;
-                this.enemy = enemy;
+                Distance = distance;
+                Enemy = enemy;
             }
         }
     }

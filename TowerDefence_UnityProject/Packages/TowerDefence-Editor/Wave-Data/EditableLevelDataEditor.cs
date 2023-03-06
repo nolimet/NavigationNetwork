@@ -21,7 +21,7 @@ namespace TowerDefence.EditorScripts.Systems.Waves.Data
         private readonly GUIContent saveGridToJson = new("Save Grid To Json", "For development (indended json)");
         private readonly GUIContent saveGridToLvL = new("Save Grid To lvl", "For production (single line json)");
 
-        private readonly GUIContent LoadGridFromImage = new("Load grid from image", "Converts a image to GridSettings");
+        private readonly GUIContent loadGridFromImage = new("Load grid from image", "Converts a image to GridSettings");
 
         public void OnEnable()
         {
@@ -32,14 +32,15 @@ namespace TowerDefence.EditorScripts.Systems.Waves.Data
 
         public override void OnInspectorGUI()
         {
-            using (var horizontalLayout = new EditorGUILayout.HorizontalScope())
+            if (target is not EditableLevelData editableLevel) return;
+
+            using (new EditorGUILayout.HorizontalScope())
             {
                 if (GUILayout.Button("Load from Json"))
                 {
                     string path = EditorUtility.OpenFilePanelWithFilters("Select json", Application.dataPath, new[] { "LevelData", "json,lvl" });
                     if (File.Exists(path))
                     {
-                        var editableLevel = target as EditableLevelData;
                         editableLevel.FromLevelData(JsonConvert.DeserializeObject<LevelData>(File.ReadAllText(path)));
 
                         serializedObject.Update();
@@ -77,7 +78,7 @@ namespace TowerDefence.EditorScripts.Systems.Waves.Data
                     SaveGridData("lvl", Formatting.None);
                 }
 
-                if (GUILayout.Button(LoadGridFromImage))
+                if (GUILayout.Button(loadGridFromImage))
                 {
                     LoadGridDataFromImage();
                 }
@@ -110,8 +111,8 @@ namespace TowerDefence.EditorScripts.Systems.Waves.Data
 
             void DrawPathData()
             {
-                var pathPoints = (target as EditableLevelData).PathData.pathPoints;
-                var points = pathPoints.Where(x => x.type != PointType.Entrance);
+                var pathPoints = editableLevel.PathData.PathPoints;
+                var points = pathPoints.Where(x => x.Type != PointType.Entrance).ToArray();
                 for (int i = 0; i < pathdata.arraySize; i++)
                 {
                     DrawPathPoint(pathdata.GetArrayElementAtIndex(i), i);
@@ -120,62 +121,54 @@ namespace TowerDefence.EditorScripts.Systems.Waves.Data
                 void DrawPathPoint(SerializedProperty point, int index)
                 {
                     var pointData = pathPoints[index];
-                    if (point.isExpanded = EditorGUILayout.Foldout(point.isExpanded, $"{index} - {pointData.type}"))
+                    if (!(point.isExpanded = EditorGUILayout.Foldout(point.isExpanded, $"{index} - {pointData.Type}"))) return;
+
+                    using var indent = new EditorGUI.IndentLevelScope(1);
+
+                    var pointName = point.FindPropertyRelative("name");
+                    var position = point.FindPropertyRelative("position");
+                    var type = point.FindPropertyRelative("type");
+                    var connections = point.FindPropertyRelative("connections");
+
+                    EditorGUILayout.PropertyField(pointName);
+                    EditorGUILayout.PropertyField(position);
+                    EditorGUILayout.PropertyField(type);
+
+                    using var disableGroup = new EditorGUI.DisabledScope(false);
+
+                    EditorGUILayout.TextField("Id", pointData.ID);
+
+                    if (!(connections.isExpanded = EditorGUILayout.Foldout(connections.isExpanded, "Connections"))) return;
+
+                    using var indent2 = new EditorGUI.IndentLevelScope(1);
+                    using var h1 = new EditorGUILayout.HorizontalScope();
+
+                    GUILayout.Space(28);
+                    if (GUILayout.Button("+"))
                     {
-                        using (var indent = new EditorGUI.IndentLevelScope(1))
-                        {
-                            var name = point.FindPropertyRelative("name");
-                            var position = point.FindPropertyRelative("position");
-                            var type = point.FindPropertyRelative("type");
-                            var connections = point.FindPropertyRelative("connections");
+                        connections.arraySize++;
+                    }
 
-                            EditorGUILayout.PropertyField(name);
-                            EditorGUILayout.PropertyField(position);
-                            EditorGUILayout.PropertyField(type);
+                    if (GUILayout.Button("-"))
+                    {
+                        connections.arraySize--;
+                        if (connections.arraySize < 0)
+                            connections.arraySize = 0;
+                    }
 
-                            using (var disableGroup = new EditorGUI.DisabledScope(false))
-                            {
-                                EditorGUILayout.TextField("Id", pointData.id);
+                    GUILayout.FlexibleSpace();
 
-                                if (connections.isExpanded = EditorGUILayout.Foldout(connections.isExpanded, "Connections"))
-                                {
-                                    using (var indent2 = new EditorGUI.IndentLevelScope(1))
-                                    {
-                                        using (var h1 = new EditorGUILayout.HorizontalScope())
-                                        {
-                                            GUILayout.Space(28);
-                                            if (GUILayout.Button("+"))
-                                            {
-                                                connections.arraySize++;
-                                            }
+                    if (pointData.Connections is not { Length: > 0 }) return;
 
-                                            if (GUILayout.Button("-"))
-                                            {
-                                                connections.arraySize--;
-                                                if (connections.arraySize < 0)
-                                                    connections.arraySize = 0;
-                                            }
+                    var usableConnections = points.Where(x => x.ID != pointData.ID).ToList();
+                    for (int i = 0; i < pointData.Connections.Length; i++)
+                    {
+                        var connection = pointData.Connections[i];
+                        int currentID = usableConnections.FindIndex(x => x.ID == connection);
 
-                                            GUILayout.FlexibleSpace();
-                                        }
-
-                                        if (pointData.connections != null && pointData.connections.Length > 0)
-                                        {
-                                            var usableConnections = points.Where(x => x.id != pointData.id).ToList();
-                                            for (int i = 0; i < pointData.connections.Length; i++)
-                                            {
-                                                var connection = pointData.connections[i];
-                                                int currentID = usableConnections.FindIndex(x => x.id == connection);
-
-                                                int newID = EditorGUILayout.Popup(currentID, usableConnections.Select(x => x.name).ToArray()); //Display names instead of ids
-                                                if (newID != -1)
-                                                    pointData.connections[i] = usableConnections[newID].id;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        int newID = EditorGUILayout.Popup(currentID, usableConnections.Select(x => x.Name).ToArray()); //Display names instead of ids
+                        if (newID != -1)
+                            pointData.Connections[i] = usableConnections[newID].ID;
                     }
                 }
             }
@@ -183,9 +176,15 @@ namespace TowerDefence.EditorScripts.Systems.Waves.Data
 
         private void SavePathData(string extension, Formatting formatting)
         {
+            if (!target || target == null || target is not EditableLevelData levelData)
+            {
+                Debug.LogError("Target is null writing failed");
+                return;
+            }
+
             string path = EditorUtility.SaveFilePanel("Select Save Location", Application.dataPath, target.name, extension);
             var file = new FileInfo(path);
-            if (!file.Directory.Exists)
+            if (!file.Directory!.Exists)
             {
                 file.Directory.Create();
             }
@@ -197,7 +196,7 @@ namespace TowerDefence.EditorScripts.Systems.Waves.Data
 
             using (var stream = File.CreateText(path))
             {
-                stream.Write(JsonConvert.SerializeObject((target as EditableLevelData).ToLevelDataPath(), formatting));
+                stream.Write(JsonConvert.SerializeObject(levelData.ToLevelDataPath(), formatting));
             }
 
             AssetDatabase.Refresh();
@@ -205,10 +204,16 @@ namespace TowerDefence.EditorScripts.Systems.Waves.Data
 
         private void SaveGridData(string extension, Formatting formatting)
         {
+            if (!target || target == null || target is not EditableLevelData levelData)
+            {
+                Debug.LogError("Target is null writing failed");
+                return;
+            }
+
             string basePath = Path.Combine(Application.streamingAssetsPath, "Levels");
             string path = EditorUtility.SaveFilePanel("Select Save Location", basePath, target.name, extension);
             var file = new FileInfo(path);
-            if (!file.Directory.Exists)
+            if (!file.Directory!.Exists)
             {
                 file.Directory.Create();
             }
@@ -220,7 +225,7 @@ namespace TowerDefence.EditorScripts.Systems.Waves.Data
 
             using (var stream = File.CreateText(path))
             {
-                stream.Write(JsonConvert.SerializeObject((target as EditableLevelData).ToLevelDataGrid(), formatting));
+                stream.Write(JsonConvert.SerializeObject(levelData.ToLevelDataGrid(), formatting));
             }
 
             AssetDatabase.Refresh();
@@ -231,8 +236,8 @@ namespace TowerDefence.EditorScripts.Systems.Waves.Data
             string path = EditorUtility.OpenFilePanelWithFilters("Select GridSettings Image", Application.streamingAssetsPath, new[] { "png", "png", "jpg", "jpg" });
             var settings = GridSettingsImageImporter.Convert(path);
 
-            var target = this.target as EditableLevelData;
-            target.FromGridSettings(settings);
+            var levelData = target as EditableLevelData;
+            levelData!.FromGridSettings(settings);
             EditorUtility.SetDirty(target);
             AssetDatabase.SaveAssets();
             serializedObject.Update();

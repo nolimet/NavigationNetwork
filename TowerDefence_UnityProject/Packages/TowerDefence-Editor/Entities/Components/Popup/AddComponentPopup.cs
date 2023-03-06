@@ -38,7 +38,7 @@ namespace TowerDefence.EditorScripts.Entities.Components.Popup
                         var newComponent = Activator.CreateInstance(values[SelectedValue]) as IComponent;
                         var newComponentData = new ComponentData();
                         newComponentData.SerializeComponent(newComponent);
-                        towerConfigurationObject.components.Add(newComponentData);
+                        towerConfigurationObject.Components.Add(newComponentData);
 
                         editorWindow.Close();
                     }

@@ -9,23 +9,23 @@ namespace TowerDefence.Systems.LevelEditor.UI
 {
     public class CellEditorUIController
     {
-        private readonly IUIContainers _uiContainers;
-        private readonly CellEditor _cellEditor;
-        private readonly BindingContext _bindingContext = new();
+        private readonly IUIContainers uiContainers;
+        private readonly CellEditor cellEditor;
+        private readonly BindingContext bindingContext = new();
 
         private TextField cellWeightTextField;
 
         public CellEditorUIController(IUIContainers uiContainers, CellEditor cellEditor)
         {
-            _uiContainers = uiContainers;
-            _cellEditor = cellEditor;
+            this.uiContainers = uiContainers;
+            this.cellEditor = cellEditor;
 
-            _bindingContext.Bind(_uiContainers, x => x.Containers, OnUIContainersChanged);
+            bindingContext.Bind(this.uiContainers, x => x.Containers, OnUIContainersChanged);
         }
 
         private void OnUIContainersChanged(IList<IUIContainer> _)
         {
-            if (!_uiContainers.TryGetContainer<UIDocumentContainer>("LevelEditorUI", out var uiDocument)) return;
+            if (!uiContainers.TryGetContainer<UIDocumentContainer>("LevelEditorUI", out var uiDocument)) return;
 
             cellWeightTextField?.UnregisterValueChangedCallback(OnCellWeightChanged);
 
@@ -40,7 +40,7 @@ namespace TowerDefence.Systems.LevelEditor.UI
         {
             if (byte.TryParse(changeEvent.newValue, out var value))
             {
-                _cellEditor.ChangeCellsForSelection(value, true);
+                cellEditor.ChangeCellsForSelection(value, true);
             }
             else if (changeEvent.newValue != string.Empty)
             {

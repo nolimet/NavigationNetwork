@@ -9,8 +9,9 @@ namespace TowerDefence.World.Grid
 {
     internal sealed class GridVisualGenerator : IDisposable
     {
-        private const float tileWidth = 1;
-        private const float tileLength = 1;
+        private const float TileWidth = 1;
+        private const float TileLength = 1;
+
         private readonly GridWorldSettings worldSettings;
         private readonly WorldContainer world;
         private readonly Dictionary<(bool buildable, byte height), Material> materialCache = new();
@@ -83,8 +84,8 @@ namespace TowerDefence.World.Grid
                 {
                     Vector3 v = new
                     (
-                        x: x * tileWidth,
-                        y: y * tileLength,
+                        x: x * TileWidth,
+                        y: y * TileLength,
                         z: z
                     );
 

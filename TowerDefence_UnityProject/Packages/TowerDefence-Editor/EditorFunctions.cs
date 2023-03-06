@@ -28,7 +28,7 @@ namespace TowerDefence.EditorScripts
                 gridData.ToPath(Path.Combine(Application.streamingAssetsPath, relativePath));
             }
 
-            metadata.ToPath(Path.Combine(Application.streamingAssetsPath, LevelMetadata.relativePath));
+            metadata.ToPath(Path.Combine(Application.streamingAssetsPath, LevelMetadata.RelativePath));
         }
     }
 }

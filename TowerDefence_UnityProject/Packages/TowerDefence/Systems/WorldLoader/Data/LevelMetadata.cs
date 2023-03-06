@@ -7,7 +7,7 @@ namespace TowerDefence.Systems.WorldLoader.Data
 {
     public readonly struct LevelMetadata
     {
-        public const string relativePath = "LevelData.json";
+        public const string RelativePath = "LevelData.json";
         public readonly string DisplayName;
         public readonly string RelativeLevelPath;
 
@@ -19,7 +19,7 @@ namespace TowerDefence.Systems.WorldLoader.Data
 
         public static LevelMetadata[] LoadLevels()
         {
-            string path = Path.Combine(Application.streamingAssetsPath, relativePath);
+            string path = Path.Combine(Application.streamingAssetsPath, RelativePath);
             return path.FromPath(out LevelMetadata[] result) ? result : Array.Empty<LevelMetadata>();
         }
     }

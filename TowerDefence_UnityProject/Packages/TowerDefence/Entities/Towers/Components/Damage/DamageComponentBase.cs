@@ -17,31 +17,31 @@ namespace TowerDefence.Entities.Towers.Components.Damage
     {
         public abstract event Action<IEnumerable<IEnemyObject>> AppliedDamageToTargets;
 
-        protected readonly BindingContext bindingContext = new();
+        protected readonly BindingContext BindingContext = new();
 
-        protected ITowerModel model { get; private set; }
+        protected ITowerModel Model { get; private set; }
         public abstract double DamagePerSecond { get; }
-        protected ITargetFindComponent targetFindComponent { get; private set; } = NullTargetFinder.Instance;
+        protected ITargetFindComponent TargetFindComponent { get; private set; } = NullTargetFinder.Instance;
 
         public abstract void Tick();
 
         public virtual void PostInit(ITowerObject towerObject, ITowerModel model)
         {
-            targetFindComponent ??= NullTargetFinder.Instance;
+            TargetFindComponent ??= NullTargetFinder.Instance;
 
-            this.model = model;
+            Model = model;
 
-            bindingContext.Bind(model, x => x.Components, OnComponentsChanged);
+            BindingContext.Bind(model, x => x.Components, OnComponentsChanged);
         }
 
         private void OnComponentsChanged(IList<IComponent> obj)
         {
-            targetFindComponent = obj.Any(x => x is ITargetFindComponent) ? obj.First(x => x is ITargetFindComponent) as ITargetFindComponent : NullTargetFinder.Instance;
+            TargetFindComponent = obj.Any(x => x is ITargetFindComponent) ? obj.First(x => x is ITargetFindComponent) as ITargetFindComponent : NullTargetFinder.Instance;
         }
 
         ~DamageComponentBase()
         {
-            bindingContext.Dispose();
+            BindingContext.Dispose();
         }
     }
 }

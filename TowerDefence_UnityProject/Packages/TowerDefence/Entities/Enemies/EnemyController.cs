@@ -1,9 +1,10 @@
-﻿using Cysharp.Threading.Tasks;
-using Cysharp.Threading.Tasks.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
+using NoUtil.Extentsions;
 using TowerDefence.Entities.Enemies.Components;
 using TowerDefence.Entities.Enemies.Models;
 using static TowerDefence.Systems.Waves.Data.Wave;
@@ -28,31 +29,12 @@ namespace TowerDefence.Entities.Enemies
             EnemyUpdateLoop(tokenSource.Token).Preserve().SuppressCancellationThrow().Forget();
         }
 
-        //TODO Simplify workflow and add a enemy Creation service or something similar
-        public async UniTask<IEnemyObject> CreateNewEnemy(string id, World.Path.Data.PathWorldData.AnimationCurve3D path)
-        {
-            var newEnemy = await enemyFactory.CreateEnemy(id, EnemyDied);
-
-            if (newEnemy.Model.Components.Any(x => x is StaticPathWalker))
-            {
-                var walker = newEnemy.Model.Components.First(x => x is StaticPathWalker) as StaticPathWalker;
-
-                walker.SetPath(path);
-                walker.ReachedEnd = EnemyDied;
-            }
-
-            model.Enemies.Add(newEnemy);
-            return newEnemy;
-        }
-
         public async UniTask<IEnemyObject> CreateNewEnemy(EnemyGroup group)
         {
-            var newEnemy = await enemyFactory.CreateEnemy(group.enemyID, EnemyDied);
+            var newEnemy = await enemyFactory.CreateEnemy(group.EnemyID, EnemyDied);
 
-            if (newEnemy.Model.Components.Any(x => x is GridPathWalker))
+            if (newEnemy.Model.Components.TryFind(x => x is GridPathWalker, out var comp) && comp is GridPathWalker pathFinder)
             {
-                var pathFinder = newEnemy.Model.Components.First(x => x is GridPathWalker) as GridPathWalker;
-
                 pathFinder.ReachedEnd = OnEnemyReachedEnd;
                 await pathFinder.SetStartEnd(group);
             }
@@ -77,7 +59,7 @@ namespace TowerDefence.Entities.Enemies
                     DestroyEnemy(deadEnemies.Dequeue());
                 }
 
-                foreach (var enemy in this.model.Enemies)
+                foreach (var enemy in model.Enemies)
                     enemy.Tick();
 
                 void DestroyEnemy(IEnemyObject enemy)

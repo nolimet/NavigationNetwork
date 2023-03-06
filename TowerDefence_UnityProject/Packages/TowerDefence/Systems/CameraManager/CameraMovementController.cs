@@ -11,34 +11,34 @@ namespace TowerDefence.Systems.CameraManager
 {
     public class CameraMovementController : IDisposable, ITickable
     {
-        private readonly ICameraContainer _cameraContainer;
-        private readonly BindingContext _bindingContext = new();
-        private readonly CameraSettings _settings;
-        private readonly InputActions _inputActions;
-        private readonly GridWorld _gridWorld;
+        private readonly ICameraContainer cameraContainer;
+        private readonly BindingContext bindingContext = new();
+        private readonly CameraSettings settings;
+        private readonly InputActions inputActions;
+        private readonly GridWorld gridWorld;
 
-        private readonly InputAction _rightClickAction, _mouseDeltaAction, _verticalMoveAction, _horizontalMoveAction;
+        private readonly InputAction rightClickAction, mouseDeltaAction, verticalMoveAction, horizontalMoveAction;
 
         private Camera targetCamera;
 
         internal CameraMovementController(ICameraContainer cameraContainer, InputActions inputActions, CameraSettings settings, GridWorld gridWorld)
         {
-            _settings = settings;
-            _cameraContainer = cameraContainer;
-            _inputActions = inputActions;
-            _gridWorld = gridWorld;
+            this.settings = settings;
+            this.cameraContainer = cameraContainer;
+            this.inputActions = inputActions;
+            this.gridWorld = gridWorld;
 
-            _rightClickAction = inputActions.Main.RightClick;
-            _mouseDeltaAction = inputActions.Main.MouseDelta;
-            _verticalMoveAction = inputActions.CameraMove.Vertical;
-            _horizontalMoveAction = inputActions.CameraMove.Horizontal;
+            rightClickAction = inputActions.Main.RightClick;
+            mouseDeltaAction = inputActions.Main.MouseDelta;
+            verticalMoveAction = inputActions.CameraMove.Vertical;
+            horizontalMoveAction = inputActions.CameraMove.Horizontal;
 
-            _bindingContext.Bind(cameraContainer, x => x.Cameras, OnCamerasChanged);
+            bindingContext.Bind(cameraContainer, x => x.Cameras, OnCamerasChanged);
         }
 
         private void OnCamerasChanged(IList<CameraReference> obj)
         {
-            if (_cameraContainer.TryGetCameraById("MainCamera", out var cameraReference))
+            if (cameraContainer.TryGetCameraById("MainCamera", out var cameraReference))
             {
                 targetCamera = cameraReference.Camera;
             }
@@ -49,10 +49,10 @@ namespace TowerDefence.Systems.CameraManager
             if (!targetCamera) return;
 
             Vector3 newPos = targetCamera.transform.position;
-            if (_rightClickAction.IsPressed())
+            if (rightClickAction.IsPressed())
             {
-                var cameraDelta = (Vector3)_mouseDeltaAction.ReadValue<Vector2>();
-                newPos -= cameraDelta / Screen.dpi / (targetCamera.orthographicSize * _settings.PanRation);
+                var cameraDelta = (Vector3)mouseDeltaAction.ReadValue<Vector2>();
+                newPos -= cameraDelta / Screen.dpi / (targetCamera.orthographicSize * settings.PanRation);
             }
             // else
             // {
@@ -60,13 +60,13 @@ namespace TowerDefence.Systems.CameraManager
             //     newPos = targetCamera.transform.position + cameraMove;
             // }
 
-            var bounds = _gridWorld.GetGridBounds();
+            var bounds = gridWorld.GetGridBounds();
             targetCamera.transform.position = bounds.Contains(newPos) ? newPos : bounds.ClosestPoint(newPos);
         }
 
         public void Dispose()
         {
-            _bindingContext.Dispose();
+            bindingContext.Dispose();
         }
     }
 }

@@ -41,26 +41,26 @@ namespace TowerDefence.Systems.Waves
             cancelTokenSource?.Dispose();
 
             cancelTokenSource = new CancellationTokenSource();
-            wavePlayStateModel.totalWaves = waves?.Length ?? 0;
-            wavePlayStateModel.activeWave = 0;
+            wavePlayStateModel.TotalWaves = waves?.Length ?? 0;
+            wavePlayStateModel.ActiveWave = 0;
         }
 
         private int GetWavesLeft()
         {
-            return currentWaves.Length - wavePlayStateModel.activeWave;
+            return currentWaves.Length - wavePlayStateModel.ActiveWave;
         }
 
         public async void StartWavePlayBack()
         {
             if (currentWaves is not { Length: > 0 }) return;
 
-            while (wavePlayStateModel.activeWave < currentWaves.Length)
+            while (wavePlayStateModel.ActiveWave < currentWaves.Length)
             {
-                Debug.Log($"Starting wave {wavePlayStateModel.activeWave}");
-                activeWaves.Add(PlayWave(currentWaves[wavePlayStateModel.activeWave], cancelTokenSource.Token));
-                wavePlayStateModel.activeWave++;
+                Debug.Log($"Starting wave {wavePlayStateModel.ActiveWave}");
+                activeWaves.Add(PlayWave(currentWaves[wavePlayStateModel.ActiveWave], cancelTokenSource.Token));
+                wavePlayStateModel.ActiveWave++;
 
-                wavePlayStateModel.wavesPlaying = activeWaves.Count > 0;
+                wavePlayStateModel.WavesPlaying = activeWaves.Count > 0;
 
                 try
                 {
@@ -72,19 +72,19 @@ namespace TowerDefence.Systems.Waves
                     Debug.LogException(e);
                 }
 
-                if (!wavePlayStateModel.autoPlayEnabled)
+                if (!wavePlayStateModel.AutoPlayEnabled)
                     break;
             }
 
-            wavePlayStateModel.wavesPlaying = activeWaves.Count > 0;
+            wavePlayStateModel.WavesPlaying = activeWaves.Count > 0;
         }
 
         public void ForceStartNextWave()
         {
             if (currentWaves is not { Length: > 0 } || GetWavesLeft() <= 0) return;
 
-            activeWaves.Add(PlayWave(currentWaves[wavePlayStateModel.activeWave], cancelTokenSource.Token));
-            wavePlayStateModel.activeWave++;
+            activeWaves.Add(PlayWave(currentWaves[wavePlayStateModel.ActiveWave], cancelTokenSource.Token));
+            wavePlayStateModel.ActiveWave++;
         }
 
         public void StopWavePlayBack()
@@ -95,16 +95,16 @@ namespace TowerDefence.Systems.Waves
         private async UniTask PlayWave(Wave wave, CancellationToken token)
         {
             Debug.Log("wave started");
-            var waveLookup = new (EnemyGroup group, Queue<double> time)[wave.enemyGroups.Length];
+            var waveLookup = new (EnemyGroup group, Queue<double> time)[wave.EnemyGroups.Length];
             var enemyWatchers = new List<UniTask>();
             for (int i = 0; i < waveLookup.Length; i++)
             {
-                var (newGroup, spawnTimes) = waveLookup[i] = (wave.enemyGroups[i], new Queue<double>());
-                if (newGroup is { spawnInterval: { }, spawnDelay: { }, groupSize: > 0 })
+                var (newGroup, spawnTimes) = waveLookup[i] = (wave.EnemyGroups[i], new Queue<double>());
+                if (newGroup is { SpawnInterval: { }, SpawnDelay: { }, GroupSize: > 0 })
                 {
-                    double currentTime = newGroup.spawnDelay.Value;
-                    double interval = newGroup.spawnInterval.Value;
-                    ulong groupSize = newGroup.groupSize.Value;
+                    double currentTime = newGroup.SpawnDelay.Value;
+                    double interval = newGroup.SpawnInterval.Value;
+                    ulong groupSize = newGroup.GroupSize.Value;
                     for (ulong j = 0; j < groupSize; j++)
                     {
                         spawnTimes.Enqueue(currentTime);
@@ -113,7 +113,7 @@ namespace TowerDefence.Systems.Waves
                 }
                 else
                 {
-                    foreach (var spawnTime in newGroup.spawnTime)
+                    foreach (var spawnTime in newGroup.SpawnTime)
                     {
                         spawnTimes.Enqueue(spawnTime);
                     }

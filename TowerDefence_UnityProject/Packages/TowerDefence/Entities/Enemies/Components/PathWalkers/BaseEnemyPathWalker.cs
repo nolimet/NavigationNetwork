@@ -11,20 +11,20 @@ namespace TowerDefence.Entities.Enemies.Components
     [JsonObject(MemberSerialization.OptIn)]
     public abstract class BaseEnemyPathWalker : IPathWalkerComponent, IInitializable
     {
-        protected readonly BindingContext context = new();
+        protected readonly BindingContext Context = new();
         public UnityAction<IEnemyObject> ReachedEnd { get; set; }
 
-        protected IEnemyObject self { get; private set; }
-        protected IEnemyModel model { get; private set; }
+        protected IEnemyObject Self { get; private set; }
+        protected IEnemyModel Model { get; private set; }
         public abstract float PathProgress { get; protected set; }
         public short TickPriority => short.MinValue;
 
         public virtual void PostInit(IEnemyObject enemyObject, IEnemyModel enemyModel)
         {
-            self = enemyObject;
-            model = enemyModel;
+            Self = enemyObject;
+            Model = enemyModel;
 
-            context.Bind(enemyModel, x => x.Components, OnComponentsChanged);
+            Context.Bind(enemyModel, x => x.Components, OnComponentsChanged);
         }
 
         protected virtual void OnComponentsChanged(IList<IComponent> obj)
@@ -35,7 +35,7 @@ namespace TowerDefence.Entities.Enemies.Components
 
         ~BaseEnemyPathWalker()
         {
-            context.Dispose();
+            Context.Dispose();
         }
     }
 }

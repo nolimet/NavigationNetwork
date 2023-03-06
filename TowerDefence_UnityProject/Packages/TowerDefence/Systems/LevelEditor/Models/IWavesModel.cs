@@ -7,13 +7,13 @@ namespace TowerDefence.Systems.LevelEditor.Models
     [DataModel(AddToZenject = false, Shared = false)]
     public interface IWavesModel : IModelBase
     {
-        IList<IWaveModel> spawnGroups { get; }
+        IList<IWaveModel> SpawnGroups { get; }
     }
 
     [DataModel(AddToZenject = false, Shared = false)]
     public interface IWaveModel : IModelBase
     {
-        IList<ISpawnGroupModel> spawnGroups { get; }
+        IList<ISpawnGroupModel> SpawnGroups { get; }
     }
 
     [DataModel(AddToZenject = false, Shared = false)]
@@ -21,11 +21,11 @@ namespace TowerDefence.Systems.LevelEditor.Models
     {
         string EnemyId { get; set; }
 
-        int entranceId { get; set; }
-        int exitId { get; set; }
+        int EntranceId { get; set; }
+        int ExitId { get; set; }
 
-        ulong groupSize { get; set; }
-        double startDelay { get; set; }
-        double spawnInterval { get; set; }
+        ulong GroupSize { get; set; }
+        double StartDelay { get; set; }
+        double SpawnInterval { get; set; }
     }
 }

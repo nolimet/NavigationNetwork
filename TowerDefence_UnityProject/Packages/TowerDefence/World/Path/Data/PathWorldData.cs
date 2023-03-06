@@ -1,16 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TowerDefence.World.Path.Rendering;
 using UnityEngine;
+using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 namespace TowerDefence.World.Path.Data
 {
     //TODO Fix animation curves. There is a slowdown between keyframes. This should not happen it should be a constant speed
-    [System.Serializable]
+    [Serializable]
     public sealed class PathWorldData
     {
-        public readonly IReadOnlyDictionary<int, AnimationCurve3D> paths;
+        public readonly IReadOnlyDictionary<int, AnimationCurve3D> Paths;
 
         private readonly IEnumerable<PathRendererBase> pathVisuals;
 
@@ -22,7 +25,7 @@ namespace TowerDefence.World.Path.Data
                 animationPaths.Add(animationPaths.Count, new AnimationCurve3D(path));
             }
 
-            this.paths = animationPaths;
+            Paths = animationPaths;
             this.pathVisuals = pathVisuals;
         }
 
@@ -36,35 +39,35 @@ namespace TowerDefence.World.Path.Data
 
         public AnimationCurve3D GetRandomPath()
         {
-            return paths[Random.Range(0, paths.Count)];
+            return Paths[Random.Range(0, Paths.Count)];
         }
 
-        [System.Serializable]
+        [Serializable]
         public class AnimationCurve3D
         {
-            public readonly AnimationCurve curveX, curveY, curveZ;
+            public readonly AnimationCurve CurveX, CurveY, CurveZ;
 
-            public readonly float length = 0;
+            public readonly float Length;
 
             //TODO fix paths not being generated correctly and causing stops at corners or where there are points
             public AnimationCurve3D(Vector3[] points)
             {
-                curveX = new AnimationCurve();
-                curveY = new AnimationCurve();
-                curveZ = new AnimationCurve();
+                CurveX = new AnimationCurve();
+                CurveY = new AnimationCurve();
+                CurveZ = new AnimationCurve();
 
-                curveX.postWrapMode = WrapMode.Clamp;
-                curveY.postWrapMode = WrapMode.Clamp;
-                curveZ.postWrapMode = WrapMode.Clamp;
+                CurveX.postWrapMode = WrapMode.Clamp;
+                CurveY.postWrapMode = WrapMode.Clamp;
+                CurveZ.postWrapMode = WrapMode.Clamp;
 
                 float position = Vector3.Distance(points[0], points[1]);
                 Vector3 cp = points.First();
                 Vector3 lastPoint = points.First();
                 Vector3 inTangent = Vector3.zero;
 
-                curveX.AddKey(0, cp.x);
-                curveY.AddKey(0, cp.y);
-                curveZ.AddKey(0, cp.z);
+                CurveX.AddKey(0, cp.x);
+                CurveY.AddKey(0, cp.y);
+                CurveZ.AddKey(0, cp.z);
                 for (int i = 1; i < points.Length; i++)
                 {
                     cp = points[i];
@@ -73,25 +76,26 @@ namespace TowerDefence.World.Path.Data
 
                     if (points.Length + 1 < points.Length)
                     {
-                        outTangent = (points[i + 1] - cp) / (newPosition - position);// not how you calc tangent!
+                        outTangent = (points[i + 1] - cp) / (newPosition - position); // not how you calc tangent!
                     }
+
                     //In is never set!
-                    curveX.AddKey(new Keyframe(position, cp.x, inTangent.y, outTangent.x));
-                    curveY.AddKey(new Keyframe(position, cp.y, inTangent.y, outTangent.x));
-                    curveZ.AddKey(new Keyframe(position, cp.z, inTangent.y, outTangent.x));
+                    CurveX.AddKey(new Keyframe(position, cp.x, inTangent.y, outTangent.x));
+                    CurveY.AddKey(new Keyframe(position, cp.y, inTangent.y, outTangent.x));
+                    CurveZ.AddKey(new Keyframe(position, cp.z, inTangent.y, outTangent.x));
 
                     position = newPosition;
                     lastPoint = cp;
                 }
 
-                length = position;
+                Length = position;
             }
 
             public void LogCurveValues()
             {
-                Debug.Log("X\n" + LogCurve(curveX));
-                Debug.Log("Y\n" + LogCurve(curveY));
-                Debug.Log("Z\n" + LogCurve(curveZ));
+                Debug.Log("X\n" + LogCurve(CurveX));
+                Debug.Log("Y\n" + LogCurve(CurveY));
+                Debug.Log("Z\n" + LogCurve(CurveZ));
 
                 string LogCurve(AnimationCurve curve)
                 {
@@ -100,6 +104,7 @@ namespace TowerDefence.World.Path.Data
                     {
                         log.AppendLine($"t:{c.time}, v{c.value}, tIn{c.inTangent}, tOut{c.outTangent}");
                     }
+
                     return log.ToString();
                 }
             }
@@ -108,15 +113,15 @@ namespace TowerDefence.World.Path.Data
             {
                 return new Vector3
                 {
-                    x = curveX.Evaluate(position),
-                    y = curveY.Evaluate(position),
-                    z = curveZ.Evaluate(position)
+                    x = CurveX.Evaluate(position),
+                    y = CurveY.Evaluate(position),
+                    z = CurveZ.Evaluate(position)
                 };
             }
 
             public bool PathCompleted(float position)
             {
-                return position > length || Mathf.Approximately(position, length);
+                return position > Length || Mathf.Approximately(position, Length);
             }
         }
     }

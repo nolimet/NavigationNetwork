@@ -1,7 +1,7 @@
-﻿using DataBinding.BaseClasses;
-using DataBinding.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using DataBinding.BaseClasses;
+using DataBinding.Helpers;
 using TowerDefence.World.Grid.Data;
 
 namespace TowerDefence.Entities.Towers.Models

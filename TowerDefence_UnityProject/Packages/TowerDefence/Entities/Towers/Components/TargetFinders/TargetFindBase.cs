@@ -16,13 +16,13 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
     [JsonObject(MemberSerialization.OptIn)]
     public abstract class TargetFindBase : ITargetFindComponent, IInitializable
     {
-        protected List<IEnemyObject> targetList { get; private set; }
-        protected BindingContext bindingContext { get; private set; }
+        protected List<IEnemyObject> TargetList { get; private set; }
+        protected BindingContext BindingContext { get; private set; }
 
-        protected ITowerObject towerObject { get; private set; }
-        protected ITowerModel towerModel { get; private set; }
+        protected ITowerObject TowerObject { get; private set; }
+        protected ITowerModel TowerModel { get; private set; }
 
-        public IEnumerable<IEnemyObject> FoundTargets => targetList;
+        public IEnumerable<IEnemyObject> FoundTargets => TargetList;
 
         public short TickPriority => short.MinValue;
 
@@ -32,13 +32,13 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
 
         public virtual void PostInit(ITowerObject towerObject, ITowerModel model)
         {
-            targetList ??= new List<IEnemyObject>();
-            bindingContext ??= new BindingContext();
+            TargetList ??= new List<IEnemyObject>();
+            BindingContext ??= new BindingContext();
 
-            this.towerObject = towerObject;
-            towerModel = model;
+            TowerObject = towerObject;
+            TowerModel = model;
 
-            bindingContext.Bind(model, m => m.Components, OnComponentsChanged);
+            BindingContext.Bind(model, m => m.Components, OnComponentsChanged);
         }
 
         private void OnComponentsChanged(IList<IComponent> components)
@@ -51,18 +51,13 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
 
         protected IEnumerable<IEnemyObject> GetEnemyObjectsInRange()
         {
-            var hits = Physics2D.CircleCastAll(towerObject.GetWorldPosition(), (float)towerSettings.Range, Vector2.up);
-            if (hits.Length > 0)
-            {
-                return hits.Select(x => x.collider.GetComponent<IEnemyObject>()).Where(x => x != null);
-            }
-
-            return Array.Empty<IEnemyObject>();
+            var hits = Physics2D.CircleCastAll(TowerObject.GetWorldPosition(), (float)towerSettings.Range, Vector2.up);
+            return hits.Length > 0 ? hits.Select(x => x.collider.GetComponent<IEnemyObject>()).Where(x => x != null) : Array.Empty<IEnemyObject>();
         }
 
         ~TargetFindBase()
         {
-            bindingContext.Dispose();
+            BindingContext.Dispose();
         }
     }
 }

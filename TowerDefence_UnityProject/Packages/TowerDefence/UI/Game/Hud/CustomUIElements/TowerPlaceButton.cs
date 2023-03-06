@@ -5,7 +5,7 @@ namespace TowerDefence.UI.Game.Hud.CustomUIElements
 {
     public class TowerPlaceButton : Button
     {
-        public new readonly string ussClassName = "tower-selection-button";
+        public readonly string USSClassName = "tower-selection-button";
         public event Action<string> OnCallback;
         public readonly string CallbackValue;
 
@@ -13,7 +13,7 @@ namespace TowerDefence.UI.Game.Hud.CustomUIElements
         {
             CallbackValue = callbackValue;
             clicked += OnClicked;
-            AddToClassList(ussClassName);
+            AddToClassList(USSClassName);
         }
 
         private void OnClicked()

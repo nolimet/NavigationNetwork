@@ -33,10 +33,10 @@ namespace TowerDefence.UI.Game.Hud.Controllers
             this.wavePlayStateModel = wavePlayStateModel;
             this.waveController = waveController;
 
-            bindingContext.Bind(wavePlayStateModel, m => m.wavesPlaying, OnWavesPlayingChanged);
-            bindingContext.Bind(wavePlayStateModel, m => m.autoPlayEnabled, OnAutoPlayChanged);
-            bindingContext.Bind(wavePlayStateModel, x => x.activeWave, OnWaveCountChanged);
-            bindingContext.Bind(wavePlayStateModel, m => m.totalWaves, OnWaveCountChanged);
+            bindingContext.Bind(wavePlayStateModel, m => m.WavesPlaying, OnWavesPlayingChanged);
+            bindingContext.Bind(wavePlayStateModel, m => m.AutoPlayEnabled, OnAutoPlayChanged);
+            bindingContext.Bind(wavePlayStateModel, x => x.ActiveWave, OnWaveCountChanged);
+            bindingContext.Bind(wavePlayStateModel, m => m.TotalWaves, OnWaveCountChanged);
 
             bindingContext.Bind(uiContainers, m => m.Containers, OnUIContainersChanged);
         }
@@ -69,13 +69,13 @@ namespace TowerDefence.UI.Game.Hud.Controllers
             forceNextWaveButton.clicked += ForceNextWave;
             autoPlayToggle.RegisterValueChangedCallback(OnAutoPlayToggleChanged);
 
-            OnWavesPlayingChanged(wavePlayStateModel.wavesPlaying);
+            OnWavesPlayingChanged(wavePlayStateModel.WavesPlaying);
         }
 
         private void OnWaveCountChanged(int _)
         {
             if (waveCounter is not null)
-                waveCounter.text = ($"Wave {wavePlayStateModel.activeWave} of {wavePlayStateModel.totalWaves}");
+                waveCounter.text = ($"Wave {wavePlayStateModel.ActiveWave} of {wavePlayStateModel.TotalWaves}");
         }
 
         private void OnAutoPlayChanged(bool enabled)
@@ -85,7 +85,7 @@ namespace TowerDefence.UI.Game.Hud.Controllers
 
         private void OnAutoPlayToggleChanged(ChangeEvent<bool> evt)
         {
-            wavePlayStateModel.autoPlayEnabled = evt.newValue;
+            wavePlayStateModel.AutoPlayEnabled = evt.newValue;
         }
 
         private void OnWavesPlayingChanged(bool playing)

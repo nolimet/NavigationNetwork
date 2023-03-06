@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using ModestTree;
 using NoUtil.Debugging;
 using NoUtil.Extensions;
 using TowerDefence.Systems.WorldLoader.Data;
@@ -45,11 +44,11 @@ namespace TowerDefence.Systems.WorldLoader
                 return;
             }
 
-            if (lvlData.gridSettings.HasValue)
-                await gridWorld.CreateWorld(lvlData.gridSettings.Value);
+            if (lvlData.GridSettings.HasValue)
+                await gridWorld.CreateWorld(lvlData.GridSettings.Value);
             else "There where no grid settings".QuickCLog("World builder", LogType.Error);
 
-            worldDataModel.Waves = lvlData.waves;
+            worldDataModel.Waves = lvlData.Waves;
 
             string FormatWorldName()
             {

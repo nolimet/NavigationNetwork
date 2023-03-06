@@ -24,10 +24,10 @@ namespace TowerDefence.EditorScripts.Entities.Components
             //TODO Add data validator
             //TODO Add data updater
 
-            var target = this.target as ComponentConfigurationObject;
-            target.type = (ComponentType)EditorGUILayout.EnumPopup("Components Type", target.type);
+            var config = this.target as ComponentConfigurationObject;
+            config.Type = (ComponentType)EditorGUILayout.EnumPopup("Components Type", config.Type);
 
-            if (target.components.Count != componentsCache.Count || !target.components.All(x => componentsCache.Keys.Any(c => x == c)))
+            if (config.Components.Count != componentsCache.Count || !config.Components.All(x => componentsCache.Keys.Any(c => x == c)))
             {
                 RebuildComponentCache();
             }
@@ -36,7 +36,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
             {
                 if (GUILayout.Button("Add Component"))
                 {
-                    var popup = new AddComponentPopup(componentTypesMap[target.type], target);
+                    var popup = new AddComponentPopup(componentTypesMap[config.Type], config);
                     PopupWindow.Show(GUILayoutUtility.GetLastRect(), popup);
                 }
 
@@ -45,8 +45,8 @@ namespace TowerDefence.EditorScripts.Entities.Components
                     if (GUILayout.Button("Save") && ValidateComponents())
                     {
                         SerializeComponents();
-                        EditorUtility.SetDirty(target);
-                        AssetDatabase.SaveAssetIfDirty(target);
+                        EditorUtility.SetDirty(config);
+                        AssetDatabase.SaveAssetIfDirty(config);
                         AssetDatabase.Refresh();
                     }
                 }
@@ -64,7 +64,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
                     EditorGUILayout.HelpBox(result, MessageType.Error);
                 }
             }
-            
+
             foreach (var (componentData, displayData) in componentsCache)
             {
                 using (new EditorGUILayout.HorizontalScope())
@@ -77,46 +77,38 @@ namespace TowerDefence.EditorScripts.Entities.Components
                         PopupWindow.Show(GUILayoutUtility.GetLastRect(), popup);
                     }
 
-                    if (GUILayout.Button("Remove"))
-                    {
-                        target.components.Remove(componentData);
-                    }
+                    if (GUILayout.Button("Remove")) config.Components.Remove(componentData);
                 }
 
-                if (displayData.IsExpanded)
-                {
-                    using (new EditorGUI.IndentLevelScope(1))
-                    {
-                        using (new EditorGUI.DisabledGroupScope(true))
-                        {
-                            EditorGUILayout.TextArea(displayData.DisplayJson);
-                        }
-                    }
-                }
+                if (!displayData.IsExpanded) continue;
+
+                using (new EditorGUI.IndentLevelScope(1))
+                using (new EditorGUI.DisabledGroupScope(true))
+                    EditorGUILayout.TextArea(displayData.DisplayJson);
             }
         }
 
         private void SerializeComponents()
         {
-            var target = this.target as ComponentConfigurationObject;
+            var config = this.target as ComponentConfigurationObject;
 
             foreach (var component in componentsCache)
             {
                 component.Key.SerializeComponent(component.Value.Component);
             }
 
-            target!.components = componentsCache.Keys.ToList();
+            config!.Components = componentsCache.Keys.ToList();
         }
 
         private void RebuildComponentCache()
         {
             componentsCache.Clear();
 
-            var target = this.target as ComponentConfigurationObject;
+            var config = this.target as ComponentConfigurationObject;
 
-            for (var i = 0; i < target!.components.Count; i++)
+            for (var i = 0; i < config!.Components.Count; i++)
             {
-                var component = target!.components[i];
+                var component = config!.Components[i];
                 var displayData = new DisplayData
                 {
                     Component = component.DeserializeComponent(),
@@ -124,7 +116,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
                 };
 
                 displayData.ComponentType = displayData.Component.GetType();
-                displayData.ComponentName = componentTypesMap[target.type]
+                displayData.ComponentName = componentTypesMap[config.Type]
                     .First(x => x.Value == displayData.ComponentType).Key;
                 displayData.ComponentToJson();
                 displayData.ComponentData.SerializedComponent = displayData.Component;
@@ -160,16 +152,16 @@ namespace TowerDefence.EditorScripts.Entities.Components
                 foreach (var component in components)
                 {
                     var att = component.GetCustomAttribute<ComponentAttribute>();
-                    string name = component.ToString();
+                    string componentName = component.ToString();
 
-                    name = att.ComponentType switch
+                    componentName = att.ComponentType switch
                     {
-                        ComponentType.Enemy => name.Replace("TowerDefence.Entities.Enemies.Components.", ""),
-                        ComponentType.Tower => name.Replace("TowerDefence.Entities.Towers.Components.", ""),
+                        ComponentType.Enemy => componentName.Replace("TowerDefence.Entities.Enemies.Components.", ""),
+                        ComponentType.Tower => componentName.Replace("TowerDefence.Entities.Towers.Components.", ""),
                         _ => throw new ArgumentOutOfRangeException()
                     };
 
-                    componentTypesMap[att.ComponentType].Add(name, component);
+                    componentTypesMap[att.ComponentType].Add(componentName, component);
                     componentAttributesMap.Add(component, att);
                 }
             }
@@ -193,24 +185,22 @@ namespace TowerDefence.EditorScripts.Entities.Components
                 for (int j = 0; j < length; j++)
                 {
                     var other = usedTypes[j];
-                    if (i != j)
-                    {
-                        duplicates = !duplicates && self == other;
-                        if (componentAttributesMap[self].AnyRestrictionsMatch(self, other))
-                        {
-                            string result = "";
-                            if (self == other)
-                            {
-                                result += $"Duplicates of type {self}\n";
-                            }
-                            else
-                            {
-                                result += $"Cannot use {self} with {other}\n";
-                            }
+                    if (i == j) continue;
 
-                            validationReslts.Add(result);
-                        }
+                    duplicates = !duplicates && self == other;
+                    if (!componentAttributesMap[self].AnyRestrictionsMatch(self, other)) continue;
+
+                    string result = "";
+                    if (self == other)
+                    {
+                        result += $"Duplicates of type {self}\n";
                     }
+                    else
+                    {
+                        result += $"Cannot use {self} with {other}\n";
+                    }
+
+                    validationReslts.Add(result);
                 }
             }
 

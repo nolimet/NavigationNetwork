@@ -27,73 +27,73 @@ namespace TowerDefence.Systems.LevelEditor.Models
 				OnChange?.Invoke();
 			}
 		}
-			// entranceId
-		public event System.Action<System.Int32> OnChangeentranceId;
-		private System.Int32 _entranceId ; 
-		public System.Int32 entranceId 
+			// EntranceId
+		public event System.Action<System.Int32> OnChangeEntranceId;
+		private System.Int32 _EntranceId ; 
+		public System.Int32 EntranceId 
 		{
-			get => _entranceId;
+			get => _EntranceId;
 			set 
 			{
-								_entranceId = value; 
+								_EntranceId = value; 
 
-				OnChangeentranceId?.Invoke(value);
+				OnChangeEntranceId?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
-			// exitId
-		public event System.Action<System.Int32> OnChangeexitId;
-		private System.Int32 _exitId ; 
-		public System.Int32 exitId 
+			// ExitId
+		public event System.Action<System.Int32> OnChangeExitId;
+		private System.Int32 _ExitId ; 
+		public System.Int32 ExitId 
 		{
-			get => _exitId;
+			get => _ExitId;
 			set 
 			{
-								_exitId = value; 
+								_ExitId = value; 
 
-				OnChangeexitId?.Invoke(value);
+				OnChangeExitId?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
-			// groupSize
-		public event System.Action<System.UInt64> OnChangegroupSize;
-		private System.UInt64 _groupSize ; 
-		public System.UInt64 groupSize 
+			// GroupSize
+		public event System.Action<System.UInt64> OnChangeGroupSize;
+		private System.UInt64 _GroupSize ; 
+		public System.UInt64 GroupSize 
 		{
-			get => _groupSize;
+			get => _GroupSize;
 			set 
 			{
-								_groupSize = value; 
+								_GroupSize = value; 
 
-				OnChangegroupSize?.Invoke(value);
+				OnChangeGroupSize?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
-			// spawnInterval
-		public event System.Action<System.Double> OnChangespawnInterval;
-		private System.Double _spawnInterval ; 
-		public System.Double spawnInterval 
+			// SpawnInterval
+		public event System.Action<System.Double> OnChangeSpawnInterval;
+		private System.Double _SpawnInterval ; 
+		public System.Double SpawnInterval 
 		{
-			get => _spawnInterval;
+			get => _SpawnInterval;
 			set 
 			{
-								_spawnInterval = value; 
+								_SpawnInterval = value; 
 
-				OnChangespawnInterval?.Invoke(value);
+				OnChangeSpawnInterval?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}
-			// startDelay
-		public event System.Action<System.Double> OnChangestartDelay;
-		private System.Double _startDelay ; 
-		public System.Double startDelay 
+			// StartDelay
+		public event System.Action<System.Double> OnChangeStartDelay;
+		private System.Double _StartDelay ; 
+		public System.Double StartDelay 
 		{
-			get => _startDelay;
+			get => _StartDelay;
 			set 
 			{
-								_startDelay = value; 
+								_StartDelay = value; 
 
-				OnChangestartDelay?.Invoke(value);
+				OnChangeStartDelay?.Invoke(value);
 				OnChange?.Invoke();
 			}
 		}

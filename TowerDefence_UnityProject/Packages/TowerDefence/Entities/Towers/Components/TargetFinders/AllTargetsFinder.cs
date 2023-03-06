@@ -9,8 +9,8 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
     {
         public override void Tick()
         {
-            targetList.Clear();
-            targetList.AddRange(GetEnemyObjectsInRange());
+            TargetList.Clear();
+            TargetList.AddRange(GetEnemyObjectsInRange());
         }
     }
 }

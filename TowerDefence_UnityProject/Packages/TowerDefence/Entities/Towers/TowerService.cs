@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using TowerDefence.Entities.Towers.Builder;
 using TowerDefence.Entities.Towers.Models;
 using TowerDefence.World.Grid.Data;
@@ -24,7 +25,7 @@ namespace TowerDefence.Entities.Towers
             var configuration = await towerConfiguration.GetTowerAsync(towerID);
             if (configuration == null)
             {
-                throw new System.NullReferenceException("Tower ID seems to be invalid! Case does not matter just check the spelling or if it exists in the configuration data for the towers");
+                throw new NullReferenceException("Tower ID seems to be invalid! Case does not matter just check the spelling or if it exists in the configuration data for the towers");
             }
 
             var newTower = await towerFactory.CreateTower(configuration, position, cell);
@@ -38,7 +39,7 @@ namespace TowerDefence.Entities.Towers
         {
             if (tower == null)
             {
-                throw new System.NullReferenceException("tower is null");
+                throw new NullReferenceException("tower is null");
             }
 
             if (towerModel.Towers.Contains(tower))

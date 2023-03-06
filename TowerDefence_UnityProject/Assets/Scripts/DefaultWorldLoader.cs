@@ -11,7 +11,7 @@ namespace TowerDefence.Project
     {
         [Inject] private WorldLoadController worldLoadController;
         [Inject] private IWorldDataModel worldDataModel;
-        
+
         private void Start()
         {
             if (string.IsNullOrEmpty(worldDataModel.LevelName))

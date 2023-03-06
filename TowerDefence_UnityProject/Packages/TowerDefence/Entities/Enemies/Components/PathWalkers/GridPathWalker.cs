@@ -1,8 +1,8 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using NoUtil.Math;
-using System.Collections.Generic;
-using System.Linq;
 using TowerDefence.Entities.Components;
 using TowerDefence.World.Grid;
 using TowerDefence.World.Grid.Data;
@@ -18,11 +18,11 @@ namespace TowerDefence.Entities.Enemies.Components
     {
         private readonly List<IGridCell> path = new();
         private GridWorld gridWorld;
-        private int currentCell = 0;
+        private int currentCell;
 
         [JsonProperty] private float moveSpeed = 1f;
 
-        private const float nearTargetDistance = 0.01f;// 0.1^2;
+        private const float NearTargetDistance = 0.01f; // 0.1^2;
         private Vector3 target = Vector3.zero;
         private Vector3 currentSpeed = Vector3.zero;
         private float currentRotationVelocity;
@@ -39,14 +39,14 @@ namespace TowerDefence.Entities.Enemies.Components
 
         public override void Tick()
         {
-            float distance = Vector3.Distance(self.Transform.position, target);
+            float distance = Vector3.Distance(Self.Transform.position, target);
             if (distance < 0.3f)
             {
                 currentCell++;
                 if (currentCell >= path.Count)
                 {
-                    if (distance < nearTargetDistance)
-                        base.ReachedEnd?.Invoke(self);
+                    if (distance < NearTargetDistance)
+                        ReachedEnd?.Invoke(Self);
                 }
                 else
                 {
@@ -54,36 +54,36 @@ namespace TowerDefence.Entities.Enemies.Components
                 }
             }
 
-            Vector3 position = self.Transform.position;
+            Vector3 position = Self.Transform.position;
             Vector3 newPosition = Vector3.SmoothDamp(position, target, ref currentSpeed, 0.1f, moveSpeed);
 
-            float currentAngle = self.Transform.rotation.eulerAngles.z;
+            float currentAngle = Self.Transform.rotation.eulerAngles.z;
             float targetAngle = Math.VectorToAngle(newPosition - position);
 
             Quaternion newRotation = Quaternion.Euler(0, 0, Mathf.SmoothDampAngle(currentAngle, targetAngle, ref currentRotationVelocity, 0.1f));
 
-            self.Transform.SetPositionAndRotation(newPosition, newRotation);
+            Self.Transform.SetPositionAndRotation(newPosition, newRotation);
         }
 
         public async UniTask SetStartEnd(EnemyGroup group)
         {
             enemyGroup = group;
-            self.Transform.position = Vector3.one * 10000f;
+            Self.Transform.position = Vector3.one * 10000f;
 
-            var path = await gridWorld.GetPath(group.entranceId, group.exitId);
-            this.path.Clear();
-            this.path.AddRange(path);
-            if (this.path.Any() && this.path.Count > 2)
+            var newPath = await gridWorld.GetPath(group.EntranceId, group.ExitId);
+            path.Clear();
+            path.AddRange(newPath);
+            if (path.Any() && path.Count > 2)
             {
                 currentCell = 1;
-                target = this.path[1].WorldPosition;
-                self.Transform.position = this.path[0].WorldPosition;
-                self.Transform.rotation = Quaternion.Euler(0, 0, Math.VectorToAngle(target - self.Transform.position));
+                target = path[1].WorldPosition;
+                Self.Transform.position = path[0].WorldPosition;
+                Self.Transform.rotation = Quaternion.Euler(0, 0, Math.VectorToAngle(target - Self.Transform.position));
             }
             else
             {
                 Debug.Log("Pathing failed");
-                model.Health = 0f;
+                Model.Health = 0f;
             }
         }
 
