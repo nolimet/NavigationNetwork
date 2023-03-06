@@ -8,9 +8,8 @@ namespace TowerDefence.Input
     {
         public override void InstallBindings()
         {
-            Container.Bind<SelectionInputActions>().AsSingle();
+            Container.Bind<InputActions>().AsSingle();
             Container.Bind<DebugActions>().AsSingle();
-            Container.Bind<UIInputActions>().AsSingle();
         }
     }
 }
