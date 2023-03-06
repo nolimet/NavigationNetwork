@@ -25,9 +25,11 @@ namespace TowerDefence.World.Grid
             this.world = world;
         }
 
-        public async UniTask CreateVisuals(IEnumerable<IGridCell> nodes, GridSettings gridSettings)
+        public async UniTask<Bounds> CreateVisuals(IEnumerable<IGridCell> nodes, GridSettings gridSettings)
         {
             DestroyTiles();
+
+            Bounds bounds = new();
 
             int heightMultShaderProperty = Shader.PropertyToID("_HeightMult");
             int supportsTowerShaderProperty = Shader.PropertyToID("_SupportsTower");
@@ -44,6 +46,8 @@ namespace TowerDefence.World.Grid
             }
 
             tiles = objects.ToArray();
+
+            return bounds;
 
             Mesh CreateMesh()
             {
@@ -131,6 +135,8 @@ namespace TowerDefence.World.Grid
 
                 var collider = g.AddComponent<BoxCollider2D>();
                 collider.size = worldSettings.TileSize;
+
+                bounds.Encapsulate(r.bounds);
             }
         }
 
