@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 394ae1bf725b463cb7e678feefbcc571, type: 3}
   m_Name: Camera Installer
   m_EditorClassIdentifier: 
-  _cameraSettings:
-    PanRation: 2.5
+  cameraSettings:
+    PanRation: 1
     MoveSpeed: 1

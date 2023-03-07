@@ -14,7 +14,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
-using Object = UnityEngine.Object;
 
 namespace TowerDefence.Input
 {
@@ -157,98 +156,6 @@ namespace TowerDefence.Input
             ]
         },
         {
-            ""name"": ""CameraMove"",
-            ""id"": ""aee72a07-c351-4f21-9051-52e9120be9d0"",
-            ""actions"": [
-                {
-                    ""name"": ""Vertical"",
-                    ""type"": ""Value"",
-                    ""id"": ""c8c4745d-42b1-427a-b917-44aa5517d56e"",
-                    ""expectedControlType"": ""Integer"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Horizontal"",
-                    ""type"": ""Value"",
-                    ""id"": ""72c66e07-b601-4067-a4ab-8925b164b2e2"",
-                    ""expectedControlType"": ""Integer"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""106fa77f-12e3-4860-a6b7-10765a0b8604"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Vertical"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""53f4503a-d5db-4ea7-8ae3-3843a2991e8b"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Vertical"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""e939ef70-dfe8-44c9-a42b-dcf6b144e182"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Vertical"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""1D Axis"",
-                    ""id"": ""756cecdb-05b8-413f-899c-51ff71e45dd8"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Horizontal"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""5aefe0da-c9ba-4717-b16d-4767a8fe1dc8"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Horizontal"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""d87ab4c0-c710-47b6-9c62-9ecfcc8cad59"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Horizontal"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                }
-            ]
-        },
-        {
             ""name"": ""UI"",
             ""id"": ""29e7f54c-b8ae-4a4c-8158-06340aa29138"",
             ""actions"": [
@@ -306,10 +213,6 @@ namespace TowerDefence.Input
             m_Main_MousePosition = m_Main.FindAction("MousePosition", throwIfNotFound: true);
             m_Main_MouseDelta = m_Main.FindAction("MouseDelta", throwIfNotFound: true);
             m_Main_Drag = m_Main.FindAction("Drag", throwIfNotFound: true);
-            // CameraMove
-            m_CameraMove = asset.FindActionMap("CameraMove", throwIfNotFound: true);
-            m_CameraMove_Vertical = m_CameraMove.FindAction("Vertical", throwIfNotFound: true);
-            m_CameraMove_Horizontal = m_CameraMove.FindAction("Horizontal", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Newaction = m_UI.FindAction("New action", throwIfNotFound: true);
@@ -318,7 +221,7 @@ namespace TowerDefence.Input
 
         public void Dispose()
         {
-            Object.Destroy(asset);
+            UnityEngine.Object.Destroy(asset);
         }
 
         public InputBinding? bindingMask
@@ -435,47 +338,6 @@ namespace TowerDefence.Input
         }
         public MainActions @Main => new MainActions(this);
 
-        // CameraMove
-        private readonly InputActionMap m_CameraMove;
-        private ICameraMoveActions m_CameraMoveActionsCallbackInterface;
-        private readonly InputAction m_CameraMove_Vertical;
-        private readonly InputAction m_CameraMove_Horizontal;
-        public struct CameraMoveActions
-        {
-            private @InputActions m_Wrapper;
-            public CameraMoveActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Vertical => m_Wrapper.m_CameraMove_Vertical;
-            public InputAction @Horizontal => m_Wrapper.m_CameraMove_Horizontal;
-            public InputActionMap Get() { return m_Wrapper.m_CameraMove; }
-            public void Enable() { Get().Enable(); }
-            public void Disable() { Get().Disable(); }
-            public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(CameraMoveActions set) { return set.Get(); }
-            public void SetCallbacks(ICameraMoveActions instance)
-            {
-                if (m_Wrapper.m_CameraMoveActionsCallbackInterface != null)
-                {
-                    @Vertical.started -= m_Wrapper.m_CameraMoveActionsCallbackInterface.OnVertical;
-                    @Vertical.performed -= m_Wrapper.m_CameraMoveActionsCallbackInterface.OnVertical;
-                    @Vertical.canceled -= m_Wrapper.m_CameraMoveActionsCallbackInterface.OnVertical;
-                    @Horizontal.started -= m_Wrapper.m_CameraMoveActionsCallbackInterface.OnHorizontal;
-                    @Horizontal.performed -= m_Wrapper.m_CameraMoveActionsCallbackInterface.OnHorizontal;
-                    @Horizontal.canceled -= m_Wrapper.m_CameraMoveActionsCallbackInterface.OnHorizontal;
-                }
-                m_Wrapper.m_CameraMoveActionsCallbackInterface = instance;
-                if (instance != null)
-                {
-                    @Vertical.started += instance.OnVertical;
-                    @Vertical.performed += instance.OnVertical;
-                    @Vertical.canceled += instance.OnVertical;
-                    @Horizontal.started += instance.OnHorizontal;
-                    @Horizontal.performed += instance.OnHorizontal;
-                    @Horizontal.canceled += instance.OnHorizontal;
-                }
-            }
-        }
-        public CameraMoveActions @CameraMove => new CameraMoveActions(this);
-
         // UI
         private readonly InputActionMap m_UI;
         private IUIActions m_UIActionsCallbackInterface;
@@ -523,11 +385,6 @@ namespace TowerDefence.Input
             void OnMousePosition(InputAction.CallbackContext context);
             void OnMouseDelta(InputAction.CallbackContext context);
             void OnDrag(InputAction.CallbackContext context);
-        }
-        public interface ICameraMoveActions
-        {
-            void OnVertical(InputAction.CallbackContext context);
-            void OnHorizontal(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
