@@ -52,7 +52,7 @@ namespace TowerDefence.Systems.CameraManager
             if (rightClickAction.IsPressed())
             {
                 var cameraDelta = (Vector3)mouseDeltaAction.ReadValue<Vector2>();
-                newPos -= cameraDelta / Screen.dpi / (targetCamera.orthographicSize * settings.PanRation);
+                newPos -= (targetCamera.ScreenToWorldPoint(cameraDelta) - targetCamera.ScreenToWorldPoint(Vector3.zero)) * settings.MoveSpeed;
             }
             // else
             // {
