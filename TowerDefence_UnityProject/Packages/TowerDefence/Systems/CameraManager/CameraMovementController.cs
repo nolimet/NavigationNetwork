@@ -14,10 +14,9 @@ namespace TowerDefence.Systems.CameraManager
         private readonly ICameraContainer cameraContainer;
         private readonly BindingContext bindingContext = new();
         private readonly CameraSettings settings;
-        private readonly InputActions inputActions;
         private readonly GridWorld gridWorld;
 
-        private readonly InputAction rightClickAction, mouseDeltaAction, verticalMoveAction, horizontalMoveAction;
+        private readonly InputAction rightClickAction, mouseDeltaAction;
 
         private Camera targetCamera;
 
@@ -25,13 +24,10 @@ namespace TowerDefence.Systems.CameraManager
         {
             this.settings = settings;
             this.cameraContainer = cameraContainer;
-            this.inputActions = inputActions;
             this.gridWorld = gridWorld;
 
             rightClickAction = inputActions.Main.RightClick;
             mouseDeltaAction = inputActions.Main.MouseDelta;
-            verticalMoveAction = inputActions.CameraMove.Vertical;
-            horizontalMoveAction = inputActions.CameraMove.Horizontal;
 
             bindingContext.Bind(cameraContainer, x => x.Cameras, OnCamerasChanged);
         }
@@ -48,17 +44,12 @@ namespace TowerDefence.Systems.CameraManager
         {
             if (!targetCamera) return;
 
-            Vector3 newPos = targetCamera.transform.position;
+            var newPos = targetCamera.transform.position;
             if (rightClickAction.IsPressed())
             {
                 var cameraDelta = (Vector3)mouseDeltaAction.ReadValue<Vector2>();
                 newPos -= (targetCamera.ScreenToWorldPoint(cameraDelta) - targetCamera.ScreenToWorldPoint(Vector3.zero)) * settings.MoveSpeed;
             }
-            // else
-            // {
-            //     var cameraMove = new Vector3(_horizontalMoveAction.ReadValue<int>(), _verticalMoveAction.ReadValue<int>()) * _settings.MoveSpeed;
-            //     newPos = targetCamera.transform.position + cameraMove;
-            // }
 
             var bounds = gridWorld.GetGridBounds();
             targetCamera.transform.position = bounds.Contains(newPos) ? newPos : bounds.ClosestPoint(newPos);

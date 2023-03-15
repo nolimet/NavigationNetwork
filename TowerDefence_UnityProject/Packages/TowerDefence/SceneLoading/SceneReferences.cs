@@ -9,9 +9,11 @@ namespace TowerDefence.Packages.TowerDefence.SceneLoading
     {
         [field: SerializeField] public AssetReference MainMenuScene { get; private set; }
         [field: SerializeField] public AssetReference GameScene { get; private set; }
+        [field: SerializeField] public AssetReference EditorScene { get; private set; }
 
         public UniTask LoadGameScene() => LoadScene(GameScene);
         public UniTask LoadMainMenuScene() => LoadScene(MainMenuScene);
+        public UniTask LoadEditorScene() => LoadScene(EditorScene);
 
         private static async UniTask LoadScene(AssetReference sceneReference)
         {

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Camera Installer
   m_EditorClassIdentifier: 
   cameraSettings:
-    PanSpeed: 1
+    PanRation: 1
     MoveSpeed: 1

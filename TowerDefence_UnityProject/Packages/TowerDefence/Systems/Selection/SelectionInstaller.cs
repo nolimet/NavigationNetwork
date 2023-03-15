@@ -1,4 +1,5 @@
 ﻿using TowerDefence.Input;
+using TowerDefence.UI.Game.SelectionDrawer;
 using UnityEngine;
 using Zenject;
 
@@ -15,6 +16,7 @@ namespace TowerDefence.Systems.Selection
             }
 
             Container.Bind<SelectionController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<SelectionAreaDrawer>().AsSingle().NonLazy();
         }
     }
 }
