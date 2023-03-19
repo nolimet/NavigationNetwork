@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using DataBinding;
 using TowerDefence.Systems.LevelEditor.Models;
 using TowerDefence.World.Grid;
+using Object = UnityEngine.Object;
 
 namespace TowerDefence.Systems.LevelEditor.Managers
 {
@@ -29,9 +30,9 @@ namespace TowerDefence.Systems.LevelEditor.Managers
             if (world is null) return;
         }
 
-        public UniTask RebuildWorld()
+        public async UniTask RebuildWorld()
         {
-            if (levelEditorModel.World is null) return UniTask.CompletedTask;
+            if (levelEditorModel.World is null) return;
             var world = levelEditorModel.World;
             var size = world.Height * world.Width;
 
@@ -46,11 +47,25 @@ namespace TowerDefence.Systems.LevelEditor.Managers
                 world.Cells.Remove(world.Cells[^1]);
             }
 
-            if (levelEditorModel.RebuildingWorld) return UniTask.CompletedTask;
+            if (levelEditorModel.RebuildingWorld) return;
             levelEditorModel.RebuildingWorld = true;
-            return gridWorld.CreateWorld(world.ToGridSettings())
-                .ContinueWith(() => { return levelEditorModel.RebuildingWorld = false; });
+
+            await gridWorld.CreateWorld(world.ToGridSettings());
+
+            levelEditorModel.RebuildingWorld = false;
+
+            var selectableCells = Object.FindObjectsOfType<SelectableCell>();
+
+            foreach (var cell in selectableCells)
+            {
+                var cellPos = cell.GridCell.Position;
+                int index = (int)(cellPos.x * world.Width + cellPos.y);
+
+                var cellModel = world.Cells[index];
+                cellModel.worldCell = cell;
+            }
         }
+
 
         public void Dispose()
         {
