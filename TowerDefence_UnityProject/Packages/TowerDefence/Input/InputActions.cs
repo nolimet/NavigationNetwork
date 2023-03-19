@@ -73,6 +73,15 @@ namespace TowerDefence.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseWheel"",
+                    ""type"": ""Value"",
+                    ""id"": ""774b81cb-3f57-44ae-ad4b-33bdfd007c14"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -152,6 +161,17 @@ namespace TowerDefence.Input
                     ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f0171ccb-c7f0-4933-9870-1258c7c3e1be"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -159,15 +179,6 @@ namespace TowerDefence.Input
             ""name"": ""UI"",
             ""id"": ""29e7f54c-b8ae-4a4c-8158-06340aa29138"",
             ""actions"": [
-                {
-                    ""name"": ""New action"",
-                    ""type"": ""Button"",
-                    ""id"": ""c78811e5-57b3-4ddc-bc10-0dd9031c60f0"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
                 {
                     ""name"": ""OpenPauseMenu"",
                     ""type"": ""Button"",
@@ -179,17 +190,6 @@ namespace TowerDefence.Input
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""7955aaa3-1d18-4ba5-a3e7-1dd49e084069"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""New action"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""b636e7a3-93a1-403b-8e5d-f55ffbfe178d"",
@@ -213,9 +213,9 @@ namespace TowerDefence.Input
             m_Main_MousePosition = m_Main.FindAction("MousePosition", throwIfNotFound: true);
             m_Main_MouseDelta = m_Main.FindAction("MouseDelta", throwIfNotFound: true);
             m_Main_Drag = m_Main.FindAction("Drag", throwIfNotFound: true);
+            m_Main_MouseWheel = m_Main.FindAction("MouseWheel", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-            m_UI_Newaction = m_UI.FindAction("New action", throwIfNotFound: true);
             m_UI_OpenPauseMenu = m_UI.FindAction("OpenPauseMenu", throwIfNotFound: true);
         }
 
@@ -281,6 +281,7 @@ namespace TowerDefence.Input
         private readonly InputAction m_Main_MousePosition;
         private readonly InputAction m_Main_MouseDelta;
         private readonly InputAction m_Main_Drag;
+        private readonly InputAction m_Main_MouseWheel;
         public struct MainActions
         {
             private @InputActions m_Wrapper;
@@ -290,6 +291,7 @@ namespace TowerDefence.Input
             public InputAction @MousePosition => m_Wrapper.m_Main_MousePosition;
             public InputAction @MouseDelta => m_Wrapper.m_Main_MouseDelta;
             public InputAction @Drag => m_Wrapper.m_Main_Drag;
+            public InputAction @MouseWheel => m_Wrapper.m_Main_MouseWheel;
             public InputActionMap Get() { return m_Wrapper.m_Main; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -314,6 +316,9 @@ namespace TowerDefence.Input
                     @Drag.started -= m_Wrapper.m_MainActionsCallbackInterface.OnDrag;
                     @Drag.performed -= m_Wrapper.m_MainActionsCallbackInterface.OnDrag;
                     @Drag.canceled -= m_Wrapper.m_MainActionsCallbackInterface.OnDrag;
+                    @MouseWheel.started -= m_Wrapper.m_MainActionsCallbackInterface.OnMouseWheel;
+                    @MouseWheel.performed -= m_Wrapper.m_MainActionsCallbackInterface.OnMouseWheel;
+                    @MouseWheel.canceled -= m_Wrapper.m_MainActionsCallbackInterface.OnMouseWheel;
                 }
                 m_Wrapper.m_MainActionsCallbackInterface = instance;
                 if (instance != null)
@@ -333,6 +338,9 @@ namespace TowerDefence.Input
                     @Drag.started += instance.OnDrag;
                     @Drag.performed += instance.OnDrag;
                     @Drag.canceled += instance.OnDrag;
+                    @MouseWheel.started += instance.OnMouseWheel;
+                    @MouseWheel.performed += instance.OnMouseWheel;
+                    @MouseWheel.canceled += instance.OnMouseWheel;
                 }
             }
         }
@@ -341,13 +349,11 @@ namespace TowerDefence.Input
         // UI
         private readonly InputActionMap m_UI;
         private IUIActions m_UIActionsCallbackInterface;
-        private readonly InputAction m_UI_Newaction;
         private readonly InputAction m_UI_OpenPauseMenu;
         public struct UIActions
         {
             private @InputActions m_Wrapper;
             public UIActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Newaction => m_Wrapper.m_UI_Newaction;
             public InputAction @OpenPauseMenu => m_Wrapper.m_UI_OpenPauseMenu;
             public InputActionMap Get() { return m_Wrapper.m_UI; }
             public void Enable() { Get().Enable(); }
@@ -358,9 +364,6 @@ namespace TowerDefence.Input
             {
                 if (m_Wrapper.m_UIActionsCallbackInterface != null)
                 {
-                    @Newaction.started -= m_Wrapper.m_UIActionsCallbackInterface.OnNewaction;
-                    @Newaction.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnNewaction;
-                    @Newaction.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnNewaction;
                     @OpenPauseMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenPauseMenu;
                     @OpenPauseMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenPauseMenu;
                     @OpenPauseMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenPauseMenu;
@@ -368,9 +371,6 @@ namespace TowerDefence.Input
                 m_Wrapper.m_UIActionsCallbackInterface = instance;
                 if (instance != null)
                 {
-                    @Newaction.started += instance.OnNewaction;
-                    @Newaction.performed += instance.OnNewaction;
-                    @Newaction.canceled += instance.OnNewaction;
                     @OpenPauseMenu.started += instance.OnOpenPauseMenu;
                     @OpenPauseMenu.performed += instance.OnOpenPauseMenu;
                     @OpenPauseMenu.canceled += instance.OnOpenPauseMenu;
@@ -385,10 +385,10 @@ namespace TowerDefence.Input
             void OnMousePosition(InputAction.CallbackContext context);
             void OnMouseDelta(InputAction.CallbackContext context);
             void OnDrag(InputAction.CallbackContext context);
+            void OnMouseWheel(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
-            void OnNewaction(InputAction.CallbackContext context);
             void OnOpenPauseMenu(InputAction.CallbackContext context);
         }
     }

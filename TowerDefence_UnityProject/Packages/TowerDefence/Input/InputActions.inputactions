@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "MouseWheel",
+                    "type": "Value",
+                    "id": "774b81cb-3f57-44ae-ad4b-33bdfd007c14",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -128,6 +137,17 @@
                     "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f0171ccb-c7f0-4933-9870-1258c7c3e1be",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseWheel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -135,15 +155,6 @@
             "name": "UI",
             "id": "29e7f54c-b8ae-4a4c-8158-06340aa29138",
             "actions": [
-                {
-                    "name": "New action",
-                    "type": "Button",
-                    "id": "c78811e5-57b3-4ddc-bc10-0dd9031c60f0",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
                 {
                     "name": "OpenPauseMenu",
                     "type": "Button",
@@ -155,17 +166,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "7955aaa3-1d18-4ba5-a3e7-1dd49e084069",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "New action",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "b636e7a3-93a1-403b-8e5d-f55ffbfe178d",
