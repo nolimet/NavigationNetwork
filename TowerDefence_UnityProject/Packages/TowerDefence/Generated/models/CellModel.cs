@@ -41,6 +41,20 @@ namespace TowerDefence.Systems.LevelEditor.Models
 				OnChange?.Invoke();
 			}
 		}
+			// worldCell
+		public event System.Action<TowerDefence.World.Grid.SelectableCell> OnChangeworldCell;
+		private TowerDefence.World.Grid.SelectableCell _worldCell ; 
+		public TowerDefence.World.Grid.SelectableCell worldCell 
+		{
+			get => _worldCell;
+			set 
+			{
+								_worldCell = value; 
+
+				OnChangeworldCell?.Invoke(value);
+				OnChange?.Invoke();
+			}
+		}
 	
 		public CellModel() { 
 				}

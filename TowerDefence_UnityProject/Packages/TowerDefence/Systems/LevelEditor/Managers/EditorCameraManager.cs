@@ -12,7 +12,8 @@ namespace TowerDefence.Systems.LevelEditor.Managers
     public class EditorCameraManager
     {
         private const string CameraID = "MainCamera";
-        private const string ContainerID = "LevelEdiitorUI";
+        private const string ContainerID = "LevelEditorUI";
+
         private readonly ICameraContainer cameraContainer;
         private readonly ILevelEditorModel levelEditorModel;
         private readonly IUIContainers uiContainers;

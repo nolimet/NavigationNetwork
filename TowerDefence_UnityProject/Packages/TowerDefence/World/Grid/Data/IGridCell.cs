@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TowerDefence.World.Grid.Data
 {
-    internal interface IGridCell
+    public interface IGridCell
     {
         Vector2Int Position { get; }
         Vector2 WorldPosition { get; }

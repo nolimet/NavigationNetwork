@@ -2,6 +2,7 @@
 using System.Linq;
 using DataBinding.BaseClasses;
 using DataBinding.Helpers;
+using TowerDefence.World.Grid;
 using TowerDefence.World.Grid.Data;
 using UnityEngine;
 
@@ -34,6 +35,8 @@ namespace TowerDefence.Systems.LevelEditor.Models
     {
         public byte Weight { get; set; }
         public bool SupportsTower { get; set; }
+
+        public SelectableCell worldCell { get; set; }
 
         internal GridSettings.Cell ToGridCell()
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TowerDefence.World.Grid
 {
-    internal sealed class SelectableCell : MonoBehaviour, ISelectable
+    public sealed class SelectableCell : MonoBehaviour, ISelectable
     {
         public IGridCell GridCell { get; set; }
 
