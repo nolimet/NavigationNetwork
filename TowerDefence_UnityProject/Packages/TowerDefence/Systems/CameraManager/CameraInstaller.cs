@@ -14,6 +14,7 @@ namespace TowerDefence.Systems.CameraManager
         {
             Container.BindInstance(cameraSettings).AsSingle();
             Container.BindInterfacesTo<CameraMovementController>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<CameraZoomController>().AsSingle().NonLazy();
         }
     }
 }
