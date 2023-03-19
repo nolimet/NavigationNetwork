@@ -9,7 +9,7 @@ namespace TowerDefence.Systems.LevelEditor.UI
 {
     public class WorldEditorUIManager
     {
-        private const string UIDocumentId = "LevelEdiitorUI";
+        private const string UIDocumentId = "LevelEditorUI";
 
         private readonly BindingContext bindingContext = new();
         private BindingContext worldBindingContext = new();

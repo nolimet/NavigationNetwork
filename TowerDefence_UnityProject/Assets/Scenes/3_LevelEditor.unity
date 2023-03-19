@@ -460,7 +460,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Document>k__BackingField: {fileID: 1045345810}
-  <Name>k__BackingField: LevelEdiitorUI
+  <Name>k__BackingField: LevelEditorUI
   visualTreeAsset:
     m_AssetGUID: f0fef5586bee6f744b3f8c744595457c
     m_SubObjectName: 

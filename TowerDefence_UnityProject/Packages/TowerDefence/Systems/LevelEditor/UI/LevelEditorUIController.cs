@@ -10,7 +10,7 @@ namespace TowerDefence.Systems.LevelEditor.UI
 {
     public class LevelEditorUIController
     {
-        private const string UIDocumentId = "LevelEdiitorUI";
+        private const string UIDocumentId = "LevelEditorUI";
 
         private readonly IUIContainers uiContainers;
         private readonly WorldEditorManager worldEditorManager;

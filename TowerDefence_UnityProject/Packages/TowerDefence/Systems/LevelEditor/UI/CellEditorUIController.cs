@@ -25,14 +25,17 @@ namespace TowerDefence.Systems.LevelEditor.UI
 
         private void OnUIContainersChanged(IList<IUIContainer> _)
         {
-            if (!uiContainers.TryGetContainer<UIDocumentContainer>("LevelEditorUI", out var uiDocument)) return;
-
             cellWeightTextField?.UnregisterValueChangedCallback(OnCellWeightChanged);
+
+            if (!uiContainers.TryGetContainer<UIDocumentContainer>("LevelEditorUI", out var uiDocument)) return;
 
             var root = uiDocument.VisualRoot;
             var cellSettings = root.Q("CellSettings");
 
             cellWeightTextField = cellSettings.Q<TextField>("CellWeight");
+            if (!byte.TryParse(cellWeightTextField.value, out var value))
+                cellWeightTextField.value = "0";
+
             cellWeightTextField.RegisterValueChangedCallback(OnCellWeightChanged);
         }
 
