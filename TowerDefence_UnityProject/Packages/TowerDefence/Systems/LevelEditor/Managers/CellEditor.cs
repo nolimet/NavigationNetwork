@@ -1,23 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DataBinding;
 using TowerDefence.Systems.LevelEditor.Models;
 using TowerDefence.Systems.Selection;
 using TowerDefence.Systems.Selection.Models;
-using TowerDefence.World.Grid;
 using UnityEngine;
 
 namespace TowerDefence.Systems.LevelEditor.Managers
 {
     public class CellEditor : IDisposable
     {
+        private static readonly int HeightMult = Shader.PropertyToID("_HeightMult");
+        private static readonly int SupportsTower = Shader.PropertyToID("_SupportsTower");
+
         private readonly ISelectionModel selectionModel;
         private readonly ILevelEditorModel levelEditorModel;
         private IWorldLayoutModel worldLayoutModel;
 
         private readonly BindingContext bindingContext = new();
+        private readonly List<ICellModel> selectedCells = new();
 
-        public CellEditor(ISelectionModel selectionModel, ILevelEditorModel levelEditorModel)
+        internal CellEditor(ISelectionModel selectionModel, ILevelEditorModel levelEditorModel)
         {
             this.selectionModel = selectionModel;
             this.levelEditorModel = levelEditorModel;
@@ -31,9 +35,28 @@ namespace TowerDefence.Systems.LevelEditor.Managers
             worldLayoutModel = world;
         }
 
-        private void OnSelectionChanged(IList<ISelectable> obj)
+        private void OnSelectionChanged(IList<ISelectable> selection)
         {
-            Debug.Log(obj.Count);
+            selectedCells.Clear();
+            if (selection is null || worldLayoutModel is null) return;
+
+            var cells = worldLayoutModel.Cells.ToArray().AsSpan();
+            var spanSelection = selection.ToArray().AsSpan();
+            for (int i = 0; i < cells.Length; i++)
+            {
+                if (spanSelection.Length == 0)
+                    break;
+
+                var cell = cells[i];
+                for (int j = 0; j < spanSelection.Length; j++)
+                {
+                    if (!ReferenceEquals(spanSelection[j], cell.worldCell)) continue;
+
+                    selectedCells.Add(cell);
+                    spanSelection.Slice(j, 1);
+                    break;
+                }
+            }
         }
 
         public void Dispose()
@@ -41,22 +64,16 @@ namespace TowerDefence.Systems.LevelEditor.Managers
             bindingContext?.Dispose();
         }
 
-        public void ChangeCellsForSelection(byte weight, bool supportTower)
+        internal void ChangeCellsForSelection(byte weight, bool supportTower)
         {
-            foreach (var selectable in selectionModel.Selection)
+            foreach (var cell in selectedCells)
             {
-                switch (selectable)
-                {
-                    case SelectableCell cell:
-                    {
-                        var cellPos = cell.GridCell.Position;
-                        var cellIndex = (int)(cellPos.x * worldLayoutModel.Width + cellPos.y);
-                        var cellModel = worldLayoutModel.Cells[cellIndex];
-                        cellModel.Weight = weight;
-                        cellModel.SupportsTower = supportTower;
-                        break;
-                    }
-                }
+                cell.Weight = weight;
+                cell.SupportsTower = supportTower;
+
+                var renderer = cell.worldCell.GetComponent<Renderer>();
+                renderer.material.SetFloat(HeightMult, 0.003921569F * weight);
+                renderer.material.SetInt(SupportsTower, supportTower ? 1 : 0);
             }
         }
     }
