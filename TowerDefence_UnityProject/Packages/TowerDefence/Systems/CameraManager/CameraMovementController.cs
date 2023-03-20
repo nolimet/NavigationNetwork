@@ -34,10 +34,7 @@ namespace TowerDefence.Systems.CameraManager
 
         private void OnCamerasChanged(IList<CameraReference> obj)
         {
-            if (cameraContainer.TryGetCameraById("MainCamera", out var cameraReference))
-            {
-                targetCamera = cameraReference.Camera;
-            }
+            if (cameraContainer.TryGetCameraById("MainCamera", out var cameraReference)) targetCamera = cameraReference.Camera;
         }
 
         public void Tick()
@@ -48,7 +45,7 @@ namespace TowerDefence.Systems.CameraManager
             if (rightClickAction.IsPressed())
             {
                 var cameraDelta = (Vector3)mouseDeltaAction.ReadValue<Vector2>();
-                newPos -= (targetCamera.ScreenToWorldPoint(cameraDelta) - targetCamera.ScreenToWorldPoint(Vector3.zero)) * settings.MoveSpeed;
+                newPos -= (targetCamera.ScreenToWorldPoint(cameraDelta) - targetCamera.ScreenToWorldPoint(Vector3.zero)) * settings.PanSpeed;
             }
 
             var bounds = gridWorld.GetGridBounds();
