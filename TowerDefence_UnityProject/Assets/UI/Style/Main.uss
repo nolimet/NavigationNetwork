@@ -17,3 +17,48 @@
     border-color: #212121;
     font-size: 10px;
 }
+
+.unity-label {
+    color: #c7d3d6;
+    -unity-text-align: middle-center;
+    -unity-font: url('project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans.ttf?fileID=12800000&guid=e3265ab4bf004d28a9537516768c1c75&type=3#LiberationSans');
+}
+
+.unity-toggle:focus {
+    color: #c7d3d6;
+}
+
+.unity-toggle {
+    min-height: 20px;
+    padding: 2px 0;
+}
+
+.unity-toggle > Label {
+    width: auto;
+    font-size: 12;
+    min-width: auto;
+    margin: 0;
+    padding: 0;
+    padding-right: 4;
+    padding-left: 4;
+}
+
+.unity-toggle > VisualElement {
+    position: absolute;
+    right: 0;
+    bottom: 50%;
+    translate: 0 50%;
+}
+
+.unity-toggle__checkmark {
+    background-color: #464646;
+
+    -unity-background-image-tint-color: #fff;
+
+    border-radius: 4px;
+    border-color: #212121;
+
+    width: 16px;
+    height: 16px;
+}
+

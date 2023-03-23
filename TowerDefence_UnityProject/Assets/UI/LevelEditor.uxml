@@ -10,6 +10,7 @@
             <ui:Label text="Cell Settings" display-tooltip-when-elided="true" />
             <ui:VisualElement name="CellSettings">
                 <ui:TextField picking-mode="Ignore" label="Weight" value="filler text" text="filler text" name="CellWeight" style="align-items: stretch; justify-content: flex-start; flex-direction: row;" />
+                <ui:Toggle label="Supports Tower" name="SupportsTower" />
             </ui:VisualElement>
         </ui:ScrollView>
         <ui:Button text="Update World" display-tooltip-when-elided="true" name="RebuildGrid" tooltip="Update the world with the data stored in the panel" />
