@@ -19,7 +19,7 @@ namespace TowerDefence.Systems.Selection
 
         private readonly InputActions inputActions;
         private readonly List<ISelectable> selectionBuffer = new();
-        private readonly Collider2D[] results = new Collider2D[256];
+        private readonly Collider2D[] results = new Collider2D[8192];
 
         private readonly BindingContext bindingContext = new();
 
@@ -72,10 +72,7 @@ namespace TowerDefence.Systems.Selection
 
             var raycastResults = new List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerData, raycastResults);
-            if (!raycastResults.Any())
-            {
-                SelectObject(inputActions.Main.MousePosition.ReadValue<Vector2>());
-            }
+            if (!raycastResults.Any()) SelectObject(inputActions.Main.MousePosition.ReadValue<Vector2>());
         }
 
         private void SelectObject(Vector2 cursorPosition)
@@ -87,7 +84,7 @@ namespace TowerDefence.Systems.Selection
             selectionModel.Selection.Clear();
             if (hitCount == 0) return;
 
-            for (int i = 0; i < hitCount; i++)
+            for (var i = 0; i < hitCount; i++)
             {
                 var result = results[i];
                 result.GetComponentsInChildren(true, selectionBuffer);
@@ -100,6 +97,7 @@ namespace TowerDefence.Systems.Selection
         private void SelectObject(Vector2 corner1, Vector2 corner2)
         {
             if (Camera.main == null) return;
+
             var camera = Camera.main;
 
             corner1 = camera.ScreenToWorldPoint(corner1);
@@ -115,7 +113,7 @@ namespace TowerDefence.Systems.Selection
             selectionModel.Selection.Clear();
             var newSelection = new List<ISelectable>();
 
-            for (int i = 0; i < hitCount; i++)
+            for (var i = 0; i < hitCount; i++)
             {
                 var result = results[i];
                 result.GetComponentsInChildren(true, selectionBuffer);
@@ -137,10 +135,7 @@ namespace TowerDefence.Systems.Selection
         private void Dispose(bool disposing)
         {
             ReleaseUnmanagedResources();
-            if (disposing)
-            {
-                bindingContext?.Dispose();
-            }
+            if (disposing) bindingContext?.Dispose();
         }
 
         ~SelectionController()
