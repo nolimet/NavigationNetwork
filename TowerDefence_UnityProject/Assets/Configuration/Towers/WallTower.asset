@@ -12,23 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594d2eff2e8b62e4cb46c1704d66ad3d, type: 3}
   m_Name: WallTower
   m_EditorClassIdentifier: 
-  components:
-  - type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings
-    data: '{"Name":"Wall","IsSolid":1,"Range":0.0}'
+  Components:
+  - Type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings
+    Data: '{"Name":"Wall","IsSolid":1,"Range":0.0}'
     SerializedComponent:
-      rid: 2282215849081438278
-  - type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings
-    data: '{"towerSprite":"0a40b3828285d9a4ab767d5ad119a1d2"}'
+      rid: 2688817685607219789
+  - Type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings
+    Data: '{"towerSprite":"0a40b3828285d9a4ab767d5ad119a1d2"}'
     SerializedComponent:
-      rid: 2282215849081438279
-  type: 1
+      rid: 2688817685607219790
+  Type: 1
   references:
     version: 2
     RefIds:
-    - rid: 2282215849081438278
+    - rid: 2688817685607219789
       type: {class: TowerSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
-    - rid: 2282215849081438279
+    - rid: 2688817685607219790
       type: {class: TowerVisualSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
       data:

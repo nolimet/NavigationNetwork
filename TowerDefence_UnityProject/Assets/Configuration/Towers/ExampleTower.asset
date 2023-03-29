@@ -12,41 +12,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594d2eff2e8b62e4cb46c1704d66ad3d, type: 3}
   m_Name: ExampleTower
   m_EditorClassIdentifier: 
-  components:
-  - type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings
-    data: '{"Name":"Example","IsSolid":0,"Range":4.0}'
+  Components:
+  - Type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings
+    Data: '{"Name":"Example","IsSolid":1,"Range":5.0}'
     SerializedComponent:
-      rid: 2282215849081438273
-  - type: TowerDefence.Entities.Towers.Components.TargetFinders.NearestTargetFinder
-    data: '{}'
+      rid: 2688817685607220024
+  - Type: TowerDefence.Entities.Towers.Components.TargetFinders.NearestTargetFinder
+    Data: '{}'
     SerializedComponent:
-      rid: 2282215849081438274
-  - type: TowerDefence.Entities.Towers.Components.Damage.DamageAllTargets
-    data: '{"damage":5.0,"damageInterval":0.15}'
+      rid: 2688817685607220030
+  - Type: TowerDefence.Entities.Towers.Components.Damage.DamageAllTargets
+    Data: '{"damage":5.0,"damageInterval":1.0}'
     SerializedComponent:
-      rid: 2282215849081438275
-  - type: TowerDefence.Entities.Towers.Components.AttackVisualizers.LineAttackVisualizer
-    data: '{"attackVisual":"d88178ac40daaec49a8f8225eabffbb9","decayDuration":0.3,"attackColor":{"r":0.74133,"g":1.0,"b":0.0,"a":1.0}}'
+      rid: 2688817685607220031
+  - Type: TowerDefence.Entities.Towers.Components.AttackVisualizers.LineAttackVisualizer
+    Data: '{"attackVisual":"d88178ac40daaec49a8f8225eabffbb9","decayDuration":0.5,"attackColor":{"r":1.0,"g":0.0,"b":0.0,"a":1.0}}'
     SerializedComponent:
-      rid: 2282215849081438276
-  - type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings
-    data: '{"towerSprite":"a8644695a65e3c54c8a39b88ffd1b5e8"}'
+      rid: 2688817685607220032
+  - Type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings
+    Data: '{"towerSprite":"a8644695a65e3c54c8a39b88ffd1b5e8"}'
     SerializedComponent:
-      rid: 2282215849081438277
-  type: 1
+      rid: 2688817685607220033
+  - Type: TowerDefence.Entities.Towers.Components.PowerComponents.SimplePowerConsumer
+    Data: '{}'
+    SerializedComponent:
+      rid: 2688817685607220034
+  Type: 1
   references:
     version: 2
     RefIds:
-    - rid: 2282215849081438273
+    - rid: 2688817685607220024
       type: {class: TowerSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
-    - rid: 2282215849081438274
+    - rid: 2688817685607220030
       type: {class: NearestTargetFinder, ns: TowerDefence.Entities.Towers.Components.TargetFinders,
         asm: TowerDefence}
-    - rid: 2282215849081438275
+    - rid: 2688817685607220031
       type: {class: DamageAllTargets, ns: TowerDefence.Entities.Towers.Components.Damage,
         asm: TowerDefence}
-    - rid: 2282215849081438276
+    - rid: 2688817685607220032
       type: {class: LineAttackVisualizer, ns: TowerDefence.Entities.Towers.Components.AttackVisualizers,
         asm: TowerDefence}
       data:
@@ -55,13 +59,15 @@ MonoBehaviour:
           m_SubObjectName: 
           m_SubObjectType: 
           m_EditorAssetChanged: 0
-    - rid: 2282215849081438277
+    - rid: 2688817685607220033
       type: {class: TowerVisualSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
       data:
         towerSprite:
           m_AssetGUID: a8644695a65e3c54c8a39b88ffd1b5e8
-          m_SubObjectName: ExampleTower
-          m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
-            Culture=neutral, PublicKeyToken=null
-          m_EditorAssetChanged: 1
+          m_SubObjectName: 
+          m_SubObjectType: 
+          m_EditorAssetChanged: 0
+    - rid: 2688817685607220034
+      type: {class: SimplePowerConsumer, ns: TowerDefence.Entities.Towers.Components.PowerComponents,
+        asm: TowerDefence}
