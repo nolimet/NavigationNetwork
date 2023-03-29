@@ -24,15 +24,15 @@ namespace TowerDefence.EditorScripts.Entities.Components
             //TODO Add data validator
             //TODO Add data updater
 
-            var config = this.target as ComponentConfigurationObject;
-            config.Type = (ComponentType)EditorGUILayout.EnumPopup("Components Type", config.Type);
+            var config = target as ComponentConfigurationObject;
+            config!.Type = (ComponentType)EditorGUILayout.EnumPopup("Components Type", config.Type);
 
             if (config.Components.Count != componentsCache.Count || !config.Components.All(x => componentsCache.Keys.Any(c => x == c)))
             {
                 RebuildComponentCache();
             }
 
-            using (var h1 = new EditorGUILayout.HorizontalScope())
+            using (new EditorGUILayout.HorizontalScope())
             {
                 if (GUILayout.Button("Add Component"))
                 {
@@ -40,7 +40,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
                     PopupWindow.Show(GUILayoutUtility.GetLastRect(), popup);
                 }
 
-                using (var d1 = new EditorGUI.DisabledGroupScope(validationReslts.Any()))
+                using (new EditorGUI.DisabledGroupScope(validationReslts.Any()))
                 {
                     if (GUILayout.Button("Save") && ValidateComponents())
                     {
@@ -71,18 +71,29 @@ namespace TowerDefence.EditorScripts.Entities.Components
                 {
                     displayData.IsExpanded = EditorGUILayout.Foldout(displayData.IsExpanded, displayData.ComponentName, true);
                     GUILayout.FlexibleSpace();
-                    if (GUILayout.Button("Edit"))
-                    {
-                        var popup = new ComponentEditPopup(displayData);
-                        PopupWindow.Show(GUILayoutUtility.GetLastRect(), popup);
-                    }
 
                     if (GUILayout.Button("Remove")) config.Components.Remove(componentData);
                 }
 
                 if (!displayData.IsExpanded) continue;
 
-                using (new EditorGUI.IndentLevelScope(1))
+                if (displayData.serializedComponent.hasChildren)
+                {
+                    using var c = new EditorGUI.ChangeCheckScope();
+                    int depth = displayData.serializedComponent.depth;
+                    foreach (SerializedProperty child in displayData.serializedProperty.FindPropertyRelative(nameof(componentData.SerializedComponent)))
+                    {
+                        if (child.depth != depth + 1) continue;
+                        Debug.Log(child.propertyPath);
+                        EditorGUILayout.PropertyField(child, true);
+                    }
+
+                    if (c.changed)
+                        serializedObject.ApplyModifiedProperties();
+                }
+
+                displayData.JsonEditorDrawer.OnGUI();
+
                 using (new EditorGUI.DisabledGroupScope(true))
                     EditorGUILayout.TextArea(displayData.DisplayJson);
             }
@@ -90,11 +101,12 @@ namespace TowerDefence.EditorScripts.Entities.Components
 
         private void SerializeComponents()
         {
-            var config = this.target as ComponentConfigurationObject;
+            var config = target as ComponentConfigurationObject;
 
             foreach (var component in componentsCache)
             {
                 component.Key.SerializeComponent(component.Value.Component);
+                component.Value.ComponentToJson();
             }
 
             config!.Components = componentsCache.Keys.ToList();
@@ -104,23 +116,28 @@ namespace TowerDefence.EditorScripts.Entities.Components
         {
             componentsCache.Clear();
 
-            var config = this.target as ComponentConfigurationObject;
+            var config = target as ComponentConfigurationObject;
 
             for (var i = 0; i < config!.Components.Count; i++)
             {
                 var component = config!.Components[i];
                 var displayData = new DisplayData
                 {
-                    Component = component.DeserializeComponent(),
                     ComponentData = component
                 };
 
                 displayData.ComponentType = displayData.Component.GetType();
-                displayData.ComponentName = componentTypesMap[config.Type]
-                    .First(x => x.Value == displayData.ComponentType).Key;
+                displayData.ComponentName = componentTypesMap[config.Type].First(x => x.Value == displayData.ComponentType).Key;
                 displayData.ComponentToJson();
-                displayData.ComponentData.SerializedComponent = displayData.Component;
-                displayData.serializedProperty = serializedObject.FindProperty("components").GetArrayElementAtIndex(i);
+
+                if (component.SerializedComponent is null)
+                {
+                    component.SetReferenceValue();
+                }
+
+                displayData.serializedProperty = serializedObject.FindProperty("Components").GetArrayElementAtIndex(i);
+                displayData.serializedComponent = displayData.serializedProperty.FindPropertyRelative("SerializedComponent");
+                displayData.JsonEditorDrawer = new ComponentJsonDataDrawer(displayData);
 
                 componentsCache.Add(component, displayData);
             }
@@ -147,11 +164,11 @@ namespace TowerDefence.EditorScripts.Entities.Components
                 Enum.GetValues(typeof(ComponentType)).Cast<ComponentType>().Distinct()
                     .Where(x => !componentTypesMap.ContainsKey(x))
                     .ToList()
-                    .ForEach(type => componentTypesMap.Add(type, new()));
+                    .ForEach(type => componentTypesMap.Add(type, new Dictionary<string, Type>()));
 
                 foreach (var component in components)
                 {
-                    var att = component.GetCustomAttribute<ComponentAttribute>();
+                    var att = component.GetCustomAttribute<ComponentAttribute>(true);
                     string componentName = component.ToString();
 
                     componentName = att.ComponentType switch

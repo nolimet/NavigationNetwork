@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using TowerDefence.EditorScripts.Entities.Components.Popup;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Components.Data;
 using UnityEditor;
@@ -13,9 +14,13 @@ namespace TowerDefence.EditorScripts.Entities.Components
         public string ComponentName;
 
         public ComponentData ComponentData;
-        public IComponent Component;
+        public ComponentJsonDataDrawer JsonEditorDrawer;
+
+        public IComponent Component => ComponentData.SerializedComponent;
         public Type ComponentType;
+
         public SerializedProperty serializedProperty;
+        public SerializedProperty serializedComponent;
 
         public void ComponentToJson()
         {
@@ -24,12 +29,12 @@ namespace TowerDefence.EditorScripts.Entities.Components
 
         public void ComponentFromJson()
         {
-            Component = JsonConvert.DeserializeObject(DisplayJson, ComponentType) as IComponent;
+            ComponentData.SerializedComponent = JsonConvert.DeserializeObject(DisplayJson, ComponentType) as IComponent;
         }
 
         public void UpdateTowerComponentData()
         {
-            ComponentData.SerializeComponent(Component);
+            ComponentData.SerializeComponent(ComponentData.SerializedComponent);
         }
     }
 }
