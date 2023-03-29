@@ -7,13 +7,13 @@ namespace TowerDefence.Entities.Components
     internal sealed class ComponentAttribute : Attribute
     {
         public readonly ComponentType ComponentType;
-        public readonly Type[] Restirctions;
+        private readonly Type[] restrictions;
         public bool AllowMultiple = false;
 
-        public ComponentAttribute(ComponentType componentType, params Type[] restirctions)
+        public ComponentAttribute(ComponentType componentType, params Type[] restrictions)
         {
             ComponentType = componentType;
-            Restirctions = restirctions;
+            this.restrictions = restrictions;
         }
 
         internal bool AnyRestrictionsMatch(Type self, Type other)
@@ -21,7 +21,7 @@ namespace TowerDefence.Entities.Components
             if (!AllowMultiple && other == self)
                 return true;
 
-            foreach (var restriction in Restirctions)
+            foreach (var restriction in restrictions)
             {
                 if (restriction == other && restriction != self)
                     return true;
