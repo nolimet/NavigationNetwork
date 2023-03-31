@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using UnityEngine;
 
 namespace TowerDefence.Entities.Components
 {
@@ -18,15 +19,13 @@ namespace TowerDefence.Entities.Components
 
         internal bool AnyRestrictionsMatch(Type self, Type other)
         {
-            if (!AllowMultiple && other == self)
+            if (!AllowMultiple && self.Equals(other))
                 return true;
 
             foreach (var restriction in restrictions)
             {
-                if (restriction == other && restriction != self)
+                if (restriction.Equals(other) || other is null)
                     return true;
-
-                if (!restriction.IsInterface) continue;
 
                 var interfaces = other.GetInterfaces();
                 if (interfaces.Any() && interfaces.Contains(restriction))
