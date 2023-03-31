@@ -16,7 +16,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
         private readonly Dictionary<ComponentType, Dictionary<string, Type>> componentTypesMap = new();
         private readonly Dictionary<ComponentData, DisplayData> componentsCache = new();
         private readonly Dictionary<Type, ComponentAttribute> componentAttributesMap = new();
-        private readonly List<string> validationReslts = new();
+        private readonly List<string> validationResults = new();
 
         public override void OnInspectorGUI()
         {
@@ -36,11 +36,11 @@ namespace TowerDefence.EditorScripts.Entities.Components
             {
                 if (GUILayout.Button("Add Component"))
                 {
-                    var popup = new AddComponentPopup(componentTypesMap[config.Type], config);
+                    var popup = new AddComponentPopup(componentTypesMap[config.Type], serializedObject, config);
                     PopupWindow.Show(GUILayoutUtility.GetLastRect(), popup);
                 }
 
-                using (new EditorGUI.DisabledGroupScope(validationReslts.Any()))
+                using (new EditorGUI.DisabledGroupScope(validationResults.Any()))
                 {
                     if (GUILayout.Button("Save") && ValidateComponents())
                     {
@@ -57,9 +57,9 @@ namespace TowerDefence.EditorScripts.Entities.Components
                 }
             }
 
-            if (validationReslts.Any())
+            if (validationResults.Any())
             {
-                foreach (var result in validationReslts)
+                foreach (var result in validationResults)
                 {
                     EditorGUILayout.HelpBox(result, MessageType.Error);
                 }
@@ -84,7 +84,6 @@ namespace TowerDefence.EditorScripts.Entities.Components
                     foreach (SerializedProperty child in displayData.serializedProperty.FindPropertyRelative(nameof(componentData.SerializedComponent)))
                     {
                         if (child.depth != depth + 1) continue;
-                        Debug.Log(child.propertyPath);
                         EditorGUILayout.PropertyField(child, true);
                     }
 
@@ -126,18 +125,15 @@ namespace TowerDefence.EditorScripts.Entities.Components
                     ComponentData = component
                 };
 
+                component.SetReferenceValue();
+
                 displayData.ComponentType = displayData.Component.GetType();
                 displayData.ComponentName = componentTypesMap[config.Type].First(x => x.Value == displayData.ComponentType).Key;
                 displayData.ComponentToJson();
 
-                if (component.SerializedComponent is null)
-                {
-                    component.SetReferenceValue();
-                }
-
                 displayData.serializedProperty = serializedObject.FindProperty("Components").GetArrayElementAtIndex(i);
                 displayData.serializedComponent = displayData.serializedProperty.FindPropertyRelative("SerializedComponent");
-                displayData.JsonEditorDrawer = new ComponentJsonDataDrawer(displayData);
+                displayData.JsonEditorDrawer = new ComponentJsonDataDrawer(displayData, serializedObject);
 
                 componentsCache.Add(component, displayData);
             }
@@ -145,7 +141,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
 
         private void OnEnable()
         {
-            validationReslts.Clear();
+            validationResults.Clear();
             componentTypesMap.Clear();
             componentAttributesMap.Clear();
 
@@ -188,7 +184,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
 
         private bool ValidateComponents()
         {
-            validationReslts.Clear();
+            validationResults.Clear();
 
             var usedTypes = componentsCache.Values.Select(x => x.ComponentType).ToArray();
 
@@ -217,7 +213,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
                         result += $"Cannot use {self} with {other}\n";
                     }
 
-                    validationReslts.Add(result);
+                    validationResults.Add(result);
                 }
             }
 

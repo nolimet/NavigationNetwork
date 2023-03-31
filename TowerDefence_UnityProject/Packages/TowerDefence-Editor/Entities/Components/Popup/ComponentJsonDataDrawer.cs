@@ -13,9 +13,10 @@ namespace TowerDefence.EditorScripts.Entities.Components.Popup
         private readonly FieldInfo[] fields;
         private readonly SerializedObject serializedObject;
 
-        public ComponentJsonDataDrawer(DisplayData displayData)
+        public ComponentJsonDataDrawer(DisplayData displayData, SerializedObject serializedObject)
         {
             this.displayData = displayData;
+            this.serializedObject = serializedObject;
 
             var jsonPropertyType = typeof(JsonPropertyAttribute);
             var unitySerializableType = typeof(SerializeField);
