@@ -13,22 +13,22 @@ MonoBehaviour:
   m_Name: WallTower
   m_EditorClassIdentifier: 
   Components:
-  - Type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings
+  - TypeName: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings
     Data: '{"Name":"Wall","IsSolid":1,"Range":0.0}'
     SerializedComponent:
-      rid: 2688817685607219789
-  - Type: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings
+      rid: 2688817685607220126
+  - TypeName: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings
     Data: '{"towerSprite":"0a40b3828285d9a4ab767d5ad119a1d2"}'
     SerializedComponent:
-      rid: 2688817685607219790
+      rid: 2688817685607220127
   Type: 1
   references:
     version: 2
     RefIds:
-    - rid: 2688817685607219789
+    - rid: 2688817685607220126
       type: {class: TowerSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
-    - rid: 2688817685607219790
+    - rid: 2688817685607220127
       type: {class: TowerVisualSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
       data:
