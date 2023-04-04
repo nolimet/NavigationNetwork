@@ -8,8 +8,7 @@ namespace TowerDefence.Entities.Components.Data
     [Serializable]
     internal sealed class ComponentData
     {
-        [FormerlySerializedAs("Type")] [SerializeField]
-        internal string TypeName;
+        [SerializeField] internal string TypeName;
 
         public Type Type => Type.GetType(TypeName);
 
@@ -21,7 +20,7 @@ namespace TowerDefence.Entities.Components.Data
 
         internal void SerializeComponent(IComponent component)
         {
-            TypeName = component.GetType().ToString();
+            TypeName = component.GetType().AssemblyQualifiedName;
             Data = JsonConvert.SerializeObject(component);
         }
 
@@ -34,10 +33,10 @@ namespace TowerDefence.Entities.Components.Data
 
         internal IComponent DeserializeComponent()
         {
-            if (string.IsNullOrWhiteSpace(TypeName)) return default;
+            if (string.IsNullOrWhiteSpace(TypeName)) throw new NullReferenceException($"Type name is empty or null: {TypeName ?? "null"}");
             var type = Type;
 
-            if (type is null) return default;
+            if (type is null) throw new NullReferenceException($"Type is null. Type cannot be null. Type name {TypeName}");
             return JsonConvert.DeserializeObject(Data, type) as IComponent;
         }
     }

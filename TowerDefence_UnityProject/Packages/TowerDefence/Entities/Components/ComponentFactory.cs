@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using TowerDefence.Entities.Components.Data;
+using UnityEngine;
 using Zenject;
 
 namespace TowerDefence.Entities.Components
@@ -22,7 +23,17 @@ namespace TowerDefence.Entities.Components
             foreach (var componentData in componentDatas)
             {
                 var component = componentData.DeserializeComponent();
-                diContainer.Inject(component);
+                try
+                {
+                    if (component is null)
+                        throw new NullReferenceException($"Component is null. Should be of type {componentData.Type}");
+                    diContainer.Inject(component);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                    throw;
+                }
 
                 components.Add(component);
             }
