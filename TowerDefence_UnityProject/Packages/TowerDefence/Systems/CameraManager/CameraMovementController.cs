@@ -49,7 +49,10 @@ namespace TowerDefence.Systems.CameraManager
             }
 
             var bounds = gridWorld.GetGridBounds();
-            targetCamera.transform.position = bounds.Contains(newPos) ? newPos : bounds.ClosestPoint(newPos);
+            float z = newPos.z;
+            newPos = bounds.Contains(newPos) ? newPos : bounds.ClosestPoint(newPos);
+            newPos.z = z;
+            targetCamera.transform.position = newPos;
         }
 
         public void Dispose()
