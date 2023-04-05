@@ -12,9 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594d2eff2e8b62e4cb46c1704d66ad3d, type: 3}
   m_Name: Walker
   m_EditorClassIdentifier: 
-  components:
-  - type: TowerDefence.Entities.Enemies.Components.StaticPathWalker
-    data: '{"speedMult":5.0}'
-  - type: TowerDefence.Entities.Enemies.Components.BaseComponents.EnemySettings
-    data: '{"TypeName":"Walker","BaseName":"Walker","MaxHealth":10.0,"Speed":5.0}'
-  type: 0
+  Components:
+  - TypeName: TowerDefence.Entities.Enemies.Components.StaticPathWalker, TowerDefence,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Data: '{"speedMult":5.0}'
+    SerializedComponent:
+      rid: 2688817911067836663
+  - TypeName: TowerDefence.Entities.Enemies.Components.BaseComponents.EnemySettings,
+      TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Data: '{"TypeName":"Walker","BaseName":"Walker","MaxHealth":10.0,"Speed":5.0}'
+    SerializedComponent:
+      rid: 2688817911067836664
+  Type: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 2688817911067836663
+      type: {class: StaticPathWalker, ns: TowerDefence.Entities.Enemies.Components,
+        asm: TowerDefence}
+    - rid: 2688817911067836664
+      type: {class: EnemySettings, ns: TowerDefence.Entities.Enemies.Components.BaseComponents,
+        asm: TowerDefence}

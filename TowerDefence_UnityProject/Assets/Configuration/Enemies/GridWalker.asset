@@ -12,9 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594d2eff2e8b62e4cb46c1704d66ad3d, type: 3}
   m_Name: GridWalker
   m_EditorClassIdentifier: 
-  components:
-  - type: TowerDefence.Entities.Enemies.Components.BaseComponents.EnemySettings
-    data: '{"TypeName":"GridWalker","BaseName":"GridWalker","MaxHealth":10.0,"Speed":2.0}'
-  - type: TowerDefence.Entities.Enemies.Components.GridPathWalker
-    data: '{"moveSpeed":2.0}'
-  type: 0
+  Components:
+  - TypeName: TowerDefence.Entities.Enemies.Components.BaseComponents.EnemySettings,
+      TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Data: '{"TypeName":"GridWalker","BaseName":"GridWalker","MaxHealth":10.0,"Speed":2.0}'
+    SerializedComponent:
+      rid: 2688817911067836660
+  - TypeName: TowerDefence.Entities.Enemies.Components.GridPathWalker, TowerDefence,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Data: '{"moveSpeed":2.0}'
+    SerializedComponent:
+      rid: 2688817911067836662
+  Type: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 2688817911067836660
+      type: {class: EnemySettings, ns: TowerDefence.Entities.Enemies.Components.BaseComponents,
+        asm: TowerDefence}
+    - rid: 2688817911067836662
+      type: {class: GridPathWalker, ns: TowerDefence.Entities.Enemies.Components,
+        asm: TowerDefence}
