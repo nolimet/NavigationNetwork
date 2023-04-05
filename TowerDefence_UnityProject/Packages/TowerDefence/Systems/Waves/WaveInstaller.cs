@@ -6,7 +6,7 @@ namespace TowerDefence.Systems.Waves
     {
         public override void InstallBindings()
         {
-            Container.Bind<WaveController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<WaveController>().AsSingle();
         }
     }
 }

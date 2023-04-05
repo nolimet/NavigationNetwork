@@ -14,7 +14,7 @@ using static TowerDefence.Systems.Waves.Data.Wave;
 
 namespace TowerDefence.Systems.Waves
 {
-    public sealed class WaveController
+    public sealed class WaveController : IDisposable
     {
         private IWavePlayStateModel wavePlayStateModel;
 
@@ -57,7 +57,7 @@ namespace TowerDefence.Systems.Waves
             while (wavePlayStateModel.ActiveWave < currentWaves.Length)
             {
                 Debug.Log($"Starting wave {wavePlayStateModel.ActiveWave}");
-                activeWaves.Add(PlayWave(currentWaves[wavePlayStateModel.ActiveWave], cancelTokenSource.Token));
+                activeWaves.Add(PlayWave(currentWaves[wavePlayStateModel.ActiveWave], cancelTokenSource.Token).SuppressCancellationThrow());
                 wavePlayStateModel.ActiveWave++;
 
                 wavePlayStateModel.WavesPlaying = activeWaves.Count > 0;
@@ -83,7 +83,7 @@ namespace TowerDefence.Systems.Waves
         {
             if (currentWaves is not { Length: > 0 } || GetWavesLeft() <= 0) return;
 
-            activeWaves.Add(PlayWave(currentWaves[wavePlayStateModel.ActiveWave], cancelTokenSource.Token));
+            activeWaves.Add(PlayWave(currentWaves[wavePlayStateModel.ActiveWave], cancelTokenSource.Token).SuppressCancellationThrow());
             wavePlayStateModel.ActiveWave++;
         }
 
@@ -143,11 +143,19 @@ namespace TowerDefence.Systems.Waves
 
             async UniTask EnemyWatcherTask(EnemyGroup group)
             {
+                if (!Application.isPlaying) return;
                 var enemy = await enemyController.CreateNewEnemy(group);
                 var model = enemy.Model;
 
                 await UniTask.WaitUntil(() => model.Health <= 0, cancellationToken: token);
             }
+        }
+
+        public void Dispose()
+        {
+            cancelTokenSource?.Cancel();
+            cancelTokenSource?.Dispose();
+            bindingContext?.Dispose();
         }
     }
 }
