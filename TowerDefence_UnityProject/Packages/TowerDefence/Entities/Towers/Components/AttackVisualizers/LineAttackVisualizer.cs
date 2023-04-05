@@ -17,8 +17,13 @@ namespace TowerDefence.Entities.Towers.Components.AttackVisualizers
     public class LineAttackVisualizer : BaseAttackVisualizer, ITickableComponent
     {
         [JsonProperty] [SerializeField] private AssetReferenceT<GameObject> attackVisual;
-        [JsonProperty] private float decayDuration;
-        [JsonProperty] private Color attackColor;
+
+        [JsonProperty] private float decayDelay = 1f;
+        [JsonProperty] private float decayRate = .8f;
+        [JsonProperty] private float lowestAlphaBound = 0.1f;
+
+        [JsonProperty] private Color attackColor = new(0.3f, 1f, .7f, 1f);
+        [JsonProperty] private bool trackTarget;
 
         private readonly List<AttackVisual> attackVisuals = new();
 
@@ -40,7 +45,7 @@ namespace TowerDefence.Entities.Towers.Components.AttackVisualizers
                 lineRender.SetPosition(0, startPos);
                 lineRender.SetPosition(1, target.GetWorldPosition());
 
-                attackVisuals.Add(new AttackVisual(decayDuration, target, lineRender, attackColor));
+                attackVisuals.Add(new AttackVisual(decayDelay, decayRate, lowestAlphaBound, trackTarget, target, lineRender, attackColor));
             }
         }
 
@@ -62,34 +67,48 @@ namespace TowerDefence.Entities.Towers.Components.AttackVisualizers
 
         private class AttackVisual
         {
-            public AttackVisual(float maxTime, IEnemyObject target, LineRenderer renderer, Color color)
+            public AttackVisual(float decayDelay, float decayRate, float lowestAlphaBound, bool trackTarget, IEnemyObject target, LineRenderer renderer, Color color)
             {
-                timeLeft = this.maxTime = maxTime;
+                this.decayDelay = decayDelay;
+                this.decayRate = decayRate;
+                this.lowestAlphaBound = lowestAlphaBound;
+
                 this.renderer = renderer;
                 this.target = target;
 
+                this.trackTarget = trackTarget;
+
                 renderer.material.SetColor(colorShaderProperty, color);
+
+                alpha = renderer.material.GetFloat(alphaShaderProperty);
             }
 
             public bool Alive = true;
+            private float alpha;
 
-            private float timeLeft;
-            private readonly float maxTime;
+            private float decayDelay;
+            private readonly float decayRate;
 
             private readonly LineRenderer renderer;
             private readonly IEnemyObject target;
+            private readonly bool trackTarget;
+            private readonly float lowestAlphaBound;
 
             private static readonly int alphaShaderProperty = Shader.PropertyToID("_Alpha");
             private static readonly int colorShaderProperty = Shader.PropertyToID("_Color");
 
             public void Tick(float delta)
             {
-                timeLeft -= delta;
-                renderer.material.SetFloat(alphaShaderProperty, 1f / maxTime * timeLeft);
-                if (target.ExistsInWorld)
+                decayDelay -= delta;
+                if (decayDelay > 0) return;
+
+                alpha *= decayRate;
+                renderer.material.SetFloat(alphaShaderProperty, alpha);
+
+                if (trackTarget && target.ExistsInWorld)
                     renderer.SetPosition(1, target.GetWorldPosition());
 
-                if (!(timeLeft <= 0)) return;
+                if (alpha > lowestAlphaBound) return;
                 Object.Destroy(renderer.gameObject);
                 Alive = false;
             }
