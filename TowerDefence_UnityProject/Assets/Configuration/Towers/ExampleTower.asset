@@ -17,41 +17,41 @@ MonoBehaviour:
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"Name":"Example","IsSolid":1,"Range":5.0}'
     SerializedComponent:
-      rid: 2688817911067836603
+      rid: 2688817911067836782
   - TypeName: TowerDefence.Entities.Towers.Components.TargetFinders.NearestTargetFinder,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{}'
     SerializedComponent:
-      rid: 2688817911067836604
+      rid: 2688817911067836783
   - TypeName: TowerDefence.Entities.Towers.Components.Damage.DamageAllTargets, TowerDefence,
       Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"damage":5.0,"damageInterval":1.0}'
     SerializedComponent:
-      rid: 2688817911067836605
+      rid: 2688817911067836784
   - TypeName: TowerDefence.Entities.Towers.Components.AttackVisualizers.LineAttackVisualizer,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Data: '{"attackVisual":"d88178ac40daaec49a8f8225eabffbb9","decayDuration":1.5,"attackColor":{"r":1.0,"g":0.0,"b":0.0,"a":1.0}}'
+    Data: '{"attackVisual":"d88178ac40daaec49a8f8225eabffbb9","decayDelay":1.0,"decayRate":0.95,"lowestAlphaBound":0.1,"attackColor":{"r":0.0,"g":1.0,"b":0.7069087,"a":1.0},"trackTarget":0}'
     SerializedComponent:
-      rid: 2688817911067836606
+      rid: 2688817911067836785
   - TypeName: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"towerSprite":"a8644695a65e3c54c8a39b88ffd1b5e8"}'
     SerializedComponent:
-      rid: 2688817911067836607
+      rid: 2688817911067836786
   Type: 1
   references:
     version: 2
     RefIds:
-    - rid: 2688817911067836603
+    - rid: 2688817911067836782
       type: {class: TowerSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
-    - rid: 2688817911067836604
+    - rid: 2688817911067836783
       type: {class: NearestTargetFinder, ns: TowerDefence.Entities.Towers.Components.TargetFinders,
         asm: TowerDefence}
-    - rid: 2688817911067836605
+    - rid: 2688817911067836784
       type: {class: DamageAllTargets, ns: TowerDefence.Entities.Towers.Components.Damage,
         asm: TowerDefence}
-    - rid: 2688817911067836606
+    - rid: 2688817911067836785
       type: {class: LineAttackVisualizer, ns: TowerDefence.Entities.Towers.Components.AttackVisualizers,
         asm: TowerDefence}
       data:
@@ -60,7 +60,7 @@ MonoBehaviour:
           m_SubObjectName: 
           m_SubObjectType: 
           m_EditorAssetChanged: 0
-    - rid: 2688817911067836607
+    - rid: 2688817911067836786
       type: {class: TowerVisualSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
       data:
