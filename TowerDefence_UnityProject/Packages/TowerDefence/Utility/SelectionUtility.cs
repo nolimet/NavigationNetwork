@@ -47,5 +47,10 @@ namespace TowerDefence.Utility
         {
             return components.FirstOrDefault(x => x is T) as T;
         }
+
+        public static bool HasComponent<T>(this IList<IComponent> components) where T : IComponent
+        {
+            return components.Any(x => x is T);
+        }
     }
 }
