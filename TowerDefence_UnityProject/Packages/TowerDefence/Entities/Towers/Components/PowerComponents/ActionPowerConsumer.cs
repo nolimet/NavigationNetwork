@@ -26,12 +26,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents
             MaxStored = maxConsumeAmount * 2;
         }
 
-        public void DoPowerTick()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void PowerTick()
+        public void PowerTick(float delta)
         {
         }
 

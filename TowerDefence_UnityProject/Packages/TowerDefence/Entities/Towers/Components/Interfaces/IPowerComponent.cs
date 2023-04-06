@@ -4,6 +4,6 @@ namespace TowerDefence.Entities.Towers.Components.Interfaces
 {
     public interface IPowerComponent : IComponent
     {
-        void PowerTick();
+        void PowerTick(float delta);
     }
 }
