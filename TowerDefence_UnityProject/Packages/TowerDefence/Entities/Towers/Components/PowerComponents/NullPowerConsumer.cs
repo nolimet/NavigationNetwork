@@ -22,7 +22,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents
         {
         }
 
-        public void PowerTick()
+        public void PowerTick(float delta)
         {
         }
 
