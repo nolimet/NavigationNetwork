@@ -45,7 +45,7 @@ namespace TowerDefence.Systems.CameraManager
             var currentZoomLevel = Mathf.Floor(currentZoom / settings.ZoomStepSize);
             var bounds = gridWorld.GetGridBounds().extents;
 
-            var maxZoom = Mathf.Max(settings.MinZoom, bounds.y);
+            var maxZoom = Mathf.Max(settings.MinZoom, bounds.y * settings.MaxZoomMult);
 
             targetCamera.orthographicSize = Mathf.Clamp((currentZoomLevel + -scroll.y) * settings.ZoomStepSize, settings.MinZoom, maxZoom);
         }

@@ -9,6 +9,8 @@ namespace TowerDefence.Systems.CameraManager
         public float PanSpeed = 1f;
         public float MoveSpeed = 1f;
 
+        [field: SerializeField] public float MaxZoomMult { get; private set; } = 1.3f;
+
         [field: SerializeField] public float MinZoom { get; private set; } = 2f;
         [field: SerializeField] public float ZoomStepSize { get; private set; } = 1.2f;
     }
