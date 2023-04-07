@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace TowerDefence.Entities.Towers
 {
-    public sealed class TowerService
+    public sealed class TowerService : IDisposable
     {
         private readonly ITowerModels towerModel;
         private readonly TowerConfigurationData towerConfiguration;
@@ -23,10 +23,7 @@ namespace TowerDefence.Entities.Towers
         internal async UniTask<ITowerObject> PlaceTower(string towerID, Vector2 position, IGridCell cell)
         {
             var configuration = await towerConfiguration.GetTowerAsync(towerID);
-            if (configuration == null)
-            {
-                throw new NullReferenceException("Tower ID seems to be invalid! Case does not matter just check the spelling or if it exists in the configuration data for the towers");
-            }
+            if (configuration == null) throw new NullReferenceException("Tower ID seems to be invalid! Case does not matter just check the spelling or if it exists in the configuration data for the towers");
 
             var newTower = await towerFactory.CreateTower(configuration, position, cell);
             newTower.Transform.position = position;
@@ -37,10 +34,7 @@ namespace TowerDefence.Entities.Towers
 
         public void DestroyTower<T>(T tower) where T : ITowerObject
         {
-            if (tower == null)
-            {
-                throw new NullReferenceException("tower is null");
-            }
+            if (tower == null) throw new NullReferenceException("tower is null");
 
             if (towerModel.Towers.Contains(tower))
             {
@@ -51,13 +45,15 @@ namespace TowerDefence.Entities.Towers
 
         public void DestroyAllTowers()
         {
-            foreach (var tower in towerModel.Towers)
-            {
-                tower.Destroy();
-            }
+            foreach (var tower in towerModel.Towers) tower.Destroy();
 
             towerModel.SelectedTower = null;
             towerModel.Towers.Clear();
+        }
+
+        public void Dispose()
+        {
+            DestroyAllTowers();
         }
     }
 }

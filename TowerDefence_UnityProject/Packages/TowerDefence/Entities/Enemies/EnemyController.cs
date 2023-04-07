@@ -43,10 +43,17 @@ namespace TowerDefence.Entities.Enemies
             return newEnemy;
         }
 
+        private void KillAllEnemies()
+        {
+            foreach (var e in model.Enemies) Object.Destroy(e.Transform.gameObject);
+            model.Enemies.Clear();
+        }
+
         public void Dispose()
         {
             tokenSource.Cancel();
             tokenSource.Dispose();
+            KillAllEnemies();
         }
 
         private async UniTask EnemyUpdateLoop(CancellationToken token)
@@ -54,10 +61,7 @@ namespace TowerDefence.Entities.Enemies
             await foreach (var _ in UniTaskAsyncEnumerable.EveryUpdate(PlayerLoopTiming.EarlyUpdate))
             {
                 token.ThrowIfCancellationRequested();
-                while (deadEnemies.Any())
-                {
-                    DestroyEnemy(deadEnemies.Dequeue());
-                }
+                while (deadEnemies.Any()) DestroyEnemy(deadEnemies.Dequeue());
 
                 foreach (var enemy in model.Enemies)
                     enemy.Tick();
@@ -72,10 +76,7 @@ namespace TowerDefence.Entities.Enemies
 
         private void EnemyDied(IEnemyObject enemy)
         {
-            if (!deadEnemies.Contains(enemy))
-            {
-                deadEnemies.Enqueue(enemy);
-            }
+            if (!deadEnemies.Contains(enemy)) deadEnemies.Enqueue(enemy);
         }
 
         private void OnEnemyReachedEnd(IEnemyObject enemy)
