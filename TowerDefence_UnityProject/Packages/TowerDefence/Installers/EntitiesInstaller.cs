@@ -28,6 +28,7 @@ namespace TowerDefence.Installers
             Container.BindInterfacesAndSelfTo<TowerService>().AsSingle();
             Container.BindInterfacesAndSelfTo<TowerController>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<TowerFactory>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PowerTickService>().AsSingle().NonLazy();
         }
     }
 }
