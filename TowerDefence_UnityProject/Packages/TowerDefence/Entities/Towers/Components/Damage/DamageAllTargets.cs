@@ -10,7 +10,8 @@ using UnityEngine;
 
 namespace TowerDefence.Entities.Towers.Components.Damage
 {
-    [Serializable, Component(ComponentType.Tower, typeof(IDamageComponent))]
+    [Serializable]
+    [Component(ComponentType.Tower, typeof(IDamageComponent))]
     [JsonObject(MemberSerialization.OptIn)]
     public sealed class DamageAllTargets : DamageComponentBase
     {
@@ -25,10 +26,7 @@ namespace TowerDefence.Entities.Towers.Components.Damage
         {
             base.PostInit(towerObject, towerModel);
 
-            if (damageInterval < 0f)
-            {
-                throw new ArgumentOutOfRangeException("Invalid attack cooldown Time. Value should be greater or equal then 0");
-            }
+            if (damageInterval < 0f) throw new Exception("Invalid attack cooldown Time. Value should be greater or equal then 0");
         }
 
         public override void Tick()
@@ -37,10 +35,7 @@ namespace TowerDefence.Entities.Towers.Components.Damage
             if (intervalTimer > 0 || !TargetFindComponent.FoundTargets.Any()) return;
 
             intervalTimer = damageInterval;
-            foreach (var target in TargetFindComponent.FoundTargets)
-            {
-                target.Damage(damage);
-            }
+            foreach (var target in TargetFindComponent.FoundTargets) target.Damage(damage);
 
             AppliedDamageToTargets?.Invoke(TargetFindComponent.FoundTargets);
         }
