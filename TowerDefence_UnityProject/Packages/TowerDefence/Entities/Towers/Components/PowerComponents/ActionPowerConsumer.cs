@@ -21,13 +21,17 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents
             return true;
         }
 
-        public void UpdateBuffer(double maxConsumeAmount)
+        public double PushPower(double maxAmount)
         {
-            MaxStored = maxConsumeAmount * 2;
-        }
+            var newStored = Stored + maxAmount;
+            if (newStored > MaxStored)
+            {
+                Stored = MaxStored;
+                return MaxStored - Stored;
+            }
 
-        public void PowerTick(float delta)
-        {
+            Stored = newStored;
+            return maxAmount;
         }
 
         public void Dispose()
