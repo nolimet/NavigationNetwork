@@ -14,14 +14,17 @@ using IInitializable = TowerDefence.Entities.Towers.Components.Interfaces.IIniti
 
 namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
 {
-    [Serializable, Component(ComponentType.Tower, AllowMultiple = false)]
+    [Serializable]
+    [Component(ComponentType.Tower, AllowMultiple = false)]
     [JsonObject(MemberSerialization.OptIn)]
     internal class PowerTargetFinderBase : IPowerTargetFinder, IInitializable
     {
-        public IReadOnlyList<ITowerObject> Targets => towerObjects;
-        [LayerDropdown] [JsonProperty] private int raycastLayer = LayerMask.NameToLayer("TD-Tower");
+        public IReadOnlyList<IPowerComponent> Targets => TargetComponents;
 
-        protected readonly List<ITowerObject> towerObjects = new();
+        [SerializeField] [LayerDropdown] [JsonProperty]
+        private int raycastLayer;
+
+        protected readonly List<IPowerComponent> TargetComponents = new();
         private readonly RaycastHit2D[] results = new RaycastHit2D[128];
         private readonly BindingContext bindingContext = new();
 
@@ -45,17 +48,14 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
 
         protected void UpdateTargets(Vector2 towerLocation)
         {
-            towerObjects.Clear();
+            TargetComponents.Clear();
 
             var size = Physics2D.CircleCastNonAlloc(towerLocation, (float)towerSettings.Range, Vector2.up, results, float.PositiveInfinity, raycastLayer);
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 var hit = results[i];
                 var towerObject = hit.collider.GetComponent<ITowerObject>();
-                if (towerObject is not null)
-                {
-                    towerObjects.Add(towerObject);
-                }
+                if (towerObject is not null && towerObject.Model.Components.HasComponent<IPowerComponent>()) TargetComponents.Add(towerObject.Model.Components.GetComponent<IPowerComponent>());
             }
         }
     }
