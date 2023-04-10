@@ -12,8 +12,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594d2eff2e8b62e4cb46c1704d66ad3d, type: 3}
   m_Name: Generator
   m_EditorClassIdentifier: 
-  Components: []
-  Type: 0
+  Components:
+  - TypeName: TowerDefence.Entities.Towers.Components.PowerComponents.Bases.PowerTargetFinderBase,
+      TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Data: '{"raycastLayer":10}'
+    SerializedComponent:
+      rid: 2406021958915850463
+  - TypeName: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings,
+      TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Data: '{"towerSprite":null}'
+    SerializedComponent:
+      rid: 2406021958915850464
+  - TypeName: TowerDefence.Entities.Towers.Components.PowerComponents.SimpleGenerator,
+      TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Data: '{"GenerationPerSecond":0.0,"GenerationDelayInMs":-1.0,"MaxPowerBuffer":0.0}'
+    SerializedComponent:
+      rid: 2406021958915850465
+  - TypeName: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings,
+      TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Data: '{"Name":null,"IsSolid":0,"Range":0.0}'
+    SerializedComponent:
+      rid: 2406021958915850466
+  Type: 1
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 2406021958915850463
+      type: {class: PowerTargetFinderBase, ns: TowerDefence.Entities.Towers.Components.PowerComponents.Bases,
+        asm: TowerDefence}
+      data:
+        raycastLayer: 10
+    - rid: 2406021958915850464
+      type: {class: TowerVisualSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
+        asm: TowerDefence}
+      data:
+        towerSprite:
+          m_AssetGUID: 
+          m_SubObjectName: 
+          m_SubObjectType: 
+          m_EditorAssetChanged: 0
+    - rid: 2406021958915850465
+      type: {class: SimpleGenerator, ns: TowerDefence.Entities.Towers.Components.PowerComponents,
+        asm: TowerDefence}
+    - rid: 2406021958915850466
+      type: {class: TowerSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
+        asm: TowerDefence}
