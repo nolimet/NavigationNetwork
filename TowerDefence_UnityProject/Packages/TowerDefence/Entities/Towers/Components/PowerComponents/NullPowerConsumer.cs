@@ -18,12 +18,9 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents
             return true;
         }
 
-        public void UpdateBuffer(double maxConsumeAmount)
+        public double PushPower(double maxAmount)
         {
-        }
-
-        public void PowerTick(float delta)
-        {
+            return 0;
         }
 
         public void Dispose()
