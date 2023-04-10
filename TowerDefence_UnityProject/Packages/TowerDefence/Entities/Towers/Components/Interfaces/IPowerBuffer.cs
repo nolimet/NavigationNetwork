@@ -7,6 +7,6 @@ namespace TowerDefence.Entities.Towers.Components.Interfaces
         double MaxStorageAmount { get; }
         double StoredAmount { get; }
 
-        void RequestPower(double maxAmount, Action<double> callback);
+        double PushPower(double maxPowerPush);
     }
 }

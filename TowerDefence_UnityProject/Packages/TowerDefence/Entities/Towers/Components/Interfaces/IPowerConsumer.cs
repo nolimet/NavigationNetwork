@@ -8,6 +8,12 @@ namespace TowerDefence.Entities.Towers.Components.Interfaces
         double Stored { get; }
 
         bool TryConsume(double amount);
-        void UpdateBuffer(double maxConsumeAmount);
+
+        /// <summary>
+        /// Pushes power into the buffer of this consumer
+        /// </summary>
+        /// <param name="maxAmount">maximium amount you can push into the consumer</param>
+        /// <returns>Actual amount it accepted</returns>
+        double PushPower(double maxAmount);
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using TowerDefence.Entities.Components;
 
 namespace TowerDefence.Entities.Towers.Components.Interfaces
 {
-    internal interface IPowerTargetFinder
+    internal interface IPowerTargetFinder : IComponent
     {
-        IReadOnlyList<ITowerObject> Targets { get; }
+        IReadOnlyList<IPowerComponent> Targets { get; }
     }
 }
