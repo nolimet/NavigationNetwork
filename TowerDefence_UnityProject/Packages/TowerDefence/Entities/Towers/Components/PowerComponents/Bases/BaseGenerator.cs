@@ -4,18 +4,17 @@ using TowerDefence.Entities.Towers.Components.Interfaces;
 using TowerDefence.Entities.Towers.Models;
 using TowerDefence.Utility;
 
+// ReSharper disable InconsistentNaming
+
 namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
 {
     internal abstract class BaseGenerator : IPowerProducer, IInitializable
     {
-        public double GenerationPerSecond => generationPerSecond;
-        [JsonProperty] private readonly double generationPerSecond;
+        [JsonProperty] public double GenerationPerSecond { get; }
 
-        public double GenerationDelayInMs => generationDelayInMs;
-        [JsonProperty] private readonly double generationDelayInMs = -1;
+        [JsonProperty] public double GenerationDelayInMs { get; } = -1;
 
-        public double MaxPowerBuffer => maxPowerBuffer;
-        [JsonProperty] private readonly double maxPowerBuffer;
+        [JsonProperty] public double MaxPowerBuffer { get; }
 
         protected IPowerTargetFinder PowerTargetFinder { get; private set; }
         public double PowerBuffer { get; protected set; }
