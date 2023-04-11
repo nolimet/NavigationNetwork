@@ -22,7 +22,7 @@ namespace TowerDefence.EditorScripts.Entities.Components.Popup
 
         public AddComponentPopup(IReadOnlyDictionary<string, Type> values, SerializedObject serializedObject, ComponentConfigurationObject towerConfigurationObject)
         {
-            this.values = values;
+            this.values = values.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
             this.towerConfigurationObject = towerConfigurationObject;
             this.serializedObject = serializedObject;
 
