@@ -30,19 +30,12 @@ namespace TowerDefence.EditorScripts.Entities.Components.Popup
             var allProperties = component.GetProperties(searchQuery).Where(x => !x.CanWrite);
 
             //filtering out fields that don't have the jsonProperty and do have the serializedField Property
-            members = allFields.Where
+            members = allFields.Concat<MemberInfo>(allProperties).Where
             (
                 x =>
                     x.CustomAttributes.Any(c => c.AttributeType == jsonPropertyType) &&
                     x.CustomAttributes.All(c => c.AttributeType != unitySerializableType)
-            ).Concat<MemberInfo>(
-                allProperties.Where(
-                    x =>
-                        x.CustomAttributes.Any(c => c.AttributeType == jsonPropertyType) &&
-                        x.CustomAttributes.All(c => c.AttributeType != unitySerializableType)
-                )
-            ).OrderBy(
-                x => x.Name).ToArray();
+            ).OrderBy(x => x.Name).ToArray();
         }
 
         public void OnGUI()
