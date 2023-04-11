@@ -25,7 +25,6 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
         private int raycastLayer;
 
         protected readonly List<IPowerComponent> TargetComponents = new();
-        private readonly RaycastHit2D[] results = new RaycastHit2D[128];
         private readonly BindingContext bindingContext = new();
 
         [Inject] private readonly ITowerModels towerModels;
@@ -53,10 +52,10 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
         {
             TargetComponents.Clear();
 
-            var size = Physics2D.CircleCastNonAlloc(towerLocation, (float)towerSettings.Range, Vector2.up, results, float.PositiveInfinity, raycastLayer);
-            for (var i = 0; i < size; i++)
+            var hits = Physics2D.CircleCastAll(towerLocation, (float)towerSettings.Range, Vector2.up);
+            for (var i = 0; i < hits.Length; i++)
             {
-                var hit = results[i];
+                var hit = hits[i];
                 var towerObject = hit.collider.GetComponent<ITowerObject>();
                 if (towerObject is not null && towerObject.Model.Components.HasComponent<IPowerComponent>()) TargetComponents.Add(towerObject.Model.Components.GetComponent<IPowerComponent>());
             }
