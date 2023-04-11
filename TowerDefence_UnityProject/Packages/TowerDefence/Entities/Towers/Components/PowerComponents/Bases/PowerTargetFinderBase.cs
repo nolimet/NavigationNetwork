@@ -36,6 +36,9 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
         public void PostInit(ITowerObject towerObject, ITowerModel model)
         {
             towerSettings = model.Components.GetComponent<TowerSettings>();
+            if (towerSettings is null)
+                throw new NullReferenceException("TowerSettings are missing are required for this component");
+
             self = towerObject;
 
             bindingContext.Bind(towerModels, x => x.Towers, OnTowersChanged);
