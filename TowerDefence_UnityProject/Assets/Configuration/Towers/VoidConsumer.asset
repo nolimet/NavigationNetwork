@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 594d2eff2e8b62e4cb46c1704d66ad3d, type: 3}
+  m_Name: VoidConsumer
+  m_EditorClassIdentifier: 
+  Components:
+  - TypeName: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings,
+      TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Data: '{"Name":"Void Consumer","IsSolid":1,"Range":0.0}'
+    SerializedComponent:
+      rid: 7196039976198340684
+  - TypeName: TowerDefence.Entities.Towers.Components.PowerComponents.VoidPowerConsumer,
+      TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Data: '{}'
+    SerializedComponent:
+      rid: 7196039976198340685
+  - TypeName: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings,
+      TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Data: '{"towerSprite":"1ea3cb15a813ef248a5096c0b140b7d3"}'
+    SerializedComponent:
+      rid: 7196039976198340686
+  Type: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 7196039976198340684
+      type: {class: TowerSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
+        asm: TowerDefence}
+    - rid: 7196039976198340685
+      type: {class: VoidPowerConsumer, ns: TowerDefence.Entities.Towers.Components.PowerComponents,
+        asm: TowerDefence}
+    - rid: 7196039976198340686
+      type: {class: TowerVisualSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
+        asm: TowerDefence}
+      data:
+        towerSprite:
+          m_AssetGUID: 1ea3cb15a813ef248a5096c0b140b7d3
+          m_SubObjectName: 
+          m_SubObjectType: 
+          m_EditorAssetChanged: 0
