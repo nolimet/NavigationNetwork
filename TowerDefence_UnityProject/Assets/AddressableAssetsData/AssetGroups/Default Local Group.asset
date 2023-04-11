@@ -21,20 +21,20 @@ MonoBehaviour:
     m_Address: Tower/Laser/Attack
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: a8644695a65e3c54c8a39b88ffd1b5e8
-    m_Address: Sprites/ExampleTowerSprite
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 9abdb8467cb668649a7c31dbf792d979
     m_Address: Assets/Sprites/IsometricDiamond.png
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 0a40b3828285d9a4ab767d5ad119a1d2
-    m_Address: Sprites/WallTowerSprite
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: f0fef5586bee6f744b3f8c744595457c
     m_Address: Assets/UI/LevelEditor.uxml
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 37e66b84db4a8654798ff489528d6c20
+    m_Address: Towers
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a7ba67f1672ca1d4d8254918ddd74d23
+    m_Address: Sprites/Towers
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

@@ -30,3 +30,15 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+  - id: Generator
+    reference:
+      m_AssetGUID: d6bde1bf8e405a44fae09717d427828d
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - id: VoidConsumer
+    reference:
+      m_AssetGUID: 826c9502021f30143903d76e42b5d645
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

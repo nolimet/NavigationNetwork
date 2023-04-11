@@ -17,16 +17,6 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: cc728099f405e014d9afd697fe76d43d
   m_SerializeEntries:
-  - m_GUID: 29932a3030c8ff541af32380fa3493f1
-    m_Address: Towers/ExampleTower
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Towers
-  - m_GUID: 9c76240a6cc06a64893135f1cd0a1100
-    m_Address: Towers/WallTower
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Towers
   - m_GUID: 019bb257e0fd37242a5641bf79528ff8
     m_Address: Towers/ExampleTower.prefab
     m_ReadOnly: 0
