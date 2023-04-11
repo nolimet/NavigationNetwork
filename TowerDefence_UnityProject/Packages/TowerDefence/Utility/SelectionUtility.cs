@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Enemies;
@@ -45,7 +46,12 @@ namespace TowerDefence.Utility
 
         public static T GetComponent<T>(this IList<IComponent> components) where T : class, IComponent
         {
-            return components.FirstOrDefault(x => x is T) as T;
+            if (components.TryGetComponent(out T component))
+            {
+                return component;
+            }
+
+            throw new NullReferenceException($"Could not find component of type {typeof(T)}");
         }
 
         public static bool HasComponent<T>(this IList<IComponent> components) where T : IComponent
