@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using DataBinding;
@@ -55,12 +56,17 @@ namespace TowerDefence.Entities.Enemies
             var enemyModel = ModelFactory.Create<IEnemyModel>();
             var enemyObject = enemyGameObject.GetComponent<EnemyObject>();
 
-            var components = await componentFactory.GetComponents(componentConfiguration.Components, InitHandler);
+            var components = await componentFactory.GetComponents(componentConfiguration.Components, AssignList, InitHandler);
             enemyModel.Components = components.ToList();
 
             enemyObject.Setup(enemyModel, outHealthAction);
 
             return enemyObject;
+
+            void AssignList(List<IComponent> components)
+            {
+                enemyModel.Components = components;
+            }
 
             async UniTask<IComponent> InitHandler(IComponent component)
             {

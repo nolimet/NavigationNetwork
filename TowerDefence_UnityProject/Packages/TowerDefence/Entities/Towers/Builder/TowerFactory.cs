@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DataBinding;
 using TowerDefence.Entities.Components;
@@ -44,10 +44,14 @@ namespace TowerDefence.Entities.Towers.Builder
 
             towerObject.Setup(model, cell);
 
-            var components = await componentFactory.GetComponents(componentConfiguration.Components, ProcessComponentInit);
-            model.Components = components.ToList();
+            await componentFactory.GetComponents(componentConfiguration.Components, AssignList, ProcessComponentInit);
 
             return towerObject;
+
+            void AssignList(List<IComponent> components)
+            {
+                model.Components = components;
+            }
 
             async UniTask<IComponent> ProcessComponentInit(IComponent arg)
             {

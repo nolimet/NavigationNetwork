@@ -17,7 +17,7 @@ namespace TowerDefence.Entities.Components
             this.diContainer = diContainer;
         }
 
-        public async Task<IEnumerable<IComponent>> GetComponents(IEnumerable<ComponentData> componentDatas, Func<IComponent, UniTask<IComponent>> initHandler)
+        public async Task<IEnumerable<IComponent>> GetComponents(IEnumerable<ComponentData> componentDatas, Action<List<IComponent>> assign, Func<IComponent, UniTask<IComponent>> initHandler)
         {
             List<IComponent> components = new();
             foreach (var componentData in componentDatas)
@@ -38,6 +38,7 @@ namespace TowerDefence.Entities.Components
                 components.Add(component);
             }
 
+            assign(components);
             List<UniTask> componentTasks = new();
             foreach (var component in components)
             {
