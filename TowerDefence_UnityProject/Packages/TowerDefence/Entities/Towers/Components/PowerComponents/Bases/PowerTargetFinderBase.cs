@@ -19,12 +19,12 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
     [JsonObject(MemberSerialization.OptIn)]
     internal class PowerTargetFinderBase : IPowerTargetFinder, IInitializable
     {
-        public IReadOnlyList<IPowerComponent> Targets => TargetComponents;
+        public IReadOnlyList<(Vector2 worldPosition, IPowerComponent powerComponent)> Targets => TargetComponents;
 
         [SerializeField] [LayerDropdown] [JsonProperty]
         private int raycastLayer;
 
-        protected readonly List<IPowerComponent> TargetComponents = new();
+        protected readonly List<(Vector2 worldPosition, IPowerComponent powerComponent)> TargetComponents = new();
         private readonly BindingContext bindingContext = new();
 
         [Inject] private readonly ITowerModels towerModels;
@@ -57,7 +57,8 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
             {
                 var hit = hits[i];
                 var towerObject = hit.collider.GetComponent<ITowerObject>();
-                if (towerObject is not null && towerObject.Model.Components.HasComponent<IPowerComponent>()) TargetComponents.Add(towerObject.Model.Components.GetComponent<IPowerComponent>());
+                if (towerObject is not null && towerObject.Model.Components.HasComponent<IPowerComponent>())
+                    TargetComponents.Add((towerObject.GetWorldPosition(), towerObject.Model.Components.GetComponent<IPowerComponent>()));
             }
         }
     }
