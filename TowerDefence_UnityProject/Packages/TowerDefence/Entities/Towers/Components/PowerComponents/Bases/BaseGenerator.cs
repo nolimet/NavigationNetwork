@@ -17,10 +17,10 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
         [JsonProperty] public double GenerationDelayInMs { get; } = -1;
 
         [JsonProperty] public double MaxPowerBuffer { get; }
-        public event Action<IReadOnlyCollection<PowerEventArgs>> PowerSend;
+        public event Action<IReadOnlyCollection<PowerEventArg>> PowerSend;
 
         protected IPowerTargetFinder PowerTargetFinder { get; private set; }
-        protected readonly List<PowerEventArgs> powerEventArgsList = new();
+        protected readonly List<PowerEventArg> powerEventArgsList = new();
         public double PowerBuffer { get; protected set; }
         protected double delayTimer;
 
@@ -50,7 +50,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
                         case IPowerConsumer consumer:
                         {
                             var accepted = consumer.PushPower(maxPowerPush);
-                            powerEventArgsList.Add(new PowerEventArgs(target.worldPosition, accepted / maxPowerPush, target.powerComponent));
+                            powerEventArgsList.Add(new PowerEventArg(target.worldPosition, accepted / maxPowerPush, target.powerComponent));
 
                             maxPowerPush += (accepted - maxPowerPush) / (length - i);
                             break;
@@ -58,7 +58,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
                         case IPowerBuffer buffer:
                         {
                             var accepted = buffer.PushPower(maxPowerPush);
-                            powerEventArgsList.Add(new PowerEventArgs(target.worldPosition, accepted / maxPowerPush, target.powerComponent));
+                            powerEventArgsList.Add(new PowerEventArg(target.worldPosition, accepted / maxPowerPush, target.powerComponent));
 
                             maxPowerPush += (accepted - maxPowerPush) / (length - i);
                             break;
