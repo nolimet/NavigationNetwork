@@ -17,32 +17,37 @@ MonoBehaviour:
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"raycastLayer":10}'
     SerializedComponent:
-      rid: 7196039976198340687
+      rid: 7196039976198340869
   - TypeName: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"towerSprite":"559758cdd2725d744afa1ca4cb0abf0e"}'
     SerializedComponent:
-      rid: 7196039976198340688
+      rid: 7196039976198340870
   - TypeName: TowerDefence.Entities.Towers.Components.PowerComponents.SimpleGenerator,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"GenerationPerSecond":0.0,"GenerationDelayInMs":-1.0,"MaxPowerBuffer":0.0}'
     SerializedComponent:
-      rid: 7196039976198340689
+      rid: 7196039976198340871
   - TypeName: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"Name":"Generator","IsSolid":1,"Range":5.0}'
     SerializedComponent:
-      rid: 7196039976198340690
+      rid: 7196039976198340872
+  - TypeName: TowerDefence.Entities.Towers.Components.PowerComponents.PowerVisualDrawer,
+      TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    Data: '{"visualPrefab":"5021421b025a4e047b4c4b678d8af3eb","decayPerSecond":0.5,"maxLineWidth":0.5,"minLineWidthMultiplier":0.1}'
+    SerializedComponent:
+      rid: 7196039976198340873
   Type: 1
   references:
     version: 2
     RefIds:
-    - rid: 7196039976198340687
+    - rid: 7196039976198340869
       type: {class: PowerTargetFinderBase, ns: TowerDefence.Entities.Towers.Components.PowerComponents.Bases,
         asm: TowerDefence}
       data:
         raycastLayer: 10
-    - rid: 7196039976198340688
+    - rid: 7196039976198340870
       type: {class: TowerVisualSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
       data:
@@ -51,9 +56,18 @@ MonoBehaviour:
           m_SubObjectName: 
           m_SubObjectType: 
           m_EditorAssetChanged: 0
-    - rid: 7196039976198340689
+    - rid: 7196039976198340871
       type: {class: SimpleGenerator, ns: TowerDefence.Entities.Towers.Components.PowerComponents,
         asm: TowerDefence}
-    - rid: 7196039976198340690
+    - rid: 7196039976198340872
       type: {class: TowerSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
+    - rid: 7196039976198340873
+      type: {class: PowerVisualDrawer, ns: TowerDefence.Entities.Towers.Components.PowerComponents,
+        asm: TowerDefence}
+      data:
+        visualPrefab:
+          m_AssetGUID: 5021421b025a4e047b4c4b678d8af3eb
+          m_SubObjectName: 
+          m_SubObjectType: 
+          m_EditorAssetChanged: 0
