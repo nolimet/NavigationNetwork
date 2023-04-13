@@ -37,6 +37,10 @@ MonoBehaviour:
     m_Address: Sprites/Towers
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 5021421b025a4e047b4c4b678d8af3eb
+    m_Address: Prefabs/Towers/PowerLinePrefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 30d6280b3b69dcd4d8e5c3d8253748b0, type: 2}
   m_SchemaSet:
