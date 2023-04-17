@@ -99,18 +99,21 @@ namespace TowerDefence.UI.Game.Tower.Properties
                 return (propertyInfo?.GetValue(component) ?? fieldInfo?.GetValue(component))?.ToString() ?? "null";
             }
 
-            public TowerProperty(PropertyInfo propertyInfo)
+            public TowerProperty(MemberInfo memberInfo)
             {
-                this.propertyInfo = propertyInfo;
                 fieldInfo = null;
-                Label = propertyInfo.Name;
-            }
-
-            public TowerProperty(FieldInfo fieldInfo)
-            {
                 propertyInfo = null;
-                this.fieldInfo = fieldInfo;
-                Label = fieldInfo.Name;
+                switch (memberInfo)
+                {
+                    case PropertyInfo info:
+                        propertyInfo = info;
+                        break;
+                    case FieldInfo info:
+                        fieldInfo = info;
+                        break;
+                }
+
+                Label = memberInfo.Name;
             }
         }
     }
