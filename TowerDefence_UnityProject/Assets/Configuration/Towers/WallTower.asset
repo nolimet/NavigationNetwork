@@ -17,20 +17,20 @@ MonoBehaviour:
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"Name":"Wall","IsSolid":1,"Range":0.0}'
     SerializedComponent:
-      rid: 7196039976198340699
+      rid: 7196040044147638503
   - TypeName: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"towerSprite":"0a40b3828285d9a4ab767d5ad119a1d2"}'
     SerializedComponent:
-      rid: 7196039976198340700
+      rid: 7196040044147638504
   Type: 1
   references:
     version: 2
     RefIds:
-    - rid: 7196039976198340699
+    - rid: 7196040044147638503
       type: {class: TowerSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
-    - rid: 7196039976198340700
+    - rid: 7196040044147638504
       type: {class: TowerVisualSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
       data:

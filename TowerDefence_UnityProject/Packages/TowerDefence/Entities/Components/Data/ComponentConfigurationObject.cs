@@ -22,7 +22,7 @@ namespace TowerDefence.Entities.Components.Data
             List<IComponent> components = new();
             if (Components == null)
             {
-                Components = new();
+                Components = new List<ComponentData>();
             }
 
             components.Add(new NearestTargetFinder());
