@@ -1,6 +1,7 @@
 ﻿using TowerDefence.UI.Game.Health;
 using TowerDefence.UI.Game.Hud;
 using TowerDefence.UI.Game.PauseMenu;
+using TowerDefence.UI.Game.Tower.Properties;
 using TowerDefence.UI.Game.Tower.Range;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -23,6 +24,7 @@ namespace TowerDefence.UI.Installers
             Container.BindInterfacesAndSelfTo<TowerRangeDrawerController>().AsSingle().WithArguments(towerRangeDrawer).NonLazy();
 
             Container.BindInterfacesAndSelfTo<PauseMenuController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<TowerPropertiesExtractor>().AsSingle().NonLazy();
 
             Container.Install<HudInstaller>();
         }
