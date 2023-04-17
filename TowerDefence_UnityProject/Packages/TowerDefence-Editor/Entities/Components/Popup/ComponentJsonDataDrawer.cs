@@ -25,9 +25,9 @@ namespace TowerDefence.EditorScripts.Entities.Components.Popup
             var unitySerializableType = typeof(SerializeField);
             var component = displayData.Component.GetType();
 
-            var searchQuery = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy;
+            const BindingFlags searchQuery = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.FlattenHierarchy;
             var allFields = component.GetFields(searchQuery);
-            var allProperties = component.GetProperties(searchQuery).Where(x => !x.CanWrite);
+            var allProperties = component.GetProperties(searchQuery);
 
             //filtering out fields that don't have the jsonProperty and do have the serializedField Property
             members = allFields.Concat<MemberInfo>(allProperties).Where
