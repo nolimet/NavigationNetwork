@@ -55,7 +55,7 @@ namespace TowerDefence.UI.Game.Tower.Properties
         {
             var towerProperties = new List<TowerProperty>();
             var type = component.GetType();
-            const BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy;
+            const BindingFlags bindingFlags = BindingFlags.Default | BindingFlags.FlattenHierarchy | BindingFlags.Instance | BindingFlags.Public;
 
             var propertyInfos = type.GetProperties(bindingFlags);
             var fieldInfos = type.GetFields(bindingFlags);
