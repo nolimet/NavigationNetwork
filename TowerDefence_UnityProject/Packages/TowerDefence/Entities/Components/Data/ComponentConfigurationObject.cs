@@ -10,6 +10,8 @@ namespace TowerDefence.Entities.Components.Data
     [CreateAssetMenu(menuName = "Entities/ComponentObject")]
     internal sealed class ComponentConfigurationObject : ScriptableObject
     {
+        [field: SerializeField] public string Name { get; private set; }
+
         [FormerlySerializedAs("components")] [SerializeField]
         internal List<ComponentData> Components = new();
 
@@ -22,7 +24,7 @@ namespace TowerDefence.Entities.Components.Data
             List<IComponent> components = new();
             if (Components == null)
             {
-                Components = new();
+                Components = new List<ComponentData>();
             }
 
             components.Add(new NearestTargetFinder());
