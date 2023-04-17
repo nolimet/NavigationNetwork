@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using TowerDefence.Entities.Towers.Components.Interfaces;
 using TowerDefence.Entities.Towers.Data;
 using TowerDefence.Entities.Towers.Models;
@@ -12,11 +11,10 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
 {
     internal abstract class BaseGenerator : IPowerProducer, IInitializable
     {
-        [JsonProperty] public double GenerationPerSecond { get; }
+        public abstract double GenerationPerSecond { get; }
+        public abstract double GenerationDelayInMs { get; }
+        public abstract double MaxPowerBuffer { get; }
 
-        [JsonProperty] public double GenerationDelayInMs { get; } = -1;
-
-        [JsonProperty] public double MaxPowerBuffer { get; }
         public event Action<IReadOnlyCollection<PowerEventArg>> PowerSend;
 
         protected IPowerTargetFinder PowerTargetFinder { get; private set; }
@@ -29,14 +27,15 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
             PowerTargetFinder = model.Components.GetComponent<IPowerTargetFinder>();
         }
 
-        public virtual void PowerTick(double delta)
+        public virtual void PowerTick(double deltaMs)
         {
             if (delayTimer <= 0)
             {
                 powerEventArgsList.Clear();
+                deltaMs /= 1000;
 
                 var generationMult = GenerationDelayInMs > 1 ? GenerationDelayInMs / 1000 : 1;
-                var addedAmount = GenerationPerSecond * generationMult * delta;
+                var addedAmount = GenerationPerSecond * generationMult * deltaMs;
                 PowerBuffer = Math.Min(MaxPowerBuffer, PowerBuffer + addedAmount);
                 delayTimer = GenerationDelayInMs / 1000;
 
@@ -69,7 +68,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
                 PowerSend?.Invoke(powerEventArgsList);
             }
 
-            delayTimer -= delta;
+            delayTimer -= deltaMs;
         }
 
         public virtual void Dispose()
