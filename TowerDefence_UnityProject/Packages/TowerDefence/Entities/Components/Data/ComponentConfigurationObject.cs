@@ -10,8 +10,6 @@ namespace TowerDefence.Entities.Components.Data
     [CreateAssetMenu(menuName = "Entities/ComponentObject")]
     internal sealed class ComponentConfigurationObject : ScriptableObject
     {
-        [field: SerializeField] public string Name { get; private set; }
-
         [FormerlySerializedAs("components")] [SerializeField]
         internal List<ComponentData> Components = new();
 

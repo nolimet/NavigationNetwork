@@ -17,28 +17,28 @@ MonoBehaviour:
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"Name":"Void Consumer","IsSolid":1,"Range":0.0}'
     SerializedComponent:
-      rid: 7196039976198340684
+      rid: 7196040044147638500
   - TypeName: TowerDefence.Entities.Towers.Components.PowerComponents.VoidPowerConsumer,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{}'
     SerializedComponent:
-      rid: 7196039976198340685
+      rid: 7196040044147638501
   - TypeName: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"towerSprite":"1ea3cb15a813ef248a5096c0b140b7d3"}'
     SerializedComponent:
-      rid: 7196039976198340686
+      rid: 7196040044147638502
   Type: 1
   references:
     version: 2
     RefIds:
-    - rid: 7196039976198340684
+    - rid: 7196040044147638500
       type: {class: TowerSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
-    - rid: 7196039976198340685
+    - rid: 7196040044147638501
       type: {class: VoidPowerConsumer, ns: TowerDefence.Entities.Towers.Components.PowerComponents,
         asm: TowerDefence}
-    - rid: 7196039976198340686
+    - rid: 7196040044147638502
       type: {class: TowerVisualSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
       data:
