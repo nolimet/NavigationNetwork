@@ -1,7 +1,9 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using TowerDefence.Entities.Towers.Builder;
+using TowerDefence.Entities.Towers.Components.BaseComponents;
 using TowerDefence.Entities.Towers.Models;
+using TowerDefence.Utility;
 using TowerDefence.World.Grid.Data;
 using UnityEngine;
 
@@ -27,7 +29,8 @@ namespace TowerDefence.Entities.Towers
 
             var newTower = await towerFactory.CreateTower(configuration, position, cell);
             newTower.Transform.position = position;
-            newTower.Transform.name = configuration.Name;
+            if (newTower.Model.Components.TryGetComponent(out TowerSettings settings))
+                newTower.Transform.name = settings.Name;
 
             towerModel.Towers.Add(newTower);
             return newTower;
