@@ -2,6 +2,6 @@
 {
     public interface ITickablePowerComponent
     {
-        void PowerTick(double delta);
+        void PowerTick(double deltaMs);
     }
 }
