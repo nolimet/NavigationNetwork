@@ -11,5 +11,11 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents
     [JsonObject(MemberSerialization.OptIn)]
     internal class SimpleGenerator : BaseGenerator
     {
+        public override double GenerationPerSecond => maxPowerBuffer;
+        [JsonProperty] private readonly double generationPerSecond = 100;
+        public override double GenerationDelayInMs => generationDelayInMs;
+        [JsonProperty] private readonly double generationDelayInMs = -1;
+        public override double MaxPowerBuffer => maxPowerBuffer;
+        [JsonProperty] private readonly double maxPowerBuffer = 1000;
     }
 }
