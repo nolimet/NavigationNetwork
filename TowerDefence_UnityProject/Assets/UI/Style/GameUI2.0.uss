@@ -1,0 +1,30 @@
+.PanelElement {
+    position: absolute;
+    background-color: #333333;
+}
+
+#Map {
+    top: 0;
+    left: 0;
+    width: 350px;
+    height: 350px;
+}
+
+#Properties {
+    border-top-left-radius: 10px;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    height: 400px;
+}
+
+#Towers {
+    border-top-width: 6px;
+    border-top-color: #1e1e1e;
+
+    top: 350px;
+    bottom: 0;
+    left: 0;
+    width: 350;
+    height: auto;
+}
