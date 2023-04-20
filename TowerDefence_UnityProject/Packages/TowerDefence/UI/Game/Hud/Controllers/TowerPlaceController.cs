@@ -18,7 +18,7 @@ namespace TowerDefence.UI.Game.Hud.Controllers
     public class TowerPlaceController : IDisposable
     {
         private const string ContainerId = "GameUI-HUD";
-        private const string TowerPlaceContainerId = "places_tower_container";
+        private const string TowerPlaceContainerId = "TowerIconContainer";
 
         private readonly BindingContext bindingContext = new();
         private readonly TowerConfigurationData towerConfigurationData;
