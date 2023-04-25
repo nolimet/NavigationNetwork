@@ -18,6 +18,16 @@
     height: 400px;
 }
 
+#TowerIconContainer > #unity-content-and-vertical-scroll-container > #unity-content-viewport > #unity-content-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.HUD-TowerButton {
+    width: 64px;
+    height: 64px;
+}
+
 #Towers {
     border-top-width: 6px;
 

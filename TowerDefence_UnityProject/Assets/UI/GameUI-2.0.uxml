@@ -1,7 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI/Style/GameUI2.0.uss?fileID=7433441132597879392&amp;guid=4e75cfc916a61c748808ad3d0be5c08a&amp;type=3#GameUI2.0" />
     <ui:VisualElement name="Map" class="PanelElement" />
-    <ui:VisualElement name="Properties" class="PanelElement" style="transition-property: all; transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s;" />
+    <ui:VisualElement name="Properties" class="PanelElement" style="transition-property: all; transition-duration: 0s; transition-timing-function: ease; transition-delay: 0s;">
+        <ui:Label text="Label" display-tooltip-when-elided="true" name="PropertiesInfo" style="-unity-text-align: middle-left; padding-left: 10px; padding-right: 5px; padding-top: 0; padding-bottom: 0;" />
+    </ui:VisualElement>
     <ui:VisualElement name="Towers" class="PanelElement">
         <ui:ScrollView name="TowerIconContainer" style="position: absolute; left: 0; top: 0; right: 0; bottom: 100px;" />
         <ui:VisualElement name="TowerInfo" style="bottom: 0; right: 0; left: 0; height: 100px; position: absolute;" />
