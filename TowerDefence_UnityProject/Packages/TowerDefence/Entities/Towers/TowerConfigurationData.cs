@@ -25,6 +25,7 @@ namespace TowerDefence.Entities.Towers
             {
                 return await value.GetComponentConfiguration();
             }
+
             return null;
         }
 
@@ -43,15 +44,15 @@ namespace TowerDefence.Entities.Towers
         [Serializable]
         internal class Tower
         {
-            [SerializeField]
-            private string id;
+            [SerializeField] private string id;
 
-            [SerializeField]
-            private AssetReferenceT<ComponentConfigurationObject> reference;
+            [SerializeField] private AssetReferenceSprite iconReference;
+            [SerializeField] private AssetReferenceT<ComponentConfigurationObject> reference;
 
             private ComponentConfigurationObject configurationObject;
 
             internal string Id => id;
+            internal AssetReferenceSprite Icon => iconReference;
 
             public async Task<ComponentConfigurationObject> GetComponentConfiguration()
             {
@@ -61,6 +62,7 @@ namespace TowerDefence.Entities.Towers
                     await handle;
                     configurationObject = handle.Result;
                 }
+
                 return configurationObject;
             }
         }
