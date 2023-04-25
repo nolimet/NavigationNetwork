@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DataBinding;
 using NoUtil.Extentsions;
@@ -11,6 +12,7 @@ using TowerDefence.UI.Containers;
 using TowerDefence.UI.Game.Hud.CustomUIElements;
 using TowerDefence.UI.Models;
 using TowerDefence.World.Grid;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace TowerDefence.UI.Game.Hud.Controllers
@@ -27,6 +29,7 @@ namespace TowerDefence.UI.Game.Hud.Controllers
 
         private IUIContainer activeContainer;
         private VisualElement towerPlaceContainer;
+        private CancellationTokenSource ctx;
 
         private readonly List<TowerPlaceButton> towerPlaceButtons = new();
 
@@ -74,20 +77,14 @@ namespace TowerDefence.UI.Game.Hud.Controllers
             {
                 activeContainer = container;
                 var root = documentContainer.Document.rootVisualElement;
-                towerPlaceContainer = root.Q(TowerPlaceContainerId);
+                var towerPlaceContainer = root.Q(TowerPlaceContainerId);
+                if (towerPlaceContainer == this.towerPlaceContainer || towerPlaceContainer is null) return;
 
-                var towers = towerConfigurationData.Towers;
-                foreach (var (id, tower) in towers)
-                {
-                    var towerButton = new TowerPlaceButton(id)
-                    {
-                        text = tower.Id
-                    };
-                    towerButton.OnCallback += OnTowerPlaceButtonClicked;
-                    towerButton.AddToClassList("HUD-TowerButton");
-                    towerPlaceContainer.Add(towerButton);
-                    towerPlaceButtons.Add(towerButton);
-                }
+                this.towerPlaceContainer = towerPlaceContainer;
+                ctx?.Cancel();
+                ctx?.Dispose();
+                ctx = new CancellationTokenSource();
+                PopulateContainer(ctx.Token).SuppressCancellationThrow().Forget();
             }
 
             void UnBind()
@@ -96,6 +93,38 @@ namespace TowerDefence.UI.Game.Hud.Controllers
                 towerPlaceButtons.Clear();
             }
         }
+
+        async UniTask PopulateContainer(CancellationToken ct)
+        {
+            var towers = towerConfigurationData.Towers;
+            foreach (var (id, tower) in towers)
+            {
+                Sprite icon;
+                if (!tower.Icon.IsValid())
+                {
+                    icon = await tower.Icon.LoadAssetAsync().WithCancellation(ct);
+                }
+                else
+                {
+                    icon = tower.Icon.Asset as Sprite;
+                }
+
+
+                var towerButton = new TowerPlaceButton(id)
+                {
+                    tooltip = id,
+                    style =
+                    {
+                        backgroundImage = new StyleBackground(icon)
+                    }
+                };
+                towerButton.OnCallback += OnTowerPlaceButtonClicked;
+                towerButton.AddToClassList("HUD-TowerButton");
+                towerPlaceContainer.Add(towerButton);
+                towerPlaceButtons.Add(towerButton);
+            }
+        }
+
 
         private void OnTowerPlaceButtonClicked(string towerId)
         {
