@@ -38,6 +38,7 @@ namespace TowerDefence.Entities.Towers.Builder
             var towerGameObject = await towerConfiguration.TowerBase.InstantiateAsync(worldContainer.TowerContainer) as GameObject;
 
             if (!towerGameObject) throw new NullReferenceException($"Could not create tower base for configuration {towerConfiguration.TowerBase}");
+            towerGameObject.transform.position = position;
 
             var towerObject = towerGameObject.GetComponent<TowerObject>();
             var model = ModelFactory.Create<ITowerModel>();
@@ -55,6 +56,7 @@ namespace TowerDefence.Entities.Towers.Builder
 
             async UniTask<IComponent> ProcessComponentInit(IComponent arg)
             {
+                //Cannot be a switch. Both statements can be true for a Component
                 if (arg is IInitializable initializable)
                 {
                     initializable.PostInit(towerObject, model);

@@ -28,7 +28,6 @@ namespace TowerDefence.Entities.Towers
             if (configuration == null) throw new NullReferenceException("Tower ID seems to be invalid! Case does not matter just check the spelling or if it exists in the configuration data for the towers");
 
             var newTower = await towerFactory.CreateTower(configuration, position, cell);
-            newTower.Transform.position = position;
             if (newTower.Model.Components.TryGetComponent(out TowerSettings settings))
                 newTower.Transform.name = settings.Name;
 
