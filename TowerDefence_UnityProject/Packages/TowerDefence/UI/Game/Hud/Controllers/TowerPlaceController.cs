@@ -75,6 +75,8 @@ namespace TowerDefence.UI.Game.Hud.Controllers
 
             if (uiContainers.TryFind(x => x.Name == ContainerId, out var container) && container is UIDocumentContainer documentContainer)
             {
+                if (activeContainer == container) return;
+
                 activeContainer = container;
                 var root = documentContainer.Document.rootVisualElement;
                 var towerPlaceContainer = root.Q(TowerPlaceContainerId);
@@ -84,7 +86,7 @@ namespace TowerDefence.UI.Game.Hud.Controllers
                 ctx?.Cancel();
                 ctx?.Dispose();
                 ctx = new CancellationTokenSource();
-                PopulateContainer(ctx.Token).SuppressCancellationThrow().Forget();
+                PopulateContainer(ctx.Token).Preserve();
             }
 
             void UnBind()
@@ -96,9 +98,12 @@ namespace TowerDefence.UI.Game.Hud.Controllers
 
         async UniTask PopulateContainer(CancellationToken ct)
         {
+            await UniTask.NextFrame(ct);
+
             var towers = towerConfigurationData.Towers;
             foreach (var (id, tower) in towers)
             {
+                ct.ThrowIfCancellationRequested();
                 Sprite icon;
                 if (!tower.Icon.IsValid())
                 {
@@ -128,11 +133,10 @@ namespace TowerDefence.UI.Game.Hud.Controllers
 
         private void OnTowerPlaceButtonClicked(string towerId)
         {
-            if (selectionModel.Selection.Any(x => x is SelectableCell))
-            {
-                var cell = selectionModel.Selection.First(x => x is SelectableCell) as SelectableCell;
-                towerService.PlaceTower(towerId, cell!.GridCell.WorldPosition, cell.GridCell).Forget();
-            }
+            if (selectionModel.Selection.All(x => x is not SelectableCell)) return;
+
+            var cell = selectionModel.Selection.First(x => x is SelectableCell) as SelectableCell;
+            towerService.PlaceTower(towerId, cell!.GridCell.WorldPosition, cell.GridCell).Forget();
         }
 
         public void Dispose()
