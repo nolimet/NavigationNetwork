@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -63,20 +63,14 @@ namespace TowerDefence.World.Grid
             var entrance = entranceId < entrances.Length ? GetCell(entrances[entranceId]) : null;
             var exit = exitId < exits.Length ? GetCell(exits[exitId]) : null;
 
-            if (entrance != null && exit != null)
-            {
-                return await GetPath(entrance, exit);
-            }
+            if (entrance != null && exit != null) return await GetPath(entrance, exit);
 
             return Array.Empty<IGridCell>();
         }
 
         public async UniTask<IReadOnlyCollection<IGridCell>> GetPath(IGridCell start, IGridCell end)
         {
-            if (pathCache.TryGetValue((start, end), out var path))
-            {
-                return path;
-            }
+            if (pathCache.TryGetValue((start, end), out var path)) return path;
 
             PathFinder pathFinder;
             if (pathfinderPool.Any(x => !x.Working))
@@ -93,10 +87,7 @@ namespace TowerDefence.World.Grid
             path = pathFinder.GetPath(start, end);
             await UniTask.SwitchToMainThread();
 
-            if (!pathCache.ContainsKey((start, end)))
-            {
-                pathCache.Add((start, end), path);
-            }
+            if (!pathCache.ContainsKey((start, end))) pathCache.Add((start, end), path);
 
             pathfinderPool.Add(pathFinder);
             return path;
