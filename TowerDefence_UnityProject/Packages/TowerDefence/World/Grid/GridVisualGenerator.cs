@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using TowerDefence.World.Grid.Data;
 using UnityEngine;
@@ -34,12 +35,20 @@ namespace TowerDefence.World.Grid
 
             int heightMultShaderProperty = Shader.PropertyToID("_HeightMult");
             int supportsTowerShaderProperty = Shader.PropertyToID("_SupportsTower");
+            int tileGroupSizeShaderProperty = -1;
+            int tileMapTextureShaderProperty = -1;
 
             var tileMaterial = await worldSettings.GetTileMaterial();
 
             List<GameObject> objects = new();
 
             tileMesh = CreateMesh();
+
+            var cellGroups = GroupifyGridCells();
+            foreach (var cellGroup in cellGroups)
+            {
+                var groupTexture = CreateTextureGroup(cellGroup);
+            }
 
             foreach (var node in nodes)
             {
@@ -138,6 +147,60 @@ namespace TowerDefence.World.Grid
                 collider.size = worldSettings.TileSize;
 
                 bounds.Encapsulate(r.bounds);
+            }
+
+            (Vector2 groupSize, Texture2D tileGroup) CreateTextureGroup(IGridCell[][] cellGroup)
+            {
+                if (cellGroup.Length == 0) return (Vector2.zero, null);
+                var texture = new Texture2D(cellGroup.Length, cellGroup[0].Length,);
+            }
+
+            IGridCell[][][] GroupifyGridCells()
+            {
+                List<IGridCell[][]> groups = new();
+                List<List<IGridCell>> currentGroup = new();
+
+                int horGroupCount = (int)Math.Ceiling(gridSettings.GridWidth / (double)worldSettings.MaxTileGroupSize.x);
+                int vertGroupCount = (int)Math.Ceiling(gridSettings.GridHeight / (double)worldSettings.MaxTileGroupSize.y);
+                var maxGroupSize = worldSettings.MaxTileGroupSize;
+
+                var nodesArr = nodes.ToArray();
+
+                int counter = 0;
+                for (int xGroup = 0; xGroup < horGroupCount; xGroup++)
+                {
+                    int offsetX = xGroup * maxGroupSize.x;
+                    for (int yGroup = 0; yGroup < vertGroupCount; yGroup++)
+                    {
+                        int offsetY = offsetX + yGroup * maxGroupSize.y;
+                        for (int x = 0; x < maxGroupSize.x; x++)
+                        {
+                            if (offsetX + x > gridSettings.GridWidth) continue;
+                            var currentRow = new List<IGridCell>();
+                            for (int y = 0; y < maxGroupSize.y; y++)
+                            {
+                                if (offsetY + y > gridSettings.GridHeight)
+                                {
+                                    continue;
+                                }
+
+                                currentRow.Add(nodesArr[counter]);
+                                counter++;
+                                if (counter > nodesArr.Length)
+                                    break;
+                            }
+
+                            if (currentRow.Count > 0)
+                            {
+                                currentGroup.Add(currentRow);
+                            }
+                        }
+                    }
+
+                    groups.Add(currentGroup.Select(x => x.ToArray()).ToArray());
+                }
+
+                return groups.ToArray();
             }
         }
 
