@@ -34,23 +34,21 @@ namespace TowerDefence.World.Grid
             {
                 List<IGridCell> neightbours = new();
                 for (int x = 0; x < settings.GridWidth; x++)
+                for (int y = 0; y < settings.GridHeight; y++)
                 {
-                    for (int y = 0; y < settings.GridHeight; y++)
-                    {
-                        neightbours.Add(GetNode(x, y - 1));
-                        neightbours.Add(GetNode(x, y + 1));
-                        neightbours.Add(GetNode(x - 1, y));
-                        neightbours.Add(GetNode(x + 1, y));
+                    neightbours.Add(GetNode(x, y - 1));
+                    neightbours.Add(GetNode(x, y + 1));
+                    neightbours.Add(GetNode(x - 1, y));
+                    neightbours.Add(GetNode(x + 1, y));
 
-                        //Generate diagonals
-                        neightbours.Add(GetNode(x + 1, y + 1));
-                        neightbours.Add(GetNode(x + 1, y - 1));
-                        neightbours.Add(GetNode(x - 1, y + 1));
-                        neightbours.Add(GetNode(x - 1, y - 1));
+                    //Generate diagonals
+                    neightbours.Add(GetNode(x + 1, y + 1));
+                    neightbours.Add(GetNode(x + 1, y - 1));
+                    neightbours.Add(GetNode(x - 1, y + 1));
+                    neightbours.Add(GetNode(x - 1, y - 1));
 
-                        cells[x][y].SetConnectedCells(neightbours.Where(c => c != null).ToArray());
-                        neightbours.Clear();
-                    }
+                    cells[x][y].SetConnectedCells(neightbours.Where(c => c != null).ToArray());
+                    neightbours.Clear();
                 }
 
                 IGridCell GetNode(int x, int y)
