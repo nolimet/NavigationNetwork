@@ -33,10 +33,10 @@ namespace TowerDefence.World.Grid
 
             Bounds bounds = new();
 
-            int heightMultShaderProperty = Shader.PropertyToID("_HeightMult");
-            int supportsTowerShaderProperty = Shader.PropertyToID("_SupportsTower");
-            int tileGroupSizeShaderProperty = -1;
-            int tileMapTextureShaderProperty = -1;
+            var heightMultShaderProperty = Shader.PropertyToID("_HeightMult");
+            var supportsTowerShaderProperty = Shader.PropertyToID("_SupportsTower");
+            var tileGroupSizeShaderProperty = -1;
+            var tileMapTextureShaderProperty = -1;
 
             var tileMaterial = await worldSettings.GetTileMaterial();
 
@@ -47,17 +47,55 @@ namespace TowerDefence.World.Grid
             var cellGroups = GroupifyGridCells();
             foreach (var cellGroup in cellGroups)
             {
-                var groupTexture = CreateTextureGroup(cellGroup);
+                var groupTexture = CreateCellGroupTexture(cellGroup);
+                var groupMesh = CreateGroupMesh(cellGroup);
             }
 
-            foreach (var node in nodes)
-            {
-                CreateRenderer(tileMesh, node);
-            }
+            foreach (var node in nodes) CreateRenderer(tileMesh, node);
 
             tiles = objects.ToArray();
 
             return bounds;
+
+            Mesh CreateGroupMesh(IGridCell[][] cellGroup)
+            {
+                List<int> tris = new();
+                List<Vector3> verts = new();
+                List<Vector2> uvs = new();
+
+                void AddSubTile(float offsetX, float offsetY)
+                {
+                    tris.AddRange(new[] { verts.Count + 2, verts.Count + 1, verts.Count + 0 });
+                    tris.AddRange(new[] { verts.Count + 1, verts.Count + 2, verts.Count + 3 });
+
+                    AddVert(offsetX + 0, offsetY + 0, 0);
+                    AddVert(offsetX + 1, offsetY + 0, 0);
+                    AddVert(offsetX + 0, offsetY + 1, 0);
+                    AddVert(offsetX + 1, offsetY + 1, 0);
+
+                    AddUv(0, 0);
+                    AddUv(1, 0);
+                    AddUv(0, 1);
+                    AddUv(1, 1);
+                }
+
+                void AddVert(float x, float y, float z)
+                {
+                    Vector3 v = new
+                    (
+                        x * TileWidth,
+                        y * TileLength,
+                        z
+                    );
+
+                    verts.Add(v);
+                }
+
+                void AddUv(float x, float y)
+                {
+                    uvs.Add(new Vector2(x, y));
+                }
+            }
 
             Mesh CreateMesh()
             {
@@ -93,9 +131,9 @@ namespace TowerDefence.World.Grid
                 {
                     Vector3 v = new
                     (
-                        x: x * TileWidth,
-                        y: y * TileLength,
-                        z: z
+                        x * TileWidth,
+                        y * TileLength,
+                        z
                     );
 
                     verts.Add(v);
@@ -119,9 +157,9 @@ namespace TowerDefence.World.Grid
                 g.transform.SetParent(world.TileContainer);
                 g.transform.position = new Vector3
                 (
-                    x: worldSettings.TileSize.x * cell.Position.x - worldSettings.TileSize.x / 2 * gridSettings.GridWidth,
-                    y: worldSettings.TileSize.y * cell.Position.y - worldSettings.TileSize.y / 2 * gridSettings.GridHeight,
-                    z: 10
+                    worldSettings.TileSize.x * cell.Position.x - worldSettings.TileSize.x / 2 * gridSettings.GridWidth,
+                    worldSettings.TileSize.y * cell.Position.y - worldSettings.TileSize.y / 2 * gridSettings.GridHeight,
+                    10
                 );
 
                 objects.Add(g);
@@ -149,10 +187,37 @@ namespace TowerDefence.World.Grid
                 bounds.Encapsulate(r.bounds);
             }
 
-            (Vector2 groupSize, Texture2D tileGroup) CreateTextureGroup(IGridCell[][] cellGroup)
+            Texture2D CreateCellGroupTexture(IGridCell[][] cellGroup)
             {
-                if (cellGroup.Length == 0) return (Vector2.zero, null);
-                var texture = new Texture2D(cellGroup.Length, cellGroup[0].Length,);
+                if (cellGroup.Length == 0) return null;
+
+                var texture = new Texture2D(cellGroup.Length, cellGroup[0].Length, TextureFormat.RGFloat, false)
+                {
+                    filterMode = FilterMode.Point,
+                    anisoLevel = 0
+                };
+
+                var pixels = texture.GetPixels();
+                var count = 0;
+
+                for (var x = 0; x < cellGroup.Length; x++)
+                for (var y = 0; y < cellGroup[y].Length; y++)
+                {
+                    var cell = cellGroup[x][y];
+                    var color = new Color
+                    (
+                        cell.CellWeight / 255f,
+                        cell.SupportsTower ? 1 : 0,
+                        0,
+                        0
+                    );
+                    pixels[count] = color;
+                    count++;
+                }
+
+                texture.SetPixels(pixels);
+                texture.Apply(false, true);
+                return texture;
             }
 
             IGridCell[][][] GroupifyGridCells()
@@ -160,29 +225,27 @@ namespace TowerDefence.World.Grid
                 List<IGridCell[][]> groups = new();
                 List<List<IGridCell>> currentGroup = new();
 
-                int horGroupCount = (int)Math.Ceiling(gridSettings.GridWidth / (double)worldSettings.MaxTileGroupSize.x);
-                int vertGroupCount = (int)Math.Ceiling(gridSettings.GridHeight / (double)worldSettings.MaxTileGroupSize.y);
+                var horGroupCount = (int)Math.Ceiling(gridSettings.GridWidth / (double)worldSettings.MaxTileGroupSize.x);
+                var vertGroupCount = (int)Math.Ceiling(gridSettings.GridHeight / (double)worldSettings.MaxTileGroupSize.y);
                 var maxGroupSize = worldSettings.MaxTileGroupSize;
 
                 var nodesArr = nodes.ToArray();
 
-                int counter = 0;
-                for (int xGroup = 0; xGroup < horGroupCount; xGroup++)
+                var counter = 0;
+                for (var xGroup = 0; xGroup < horGroupCount; xGroup++)
                 {
-                    int offsetX = xGroup * maxGroupSize.x;
-                    for (int yGroup = 0; yGroup < vertGroupCount; yGroup++)
+                    var offsetX = xGroup * maxGroupSize.x;
+                    for (var yGroup = 0; yGroup < vertGroupCount; yGroup++)
                     {
-                        int offsetY = offsetX + yGroup * maxGroupSize.y;
-                        for (int x = 0; x < maxGroupSize.x; x++)
+                        var offsetY = offsetX + yGroup * maxGroupSize.y;
+                        for (var x = 0; x < maxGroupSize.x; x++)
                         {
                             if (offsetX + x > gridSettings.GridWidth) continue;
+
                             var currentRow = new List<IGridCell>();
-                            for (int y = 0; y < maxGroupSize.y; y++)
+                            for (var y = 0; y < maxGroupSize.y; y++)
                             {
-                                if (offsetY + y > gridSettings.GridHeight)
-                                {
-                                    continue;
-                                }
+                                if (offsetY + y > gridSettings.GridHeight) continue;
 
                                 currentRow.Add(nodesArr[counter]);
                                 counter++;
@@ -190,10 +253,7 @@ namespace TowerDefence.World.Grid
                                     break;
                             }
 
-                            if (currentRow.Count > 0)
-                            {
-                                currentGroup.Add(currentRow);
-                            }
+                            if (currentRow.Count > 0) currentGroup.Add(currentRow);
                         }
                     }
 
@@ -207,20 +267,14 @@ namespace TowerDefence.World.Grid
         public void DestroyTiles()
         {
             Debug.Log("Destroyed Tiles");
-            foreach (var tile in tiles)
-            {
-                Object.Destroy(tile);
-            }
+            foreach (var tile in tiles) Object.Destroy(tile);
 
             tiles = Array.Empty<GameObject>();
         }
 
         public void Dispose()
         {
-            foreach (var (_, value) in materialCache)
-            {
-                Object.Destroy(value);
-            }
+            foreach (var (_, value) in materialCache) Object.Destroy(value);
         }
     }
 }
