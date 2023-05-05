@@ -8,20 +8,26 @@ namespace TowerDefence.World.Grid
     public sealed class GridWorldSettings : ScriptableObject
     {
         [SerializeField] private AssetReferenceT<Material> tileMaterial;
-        [SerializeField] private AssetReferenceT<GameObject> entracePrefab;
+        [SerializeField] private AssetReferenceT<GameObject> entrancePrefab;
         [SerializeField] private AssetReferenceT<GameObject> exitPrefab;
         [SerializeField] private Vector2 tileSize = Vector2.one;
+        [SerializeField] private Vector2Int maxTileGroupSize = Vector2Int.one * 32;
 
         public Vector2 TileSize => tileSize;
+        public Vector2Int MaxTileGroupSize => maxTileGroupSize;
 
-        public async UniTask<Material> GetTileMaterial()
+        private async UniTask<T> GetAddressableTResult<T>(AssetReferenceT<T> reference) where T : Object
         {
-            if (!tileMaterial.Asset)
+            if (!reference.Asset)
             {
-                await tileMaterial.LoadAssetAsync();
+                await reference.LoadAssetAsync();
             }
 
-            return tileMaterial.Asset as Material;
+            return reference.Asset as T;
         }
+
+        public UniTask<Material> GetTileMaterial() => GetAddressableTResult(tileMaterial);
+        public UniTask<GameObject> GetTileEntrance() => GetAddressableTResult(entrancePrefab);
+        public UniTask<GameObject> GetTileExit() => GetAddressableTResult(exitPrefab);
     }
 }
