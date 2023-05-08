@@ -36,7 +36,7 @@ namespace TowerDefence.Systems.LevelEditor.Models
         public byte Weight { get; set; }
         public bool SupportsTower { get; set; }
 
-        public SelectableCell worldCell { get; set; }
+        public SelectableCellGroup WorldCellGroup { get; set; }
 
         internal GridSettings.Cell ToGridCell()
         {
