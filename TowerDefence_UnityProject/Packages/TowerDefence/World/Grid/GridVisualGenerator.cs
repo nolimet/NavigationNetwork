@@ -42,16 +42,13 @@ namespace TowerDefence.World.Grid
 
             List<GameObject> objects = new();
 
-            tileMesh = CreateMesh();
-
             var cellGroups = GroupifyGridCells();
             foreach (var cellGroup in cellGroups)
             {
                 var groupTexture = CreateCellGroupTexture(cellGroup);
                 var groupMesh = CreateGroupMesh(cellGroup);
+                CreateRenderer(groupMesh, groupTexture, cellGroup);
             }
-
-            foreach (var node in nodes) CreateRenderer(tileMesh, node);
 
             tiles = objects.ToArray();
 
@@ -62,6 +59,25 @@ namespace TowerDefence.World.Grid
                 List<int> tris = new();
                 List<Vector3> verts = new();
                 List<Vector2> uvs = new();
+
+                AddSubTile(0, 0);
+                AddSubTile(1, 0);
+                AddSubTile(2, 0);
+
+                AddSubTile(0, 1);
+                AddSubTile(1, 1);
+                AddSubTile(2, 1);
+
+                AddSubTile(0, 2);
+                AddSubTile(1, 2);
+                AddSubTile(2, 2);
+
+                return new Mesh
+                {
+                    triangles = tris.ToArray(),
+                    vertices = verts.ToArray(),
+                    uv = uvs.ToArray()
+                };
 
                 void AddSubTile(float offsetX, float offsetY)
                 {
@@ -97,55 +113,8 @@ namespace TowerDefence.World.Grid
                 }
             }
 
-            Mesh CreateMesh()
-            {
-                List<int> tris = new();
-                List<Vector3> verts = new();
-                List<Vector2> uvs = new();
 
-                tris.AddRange(new[] { 2, 1, 0 });
-                tris.AddRange(new[] { 1, 2, 3 });
-
-                AddVert(0, 0, 0);
-                AddVert(1, 0, 0);
-                AddVert(0, 1, 0);
-                AddVert(1, 1, 0);
-
-                AddUv(0, 0);
-                AddUv(1, 0);
-                AddUv(0, 1);
-                AddUv(1, 1);
-
-                var m = new Mesh
-                {
-                    vertices = verts.ToArray(),
-                    triangles = tris.ToArray(),
-                    uv = uvs.ToArray()
-                };
-
-                m.UploadMeshData(true);
-
-                return m;
-
-                void AddVert(float x, float y, float z)
-                {
-                    Vector3 v = new
-                    (
-                        x * TileWidth,
-                        y * TileLength,
-                        z
-                    );
-
-                    verts.Add(v);
-                }
-
-                void AddUv(float x, float y)
-                {
-                    uvs.Add(new Vector2(x, y));
-                }
-            }
-
-            void CreateRenderer(Mesh m, IGridCell cell)
+            void CreateRenderer(Mesh m, Texture2D tileTexture, IGridCell[][] cellGroup)
             {
                 //TODO: Convert grid into a single mesh. Use a shader to draw the visuals to lower the load on memory with the many gameobjects.
                 //TODO: Make sure objects are still selectable. Could use some simple hit value calculations. Would require sorted IGridCell's
@@ -153,36 +122,43 @@ namespace TowerDefence.World.Grid
                 //Using a shader trick to draw the mesh..
                 //This is gone be fun -_-
                 //This should work though :P
-                var g = new GameObject($"Tile -{cell.Position}", typeof(MeshFilter), typeof(MeshRenderer));
+
+                Vector2 center = Vector2.zero;
+                int cellCount = 0;
+
+                Vector4 groupSize = new Vector4(cellGroup.Length, cellGroup[0].Length);
+                foreach (var subGroup in cellGroup)
+                {
+                    foreach (var cell in subGroup)
+                    {
+                        cellCount++;
+                        center += cell.WorldPosition;
+                    }
+                }
+
+                center /= cellCount;
+
+                var g = new GameObject($"TileGroup - {center}", typeof(MeshFilter), typeof(MeshRenderer));
                 g.transform.SetParent(world.TileContainer);
-                g.transform.position = new Vector3
-                (
-                    worldSettings.TileSize.x * cell.Position.x - worldSettings.TileSize.x / 2 * gridSettings.GridWidth,
-                    worldSettings.TileSize.y * cell.Position.y - worldSettings.TileSize.y / 2 * gridSettings.GridHeight,
-                    10
-                );
+                g.transform.position = center;
 
                 objects.Add(g);
 
                 var r = g.GetComponent<MeshRenderer>();
                 var mf = g.GetComponent<MeshFilter>();
 
-                if (!materialCache.TryGetValue((cell.SupportsTower, cell.CellWeight), out var material))
-                {
-                    material = new Material(tileMaterial);
-                    material.SetFloat(heightMultShaderProperty, 1f / 255 * cell.CellWeight);
-                    material.SetInt(supportsTowerShaderProperty, cell.SupportsTower ? 1 : 0);
-                    materialCache.Add((cell.SupportsTower, cell.CellWeight), material);
-                }
-
-                r.sharedMaterial = material;
                 mf.sharedMesh = m;
+                r.sharedMaterial = tileMaterial;
 
-                var selectableNode = g.AddComponent<SelectableCell>();
-                selectableNode.GridCell = cell;
+                var mat = r.sharedMaterial;
+                mat.SetTexture(tileMapTextureShaderProperty, tileTexture);
+                mat.SetVector(tileGroupSizeShaderProperty, groupSize);
+
+                var selectableNode = g.AddComponent<SelectableCellGroup>();
+                selectableNode.GridCellGroup = cellGroup;
 
                 var collider = g.AddComponent<BoxCollider2D>();
-                collider.size = worldSettings.TileSize;
+                collider.size = groupSize * worldSettings.TileSize;
 
                 bounds.Encapsulate(r.bounds);
             }
@@ -220,13 +196,14 @@ namespace TowerDefence.World.Grid
                 return texture;
             }
 
-            IGridCell[][][] GroupifyGridCells()
+            IEnumerable<IGridCell[][]> GroupifyGridCells()
             {
                 List<IGridCell[][]> groups = new();
                 List<List<IGridCell>> currentGroup = new();
 
-                var horGroupCount = (int)Math.Ceiling(gridSettings.GridWidth / (double)worldSettings.MaxTileGroupSize.x);
-                var vertGroupCount = (int)Math.Ceiling(gridSettings.GridHeight / (double)worldSettings.MaxTileGroupSize.y);
+                //TODO use fraction to fix problem with partial groups not working correctly
+                var horGroupCount = gridSettings.GridWidth / (double)worldSettings.MaxTileGroupSize.x;
+                var vertGroupCount = gridSettings.GridHeight / (double)worldSettings.MaxTileGroupSize.y;
                 var maxGroupSize = worldSettings.MaxTileGroupSize;
 
                 var nodesArr = nodes.ToArray();
@@ -246,11 +223,10 @@ namespace TowerDefence.World.Grid
                             for (var y = 0; y < maxGroupSize.y; y++)
                             {
                                 if (offsetY + y > gridSettings.GridHeight) continue;
+                                if (counter >= nodesArr.Length) break;
 
                                 currentRow.Add(nodesArr[counter]);
                                 counter++;
-                                if (counter > nodesArr.Length)
-                                    break;
                             }
 
                             if (currentRow.Count > 0) currentGroup.Add(currentRow);
