@@ -11,9 +11,10 @@ namespace TowerDefence.World.Grid
     {
         private readonly GridWorldSettings worldSettings;
         private readonly WorldContainer world;
-        private readonly Dictionary<(bool buildable, byte height), Material> materialCache = new();
+        private readonly List<Texture2D> groupTextures = new();
+        private readonly Dictionary<Vector2Int, Mesh> tileMeshCache = new();
 
-        private Mesh tileMesh;
+        private Mesh groupMesh;
 
         private GameObject[] tiles = Array.Empty<GameObject>();
 
@@ -28,6 +29,7 @@ namespace TowerDefence.World.Grid
             DestroyTiles();
 
             Bounds bounds = new();
+            groupMesh ??= CreateGroupMesh();
 
             var tileGroupSizeShaderProperty = Shader.PropertyToID("_GroupSize");
             var tileMapTextureShaderProperty = Shader.PropertyToID("_GroupHeightMap");
@@ -40,94 +42,28 @@ namespace TowerDefence.World.Grid
             foreach (var cellGroup in cellGroups)
             {
                 var groupTexture = CreateCellGroupTexture(cellGroup);
-                var groupMesh = CreateGroupMesh(cellGroup);
-                CreateRenderer(groupMesh, groupTexture, cellGroup);
+                CreateRenderer(groupTexture, cellGroup);
             }
 
             tiles = objects.ToArray();
 
             return bounds;
 
-            Mesh CreateGroupMesh(IGridCell[][] cellGroup)
+            void CreateRenderer(Texture2D tileTexture, IGridCell[][] cellGroup)
             {
-                List<int> tris = new();
-                List<Vector3> verts = new();
-                List<Vector2> uvs = new();
+                var center = Vector2.zero;
+                var cellCount = 0;
 
-                var subDivideCount = worldSettings.TileGroupGroupSubDivideCount;
-                var tileSizeFrac = worldSettings.TileSize * worldSettings.TileGroupSize / worldSettings.TileGroupGroupSubDivideCount;
-                for (int x = 0; x < subDivideCount.x; x++)
-                {
-                    for (int y = 0; y < subDivideCount.y; y++)
-                    {
-                        AddSubTile(x, y);
-                    }
-                }
-
-                var mesh = new Mesh
-                {
-                    vertices = verts.ToArray(),
-                    triangles = tris.ToArray(),
-                    uv = uvs.ToArray()
-                };
-                mesh.UploadMeshData(true);
-                return mesh;
-
-                void AddSubTile(float offsetX, float offsetY)
-                {
-                    tris.AddRange(new[] { verts.Count + 2, verts.Count + 1, verts.Count + 0 });
-                    tris.AddRange(new[] { verts.Count + 1, verts.Count + 2, verts.Count + 3 });
-
-                    AddVert(offsetX + 0, offsetY + 0, 0);
-                    AddVert(offsetX + 1, offsetY + 0, 0);
-                    AddVert(offsetX + 0, offsetY + 1, 0);
-                    AddVert(offsetX + 1, offsetY + 1, 0);
-
-                    var fracX = 1f / subDivideCount.x;
-                    var fracY = 1f / subDivideCount.y;
-                    AddUv(fracX * offsetX, fracY * offsetY);
-                    AddUv(fracX * (offsetX + 1), fracY * offsetY);
-                    AddUv(fracX * offsetX, fracY * (offsetY + 1));
-                    AddUv(fracX * (offsetX + 1), fracY * (offsetY + 1));
-                }
-
-                void AddVert(float x, float y, float z)
-                {
-                    Vector3 v = new Vector3(x, y, z) * tileSizeFrac;
-
-                    verts.Add(v);
-                }
-
-                void AddUv(float x, float y)
-                {
-                    uvs.Add(new Vector2(x, y));
-                }
-            }
-
-
-            void CreateRenderer(Mesh m, Texture2D tileTexture, IGridCell[][] cellGroup)
-            {
-                //TODO: Convert grid into a single mesh. Use a shader to draw the visuals to lower the load on memory with the many gameobjects.
-                //TODO: Make sure objects are still selectable. Could use some simple hit value calculations. Would require sorted IGridCell's
-                //Convert grid into a single mesh. 
-                //Using a shader trick to draw the mesh..
-                //This is gone be fun -_-
-                //This should work though :P
-
-                Vector2 center = Vector2.zero;
-                int cellCount = 0;
-
-                Vector4 groupSize = new Vector4(cellGroup.Length, cellGroup[0].Length);
+                var groupSize = new Vector4(cellGroup.Length, cellGroup[0].Length);
                 foreach (var subGroup in cellGroup)
+                foreach (var cell in subGroup)
                 {
-                    foreach (var cell in subGroup)
-                    {
-                        cellCount++;
-                        center += cell.WorldPosition;
-                    }
+                    cellCount++;
+                    center += cell.WorldPosition;
                 }
 
                 center /= cellCount;
+                center -= worldSettings.TileGroupSize * worldSettings.TileSize / 2;
 
                 var g = new GameObject($"TileGroup - {center}", typeof(MeshFilter), typeof(MeshRenderer));
                 g.transform.SetParent(world.TileContainer);
@@ -138,10 +74,10 @@ namespace TowerDefence.World.Grid
                 var r = g.GetComponent<MeshRenderer>();
                 var mf = g.GetComponent<MeshFilter>();
 
-                mf.sharedMesh = m;
+                mf.sharedMesh = groupMesh;
                 r.sharedMaterial = tileMaterial;
 
-                var mat = r.sharedMaterial;
+                var mat = r.material;
                 mat.SetTexture(tileMapTextureShaderProperty, tileTexture);
                 mat.SetVector(tileGroupSizeShaderProperty, groupSize);
 
@@ -152,6 +88,7 @@ namespace TowerDefence.World.Grid
                 collider.size = groupSize * worldSettings.TileSize;
 
                 bounds.Encapsulate(r.bounds);
+                g.isStatic = true;
             }
 
             Texture2D CreateCellGroupTexture(IGridCell[][] cellGroup)
@@ -164,11 +101,8 @@ namespace TowerDefence.World.Grid
                     anisoLevel = 0
                 };
 
-                var pixels = texture.GetPixels();
-                var count = 0;
-
-                for (var x = 0; x < cellGroup.Length; x++)
-                for (var y = 0; y < cellGroup[x].Length; y++)
+                for (var x = cellGroup.Length - 1; x >= 0; x--)
+                for (var y = cellGroup[x].Length - 1; y >= 0; y--)
                 {
                     var cell = cellGroup[x][y];
                     var color = new Color
@@ -178,12 +112,13 @@ namespace TowerDefence.World.Grid
                         0,
                         0
                     );
-                    pixels[count] = color;
-                    count++;
+
+                    texture.SetPixel(x, y, color);
                 }
 
-                texture.SetPixels(pixels);
                 texture.Apply(false, true);
+
+                groupTextures.Add(texture);
                 return texture;
             }
 
@@ -191,17 +126,14 @@ namespace TowerDefence.World.Grid
             {
                 List<IGridCell[][]> groups = new();
                 List<IGridCell[]> currentGroup = new();
-                List<IGridCell> currentRow = new();
+                List<IGridCell> groupY = new();
 
                 //TODO use fraction to fix problem with partial groups not working correctly
                 var horGroupCount = gridSettings.GridWidth / (double)worldSettings.TileGroupSize.x;
                 var vertGroupCount = gridSettings.GridHeight / (double)worldSettings.TileGroupSize.y;
                 var maxGroupSize = worldSettings.TileGroupSize;
 
-                if (horGroupCount % 1 + vertGroupCount % 1 > double.Epsilon)
-                {
-                    throw new Exception($"World size is not divisible by the world tile group size! Make sure you increase the world size by steps of {worldSettings.TileGroupSize}");
-                }
+                if (horGroupCount % 1 + vertGroupCount % 1 > double.Epsilon) throw new Exception($"World size is not divisible by the world tile group size! Make sure you increase the world size by steps of {worldSettings.TileGroupSize}");
 
                 vertGroupCount = Math.Floor(vertGroupCount);
                 horGroupCount = Math.Floor(horGroupCount);
@@ -213,9 +145,9 @@ namespace TowerDefence.World.Grid
                     {
                         var xOff = xGroup * maxGroupSize.x + x;
                         var yOff = yGroup * maxGroupSize.y;
-                        for (var y = 0; y < maxGroupSize.y; y++) currentRow.Add(nodes[xOff][yOff + y]);
-                        currentGroup.Add(currentRow.ToArray());
-                        currentRow.Clear();
+                        for (var y = 0; y < maxGroupSize.y; y++) groupY.Add(nodes[xOff][yOff + y]);
+                        currentGroup.Add(groupY.ToArray());
+                        groupY.Clear();
                     }
 
                     groups.Add(currentGroup.ToArray());
@@ -226,17 +158,72 @@ namespace TowerDefence.World.Grid
             }
         }
 
+        private Mesh CreateGroupMesh()
+        {
+            List<int> tris = new();
+            List<Vector3> verts = new();
+            List<Vector2> uvs = new();
+
+            var subDivideCount = worldSettings.TileGroupGroupSubDivideCount;
+            var tileSizeFrac = worldSettings.TileSize * worldSettings.TileGroupSize / worldSettings.TileGroupGroupSubDivideCount;
+
+            for (var x = 0; x < subDivideCount.x; x++)
+            for (var y = 0; y < subDivideCount.y; y++)
+                AddSubTile(x, y);
+
+            var mesh = new Mesh
+            {
+                vertices = verts.ToArray(),
+                triangles = tris.ToArray(),
+                uv = uvs.ToArray()
+            };
+            mesh.UploadMeshData(true);
+            return mesh;
+
+            void AddSubTile(float offsetX, float offsetY)
+            {
+                tris.AddRange(new[] { verts.Count + 2, verts.Count + 1, verts.Count + 0 });
+                tris.AddRange(new[] { verts.Count + 1, verts.Count + 2, verts.Count + 3 });
+
+                AddVert(offsetX + 0, offsetY + 0, 0);
+                AddVert(offsetX + 1, offsetY + 0, 0);
+                AddVert(offsetX + 0, offsetY + 1, 0);
+                AddVert(offsetX + 1, offsetY + 1, 0);
+
+                var fracX = 1f / subDivideCount.x;
+                var fracY = 1f / subDivideCount.y;
+                AddUv(fracX * offsetX, fracY * offsetY);
+                AddUv(fracX * (offsetX + 1), fracY * offsetY);
+                AddUv(fracX * offsetX, fracY * (offsetY + 1));
+                AddUv(fracX * (offsetX + 1), fracY * (offsetY + 1));
+            }
+
+            void AddVert(float x, float y, float z)
+            {
+                Vector3 v = new Vector3(x, y, z) * tileSizeFrac;
+
+                verts.Add(v);
+            }
+
+            void AddUv(float x, float y)
+            {
+                uvs.Add(new Vector2(x, y));
+            }
+        }
+
         public void DestroyTiles()
         {
             Debug.Log("Destroyed Tiles");
-            foreach (var tile in tiles) Object.Destroy(tile);
+            foreach (var groupTexture in groupTextures) Object.Destroy(groupTexture);
+            groupTextures.Clear();
 
+            foreach (var tile in tiles) Object.Destroy(tile);
             tiles = Array.Empty<GameObject>();
         }
 
         public void Dispose()
         {
-            foreach (var (_, value) in materialCache) Object.Destroy(value);
+            DestroyTiles();
         }
     }
 }
