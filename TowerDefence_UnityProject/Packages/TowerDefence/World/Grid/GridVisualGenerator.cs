@@ -9,9 +9,6 @@ namespace TowerDefence.World.Grid
 {
     internal sealed class GridVisualGenerator : IDisposable
     {
-        private const float TileWidth = 1;
-        private const float TileLength = 1;
-
         private readonly GridWorldSettings worldSettings;
         private readonly WorldContainer world;
         private readonly Dictionary<(bool buildable, byte height), Material> materialCache = new();
@@ -58,6 +55,7 @@ namespace TowerDefence.World.Grid
                 List<Vector2> uvs = new();
 
                 var subDivideCount = worldSettings.TileGroupGroupSubDivideCount;
+                var tileSizeFrac = worldSettings.TileSize * worldSettings.TileGroupSize / worldSettings.TileGroupGroupSubDivideCount;
                 for (int x = 0; x < subDivideCount.x; x++)
                 {
                     for (int y = 0; y < subDivideCount.y; y++)
@@ -95,12 +93,7 @@ namespace TowerDefence.World.Grid
 
                 void AddVert(float x, float y, float z)
                 {
-                    Vector3 v = new
-                    (
-                        x * TileWidth,
-                        y * TileLength,
-                        z
-                    );
+                    Vector3 v = new Vector3(x, y, z) * tileSizeFrac;
 
                     verts.Add(v);
                 }
