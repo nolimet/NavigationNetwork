@@ -54,15 +54,15 @@ namespace TowerDefence.Systems.LevelEditor.Managers
 
             levelEditorModel.RebuildingWorld = false;
 
-            var selectableCells = Object.FindObjectsOfType<SelectableCell>();
+            var selectableCells = Object.FindObjectsOfType<SelectableCellGroup>();
 
             foreach (var cell in selectableCells)
             {
-                var cellPos = cell.GridCell.Position;
+                /*var cellPos = cell.GridCell.Position;
                 int index = (int)(cellPos.x * world.Width + cellPos.y);
 
                 var cellModel = world.Cells[index];
-                cellModel.worldCell = cell;
+                cellModel.WorldCellGroup = cell;*/
             }
         }
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DataBinding;
-using NoUtil.Extentsions;
 using TowerDefence.Entities.Towers;
 using TowerDefence.Entities.Towers.Models;
 using TowerDefence.Systems.Selection;
@@ -70,10 +69,11 @@ namespace TowerDefence.UI.Game.Tower.Range
                     return true;
                 }
 
-                if (selection.TryFindObject<SelectableCell>(out var cell))
+                if (selection.TryFindObject<SelectableCellGroup>(out var cell))
                 {
-                    var position = cell.GridCell.Position;
-                    return towerModels.Towers.TryFind(x => x.GetGridPosition() == position, out tower);
+                    //TODO fix selection
+                    // var position = cell.GridCell.Position;
+                    // return towerModels.Towers.TryFind(x => x.GetGridPosition() == position, out tower);
                 }
 
                 return false;

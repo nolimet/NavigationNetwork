@@ -50,7 +50,7 @@ namespace TowerDefence.Systems.LevelEditor.Managers
                 var cell = cells[i];
                 for (int j = 0; j < spanSelection.Length; j++)
                 {
-                    if (!ReferenceEquals(spanSelection[j], cell.worldCell)) continue;
+                    if (!ReferenceEquals(spanSelection[j], cell.WorldCellGroup)) continue;
 
                     selectedCells.Add(cell);
                     spanSelection.Slice(j, 1);
@@ -71,7 +71,7 @@ namespace TowerDefence.Systems.LevelEditor.Managers
                 cell.Weight = weight;
                 cell.SupportsTower = supportTower;
 
-                var renderer = cell.worldCell.GetComponent<Renderer>();
+                var renderer = cell.WorldCellGroup.GetComponent<Renderer>();
                 renderer.material.SetFloat(HeightMult, 0.003921569F * weight);
                 renderer.material.SetInt(SupportsTower, supportTower ? 1 : 0);
             }

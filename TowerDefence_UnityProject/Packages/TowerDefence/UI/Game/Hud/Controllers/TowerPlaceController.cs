@@ -47,17 +47,17 @@ namespace TowerDefence.UI.Game.Hud.Controllers
         {
             if (towerPlaceContainer is null) return;
 
-
-            if (selection.Count == 1 && selection.TryFind(x => x is SelectableCell, out var s) &&
-                s is SelectableCell cell && !cell.GridCell.HasStructure)
-            {
-                towerPlaceButtons.ForEach(x => x.SetEnabled(cell.GridCell.SupportsTower));
-                Update(true);
-            }
-            else
-            {
-                Update(false);
-            }
+//TODO fix selection
+            // if (selection.Count == 1 && selection.TryFind(x => x is SelectableCellGroup, out var s) &&
+            //     s is SelectableCellGroup cell && !cell.GridCell.HasStructure)
+            // {
+            //     towerPlaceButtons.ForEach(x => x.SetEnabled(cell.GridCell.SupportsTower));
+            //     Update(true);
+            // }
+            // else
+            // {
+            //     Update(false);
+            // }
 
             void Update(bool selectionValid)
             {
@@ -133,10 +133,10 @@ namespace TowerDefence.UI.Game.Hud.Controllers
 
         private void OnTowerPlaceButtonClicked(string towerId)
         {
-            if (selectionModel.Selection.All(x => x is not SelectableCell)) return;
+            if (selectionModel.Selection.All(x => x is not SelectableCellGroup)) return;
 
-            var cell = selectionModel.Selection.First(x => x is SelectableCell) as SelectableCell;
-            towerService.PlaceTower(towerId, cell!.GridCell.WorldPosition, cell.GridCell).Forget();
+            var cell = selectionModel.Selection.First(x => x is SelectableCellGroup) as SelectableCellGroup;
+            //towerService.PlaceTower(towerId, cell!.GridCell.WorldPosition, cell.GridCell).Forget();
         }
 
         public void Dispose()
