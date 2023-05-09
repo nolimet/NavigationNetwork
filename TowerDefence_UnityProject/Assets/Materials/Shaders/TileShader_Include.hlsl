@@ -18,13 +18,11 @@ void draw_tile_float(const float2 uv, half tower_height, bool supports_tower, co
                      const UnityTexture2D mask, const UnityTexture2D tile_background, const UnityTexture2D tile_foreground, out float4 color)
 {
     const float2 repeat_uv = uv * group_size % 1;
-
     float mask_value = sample_texture(mask, repeat_uv);
-    const float4 background_color = sample_texture(tile_background, repeat_uv) * background_tile_color * tower_height;
 
     if (mask_value < .5)
     {
-        color = background_color;
+        color = sample_texture(tile_background, repeat_uv) * background_tile_color * tower_height;
     }
     else
     {
