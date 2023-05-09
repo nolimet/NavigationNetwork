@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using TowerDefence.Systems.Selection;
 using UnityEngine;
 
 namespace TowerDefence.World.Grid.Data
 {
-    public interface IGridCell
+    public interface IGridCell : ISelectable
     {
         Vector2Int Position { get; }
         Vector2 WorldPosition { get; }

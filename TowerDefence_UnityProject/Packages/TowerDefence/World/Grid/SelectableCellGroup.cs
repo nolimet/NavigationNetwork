@@ -14,19 +14,26 @@ namespace TowerDefence.World.Grid
             set
             {
                 gridCellGroup = value;
-                selectionBounds = new Bounds[value.Length][];
-                for (int x = 0; x < value.Length; x++)
+                SelectionBounds = new Bounds[value.Length][];
+                for (var x = 0; x < value.Length; x++)
                 {
                     var subGroup = value[x];
-                    selectionBounds[x] = new Bounds [subGroup.Length];
-                    for (int y = 0; y < subGroup.Length; y++)
-                    {
-                        selectionBounds[x][y] = new Bounds(subGroup[y].WorldPosition, Vector3.one);
-                    }
+                    SelectionBounds[x] = new Bounds [subGroup.Length];
+                    for (var y = 0; y < subGroup.Length; y++) SelectionBounds[x][y] = new Bounds(subGroup[y].WorldPosition, Vector3.one);
                 }
             }
         }
 
-        public Bounds[][] selectionBounds { get; private set; }
+        public Bounds[][] SelectionBounds { get; private set; }
+
+        public IGridCell GetSelectedCell(Vector2 worldPoint)
+        {
+            for (var x = 0; x < SelectionBounds.Length; x++)
+            for (var y = 0; y < SelectionBounds[x].Length; y++)
+                if (SelectionBounds[x][y].Contains(worldPoint))
+                    return GridCellGroup[x][y];
+
+            return null;
+        }
     }
 }

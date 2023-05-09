@@ -33,21 +33,16 @@ namespace TowerDefence.Systems.LevelEditor.Managers
         public async UniTask RebuildWorld()
         {
             if (levelEditorModel.World is null) return;
+
             var world = levelEditorModel.World;
             var size = world.Height * world.Width;
 
+            while (world.Cells.Count < size) world.Cells.Add(ModelFactory.Create<ICellModel>());
 
-            while (world.Cells.Count < size)
-            {
-                world.Cells.Add(ModelFactory.Create<ICellModel>());
-            }
-
-            while (world.Cells.Count > size && world.Cells.Count != 0)
-            {
-                world.Cells.Remove(world.Cells[^1]);
-            }
+            while (world.Cells.Count > size && world.Cells.Count != 0) world.Cells.Remove(world.Cells[^1]);
 
             if (levelEditorModel.RebuildingWorld) return;
+
             levelEditorModel.RebuildingWorld = true;
 
             await gridWorld.CreateWorld(world.ToGridSettings());
@@ -56,16 +51,16 @@ namespace TowerDefence.Systems.LevelEditor.Managers
 
             var selectableCells = Object.FindObjectsOfType<SelectableCellGroup>();
 
-            foreach (var cell in selectableCells)
+            //TODO fix cell position generation
+            /*foreach (var cell in selectableCells)
             {
-                /*var cellPos = cell.GridCell.Position;
+                var cellPos = cell.GridCell.Position;
                 int index = (int)(cellPos.x * world.Width + cellPos.y);
 
                 var cellModel = world.Cells[index];
-                cellModel.WorldCellGroup = cell;*/
-            }
+                cellModel.WorldCellGroup = cell;
+            }*/
         }
-
 
         public void Dispose()
         {

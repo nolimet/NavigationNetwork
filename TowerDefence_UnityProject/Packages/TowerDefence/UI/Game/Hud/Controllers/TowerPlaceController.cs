@@ -11,7 +11,7 @@ using TowerDefence.Systems.Selection.Models;
 using TowerDefence.UI.Containers;
 using TowerDefence.UI.Game.Hud.CustomUIElements;
 using TowerDefence.UI.Models;
-using TowerDefence.World.Grid;
+using TowerDefence.World.Grid.Data;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -47,17 +47,15 @@ namespace TowerDefence.UI.Game.Hud.Controllers
         {
             if (towerPlaceContainer is null) return;
 
-//TODO fix selection
-            // if (selection.Count == 1 && selection.TryFind(x => x is SelectableCellGroup, out var s) &&
-            //     s is SelectableCellGroup cell && !cell.GridCell.HasStructure)
-            // {
-            //     towerPlaceButtons.ForEach(x => x.SetEnabled(cell.GridCell.SupportsTower));
-            //     Update(true);
-            // }
-            // else
-            // {
-            //     Update(false);
-            // }
+            if (selection.Count == 1 && selection.TryFind(x => x is IGridCell, out var s) && s is IGridCell cell)
+            {
+                towerPlaceButtons.ForEach(x => x.SetEnabled(cell.SupportsTower));
+                Update(true);
+            }
+            else
+            {
+                Update(false);
+            }
 
             void Update(bool selectionValid)
             {
@@ -68,10 +66,7 @@ namespace TowerDefence.UI.Game.Hud.Controllers
 
         private void OnUIContainersChanged(IList<IUIContainer> uiContainers)
         {
-            if (activeContainer is not null)
-            {
-                UnBind();
-            }
+            if (activeContainer is not null) UnBind();
 
             if (uiContainers.TryFind(x => x.Name == ContainerId, out var container) && container is UIDocumentContainer documentContainer)
             {
@@ -96,7 +91,7 @@ namespace TowerDefence.UI.Game.Hud.Controllers
             }
         }
 
-        async UniTask PopulateContainer(CancellationToken ct)
+        private async UniTask PopulateContainer(CancellationToken ct)
         {
             await UniTask.NextFrame(ct);
 
@@ -106,14 +101,9 @@ namespace TowerDefence.UI.Game.Hud.Controllers
                 ct.ThrowIfCancellationRequested();
                 Sprite icon;
                 if (!tower.Icon.IsValid())
-                {
                     icon = await tower.Icon.LoadAssetAsync().WithCancellation(ct);
-                }
                 else
-                {
                     icon = tower.Icon.Asset as Sprite;
-                }
-
 
                 var towerButton = new TowerPlaceButton(id)
                 {
@@ -130,13 +120,12 @@ namespace TowerDefence.UI.Game.Hud.Controllers
             }
         }
 
-
         private void OnTowerPlaceButtonClicked(string towerId)
         {
-            if (selectionModel.Selection.All(x => x is not SelectableCellGroup)) return;
+            if (selectionModel.Selection.All(x => x is not IGridCell)) return;
 
-            var cell = selectionModel.Selection.First(x => x is SelectableCellGroup) as SelectableCellGroup;
-            //towerService.PlaceTower(towerId, cell!.GridCell.WorldPosition, cell.GridCell).Forget();
+            var cell = selectionModel.Selection.First(x => x is IGridCell) as IGridCell;
+            towerService.PlaceTower(towerId, cell!.WorldPosition, cell).Forget();
         }
 
         public void Dispose()
