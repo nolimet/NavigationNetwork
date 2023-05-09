@@ -28,4 +28,5 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   tileSize: {x: 1, y: 1}
-  maxTileGroupSize: {x: 8, y: 8}
+  tileGroupSize: {x: 8, y: 8}
+  tileGroupSubDivideCount: {x: 2, y: 2}
