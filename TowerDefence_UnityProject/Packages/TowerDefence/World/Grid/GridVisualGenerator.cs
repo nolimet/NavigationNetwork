@@ -33,10 +33,8 @@ namespace TowerDefence.World.Grid
 
             Bounds bounds = new();
 
-            var heightMultShaderProperty = Shader.PropertyToID("_HeightMult");
-            var supportsTowerShaderProperty = Shader.PropertyToID("_SupportsTower");
-            var tileGroupSizeShaderProperty = -1;
-            var tileMapTextureShaderProperty = -1;
+            var tileGroupSizeShaderProperty = Shader.PropertyToID("_GroupSize");
+            var tileMapTextureShaderProperty = Shader.PropertyToID("_GroupHeightMap");
 
             var tileMaterial = await worldSettings.GetTileMaterial();
 
@@ -60,24 +58,23 @@ namespace TowerDefence.World.Grid
                 List<Vector3> verts = new();
                 List<Vector2> uvs = new();
 
-                AddSubTile(0, 0);
-                AddSubTile(1, 0);
-                AddSubTile(2, 0);
-
-                AddSubTile(0, 1);
-                AddSubTile(1, 1);
-                AddSubTile(2, 1);
-
-                AddSubTile(0, 2);
-                AddSubTile(1, 2);
-                AddSubTile(2, 2);
-
-                return new Mesh
+                var subDivideCount = worldSettings.TileGroupGroupSubDivideCount;
+                for (int x = 0; x < subDivideCount.x; x++)
                 {
-                    triangles = tris.ToArray(),
+                    for (int y = 0; y < subDivideCount.y; y++)
+                    {
+                        AddSubTile(x, y);
+                    }
+                }
+
+                var mesh = new Mesh
+                {
                     vertices = verts.ToArray(),
+                    triangles = tris.ToArray(),
                     uv = uvs.ToArray()
                 };
+                mesh.UploadMeshData(true);
+                return mesh;
 
                 void AddSubTile(float offsetX, float offsetY)
                 {
@@ -89,10 +86,12 @@ namespace TowerDefence.World.Grid
                     AddVert(offsetX + 0, offsetY + 1, 0);
                     AddVert(offsetX + 1, offsetY + 1, 0);
 
-                    AddUv(0, 0);
-                    AddUv(1, 0);
-                    AddUv(0, 1);
-                    AddUv(1, 1);
+                    var fracX = 1f / subDivideCount.x;
+                    var fracY = 1f / subDivideCount.y;
+                    AddUv(fracX * offsetX, fracY * offsetY);
+                    AddUv(fracX * (offsetX + 1), fracY * offsetY);
+                    AddUv(fracX * offsetX, fracY * (offsetY + 1));
+                    AddUv(fracX * (offsetX + 1), fracY * (offsetY + 1));
                 }
 
                 void AddVert(float x, float y, float z)
@@ -199,41 +198,37 @@ namespace TowerDefence.World.Grid
             IEnumerable<IGridCell[][]> GroupifyGridCells()
             {
                 List<IGridCell[][]> groups = new();
-                List<List<IGridCell>> currentGroup = new();
+                List<IGridCell[]> currentGroup = new();
+                List<IGridCell> currentRow = new();
 
                 //TODO use fraction to fix problem with partial groups not working correctly
-                var horGroupCount = gridSettings.GridWidth / (double)worldSettings.MaxTileGroupSize.x;
-                var vertGroupCount = gridSettings.GridHeight / (double)worldSettings.MaxTileGroupSize.y;
-                var maxGroupSize = worldSettings.MaxTileGroupSize;
+                var horGroupCount = gridSettings.GridWidth / (double)worldSettings.TileGroupSize.x;
+                var vertGroupCount = gridSettings.GridHeight / (double)worldSettings.TileGroupSize.y;
+                var maxGroupSize = worldSettings.TileGroupSize;
+
+                if (horGroupCount % 1 + vertGroupCount % 1 > double.Epsilon)
+                {
+                    throw new Exception($"World size is not divisible by the world tile group size! Make sure you increase the world size by steps of {worldSettings.TileGroupSize}");
+                }
+
+                vertGroupCount = Math.Floor(vertGroupCount);
+                horGroupCount = Math.Floor(horGroupCount);
 
                 var nodesArr = nodes.ToArray();
 
                 var counter = 0;
                 for (var xGroup = 0; xGroup < horGroupCount; xGroup++)
+                for (var yGroup = 0; yGroup < vertGroupCount; yGroup++)
                 {
-                    var offsetX = xGroup * maxGroupSize.x;
-                    for (var yGroup = 0; yGroup < vertGroupCount; yGroup++)
+                    for (var x = 0; x < maxGroupSize.x; x++)
                     {
-                        var offsetY = offsetX + yGroup * maxGroupSize.y;
-                        for (var x = 0; x < maxGroupSize.x; x++)
-                        {
-                            if (offsetX + x > gridSettings.GridWidth) continue;
-
-                            var currentRow = new List<IGridCell>();
-                            for (var y = 0; y < maxGroupSize.y; y++)
-                            {
-                                if (offsetY + y > gridSettings.GridHeight) continue;
-                                if (counter >= nodesArr.Length) break;
-
-                                currentRow.Add(nodesArr[counter]);
-                                counter++;
-                            }
-
-                            if (currentRow.Count > 0) currentGroup.Add(currentRow);
-                        }
+                        for (var y = 0; y < maxGroupSize.y; y++) currentRow.Add(nodesArr[counter++]);
+                        currentGroup.Add(currentRow.ToArray());
+                        currentRow.Clear();
                     }
 
-                    groups.Add(currentGroup.Select(x => x.ToArray()).ToArray());
+                    groups.Add(currentGroup.ToArray());
+                    currentGroup.Clear();
                 }
 
                 return groups.ToArray();
