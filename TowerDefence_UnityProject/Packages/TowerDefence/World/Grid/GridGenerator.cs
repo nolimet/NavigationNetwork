@@ -15,10 +15,9 @@ namespace TowerDefence.World.Grid
             this.worldSettings = worldSettings;
         }
 
-        public IReadOnlyCollection<IGridCell> CreateNodes(GridSettings settings)
+        public IReadOnlyList<IReadOnlyList<IGridCell>> CreateNodes(GridSettings settings)
         {
             Validate();
-            var returnValue = new List<IGridCell>();
             var cells = new GridCell[settings.GridWidth][];
             for (int index = 0; index < settings.GridWidth; index++)
             {
@@ -28,7 +27,7 @@ namespace TowerDefence.World.Grid
             CreateCells();
             LinkCells();
 
-            return returnValue;
+            return cells;
 
             void LinkCells()
             {
@@ -74,7 +73,6 @@ namespace TowerDefence.World.Grid
                             worldPosition: new Vector2(x * worldSettings.TileSize.x, y * worldSettings.TileSize.y) - offset,
                             supportsTower: settings.Cells[counter].SupportsTower
                         );
-                        returnValue.Add(cells[x][y]);
                         counter++;
                     }
                 }

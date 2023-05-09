@@ -11,7 +11,7 @@ namespace TowerDefence.World.Grid
     {
         public Action OnPathCacheCleared;
 
-        private IReadOnlyCollection<IGridCell> world;
+        private IReadOnlyList<IReadOnlyList<IGridCell>> world;
         private readonly GridGenerator gridGenerator;
         private readonly GridVisualGenerator visualGenerator;
         private readonly List<PathFinder> pathfinderPool = new();
@@ -42,7 +42,7 @@ namespace TowerDefence.World.Grid
         internal void DestroyWorld()
         {
             visualGenerator.DestroyTiles();
-            world = Array.Empty<IGridCell>();
+            world = Array.Empty<IGridCell[]>();
             ClearPathCache();
         }
 
@@ -95,7 +95,7 @@ namespace TowerDefence.World.Grid
 
         public IGridCell GetCell(Vector2Int position)
         {
-            return world.FirstOrDefault(x => x.Position.Equals(position));
+            return world[position.x][position.y];
         }
     }
 }

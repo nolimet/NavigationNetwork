@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using TowerDefence.World.Grid.Data;
 using UnityEngine;
@@ -27,7 +26,7 @@ namespace TowerDefence.World.Grid
             this.world = world;
         }
 
-        public async UniTask<Bounds> CreateVisuals(IEnumerable<IGridCell> nodes, GridSettings gridSettings)
+        public async UniTask<Bounds> CreateVisuals(IReadOnlyList<IReadOnlyList<IGridCell>> nodes, GridSettings gridSettings)
         {
             DestroyTiles();
 
@@ -176,7 +175,7 @@ namespace TowerDefence.World.Grid
                 var count = 0;
 
                 for (var x = 0; x < cellGroup.Length; x++)
-                for (var y = 0; y < cellGroup[y].Length; y++)
+                for (var y = 0; y < cellGroup[x].Length; y++)
                 {
                     var cell = cellGroup[x][y];
                     var color = new Color
@@ -214,15 +213,14 @@ namespace TowerDefence.World.Grid
                 vertGroupCount = Math.Floor(vertGroupCount);
                 horGroupCount = Math.Floor(horGroupCount);
 
-                var nodesArr = nodes.ToArray();
-
-                var counter = 0;
                 for (var xGroup = 0; xGroup < horGroupCount; xGroup++)
                 for (var yGroup = 0; yGroup < vertGroupCount; yGroup++)
                 {
                     for (var x = 0; x < maxGroupSize.x; x++)
                     {
-                        for (var y = 0; y < maxGroupSize.y; y++) currentRow.Add(nodesArr[counter++]);
+                        var xOff = xGroup * maxGroupSize.x + x;
+                        var yOff = yGroup * maxGroupSize.y;
+                        for (var y = 0; y < maxGroupSize.y; y++) currentRow.Add(nodes[xOff][yOff + y]);
                         currentGroup.Add(currentRow.ToArray());
                         currentRow.Clear();
                     }
