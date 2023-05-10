@@ -95,7 +95,7 @@ namespace TowerDefence.World.Grid
             {
                 if (cellGroup.Length == 0) return null;
 
-                var texture = new Texture2D(cellGroup.Length, cellGroup[0].Length, TextureFormat.RGFloat, false)
+                var texture = new Texture2D(cellGroup.Length, cellGroup[0].Length, TextureFormat.RGHalf, false)
                 {
                     filterMode = FilterMode.Point,
                     anisoLevel = 0
