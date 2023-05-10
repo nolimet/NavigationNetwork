@@ -1,4 +1,6 @@
-﻿using TowerDefence.Systems.Selection;
+﻿using System.Collections.Generic;
+using NoUtil;
+using TowerDefence.Systems.Selection;
 using TowerDefence.World.Grid.Data;
 using UnityEngine;
 
@@ -34,6 +36,16 @@ namespace TowerDefence.World.Grid
                     return GridCellGroup[x][y];
 
             return null;
+        }
+
+        public IEnumerable<ISelectable> GetSelectedCells(Bounds area)
+        {
+            List<IGridCell> hitCells = new();
+            for (var x = 0; x < SelectionBounds.Length; x++)
+            for (var y = 0; y < SelectionBounds[x].Length; y++)
+                if (area.ContainBounds(SelectionBounds[x][y]))
+                    hitCells.Add(GridCellGroup[x][y]);
+            return hitCells;
         }
     }
 }

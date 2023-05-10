@@ -80,19 +80,9 @@ namespace TowerDefence.Systems.Selection
         {
             if (mainCamera == null) return;
 
-            var hitCount = Physics2D.OverlapPointNonAlloc(mainCamera.ScreenToWorldPoint(cursorPosition), results);
-
-            selectionModel.Selection.Clear();
-            if (hitCount == 0) return;
-
-            for (var i = 0; i < hitCount; i++)
-            {
-                var result = results[i];
-                result.GetComponentsInChildren(true, selectionBuffer);
-
-                foreach (var item in selectionBuffer)
-                    selectionModel.Selection.Add(item);
-            }
+            var hitPoint = mainCamera.ScreenToWorldPoint(cursorPosition);
+            var hitCount = Physics2D.OverlapPointNonAlloc(hitPoint, results);
+            ProcessHits(hitCount, hitPoint: hitPoint);
         }
 
         private void ChangeSelection(Vector2 corner1, Vector2 corner2)
@@ -108,21 +98,27 @@ namespace TowerDefence.Systems.Selection
             var min = Vector2.Min(corner1, corner2);
 
             var hitCount = Physics2D.OverlapAreaNonAlloc(min, max, results);
+            var center = (max + min) / 2f;
+            Vector3 size = max - min;
+            size.z = 1000f;
+            ProcessHits(hitCount, true, new Bounds(center, size));
+        }
 
+        private void ProcessHits(int hitCount, bool wasArea = false, Bounds area = default, Vector2 hitPoint = default)
+        {
+            selectionModel.Selection.Clear();
             if (hitCount == 0) return;
 
-            selectionModel.Selection.Clear();
             var newSelection = new List<ISelectable>();
 
             for (var i = 0; i < hitCount; i++)
             {
-                var result = results[i];
-                result.GetComponentsInChildren(true, selectionBuffer);
-                if (selectionBuffer.Any(x => x is SelectableCellGroup))
-                {
-                    
-                }
-                newSelection.AddRange(selectionBuffer);
+                results[i].GetComponentsInChildren(true, selectionBuffer);
+                foreach (var selectable in selectionBuffer)
+                    if (selectable is SelectableCellGroup scg)
+                        if (wasArea) newSelection.AddRange(scg.GetSelectedCells(area));
+                        else newSelection.Add(scg.GetSelectedCell(hitPoint));
+                    else newSelection.Add(selectable);
             }
 
             selectionModel.Selection.AddRange(newSelection);
