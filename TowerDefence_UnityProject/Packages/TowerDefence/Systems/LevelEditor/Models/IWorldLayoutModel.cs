@@ -14,17 +14,13 @@ namespace TowerDefence.Systems.LevelEditor.Models
         uint Height { get; set; }
         uint Width { get; set; }
 
-        IList<ICellModel> Cells { get; }
+        IList<IList<ICellModel>> Cells { get; }
         IList<Vector2Int> EntryPoints { get; }
         IList<Vector2Int> ExitPoints { get; }
 
         internal GridSettings ToGridSettings()
         {
-            var cells = new GridSettings.Cell[Cells.Count];
-            for (var i = 0; i < Cells.Count; i++)
-            {
-                cells[i] = Cells[i].ToGridCell();
-            }
+            var cells = Cells.SelectMany(x => x).Select(x => x.ToGridCell()).ToArray();
 
             return new GridSettings(Height, Width, cells, EntryPoints.ToArray(), ExitPoints.ToArray());
         }
