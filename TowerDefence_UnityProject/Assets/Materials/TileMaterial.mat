@@ -135,7 +135,7 @@ Material:
     - _ColorAddSubDiff: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _FillColor: {r: 0.0768957, g: 0.58813673, b: 0.6037736, a: 1}
-    - _GroupSize: {r: 0, g: 0, b: 0, a: 0}
+    - _GroupSize: {r: 8, g: 8, b: 0, a: 0}
     - _OutlineColor: {r: 1, g: 0, b: 0.3419886, a: 1}
     - _OutlineNoTowerColor: {r: 0.4031467, g: 0, b: 0.61, a: 1}
     - _OutlineTowerColor: {r: 1, g: 0, b: 0.3419886, a: 1}
