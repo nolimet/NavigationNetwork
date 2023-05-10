@@ -37,9 +37,10 @@ namespace TowerDefence.Systems.LevelEditor.Managers
             var world = levelEditorModel.World;
             var size = world.Height * world.Width;
 
-            while (world.Cells.Count < size) world.Cells.Add(ModelFactory.Create<ICellModel>());
+            //TODO fix cell adding and removing
+            /*while (world.Cells.Count < size) world.Cells.Add(ModelFactory.Create<ICellModel>());
 
-            while (world.Cells.Count > size && world.Cells.Count != 0) world.Cells.Remove(world.Cells[^1]);
+            while (world.Cells.Count > size && world.Cells.Count != 0) world.Cells.Remove(world.Cells[^1]);*/
 
             if (levelEditorModel.RebuildingWorld) return;
 
@@ -52,6 +53,7 @@ namespace TowerDefence.Systems.LevelEditor.Managers
             var selectableCells = Object.FindObjectsOfType<SelectableCellGroup>();
 
             //TODO fix cell position generation
+            //TODO change cellmodel into a 2d array otherwise this is not going work
             /*foreach (var cell in selectableCells)
             {
                 var cellPos = cell.GridCell.Position;
