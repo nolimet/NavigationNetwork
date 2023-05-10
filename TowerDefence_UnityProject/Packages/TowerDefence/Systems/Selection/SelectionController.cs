@@ -6,6 +6,7 @@ using Sirenix.Utilities;
 using TowerDefence.Input;
 using TowerDefence.Systems.CameraManager;
 using TowerDefence.Systems.Selection.Models;
+using TowerDefence.World.Grid;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -60,7 +61,7 @@ namespace TowerDefence.Systems.Selection
             selectionModel.DragEndPosition = inputActions.Main.MousePosition.ReadValue<Vector2>();
             selectionModel.Dragging = false;
 
-            SelectObject(selectionModel.DragStartPosition, selectionModel.DragEndPosition);
+            ChangeSelection(selectionModel.DragStartPosition, selectionModel.DragEndPosition);
         }
 
         private void OnClickPreformed(InputAction.CallbackContext obj)
@@ -72,10 +73,10 @@ namespace TowerDefence.Systems.Selection
 
             var raycastResults = new List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerData, raycastResults);
-            if (!raycastResults.Any()) SelectObject(inputActions.Main.MousePosition.ReadValue<Vector2>());
+            if (!raycastResults.Any()) ChangeSelection(inputActions.Main.MousePosition.ReadValue<Vector2>());
         }
 
-        private void SelectObject(Vector2 cursorPosition)
+        private void ChangeSelection(Vector2 cursorPosition)
         {
             if (mainCamera == null) return;
 
@@ -94,7 +95,7 @@ namespace TowerDefence.Systems.Selection
             }
         }
 
-        private void SelectObject(Vector2 corner1, Vector2 corner2)
+        private void ChangeSelection(Vector2 corner1, Vector2 corner2)
         {
             if (Camera.main == null) return;
 
@@ -117,7 +118,10 @@ namespace TowerDefence.Systems.Selection
             {
                 var result = results[i];
                 result.GetComponentsInChildren(true, selectionBuffer);
-
+                if (selectionBuffer.Any(x => x is SelectableCellGroup))
+                {
+                    
+                }
                 newSelection.AddRange(selectionBuffer);
             }
 
