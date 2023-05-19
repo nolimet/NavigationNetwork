@@ -17,6 +17,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
         private readonly Dictionary<ComponentData, DisplayData> componentsCache = new();
         private readonly Dictionary<Type, ComponentAttribute> componentAttributesMap = new();
         private readonly List<string> validationResults = new();
+        private RequiredComponentValidator validator;
 
         public override void OnInspectorGUI()
         {
@@ -114,8 +115,9 @@ namespace TowerDefence.EditorScripts.Entities.Components
         private void RebuildComponentCache()
         {
             componentsCache.Clear();
-
             var config = target as ComponentConfigurationObject;
+
+            validator = new RequiredComponentValidator(componentTypesMap[config!.Type]);
 
             for (var i = 0; i < config!.Components.Count; i++)
             {
@@ -179,17 +181,17 @@ namespace TowerDefence.EditorScripts.Entities.Components
                 }
             }
 
+
             RebuildComponentCache();
         }
 
         private bool ValidateComponents()
         {
             validationResults.Clear();
-
+//TODO add combination validation
             var usedTypes = componentsCache.Values.Select(x => x.ComponentType).ToArray();
 
             bool duplicates = false;
-            bool invalidCombinations = false;
 
             int length = usedTypes.Length;
             for (int i = 0; i < length; i++)
@@ -217,7 +219,17 @@ namespace TowerDefence.EditorScripts.Entities.Components
                 }
             }
 
-            return !(duplicates || invalidCombinations);
+            var missingDependencies = validator.ValidateComponents(usedTypes);
+            foreach (var type in usedTypes)
+            {
+                var missing = validator.GetMissingTypes(type, usedTypes);
+                if (missing.Count > 0)
+                {
+                    validationResults.Add($"Type <b>{type.Name}</b> is missing [<b>{string.Join(", ", missing)}</b>]");
+                }
+            }
+
+            return !(duplicates || missingDependencies);
         }
     }
 }
