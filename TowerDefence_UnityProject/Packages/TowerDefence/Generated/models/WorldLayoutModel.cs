@@ -14,9 +14,9 @@ namespace TowerDefence.Systems.LevelEditor.Models
 	{
 		public event Action OnChange;
 			// Cells
-		public event System.Action<System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.ICellModel>> OnChangeCells;
-		private System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.ICellModel> _Cells ; 
-		public System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.ICellModel> Cells 
+		public event System.Action<System.Collections.Generic.IList<System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.ICellModel>>> OnChangeCells;
+		private System.Collections.Generic.IList<System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.ICellModel>> _Cells ; 
+		public System.Collections.Generic.IList<System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.ICellModel>> Cells 
 		{
 			get => _Cells;
 			set 
@@ -24,12 +24,12 @@ namespace TowerDefence.Systems.LevelEditor.Models
 						
 				if (_Cells != null)
 				{
-					((ObservableCollection<TowerDefence.Systems.LevelEditor.Models.ICellModel>)_Cells).CollectionChanged -= new NotifyCollectionChangedEventHandler(TriggerCellsEvents);
+					((ObservableCollection<System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.ICellModel>>)_Cells).CollectionChanged -= new NotifyCollectionChangedEventHandler(TriggerCellsEvents);
 				}
 
-				if (value != null && (value as ObservableCollection<TowerDefence.Systems.LevelEditor.Models.ICellModel>) == null) 
+				if (value != null && (value as ObservableCollection<System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.ICellModel>>) == null) 
 				{
-					_Cells = new ObservableCollection<TowerDefence.Systems.LevelEditor.Models.ICellModel>(value);
+					_Cells = new ObservableCollection<System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.ICellModel>>(value);
 				}
 				else
 				{
@@ -38,7 +38,7 @@ namespace TowerDefence.Systems.LevelEditor.Models
 
 				if (_Cells != null)
 				{
-					((ObservableCollection<TowerDefence.Systems.LevelEditor.Models.ICellModel>)_Cells).CollectionChanged += new NotifyCollectionChangedEventHandler(TriggerCellsEvents);
+					((ObservableCollection<System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.ICellModel>>)_Cells).CollectionChanged += new NotifyCollectionChangedEventHandler(TriggerCellsEvents);
 				}
 
 				OnChangeCells?.Invoke(value);
@@ -139,7 +139,7 @@ namespace TowerDefence.Systems.LevelEditor.Models
 		}
 	
 		public WorldLayoutModel() { 
-				Cells = new System.Collections.ObjectModel.ObservableCollection<TowerDefence.Systems.LevelEditor.Models.ICellModel>();
+				Cells = new System.Collections.ObjectModel.ObservableCollection<System.Collections.Generic.IList<TowerDefence.Systems.LevelEditor.Models.ICellModel>>();
 			EntryPoints = new System.Collections.ObjectModel.ObservableCollection<UnityEngine.Vector2Int>();
 			ExitPoints = new System.Collections.ObjectModel.ObservableCollection<UnityEngine.Vector2Int>();
 			}
