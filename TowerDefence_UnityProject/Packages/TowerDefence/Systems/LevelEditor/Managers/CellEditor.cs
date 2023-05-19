@@ -42,7 +42,8 @@ namespace TowerDefence.Systems.LevelEditor.Managers
 
             var cells = worldLayoutModel.Cells.ToArray().AsSpan();
             var spanSelection = selection.ToArray().AsSpan();
-            for (int i = 0; i < cells.Length; i++)
+            //TODO fix this selection code
+            /*for (int i = 0; i < cells.Length; i++)
             {
                 if (spanSelection.Length == 0)
                     break;
@@ -56,7 +57,7 @@ namespace TowerDefence.Systems.LevelEditor.Managers
                     spanSelection.Slice(j, 1);
                     break;
                 }
-            }
+            }*/
         }
 
         public void Dispose()
