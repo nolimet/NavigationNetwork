@@ -1,11 +1,14 @@
-﻿using TowerDefence.Entities.Towers.Components.Interfaces;
+﻿using Newtonsoft.Json;
+using TowerDefence.Entities.Components;
+using TowerDefence.Entities.Towers.Components.Interfaces;
 
 namespace TowerDefence.Entities.Towers.Components.PowerComponents
 {
+    [Component(ComponentType.Tower)]
     public class SimplePowerConsumer : IPowerConsumer
     {
-        public double MaxStored { get; private set; } = 1000;
-        public double Stored { get; protected set; }
+        [JsonProperty] public double MaxStored { get; private set; } = 1000;
+        [JsonProperty] public double Stored { get; protected set; }
 
         public bool TryConsume(double amount)
         {
