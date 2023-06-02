@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Sirenix.Utilities;
 using TowerDefence.Entities.Components;
 
 namespace TowerDefence.EditorScripts.Entities.Components
@@ -45,12 +46,43 @@ namespace TowerDefence.EditorScripts.Entities.Components
 
         public ICollection<Type> GetMissingTypes(Type type, ICollection<Type> assignedTypes)
         {
+            List<Type> requiredTypes = new();
             if (requiredTypeLookup.TryGetValue(type, out var required))
             {
-                return required.Where(assignedTypes.Contains).ToArray();
+                requiredTypes.AddRange(required);
             }
 
-            return Array.Empty<Type>();
+            var interfaces = type.GetInterfaces();
+            foreach (var @interface in interfaces)
+            {
+                if (requiredTypeLookup.TryGetValue(@interface, out required))
+                {
+                    requiredTypes.AddRange(required);
+                }
+            }
+
+            foreach (var baseClass in type.GetBaseClasses())
+            {
+                if (requiredTypeLookup.TryGetValue(baseClass, out required))
+                {
+                    requiredTypes.AddRange(required);
+                }
+            }
+
+            if (requiredTypes.Count == 0)
+                return Array.Empty<Type>();
+
+            return requiredTypes.Distinct()
+                .Where
+                (
+                    requiredType =>
+                    {
+                        if (assignedTypes.Contains(requiredType))
+                            return false;
+                        return !assignedTypes.Any(assignedType => assignedType.GetInterfaces().Contains(requiredType));
+                    }
+                )
+                .ToArray();
         }
 
         public bool ValidateComponents(ICollection<Type> assignedTypes)
