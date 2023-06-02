@@ -13,6 +13,8 @@ namespace TowerDefence.EditorScripts.Entities.Components
     [CustomEditor(typeof(ComponentConfigurationObject))]
     internal sealed class ComponentConfigurationEditor : Editor
     {
+        private GUIStyle helpBoxStyle;
+
         private readonly Dictionary<ComponentType, Dictionary<string, Type>> componentTypesMap = new();
         private readonly Dictionary<ComponentData, DisplayData> componentsCache = new();
         private readonly Dictionary<Type, ComponentAttribute> componentAttributesMap = new();
@@ -62,7 +64,7 @@ namespace TowerDefence.EditorScripts.Entities.Components
             {
                 foreach (var result in validationResults)
                 {
-                    EditorGUILayout.HelpBox(result, MessageType.Error);
+                    EditorGUILayout.TextArea(result, helpBoxStyle);
                 }
             }
 
@@ -114,6 +116,11 @@ namespace TowerDefence.EditorScripts.Entities.Components
 
         private void RebuildComponentCache()
         {
+            helpBoxStyle ??= new GUIStyle(EditorStyles.helpBox)
+            {
+                richText = true
+            };
+
             componentsCache.Clear();
             var config = target as ComponentConfigurationObject;
 
@@ -181,7 +188,6 @@ namespace TowerDefence.EditorScripts.Entities.Components
                 }
             }
 
-
             RebuildComponentCache();
         }
 
@@ -219,17 +225,19 @@ namespace TowerDefence.EditorScripts.Entities.Components
                 }
             }
 
-            var missingDependencies = validator.ValidateComponents(usedTypes);
+            var missingDependencies = !validator.ValidateComponents(usedTypes);
+            if (!missingDependencies) return !duplicates;
+
             foreach (var type in usedTypes)
             {
                 var missing = validator.GetMissingTypes(type, usedTypes);
                 if (missing.Count > 0)
                 {
-                    validationResults.Add($"Type <b>{type.Name}</b> is missing [<b>{string.Join(", ", missing)}</b>]");
+                    validationResults.Add($"Type <b>{type.Name}</b> is missing: <b>{string.Join(", ", missing.Select(x => x.Name))}</b>");
                 }
             }
 
-            return !(duplicates || missingDependencies);
+            return true;
         }
     }
 }
