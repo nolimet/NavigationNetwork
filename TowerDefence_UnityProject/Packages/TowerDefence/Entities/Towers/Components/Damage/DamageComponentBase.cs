@@ -13,6 +13,7 @@ namespace TowerDefence.Entities.Towers.Components.Damage
 {
     [Serializable]
     [JsonObject(MemberSerialization.OptIn)]
+    [RequiredComponent(typeof(IPowerConsumer), typeof(ITargetFindComponent))]
     public abstract class DamageComponentBase : IDamageComponent, IInitializable
     {
         public abstract event Action<IEnumerable<IEnemyObject>> AppliedDamageToTargets;

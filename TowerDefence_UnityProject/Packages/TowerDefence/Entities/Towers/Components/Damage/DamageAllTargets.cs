@@ -12,7 +12,6 @@ namespace TowerDefence.Entities.Towers.Components.Damage
 {
     [Serializable]
     [Component(ComponentType.Tower, typeof(IDamageComponent))]
-    [RequiredComponent(typeof(IPowerConsumer), typeof(ITargetFindComponent))]
     [JsonObject(MemberSerialization.OptIn)]
     public sealed class DamageAllTargets : DamageComponentBase
     {
