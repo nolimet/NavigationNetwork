@@ -17,37 +17,37 @@ MonoBehaviour:
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"raycastLayer":10}'
     SerializedComponent:
-      rid: 7196040044147638400
+      rid: 3054581918419386368
   - TypeName: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"towerSprite":"559758cdd2725d744afa1ca4cb0abf0e"}'
     SerializedComponent:
-      rid: 7196040044147638401
+      rid: 3054581918419386369
   - TypeName: TowerDefence.Entities.Towers.Components.PowerComponents.SimpleGenerator,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Data: '{"generationPerSecond":100.0,"generationDelayInMs":1000.0,"maxPowerBuffer":1000.0}'
+    Data: '{"generationPerSecond":50.0,"generationDelayInMs":1000.0,"maxPowerBuffer":1000.0}'
     SerializedComponent:
-      rid: 7196040044147638402
+      rid: 3054581918419386370
   - TypeName: TowerDefence.Entities.Towers.Components.BaseComponents.TowerSettings,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"Name":"Generator","IsSolid":1,"Range":5.0}'
     SerializedComponent:
-      rid: 7196040044147638403
+      rid: 3054581918419386371
   - TypeName: TowerDefence.Entities.Towers.Components.PowerComponents.PowerVisualDrawer,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"visualPrefab":"5021421b025a4e047b4c4b678d8af3eb","decayPerSecond":0.5,"maxLineWidth":0.5,"minLineWidthMultiplier":0.1}'
     SerializedComponent:
-      rid: 7196040044147638404
+      rid: 3054581918419386372
   Type: 1
   references:
     version: 2
     RefIds:
-    - rid: 7196040044147638400
+    - rid: 3054581918419386368
       type: {class: PowerTargetFinderBase, ns: TowerDefence.Entities.Towers.Components.PowerComponents.Bases,
         asm: TowerDefence}
       data:
         raycastLayer: 10
-    - rid: 7196040044147638401
+    - rid: 3054581918419386369
       type: {class: TowerVisualSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
       data:
@@ -56,13 +56,13 @@ MonoBehaviour:
           m_SubObjectName: 
           m_SubObjectType: 
           m_EditorAssetChanged: 0
-    - rid: 7196040044147638402
+    - rid: 3054581918419386370
       type: {class: SimpleGenerator, ns: TowerDefence.Entities.Towers.Components.PowerComponents,
         asm: TowerDefence}
-    - rid: 7196040044147638403
+    - rid: 3054581918419386371
       type: {class: TowerSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
-    - rid: 7196040044147638404
+    - rid: 3054581918419386372
       type: {class: PowerVisualDrawer, ns: TowerDefence.Entities.Towers.Components.PowerComponents,
         asm: TowerDefence}
       data:
