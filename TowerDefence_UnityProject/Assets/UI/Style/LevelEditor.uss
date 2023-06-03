@@ -16,10 +16,10 @@
 
 #CellWeight > Label {
     width: auto;
-    font-size: 12;
+    font-size: 12px;
     min-width: auto;
     margin: 0;
     padding: 0;
-    padding-right: 4;
-    padding-left: 4;
+    padding-right: 4px;
+    padding-left: 4px;
 }
