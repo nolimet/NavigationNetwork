@@ -26,6 +26,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents
                 return added;
             }
 
+            Stored += maxAmount;
             return maxAmount;
         }
 
