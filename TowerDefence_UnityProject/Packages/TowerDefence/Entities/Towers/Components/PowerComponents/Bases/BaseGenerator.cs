@@ -32,12 +32,12 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
             if (delayTimer <= 0)
             {
                 powerEventArgsList.Clear();
-                deltaMs /= 1000;
 
+                var deltaS = deltaMs / 1000d;
                 var generationMult = GenerationDelayInMs > 1 ? GenerationDelayInMs / 1000 : 1;
-                var addedAmount = GenerationPerSecond * generationMult * deltaMs;
+                var addedAmount = GenerationPerSecond * generationMult * deltaS;
                 PowerBuffer = Math.Min(MaxPowerBuffer, PowerBuffer + addedAmount);
-                delayTimer = GenerationDelayInMs / 1000;
+                delayTimer = GenerationDelayInMs;
 
                 var maxPowerPush = PowerBuffer / PowerTargetFinder.Targets.Count;
                 var length = PowerTargetFinder.Targets.Count;

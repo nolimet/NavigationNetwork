@@ -44,10 +44,12 @@ namespace TowerDefence.Entities.Towers
 
         private async UniTask PowerUpdateLoop(CancellationToken ctx)
         {
+            var lastTickTime = DateTime.Now;
             while (!ctx.IsCancellationRequested)
             {
                 await UniTask.Delay(200, DelayType.Realtime, cancellationToken: ctx);
-                foreach (var component in powerComponents) component.PowerTick(.200d);
+                foreach (var component in powerComponents) component.PowerTick((DateTime.Now - lastTickTime).TotalMilliseconds);
+                lastTickTime = DateTime.Now;
             }
         }
 
