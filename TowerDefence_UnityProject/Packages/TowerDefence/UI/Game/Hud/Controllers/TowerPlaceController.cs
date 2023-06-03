@@ -49,7 +49,7 @@ namespace TowerDefence.UI.Game.Hud.Controllers
 
             if (selection.Count == 1 && selection.TryFind(x => x is IGridCell, out var s) && s is IGridCell cell)
             {
-                towerPlaceButtons.ForEach(x => x.SetEnabled(cell.SupportsTower));
+                towerPlaceButtons.ForEach(x => x.SetEnabled(cell.SupportsTower && !cell.HasStructure && !cell.HasVirtualStructure));
                 Update(true);
             }
             else
@@ -126,6 +126,8 @@ namespace TowerDefence.UI.Game.Hud.Controllers
 
             var cell = selectionModel.Selection.First(x => x is IGridCell) as IGridCell;
             towerService.PlaceTower(towerId, cell!.WorldPosition, cell).Forget();
+
+            towerPlaceButtons.ForEach(x => x.SetEnabled(cell.SupportsTower && !cell.HasStructure && !cell.HasVirtualStructure));
         }
 
         public void Dispose()

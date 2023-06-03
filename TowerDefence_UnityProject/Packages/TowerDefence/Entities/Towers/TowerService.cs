@@ -24,14 +24,21 @@ namespace TowerDefence.Entities.Towers
 
         internal async UniTask<ITowerObject> PlaceTower(string towerID, Vector2 position, IGridCell cell)
         {
+            if (cell.HasStructure || cell.HasVirtualStructure)
+                return null;
+
             var configuration = await towerConfiguration.GetTowerAsync(towerID);
             if (configuration == null) throw new NullReferenceException("Tower ID seems to be invalid! Case does not matter just check the spelling or if it exists in the configuration data for the towers");
+
+            cell.SetVirtualStructure(true);
 
             var newTower = await towerFactory.CreateTower(configuration, position, cell);
             if (newTower.Model.Components.TryGetComponent(out TowerSettings settings))
                 newTower.Transform.name = settings.Name;
 
             towerModel.Towers.Add(newTower);
+            cell.SetVirtualStructure(false);
+            cell.SetStructure(true);
             return newTower;
         }
 
