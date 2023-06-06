@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TowerDefence.Entities.Towers.Components.Interfaces;
 using TowerDefence.Entities.Towers.Data;
 using TowerDefence.Entities.Towers.Models;
+using TowerDefence.UI.Game.Tower.Properties.Attributes;
 using TowerDefence.Utility;
 
 // ReSharper disable InconsistentNaming
@@ -13,13 +14,16 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
     {
         public abstract double GenerationPerSecond { get; }
         public abstract double GenerationDelayInMs { get; }
-        public abstract double MaxPowerBuffer { get; }
+        [HiddenProperty] public abstract double MaxPowerBuffer { get; }
 
         public event Action<IReadOnlyCollection<PowerEventArg>> PowerSend;
 
         protected IPowerTargetFinder PowerTargetFinder { get; private set; }
         protected readonly List<PowerEventArg> powerEventArgsList = new();
+
+        [ProgressBarProperty("MaxPowerBuffer")]
         public double PowerBuffer { get; protected set; }
+
         protected double delayTimer;
 
         public virtual void PostInit(ITowerObject towerObject, ITowerModel model)
