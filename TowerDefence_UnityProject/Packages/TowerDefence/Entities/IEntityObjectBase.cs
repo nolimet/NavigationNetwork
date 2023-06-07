@@ -11,7 +11,10 @@ namespace TowerDefence.Entities
 
         public Vector3 GetWorldPosition();
 
-        public void Destroy() => Object.Destroy(Transform.gameObject);
+        public void Destroy()
+        {
+            if (Transform && Transform.gameObject) Object.Destroy(Transform.gameObject);
+        }
 
         public void Tick();
     }
