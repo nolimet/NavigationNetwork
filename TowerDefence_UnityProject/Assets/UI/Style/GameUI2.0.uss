@@ -49,12 +49,12 @@
 }
 
 /*Progress bar*/
-#Properties- > Label {
+#Properties > .unity-label {
     -unity-text-align: middle-left;
-}
-
-#Properties- > ProgressBar {
-
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .unity-progress-bar__background {
