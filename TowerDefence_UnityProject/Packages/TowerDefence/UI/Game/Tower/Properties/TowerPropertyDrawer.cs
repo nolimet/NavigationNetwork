@@ -80,7 +80,8 @@ namespace TowerDefence.UI.Game.Tower.Properties
                                 {
                                     value = (float)tsp.GetSliderValue(component.Component),
                                     lowValue = (float)tsp.GetMinValue(component.Component),
-                                    highValue = (float)tsp.GetMaxValue(component.Component)
+                                    highValue = (float)tsp.GetMaxValue(component.Component),
+                                    title = tsp.GetValue(component.Component)
                                 };
 
                                 propertiesUIContainer.Add(progressBar);
@@ -112,6 +113,7 @@ namespace TowerDefence.UI.Game.Tower.Properties
                             slider!.value = (float)tsp.GetSliderValue(comp);
                             slider.lowValue = (float)tsp.GetMinValue(comp);
                             slider.highValue = (float)tsp.GetMaxValue(comp);
+                            slider.title = tsp.GetValue(comp);
                             break;
                     }
                 }
