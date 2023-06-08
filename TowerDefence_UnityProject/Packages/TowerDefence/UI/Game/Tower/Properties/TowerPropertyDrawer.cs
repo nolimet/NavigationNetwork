@@ -96,9 +96,19 @@ namespace TowerDefence.UI.Game.Tower.Properties
                                     title = tsp.GetValue(component.Component),
                                     style =
                                     {
-                                        paddingLeft = 20
+                                        paddingLeft = 25
                                     }
                                 };
+
+                                propertiesUIContainer.Add(new Label
+                                {
+                                    text = tsp.Label,
+                                    style =
+                                    {
+                                        paddingLeft = 20,
+                                        unityFontStyleAndWeight = FontStyle.Bold
+                                    }
+                                });
                                 propertiesUIContainer.Add(progressBar);
                                 PropertyLookup.Add(property, progressBar);
                                 break;
