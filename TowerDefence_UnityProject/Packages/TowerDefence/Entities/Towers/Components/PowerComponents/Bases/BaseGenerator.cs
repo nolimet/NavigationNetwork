@@ -19,7 +19,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
         protected IPowerTargetFinder PowerTargetFinder { get; private set; }
         protected readonly List<PowerEventArg> powerEventArgsList = new();
 
-        [ProgressBarProperty("MaxPowerBuffer")]
+        [ProgressBarProperty(nameof(MaxPowerBuffer))]
         public double PowerBuffer { get; protected set; }
 
         protected double delayTimer;
