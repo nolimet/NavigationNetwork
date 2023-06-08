@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Towers.Components.Interfaces;
 using TowerDefence.Entities.Towers.Components.PowerComponents.Bases;
+using TowerDefence.UI.Game.Tower.Properties.Attributes;
 
 namespace TowerDefence.Entities.Towers.Components.PowerComponents
 {
@@ -15,7 +16,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents
         [JsonProperty] private readonly double generationPerSecond = 100;
         public override double GenerationDelayInMs => generationDelayInMs;
         [JsonProperty] private readonly double generationDelayInMs = -1;
-        public override double MaxPowerBuffer => maxPowerBuffer;
+        [HiddenProperty] public override double MaxPowerBuffer => maxPowerBuffer;
         [JsonProperty] private readonly double maxPowerBuffer = 1000;
     }
 }

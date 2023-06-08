@@ -14,7 +14,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
     {
         public abstract double GenerationPerSecond { get; }
         public abstract double GenerationDelayInMs { get; }
-        [HiddenProperty] public abstract double MaxPowerBuffer { get; }
+        public abstract double MaxPowerBuffer { get; }
 
         public event Action<IReadOnlyCollection<PowerEventArg>> PowerSend;
 
