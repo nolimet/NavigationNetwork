@@ -55,6 +55,11 @@
     margin-top: 0;
     padding-top: 0;
     padding-bottom: 0;
+    padding-right: 10;
+}
+
+#Properties > .unity-progress-bar {
+    padding-right: 10;
 }
 
 .unity-progress-bar__background {
