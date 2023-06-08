@@ -48,21 +48,34 @@ namespace TowerDefence.UI.Game.Tower.Properties
             PropertyLookup.Clear();
             foreach (var tower in propertiesExtractor.Towers)
             {
-                propertiesUIContainer.Add(new Label
+                var newTowerLabel = new Label
                 {
-                    text = tower.Name
-                });
+                    text = tower.Name,
+                    style =
+                    {
+                        unityFontStyleAndWeight = FontStyle.Bold
+                    }
+                };
+
+                propertiesUIContainer.Add(newTowerLabel);
 
                 foreach (var component in tower.Components)
                 {
-                    propertiesUIContainer.Add(new Label
+                    var componentLabel = new Label
                     {
                         text = $"{component.Name}",
-                        tabIndex = 1
-                    });
+                        tabIndex = 1,
+                        style =
+                        {
+                            paddingLeft = 10,
+                            unityFontStyleAndWeight = FontStyle.Bold
+                        }
+                    };
+                    propertiesUIContainer.Add(componentLabel);
 
                     foreach (var property in component.Properties)
                     {
+                        VisualElement newVisualElement = null;
                         switch (property)
                         {
                             case TowerProperty tp:
@@ -71,6 +84,7 @@ namespace TowerDefence.UI.Game.Tower.Properties
                                     text = tp.GetValue(component.Component)
                                 };
 
+                                newVisualElement = newLabel;
                                 propertiesUIContainer.Add(newLabel);
                                 PropertyLookup.Add(property, newLabel);
                                 break;
@@ -83,12 +97,15 @@ namespace TowerDefence.UI.Game.Tower.Properties
                                     highValue = (float)tsp.GetMaxValue(component.Component),
                                     title = tsp.GetValue(component.Component)
                                 };
-
+                                newVisualElement = progressBar;
                                 propertiesUIContainer.Add(progressBar);
                                 PropertyLookup.Add(property, progressBar);
                                 break;
                                 throw new NotImplementedException(property.GetType().Name + " is not handled yet");
                         }
+
+                        if (newVisualElement is not null)
+                            newVisualElement.style.paddingLeft = 20;
                     }
                 }
             }
