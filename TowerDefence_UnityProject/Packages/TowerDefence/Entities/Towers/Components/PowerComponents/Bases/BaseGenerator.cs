@@ -6,8 +6,6 @@ using TowerDefence.Entities.Towers.Models;
 using TowerDefence.UI.Game.Tower.Properties.Attributes;
 using TowerDefence.Utility;
 
-// ReSharper disable InconsistentNaming
-
 namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
 {
     internal abstract class BaseGenerator : IPowerProducer, IInitializable
