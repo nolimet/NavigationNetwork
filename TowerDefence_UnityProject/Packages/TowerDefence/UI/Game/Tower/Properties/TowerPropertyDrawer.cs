@@ -101,7 +101,7 @@ namespace TowerDefence.UI.Game.Tower.Properties
                                 propertiesUIContainer.Add(progressBar);
                                 PropertyLookup.Add(property, progressBar);
                                 break;
-                                throw new NotImplementedException(property.GetType().Name + " is not handled yet");
+                                throw new NotSupportedException(property.GetType().Name + " is not handled yet");
                         }
 
                         if (newVisualElement is not null)
