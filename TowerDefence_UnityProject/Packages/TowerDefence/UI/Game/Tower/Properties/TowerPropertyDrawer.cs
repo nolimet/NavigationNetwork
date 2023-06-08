@@ -48,43 +48,41 @@ namespace TowerDefence.UI.Game.Tower.Properties
             PropertyLookup.Clear();
             foreach (var tower in propertiesExtractor.Towers)
             {
-                var newTowerLabel = new Label
+                propertiesUIContainer.Add(new Label
                 {
                     text = tower.Name,
                     style =
                     {
                         unityFontStyleAndWeight = FontStyle.Bold
                     }
-                };
-
-                propertiesUIContainer.Add(newTowerLabel);
+                });
 
                 foreach (var component in tower.Components)
                 {
-                    var componentLabel = new Label
+                    propertiesUIContainer.Add(new Label
                     {
                         text = $"{component.Name}",
-                        tabIndex = 1,
                         style =
                         {
                             paddingLeft = 10,
                             unityFontStyleAndWeight = FontStyle.Bold
                         }
-                    };
-                    propertiesUIContainer.Add(componentLabel);
+                    });
 
                     foreach (var property in component.Properties)
                     {
-                        VisualElement newVisualElement = null;
                         switch (property)
                         {
                             case TowerProperty tp:
                                 var newLabel = new Label
                                 {
-                                    text = tp.GetValue(component.Component)
+                                    text = tp.GetValue(component.Component),
+                                    style =
+                                    {
+                                        paddingLeft = 20
+                                    }
                                 };
 
-                                newVisualElement = newLabel;
                                 propertiesUIContainer.Add(newLabel);
                                 PropertyLookup.Add(property, newLabel);
                                 break;
@@ -95,17 +93,17 @@ namespace TowerDefence.UI.Game.Tower.Properties
                                     value = (float)tsp.GetSliderValue(component.Component),
                                     lowValue = (float)tsp.GetMinValue(component.Component),
                                     highValue = (float)tsp.GetMaxValue(component.Component),
-                                    title = tsp.GetValue(component.Component)
+                                    title = tsp.GetValue(component.Component),
+                                    style =
+                                    {
+                                        paddingLeft = 20
+                                    }
                                 };
-                                newVisualElement = progressBar;
                                 propertiesUIContainer.Add(progressBar);
                                 PropertyLookup.Add(property, progressBar);
                                 break;
                                 throw new NotSupportedException(property.GetType().Name + " is not handled yet");
                         }
-
-                        if (newVisualElement is not null)
-                            newVisualElement.style.paddingLeft = 20;
                     }
                 }
             }
