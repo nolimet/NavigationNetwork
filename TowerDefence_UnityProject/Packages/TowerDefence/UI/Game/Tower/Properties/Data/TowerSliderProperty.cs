@@ -15,6 +15,7 @@ namespace TowerDefence.UI.Game.Tower.Properties.Data
             this.minValueType = minValueType;
             this.maxValueType = maxValueType;
             this.valueType = valueType;
+            Label = valueType.GetNiceName();
         }
 
         private readonly double minValue;
@@ -22,6 +23,7 @@ namespace TowerDefence.UI.Game.Tower.Properties.Data
         private readonly MemberInfo minValueType;
         private readonly MemberInfo maxValueType;
         private readonly MemberInfo valueType;
+        public readonly string Label;
 
         public double GetMinValue(IComponent component) => GetValue(minValueType, minValue, component);
 
