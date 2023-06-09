@@ -42,6 +42,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
                 delayTimer = GenerationDelayInMs;
 
                 var maxPowerPush = PowerBuffer / PowerTargetFinder.Targets.Count;
+                var totalPushed = 0d;
                 var length = PowerTargetFinder.Targets.Count;
                 for (var i = 0; i < length; i++)
                 {
@@ -53,6 +54,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
                             var accepted = consumer.PushPower(maxPowerPush);
                             powerEventArgsList.Add(new PowerEventArg(target.worldPosition, accepted / maxPowerPush, target.powerComponent));
 
+                            totalPushed += accepted;
                             maxPowerPush += (accepted - maxPowerPush) / (length - i);
                             break;
                         }
@@ -61,11 +63,14 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
                             var accepted = buffer.PushPower(maxPowerPush);
                             powerEventArgsList.Add(new PowerEventArg(target.worldPosition, accepted / maxPowerPush, target.powerComponent));
 
+                            totalPushed += accepted;
                             maxPowerPush += (accepted - maxPowerPush) / (length - i);
                             break;
                         }
                     }
                 }
+
+                PowerBuffer -= totalPushed;
 
                 PowerSend?.Invoke(powerEventArgsList);
             }
