@@ -9,6 +9,7 @@ using TowerDefence.Entities.Towers.Models;
 using TowerDefence.World.Grid.Data;
 using UnityEngine;
 
+// ReSharper disable once CheckNamespace
 namespace TowerDefence.Entities.Towers
 {
     public sealed class TowerObject : MonoBehaviour, ITowerObject
