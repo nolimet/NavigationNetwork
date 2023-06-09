@@ -31,15 +31,14 @@ namespace TowerDefence.UI.Game.Tower.Properties.Data
 
         public double GetSliderValue(IComponent component) => GetValue(valueType, 0, component);
 
-        public string GetValue(IComponent component) => $"{GetSliderValue(component)} / {GetMaxValue(component)}";
+        public string GetValue(IComponent component) => $"{GetSliderValue(component):F1} / {GetMaxValue(component):F1}";
 
         private double GetValue(MemberInfo dynamicValue, double defaultValue, IComponent component)
         {
             if (dynamicValue is null)
                 return defaultValue;
 
-            var val = dynamicValue.GetMemberValue(component);
-            return val switch
+            return dynamicValue.GetMemberValue(component) switch
             {
                 double d => d,
                 float f => f,
