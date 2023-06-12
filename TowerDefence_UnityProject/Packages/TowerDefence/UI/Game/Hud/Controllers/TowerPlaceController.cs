@@ -66,11 +66,10 @@ namespace TowerDefence.UI.Game.Hud.Controllers
 
         private void OnUIContainersChanged(IList<IUIContainer> uiContainers)
         {
-            if (activeContainer is not null) UnBind();
-
             if (uiContainers.TryFind(x => x.Name == ContainerId, out var container) && container is UIDocumentContainer documentContainer)
             {
                 if (activeContainer == container) return;
+                if (activeContainer is not null) UnBind();
 
                 activeContainer = container;
                 var root = documentContainer.Document.rootVisualElement;
