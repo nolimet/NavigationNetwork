@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TowerDefence.Entities.Towers.Components.Interfaces;
 using TowerDefence.Entities.Towers.Data;
 using TowerDefence.Entities.Towers.Models;
@@ -43,31 +44,24 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
 
                 var maxPowerPush = PowerBuffer / PowerTargetFinder.Targets.Count;
                 var totalPushed = 0d;
-                var length = PowerTargetFinder.Targets.Count;
+                var length = PowerTargetFinder.Targets.Count(x => x.powerComponent is not IPowerProducer);
                 for (var i = 0; i < length; i++)
                 {
                     var target = PowerTargetFinder.Targets[i];
-                    switch (target.powerComponent)
+                    double accepted = target.powerComponent switch
                     {
-                        case IPowerConsumer consumer:
-                        {
-                            var accepted = consumer.PushPower(maxPowerPush);
-                            powerEventArgsList.Add(new PowerEventArg(target.worldPosition, accepted / maxPowerPush, target.powerComponent));
+                        IPowerConsumer consumer => consumer.PushPower(maxPowerPush),
+                        IPowerBuffer buffer => buffer.PushPower(maxPowerPush),
+                        _ => 0
+                    };
 
-                            totalPushed += accepted;
-                            maxPowerPush += (accepted - maxPowerPush) / (length - i);
-                            break;
-                        }
-                        case IPowerBuffer buffer:
-                        {
-                            var accepted = buffer.PushPower(maxPowerPush);
-                            powerEventArgsList.Add(new PowerEventArg(target.worldPosition, accepted / maxPowerPush, target.powerComponent));
-
-                            totalPushed += accepted;
-                            maxPowerPush += (accepted - maxPowerPush) / (length - i);
-                            break;
-                        }
+                    if (accepted > 0)
+                    {
+                        powerEventArgsList.Add(new PowerEventArg(target.worldPosition, accepted / maxPowerPush, target.powerComponent));
                     }
+
+                    totalPushed += accepted;
+                    maxPowerPush += (accepted - maxPowerPush) / (length - i);
                 }
 
                 PowerBuffer -= totalPushed;
