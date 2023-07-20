@@ -16,7 +16,7 @@ namespace TowerDefence.Entities.Towers.Components.BaseComponents
         [JsonProperty] [SerializeField] private AssetReferenceT<Sprite> towerSprite;
 
 
-        public async Task AsyncPostInit(ITowerObject towerObject, ITowerModel towerModel)
+        public async Task AsyncPostInit(ITowerObject towerObject, ITowerModel model)
         {
             var spriteRenderer = towerObject.Transform.GetComponent<SpriteRenderer>();
 
