@@ -6,7 +6,7 @@ namespace TowerDefence.Entities.Enemies
     public interface IEnemyObject : IEntityObjectBase
     {
         IEnemyModel Model { get; }
-        public UnityAction<IEnemyObject> DeathAction { get; }
+        public event UnityAction<IEnemyObject> DeathAction;
 
         public float DistanceToTarget();
 
