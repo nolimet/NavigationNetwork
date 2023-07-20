@@ -11,7 +11,7 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
     {
         public static readonly ITargetFindComponent Instance = new NullTargetFinder();
 
-        public ICollection<IEnemyObject> FoundTargets => Array.Empty<IEnemyObject>();
+        public IReadOnlyList<IEnemyObject> FoundTargets => Array.Empty<IEnemyObject>();
 
         public void Tick()
         {
