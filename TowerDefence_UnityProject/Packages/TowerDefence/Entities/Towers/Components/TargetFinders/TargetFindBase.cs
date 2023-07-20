@@ -22,7 +22,7 @@ namespace TowerDefence.Entities.Towers.Components.TargetFinders
         protected ITowerObject TowerObject { get; private set; }
         protected ITowerModel TowerModel { get; private set; }
 
-        public IEnumerable<IEnemyObject> FoundTargets => TargetList;
+        public ICollection<IEnemyObject> FoundTargets => TargetList;
 
         public short TickPriority => short.MinValue;
 

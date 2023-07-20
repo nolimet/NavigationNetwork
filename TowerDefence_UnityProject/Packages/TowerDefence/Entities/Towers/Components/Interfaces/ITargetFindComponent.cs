@@ -9,6 +9,6 @@ namespace TowerDefence.Entities.Towers.Components.Interfaces
         /// <summary>
         /// List of defined list of a single or multiple targets to apply any effects too
         /// </summary>
-        IEnumerable<IEnemyObject> FoundTargets { get; }
+        ICollection<IEnemyObject> FoundTargets { get; }
     }
 }
