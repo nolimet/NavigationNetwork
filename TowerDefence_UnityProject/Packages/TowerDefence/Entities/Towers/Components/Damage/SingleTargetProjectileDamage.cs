@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TowerDefence.Entities.Components;
@@ -19,7 +20,7 @@ namespace TowerDefence.Entities.Towers.Components.Damage
     [JsonObject(MemberSerialization.OptIn)]
     [RequiredComponent(typeof(ITargetFindComponent), typeof(IPowerConsumer), typeof(TowerSettings))]
     [Component(ComponentType.Tower, typeof(IDamageComponent))]
-    public class SingleTargetProjectileDamage : IDamageComponent, IAsyncInitializer
+    public class SingleTargetProjectileDamage : IDamageComponent, IAsyncInitializer, IDisposable
     {
         [JsonProperty] private readonly double fireCooldownInSeconds = .1f;
         [JsonProperty] private readonly double damagePerShot = 5;
@@ -71,6 +72,15 @@ namespace TowerDefence.Entities.Towers.Components.Damage
             var newBulletGameObject = Object.Instantiate(bulletPrefab);
             liveBullets.Add(newBulletGameObject);
             var movingProjectile = newBulletGameObject.GetComponent<MovingProjectile>();
+            movingProjectile.Setup(firstTarget, damagePerShot, 20);
+        }
+
+        public void Dispose()
+        {
+            foreach (var liveBullet in liveBullets.Where(liveBullet => liveBullet && liveBullet.gameObject))
+            {
+                Object.Destroy(liveBullet.gameObject);
+            }
         }
     }
 }
