@@ -27,9 +27,9 @@ namespace TowerDefence.Entities.Towers.Components.AttackVisualizers
 
         private readonly List<AttackVisual> attackVisuals = new();
 
-        public override async Task AsyncPostInit(ITowerObject towerObject, ITowerModel towerModel)
+        public override async Task AsyncPostInit(ITowerObject towerObject, ITowerModel model)
         {
-            await base.AsyncPostInit(towerObject, towerModel);
+            await base.AsyncPostInit(towerObject, model);
             await attackVisual.LoadAssetAsync();
         }
 

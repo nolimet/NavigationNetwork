@@ -25,10 +25,10 @@ namespace TowerDefence.Entities.Towers.Components.AttackVisualizers
             bindingContext.Dispose();
         }
 
-        public virtual Task AsyncPostInit(ITowerObject towerObject, ITowerModel towerModel)
+        public virtual Task AsyncPostInit(ITowerObject towerObject, ITowerModel model)
         {
             TowerObject = towerObject;
-            bindingContext.Bind(towerModel, x => x.Components, OnComponentsChanged);
+            bindingContext.Bind(model, x => x.Components, OnComponentsChanged);
             return Task.CompletedTask;
         }
 
