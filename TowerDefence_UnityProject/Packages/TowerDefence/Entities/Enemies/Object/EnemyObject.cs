@@ -23,7 +23,7 @@ namespace TowerDefence.Entities.Enemies
             set => name = value;
         }
 
-        public UnityAction<IEnemyObject> DeathAction { get; private set; }
+        public event UnityAction<IEnemyObject> DeathAction;
 
         private readonly List<ITickableComponent> tickableComponents = new();
         private readonly BindingContext bindingContext = new();
