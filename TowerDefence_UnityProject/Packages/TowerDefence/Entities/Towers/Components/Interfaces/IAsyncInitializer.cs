@@ -5,6 +5,6 @@ namespace TowerDefence.Entities.Towers.Components.Interfaces
 {
     internal interface IAsyncInitializer
     {
-        Task AsyncPostInit(ITowerObject towerObject, ITowerModel towerModel);
+        Task AsyncPostInit(ITowerObject towerObject, ITowerModel model);
     }
 }
