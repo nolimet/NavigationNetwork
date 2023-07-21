@@ -21,26 +21,37 @@ MonoBehaviour:
     m_Address: Tower/Laser/Attack
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9abdb8467cb668649a7c31dbf792d979
     m_Address: Assets/Sprites/IsometricDiamond.png
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f0fef5586bee6f744b3f8c744595457c
     m_Address: Assets/UI/LevelEditor.uxml
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 37e66b84db4a8654798ff489528d6c20
     m_Address: Towers
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a7ba67f1672ca1d4d8254918ddd74d23
     m_Address: Sprites/Towers
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5021421b025a4e047b4c4b678d8af3eb
     m_Address: Prefabs/Towers/PowerLinePrefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c38fee0001daa4040b82164820a798e1
+    m_Address: Entities
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 30d6280b3b69dcd4d8e5c3d8253748b0, type: 2}
   m_SchemaSet:
