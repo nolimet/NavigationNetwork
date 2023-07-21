@@ -13,7 +13,7 @@ namespace TowerDefence.Entities.Components
 
             if (!Validate())
             {
-                throw new Exception("All types need to be interfaces");
+                throw new Exception("All types need to be interfaces or classes");
             }
         }
 
@@ -21,7 +21,7 @@ namespace TowerDefence.Entities.Components
         {
             foreach (var type in RequiredComponents)
             {
-                if (!type.IsInterface)
+                if (!type.IsInterface && !type.IsClass)
                 {
                     return false;
                 }
