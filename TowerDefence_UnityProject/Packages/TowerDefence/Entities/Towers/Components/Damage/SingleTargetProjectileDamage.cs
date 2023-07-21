@@ -53,6 +53,18 @@ namespace TowerDefence.Entities.Towers.Components.Damage
 
         public void Tick()
         {
+            if (liveBullets.Count > 0)
+            {
+                for (var i = liveBullets.Count - 1; i >= 0; i--)
+                {
+                    var liveBullet = liveBullets[i];
+                    if (!liveBullet || !liveBullet.gameObject)
+                    {
+                        liveBullets.Remove(liveBullet);
+                    }
+                }
+            }
+
             if (targetFindComponent.FoundTargets.Count == 0)
                 return;
 
