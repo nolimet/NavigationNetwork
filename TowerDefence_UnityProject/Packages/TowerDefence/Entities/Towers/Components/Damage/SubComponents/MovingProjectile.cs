@@ -1,4 +1,5 @@
-﻿using TowerDefence.Entities.Enemies;
+﻿using NoUtil.Math;
+using TowerDefence.Entities.Enemies;
 using UnityEngine;
 
 namespace TowerDefence.Entities.Towers.Components.Damage.SubComponents
@@ -28,8 +29,14 @@ namespace TowerDefence.Entities.Towers.Components.Damage.SubComponents
 
         private void Update()
         {
+            if (!target.ExistsInWorld) Destroy(gameObject);
             var targetPos = target.GetWorldPosition();
             var selfPos = transform.position;
+
+            var dir = (targetPos - selfPos).normalized;
+            var angle = Math.VectorToAngle(dir);
+            transform.rotation = Quaternion.Euler(0, angle, 0);
+
             selfPos = Vector3.MoveTowards(selfPos, targetPos, maxSpeed * Time.deltaTime);
             transform.position = selfPos;
 
