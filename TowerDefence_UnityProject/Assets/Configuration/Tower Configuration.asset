@@ -62,3 +62,14 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+  - id: GunTower
+    iconReference:
+      m_AssetGUID: e38eecdd5bd93334ba8a46ee4f790ef0
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    reference:
+      m_AssetGUID: e9a39332a39394c488ce95a7fac49621
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
