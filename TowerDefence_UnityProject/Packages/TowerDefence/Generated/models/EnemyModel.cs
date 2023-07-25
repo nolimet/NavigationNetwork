@@ -101,6 +101,20 @@ namespace TowerDefence.Entities.Enemies.Models
 				OnChange?.Invoke();
 			}
 		}
+			// VirtualHealth
+		public event System.Action<System.Double> OnChangeVirtualHealth;
+		private System.Double _VirtualHealth ; 
+		public System.Double VirtualHealth 
+		{
+			get => _VirtualHealth;
+			set 
+			{
+								_VirtualHealth = value; 
+
+				OnChangeVirtualHealth?.Invoke(value);
+				OnChange?.Invoke();
+			}
+		}
 	
 		public EnemyModel() { 
 				Components = new System.Collections.ObjectModel.ObservableCollection<TowerDefence.Entities.Components.IComponent>();
