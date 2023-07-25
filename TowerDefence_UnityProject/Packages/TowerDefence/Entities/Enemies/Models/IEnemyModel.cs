@@ -13,6 +13,7 @@ namespace TowerDefence.Entities.Enemies.Models
         HealthDrawer HealthBar { get; set; }
         double Health { get; set; }
         double MaxHealth { get; set; }
+        double VirtualHealth { get; set; }
         Vector3 HealthOffset { get; set; }
 
         IList<IComponent> Components { get; set; }
