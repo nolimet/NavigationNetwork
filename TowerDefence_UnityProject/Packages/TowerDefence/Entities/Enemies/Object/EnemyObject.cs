@@ -48,6 +48,8 @@ namespace TowerDefence.Entities.Enemies
             if (Model.Components.TryFind(x => x is EnemySettings, out var result) && result is EnemySettings settings)
             {
                 Model.Health = settings.MaxHealth;
+                Model.MaxHealth = settings.MaxHealth;
+                Model.VirtualHealth = settings.MaxHealth;
             }
 
             bindingContext.Bind(enemyModel, m => m.Components, OnComponentsChanged);
