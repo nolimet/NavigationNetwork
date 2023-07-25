@@ -74,17 +74,27 @@ namespace TowerDefence.Entities.Towers.Components.Damage
                 return;
             }
 
-            if (!powerConsumer.TryConsume(powerPerShot))
+            foreach (var target in targetFindComponent.FoundTargets)
             {
-                return;
+                if (!powerConsumer.TryConsume(powerPerShot))
+                {
+                    return;
+                }
+
+                FireTarget(target);
             }
 
             cooldownTimer = fireCooldownInSeconds;
-            var firstTarget = targetFindComponent.FoundTargets[0];
-            var newBulletGameObject = Object.Instantiate(bulletPrefab);
-            liveBullets.Add(newBulletGameObject);
-            var movingProjectile = newBulletGameObject.GetComponent<MovingProjectile>();
-            movingProjectile.Setup(firstTarget, damagePerShot, 20);
+
+            void FireTarget(IEnemyObject target)
+            {
+                var newBulletGameObject = Object.Instantiate(bulletPrefab, towerObject.GetWorldPosition(), Quaternion.identity);
+                liveBullets.Add(newBulletGameObject);
+
+                var movingProjectile = newBulletGameObject.GetComponent<MovingProjectile>();
+                movingProjectile.Setup(target, damagePerShot, 20);
+                target.Model.VirtualHealth -= damagePerShot;
+            }
         }
 
         public void Dispose()
