@@ -10,6 +10,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents
     [JsonObject(MemberSerialization.OptIn)]
     public class VoidPowerConsumer : IPowerConsumer
     {
+        public bool CanReceive => true;
         public double MaxStored => 999999999;
         public double Stored => 0;
 

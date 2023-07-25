@@ -35,7 +35,7 @@ namespace TowerDefence.Entities.Components.Data
         {
             if (string.IsNullOrWhiteSpace(TypeName)) throw new NullReferenceException($"Type name is empty or null: {TypeName ?? "null"}");
             var type = Type;
-
+            
             if (type is null) throw new NullReferenceException($"Type is null. Type cannot be null. Type name {TypeName}");
             return JsonConvert.DeserializeObject(Data, type) as IComponent;
         }

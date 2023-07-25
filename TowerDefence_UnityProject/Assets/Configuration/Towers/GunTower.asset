@@ -23,11 +23,6 @@ MonoBehaviour:
     Data: '{"towerSprite":"e38eecdd5bd93334ba8a46ee4f790ef0"}'
     SerializedComponent:
       rid: 3054582118535135275
-  - TypeName: TowerDefence.Entities.Towers.Components.PowerComponents.SimplePowerConsumer,
-      TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Data: '{"MaxStored":1000.0,"Stored":0.0}'
-    SerializedComponent:
-      rid: 3054582118535135276
   - TypeName: TowerDefence.Entities.Towers.Components.TargetFinders.NearestTargetFinder,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{}'

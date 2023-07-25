@@ -10,7 +10,7 @@ namespace TowerDefence.Entities.Towers.Components.Interfaces
         bool TryConsume(double amount);
 
         /// <summary>
-        /// Pushes power into the buffer of this consumer
+        ///     Pushes power into the buffer of this consumer
         /// </summary>
         /// <param name="maxAmount">maximium amount you can push into the consumer</param>
         /// <returns>Actual amount it accepted</returns>

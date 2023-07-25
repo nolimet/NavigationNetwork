@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Towers.Components.Interfaces;
+using TowerDefence.UI.Game.Tower.Properties.Attributes;
 
 namespace TowerDefence.Entities.Towers.Components.PowerComponents
 {
@@ -10,7 +11,11 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents
     [Component(ComponentType.Tower, typeof(IPowerComponent), AllowMultiple = false)]
     public class ActionPowerConsumer : IPowerConsumer
     {
-        public double MaxStored { get; private set; }
+        public bool CanReceive => true;
+        [HiddenProperty] [JsonProperty] public double MaxStored { get; private set; }
+
+        [ProgressBarProperty(nameof(MaxStored))]
+        [JsonProperty]
         public double Stored { get; private set; }
 
         public bool TryConsume(double amount)

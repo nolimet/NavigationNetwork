@@ -10,6 +10,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents
     [Component(ComponentType.Tower, typeof(IPowerComponent), AllowMultiple = false)]
     public class NullPowerConsumer : IPowerConsumer
     {
+        public bool CanReceive => true;
         public double MaxStored => 0;
         public double Stored => 0;
 

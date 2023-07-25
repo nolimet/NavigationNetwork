@@ -57,8 +57,10 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
             {
                 var hit = hits[i];
                 var towerObject = hit.collider.GetComponent<ITowerObject>();
-                if (towerObject is not null && towerObject.Model.Components.HasComponent<IPowerComponent>())
-                    TargetComponents.Add((towerObject.GetWorldPosition(), towerObject.Model.Components.GetComponent<IPowerComponent>()));
+                if (towerObject is null || !towerObject.Model.Components.HasComponent<IPowerComponent>()) continue;
+                var component = towerObject.Model.Components.GetComponent<IPowerComponent>();
+                if (component.CanReceive)
+                    TargetComponents.Add((towerObject.GetWorldPosition(), component));
             }
         }
     }

@@ -45,6 +45,7 @@ namespace TowerDefence.Entities.Towers.Components.Damage
             targetFindComponent = model.Components.GetComponent<ITargetFindComponent>();
             towerSettings = model.Components.GetComponent<TowerSettings>();
             powerConsumer = model.Components.GetComponent<IPowerConsumer>();
+            this.towerObject = towerObject;
 
             var handle = bulletPrefabReference.LoadAssetAsync();
             await handle.Task;
@@ -54,16 +55,11 @@ namespace TowerDefence.Entities.Towers.Components.Damage
         public void Tick()
         {
             if (liveBullets.Count > 0)
-            {
                 for (var i = liveBullets.Count - 1; i >= 0; i--)
                 {
                     var liveBullet = liveBullets[i];
-                    if (!liveBullet || !liveBullet.gameObject)
-                    {
-                        liveBullets.Remove(liveBullet);
-                    }
+                    if (!liveBullet || !liveBullet.gameObject) liveBullets.Remove(liveBullet);
                 }
-            }
 
             if (targetFindComponent.FoundTargets.Count == 0)
                 return;
@@ -76,10 +72,7 @@ namespace TowerDefence.Entities.Towers.Components.Damage
 
             foreach (var target in targetFindComponent.FoundTargets)
             {
-                if (!powerConsumer.TryConsume(powerPerShot))
-                {
-                    return;
-                }
+                if (!powerConsumer.TryConsume(powerPerShot)) return;
 
                 FireTarget(target);
             }
@@ -88,7 +81,8 @@ namespace TowerDefence.Entities.Towers.Components.Damage
 
             void FireTarget(IEnemyObject target)
             {
-                var newBulletGameObject = Object.Instantiate(bulletPrefab, towerObject.GetWorldPosition(), Quaternion.identity);
+                var newBulletGameObject =
+                    Object.Instantiate(bulletPrefab, towerObject.GetWorldPosition(), Quaternion.identity);
                 liveBullets.Add(newBulletGameObject);
 
                 var movingProjectile = newBulletGameObject.GetComponent<MovingProjectile>();
@@ -100,9 +94,7 @@ namespace TowerDefence.Entities.Towers.Components.Damage
         public void Dispose()
         {
             foreach (var liveBullet in liveBullets.Where(liveBullet => liveBullet && liveBullet.gameObject))
-            {
                 Object.Destroy(liveBullet.gameObject);
-            }
         }
     }
 }
