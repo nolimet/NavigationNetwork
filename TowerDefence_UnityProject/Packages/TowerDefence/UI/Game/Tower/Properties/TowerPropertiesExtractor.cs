@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DataBinding;
+using ModestTree;
 using NoUtil.Extentsions;
 using TowerDefence.Entities.Components;
 using TowerDefence.Entities.Towers;
@@ -74,8 +75,9 @@ namespace TowerDefence.UI.Game.Tower.Properties
             ITowerProperty GetProperty(MemberInfo memberInfo)
             {
                 var atts = memberInfo.GetCustomAttributes(true);
-                if (atts.Any(x => x is HiddenPropertyAttribute))
-                    return null;
+                if (memberInfo.HasAttribute(typeof(HiddenPropertyAttribute))) return null;
+
+                if (memberInfo.HasAttribute(typeof(UIPropertyAttribute))) return null; //TODO implement when having way to validate if member is private or not
 
                 if (atts.TryFind(x => x is ProgressBarPropertyAttribute, out var att) && att is ProgressBarPropertyAttribute ppa)
                 {
