@@ -61,6 +61,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents
                 var otherTowerPos = tower.GetWorldPosition();
                 if (tower == self || !(Vector2.Distance(otherTowerPos, towerPos) < dist)) continue;
                 if (!tower.Model.Components.TryGetComponent<IPowerComponent>(out var component)) continue;
+                if (!component.CanReceive) continue;
                 if (lineRenderers.ContainsKey(component)) continue;
 
                 var newLineGameObject = Object.Instantiate(linePrefab, self.Transform, false);
