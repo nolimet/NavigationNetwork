@@ -31,6 +31,7 @@ namespace TowerDefence.Entities.Towers.Components.Damage
 
         public event Action<IEnumerable<IEnemyObject>> AppliedDamageToTargets;
         public double DamagePerSecond => damagePerShot / fireCooldownInSeconds;
+        public double MaxPowerUsagePerSecond => powerPerShot / fireCooldownInSeconds;
 
         private ITowerObject towerObject;
         private GameObject bulletPrefab;
@@ -81,8 +82,7 @@ namespace TowerDefence.Entities.Towers.Components.Damage
 
             void FireTarget(IEnemyObject target)
             {
-                var newBulletGameObject =
-                    Object.Instantiate(bulletPrefab, towerObject.GetWorldPosition(), Quaternion.identity);
+                var newBulletGameObject = Object.Instantiate(bulletPrefab, towerObject.GetWorldPosition(), Quaternion.identity);
                 liveBullets.Add(newBulletGameObject);
 
                 var movingProjectile = newBulletGameObject.GetComponent<MovingProjectile>();
