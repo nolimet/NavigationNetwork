@@ -17,35 +17,35 @@ MonoBehaviour:
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"Name":"Gun Tower","IsSolid":1,"Range":5.0}'
     SerializedComponent:
-      rid: 4957184486343442450
+      rid: 4957184486343442560
   - TypeName: TowerDefence.Entities.Towers.Components.BaseComponents.TowerVisualSettings,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"towerSprite":"e38eecdd5bd93334ba8a46ee4f790ef0"}'
     SerializedComponent:
-      rid: 4957184486343442451
+      rid: 4957184486343442561
   - TypeName: TowerDefence.Entities.Towers.Components.TargetFinders.NearestTargetFinder,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{}'
     SerializedComponent:
-      rid: 4957184486343442452
+      rid: 4957184486343442562
   - TypeName: TowerDefence.Entities.Towers.Components.Damage.SingleTargetProjectileDamage,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    Data: '{"fireCooldownInSeconds":0.1,"damagePerShot":5.0,"powerPerShot":20.0,"bulletPrefabReference":"39c3e8c116dda294a83da7adcf781731"}'
+    Data: '{"fireCooldownInSeconds":0.1,"damagePerShot":5.0,"powerPerShot":2.0,"bulletPrefabReference":"39c3e8c116dda294a83da7adcf781731"}'
     SerializedComponent:
-      rid: 4957184486343442453
+      rid: 4957184486343442563
   - TypeName: TowerDefence.Entities.Towers.Components.PowerComponents.ActionPowerConsumer,
       TowerDefence, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
     Data: '{"MaxStored":1000.0,"Stored":0.0}'
     SerializedComponent:
-      rid: 4957184486343442454
+      rid: 4957184486343442564
   Type: 1
   references:
     version: 2
     RefIds:
-    - rid: 4957184486343442450
+    - rid: 4957184486343442560
       type: {class: TowerSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
-    - rid: 4957184486343442451
+    - rid: 4957184486343442561
       type: {class: TowerVisualSettings, ns: TowerDefence.Entities.Towers.Components.BaseComponents,
         asm: TowerDefence}
       data:
@@ -54,10 +54,10 @@ MonoBehaviour:
           m_SubObjectName: 
           m_SubObjectType: 
           m_EditorAssetChanged: 0
-    - rid: 4957184486343442452
+    - rid: 4957184486343442562
       type: {class: NearestTargetFinder, ns: TowerDefence.Entities.Towers.Components.TargetFinders,
         asm: TowerDefence}
-    - rid: 4957184486343442453
+    - rid: 4957184486343442563
       type: {class: SingleTargetProjectileDamage, ns: TowerDefence.Entities.Towers.Components.Damage,
         asm: TowerDefence}
       data:
@@ -66,6 +66,6 @@ MonoBehaviour:
           m_SubObjectName: 
           m_SubObjectType: 
           m_EditorAssetChanged: 0
-    - rid: 4957184486343442454
+    - rid: 4957184486343442564
       type: {class: ActionPowerConsumer, ns: TowerDefence.Entities.Towers.Components.PowerComponents,
         asm: TowerDefence}
