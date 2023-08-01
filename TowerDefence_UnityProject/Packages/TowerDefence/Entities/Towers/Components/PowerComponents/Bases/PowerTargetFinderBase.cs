@@ -17,7 +17,7 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
     [Serializable]
     [Component(ComponentType.Tower, AllowMultiple = false)]
     [JsonObject(MemberSerialization.OptIn)]
-    internal class PowerTargetFinderBase : IPowerTargetFinder, IInitializable
+    internal class PowerTargetFinderBase : IPowerTargetFinder, IInitializable, IDisposable
     {
         public IReadOnlyList<(Vector2 worldPosition, IPowerComponent powerComponent)> Targets => TargetComponents;
 
@@ -58,10 +58,16 @@ namespace TowerDefence.Entities.Towers.Components.PowerComponents.Bases
                 var hit = hits[i];
                 var towerObject = hit.collider.GetComponent<ITowerObject>();
                 if (towerObject is null || !towerObject.Model.Components.HasComponent<IPowerComponent>()) continue;
+
                 var component = towerObject.Model.Components.GetComponent<IPowerComponent>();
-                if (component.CanReceive)
-                    TargetComponents.Add((towerObject.GetWorldPosition(), component));
+
+                if (component.CanReceive) TargetComponents.Add((towerObject.GetWorldPosition(), component));
             }
+        }
+
+        public virtual void Dispose()
+        {
+            bindingContext?.Dispose();
         }
     }
 }
