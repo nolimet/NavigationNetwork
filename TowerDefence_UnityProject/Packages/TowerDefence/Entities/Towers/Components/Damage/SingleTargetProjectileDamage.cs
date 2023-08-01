@@ -9,6 +9,7 @@ using TowerDefence.Entities.Towers.Components.BaseComponents;
 using TowerDefence.Entities.Towers.Components.Damage.SubComponents;
 using TowerDefence.Entities.Towers.Components.Interfaces;
 using TowerDefence.Entities.Towers.Models;
+using TowerDefence.UI.Game.Tower.Properties.Attributes;
 using TowerDefence.Utility;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -22,9 +23,9 @@ namespace TowerDefence.Entities.Towers.Components.Damage
     [Component(ComponentType.Tower, typeof(IDamageComponent))]
     public class SingleTargetProjectileDamage : IDamageComponent, IAsyncInitializer, IDisposable
     {
-        [JsonProperty] private readonly double fireCooldownInSeconds = .1f;
-        [JsonProperty] private readonly double damagePerShot = 5;
-        [JsonProperty] private readonly double powerPerShot = 20;
+        [UIProperty] [JsonProperty] private readonly double fireCooldownInSeconds = .1f;
+        [UIProperty] [JsonProperty] private readonly double damagePerShot = 5;
+        [UIProperty] [JsonProperty] private readonly double powerPerShot = 20;
         [SerializeField] private AssetReferenceT<GameObject> bulletPrefabReference;
 
         private readonly List<GameObject> liveBullets = new();
