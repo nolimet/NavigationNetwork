@@ -77,7 +77,6 @@ namespace TowerDefence.UI.Game.Tower.Properties
                 var atts = memberInfo.GetCustomAttributes(true);
                 if (memberInfo.HasAttribute(typeof(HiddenPropertyAttribute))) return null;
 
-                if (memberInfo.HasAttribute(typeof(UIPropertyAttribute))) return null; //TODO implement when having way to validate if member is private or not
 
                 if (atts.TryFind(x => x is ProgressBarPropertyAttribute, out var att) && att is ProgressBarPropertyAttribute ppa)
                 {
@@ -89,7 +88,26 @@ namespace TowerDefence.UI.Game.Tower.Properties
                     return new TowerSliderProperty(ppa.MinValue, ppa.MaxValue, minInfo, maxInfo, memberInfo);
                 }
 
-                return new TowerProperty(memberInfo);
+                if (MemberIsPublic(memberInfo))
+                {
+                    return new TowerProperty(memberInfo);
+                }
+
+                if (memberInfo.HasAttribute(typeof(UIPropertyAttribute)))
+                {
+                    return new TowerProperty(memberInfo);
+                }
+
+                return null;
+            }
+
+            bool MemberIsPublic(MemberInfo info)
+            {
+                if (info is FieldInfo field)
+                    return field.IsPublic;
+                if (info is PropertyInfo property)
+                    return property.GetMethod.IsPublic;
+                return false;
             }
         }
 
