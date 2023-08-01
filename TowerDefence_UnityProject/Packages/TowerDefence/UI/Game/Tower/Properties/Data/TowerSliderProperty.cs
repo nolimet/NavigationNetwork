@@ -6,7 +6,7 @@ using TowerDefence.UI.Game.Tower.Properties.Interfaces;
 
 namespace TowerDefence.UI.Game.Tower.Properties.Data
 {
-    public readonly struct TowerSliderProperty : ITowerProperty
+    public record TowerSliderProperty : ITowerProperty
     {
         public TowerSliderProperty(double minValue, double maxValue, MemberInfo minValueType, MemberInfo maxValueType, MemberInfo valueType)
         {

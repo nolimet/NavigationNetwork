@@ -4,7 +4,7 @@ using TowerDefence.UI.Game.Tower.Properties.Interfaces;
 
 namespace TowerDefence.UI.Game.Tower.Properties.Data
 {
-    public readonly struct TowerProperty : ITowerProperty
+    public record TowerProperty : ITowerProperty
     {
         private readonly PropertyInfo propertyInfo;
         private readonly FieldInfo fieldInfo;
