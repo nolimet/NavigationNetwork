@@ -29,7 +29,12 @@ namespace TowerDefence.Entities.Towers.Components.Damage.SubComponents
 
         private void Update()
         {
-            if (!target.ExistsInWorld) Destroy(gameObject);
+            if (!target.ExistsInWorld)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
             var targetPos = target.GetWorldPosition();
             var selfPos = transform.position;
 
