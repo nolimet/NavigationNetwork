@@ -80,10 +80,12 @@ namespace TowerDefence.UI.Game.Tower.Properties
 
                 if (attrs.TryFind(x => x is ProgressBarPropertyAttribute, out var attr) && attr is ProgressBarPropertyAttribute ppa)
                 {
-                    var _ = propertyInfos.TryFind(x => x.Name == ppa.MinValuePropertyName, out MemberInfo minInfo)
-                            || fieldInfos.TryFind(x => x.Name == ppa.MinValuePropertyName, out minInfo);
-                    _ = propertyInfos.TryFind(x => x.Name == ppa.MaxValuePropertyName, out MemberInfo maxInfo) ||
-                        fieldInfos.TryFind(x => x.Name == ppa.MaxValuePropertyName, out maxInfo);
+                    if (!propertyInfos.TryFind(x => x.Name == ppa.MinValuePropertyName, out MemberInfo minInfo))
+                        if (!fieldInfos.TryFind(x => x.Name == ppa.MinValuePropertyName, out minInfo))
+                            minInfo = null;
+                    if (!propertyInfos.TryFind(x => x.Name == ppa.MaxValuePropertyName, out MemberInfo maxInfo))
+                        if (!fieldInfos.TryFind(x => x.Name == ppa.MaxValuePropertyName, out maxInfo))
+                            maxInfo = null;
 
                     return new TowerSliderProperty(ppa.MinValue, ppa.MaxValue, minInfo, maxInfo, memberInfo);
                 }
