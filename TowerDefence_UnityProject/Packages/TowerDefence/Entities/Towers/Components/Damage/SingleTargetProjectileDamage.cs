@@ -27,7 +27,7 @@ namespace TowerDefence.Entities.Towers.Components.Damage
         [UIProperty] [JsonProperty] private readonly double damagePerShot = 5;
         [UIProperty] [JsonProperty] private readonly double powerPerShot = 20;
         [SerializeField] private AssetReferenceT<GameObject> bulletPrefabReference;
-
+        [SerializeField] [Min(1)] private int maxTargetsPerShot = 1;
         private readonly List<GameObject> liveBullets = new();
 
         public event Action<IEnumerable<IEnemyObject>> AppliedDamageToTargets;
@@ -63,18 +63,20 @@ namespace TowerDefence.Entities.Towers.Components.Damage
                     if (!liveBullet || !liveBullet.gameObject) liveBullets.Remove(liveBullet);
                 }
 
-            if (targetFindComponent.FoundTargets.Count == 0)
-                return;
-
             if (cooldownTimer >= 0f)
             {
                 cooldownTimer -= Time.deltaTime;
                 return;
             }
 
-            foreach (var target in targetFindComponent.FoundTargets)
+            if (targetFindComponent.FoundTargets.Count == 0)
+                return;
+
+            for (var i = 0; i < targetFindComponent.FoundTargets.Count; i++)
             {
-                if (!powerConsumer.TryConsume(powerPerShot)) return;
+                if (i > maxTargetsPerShot) break;
+                var target = targetFindComponent.FoundTargets[i];
+                if (!powerConsumer.TryConsume(powerPerShot)) break;
 
                 FireTarget(target);
             }
