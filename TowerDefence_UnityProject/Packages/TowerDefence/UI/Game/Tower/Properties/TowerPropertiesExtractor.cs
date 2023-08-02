@@ -74,11 +74,11 @@ namespace TowerDefence.UI.Game.Tower.Properties
 
             ITowerProperty GetProperty(MemberInfo memberInfo)
             {
-                var atts = memberInfo.GetCustomAttributes(true);
                 if (memberInfo.HasAttribute(typeof(HiddenPropertyAttribute))) return null;
+                var attrs = memberInfo.GetCustomAttributes(true);
 
 
-                if (atts.TryFind(x => x is ProgressBarPropertyAttribute, out var att) && att is ProgressBarPropertyAttribute ppa)
+                if (attrs.TryFind(x => x is ProgressBarPropertyAttribute, out var attr) && attr is ProgressBarPropertyAttribute ppa)
                 {
                     var hasMinAtt = propertyInfos.TryFind(x => x.Name == ppa.MinValuePropertyName, out MemberInfo minInfo)
                                     || fieldInfos.TryFind(x => x.Name == ppa.MinValuePropertyName, out minInfo);
@@ -93,9 +93,9 @@ namespace TowerDefence.UI.Game.Tower.Properties
                     return new TowerProperty(memberInfo);
                 }
 
-                if (memberInfo.HasAttribute(typeof(UIPropertyAttribute)))
+                if (attrs.TryFind(x => x is UIPropertyAttribute, out attr) && attr is UIPropertyAttribute uiP)
                 {
-                    return new TowerProperty(memberInfo);
+                    return new TowerProperty(memberInfo, uiP.TryGetPrettyName(out var prettyName) ? null : prettyName);
                 }
 
                 return null;

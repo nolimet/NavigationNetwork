@@ -15,7 +15,7 @@ namespace TowerDefence.UI.Game.Tower.Properties.Data
             return $"{Label} {(propertyInfo?.GetValue(component) ?? fieldInfo?.GetValue(component)) ?? "null"}";
         }
 
-        public TowerProperty(MemberInfo memberInfo)
+        public TowerProperty(MemberInfo memberInfo, string label = null)
         {
             fieldInfo = null;
             propertyInfo = null;
@@ -29,7 +29,7 @@ namespace TowerDefence.UI.Game.Tower.Properties.Data
                     break;
             }
 
-            Label = memberInfo.Name;
+            Label = string.IsNullOrEmpty(label) ? label : memberInfo.Name;
         }
     }
 }
