@@ -80,10 +80,10 @@ namespace TowerDefence.UI.Game.Tower.Properties
 
                 if (attrs.TryFind(x => x is ProgressBarPropertyAttribute, out var attr) && attr is ProgressBarPropertyAttribute ppa)
                 {
-                    var hasMinAtt = propertyInfos.TryFind(x => x.Name == ppa.MinValuePropertyName, out MemberInfo minInfo)
-                                    || fieldInfos.TryFind(x => x.Name == ppa.MinValuePropertyName, out minInfo);
-                    var hasMaxAtt = propertyInfos.TryFind(x => x.Name == ppa.MaxValuePropertyName, out MemberInfo maxInfo) ||
-                                    fieldInfos.TryFind(x => x.Name == ppa.MaxValuePropertyName, out maxInfo);
+                    var _ = propertyInfos.TryFind(x => x.Name == ppa.MinValuePropertyName, out MemberInfo minInfo)
+                            || fieldInfos.TryFind(x => x.Name == ppa.MinValuePropertyName, out minInfo);
+                    _ = propertyInfos.TryFind(x => x.Name == ppa.MaxValuePropertyName, out MemberInfo maxInfo) ||
+                        fieldInfos.TryFind(x => x.Name == ppa.MaxValuePropertyName, out maxInfo);
 
                     return new TowerSliderProperty(ppa.MinValue, ppa.MaxValue, minInfo, maxInfo, memberInfo);
                 }
@@ -101,14 +101,13 @@ namespace TowerDefence.UI.Game.Tower.Properties
                 return null;
             }
 
-            bool MemberIsPublic(MemberInfo info)
-            {
-                if (info is FieldInfo field)
-                    return field.IsPublic;
-                if (info is PropertyInfo property)
-                    return property.GetMethod.IsPublic;
-                return false;
-            }
+            bool MemberIsPublic(MemberInfo info) =>
+                info switch
+                {
+                    FieldInfo field => field.IsPublic,
+                    PropertyInfo property => property.GetMethod.IsPublic,
+                    _ => false
+                };
         }
 
         public void Dispose()
