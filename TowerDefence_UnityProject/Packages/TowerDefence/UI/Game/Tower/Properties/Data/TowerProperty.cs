@@ -8,17 +8,24 @@ namespace TowerDefence.UI.Game.Tower.Properties.Data
     {
         private readonly PropertyInfo propertyInfo;
         private readonly FieldInfo fieldInfo;
-        public readonly string Label;
+        private readonly string label;
+        private readonly string suffix;
+        private readonly string prefix;
 
         public string GetValue(IComponent component)
         {
-            return $"{Label} {(propertyInfo?.GetValue(component) ?? fieldInfo?.GetValue(component)) ?? "null"}";
+            var value = (propertyInfo?.GetValue(component) ?? fieldInfo?.GetValue(component)) ?? "null";
+
+            if (!string.IsNullOrEmpty(prefix))
+                value = $"{prefix}{value}";
+            if (!string.IsNullOrEmpty(suffix))
+                value = $"{value}{suffix}";
+
+            return $"{label} {value}";
         }
 
-        public TowerProperty(MemberInfo memberInfo, string label = null)
+        public TowerProperty(MemberInfo memberInfo, string label = null, string prefix = null, string suffix = null)
         {
-            fieldInfo = null;
-            propertyInfo = null;
             switch (memberInfo)
             {
                 case PropertyInfo info:
@@ -29,7 +36,9 @@ namespace TowerDefence.UI.Game.Tower.Properties.Data
                     break;
             }
 
-            Label = string.IsNullOrEmpty(label) ? label : memberInfo.Name;
+            this.label = label ?? memberInfo.Name;
+            this.prefix = prefix;
+            this.suffix = suffix;
         }
     }
 }

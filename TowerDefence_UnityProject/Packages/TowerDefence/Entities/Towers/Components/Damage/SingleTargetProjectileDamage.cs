@@ -23,7 +23,9 @@ namespace TowerDefence.Entities.Towers.Components.Damage
     [Component(ComponentType.Tower, typeof(IDamageComponent))]
     public class SingleTargetProjectileDamage : IDamageComponent, IAsyncInitializer, IDisposable
     {
-        [UIProperty] [JsonProperty] private readonly double fireCooldownInSeconds = .1f;
+        [UIProperty("Cooldown", suffix: "s")] [JsonProperty]
+        private readonly double fireCooldownInSeconds = .1f;
+
         [UIProperty] [JsonProperty] private readonly double damagePerShot = 5;
         [UIProperty] [JsonProperty] private readonly double powerPerShot = 20;
         [SerializeField] private AssetReferenceT<GameObject> bulletPrefabReference;

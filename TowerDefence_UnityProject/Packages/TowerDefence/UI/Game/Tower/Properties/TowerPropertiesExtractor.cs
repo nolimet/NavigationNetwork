@@ -97,7 +97,7 @@ namespace TowerDefence.UI.Game.Tower.Properties
 
                 if (attrs.TryFind(x => x is UIPropertyAttribute, out attr) && attr is UIPropertyAttribute uiP)
                 {
-                    return new TowerProperty(memberInfo, uiP.TryGetPrettyName(out var prettyName) ? null : prettyName);
+                    return new TowerProperty(memberInfo, uiP.PrettyName, uiP.Prefix, uiP.Suffix);
                 }
 
                 return null;
