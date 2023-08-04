@@ -34,7 +34,6 @@ namespace TowerDefence.Entities.Towers.Components.Damage
 
         public event Action<IEnumerable<IEnemyObject>> AppliedDamageToTargets;
         public double DamagePerSecond => damagePerShot / fireCooldownInSeconds;
-        public double MaxPowerUsagePerSecond => powerPerShot / fireCooldownInSeconds;
 
         private ITowerObject towerObject;
         private GameObject bulletPrefab;

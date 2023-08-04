@@ -11,6 +11,8 @@ namespace TowerDefence.Entities.Towers
 {
     internal class PowerTickService : IDisposable
     {
+        public const int PowerTickDelay = 250;
+
         private readonly BindingContext bindingContext = new();
         private readonly List<ITickablePowerComponent> powerComponents = new();
 
@@ -47,7 +49,7 @@ namespace TowerDefence.Entities.Towers
             var lastTickTime = DateTime.Now;
             while (!ctx.IsCancellationRequested)
             {
-                await UniTask.Delay(200, DelayType.Realtime, cancellationToken: ctx);
+                await UniTask.Delay(PowerTickDelay, DelayType.Realtime, cancellationToken: ctx);
                 foreach (var component in powerComponents) component.PowerTick((DateTime.Now - lastTickTime).TotalMilliseconds);
                 lastTickTime = DateTime.Now;
             }
